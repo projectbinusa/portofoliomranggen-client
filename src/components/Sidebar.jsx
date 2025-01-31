@@ -1,43 +1,42 @@
-// src/Sidebar.jsx
 import React from "react";
-import {
-  FaHome,
-  FaInfoCircle,
-  FaServicestack,
-  FaEnvelope,
-} from "react-icons/fa";
-import "./Sidebar.css";
 
 const Sidebar = () => {
   return (
-    <div className="sidebar">
-      <div className="sidebar-header">
-        <h1 className="sidebar-title">TICKET</h1>
-      </div>
-      <nav className="nav-links">
-        <ul>
+    <div className="flex">
+      {/* Sidebar */}
+      <div className="w-64 h-screen bg-gray-800 text-white">
+        <div className="p-6">
+          <h1 className="text-2xl font-bold">Bahsanta</h1>
+        </div>
+        <ul className="space-y-4">
           <li>
-            <a href="#">
-              <FaHome /> Home
+            <a href="#" className="block py-2 px-4 hover:bg-gray-700">
+              Dashboard
             </a>
           </li>
           <li>
-            <a href="#">
-              <FaInfoCircle /> About
+            <a href="#" className="block py-2 px-4 hover:bg-gray-700">
+              Lamps
             </a>
           </li>
           <li>
-            <a href="#">
-              <FaServicestack /> Services
+            <a href="#" className="block py-2 px-4 hover:bg-gray-700">
+              Settings
             </a>
           </li>
           <li>
-            <a href="#">
-              <FaEnvelope /> Contact
+            <a href="#" className="block py-2 px-4 hover:bg-gray-700">
+              Profile
             </a>
           </li>
         </ul>
-      </nav>
+      </div>
+
+      {/* Main Content */}
+      <div className="flex-1 p-6">
+        <h2 className="text-3xl font-semibold">Welcome to Bahsanta!</h2>
+        <p className="mt-4">Here you can manage your lamps and settings.</p>
+      </div>
     </div>
   );
 };
