@@ -1,8 +1,8 @@
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import { useState } from "react";
 import Home from "./page/Home";
 import About from "./page/About";
 import Contact from "./page/Contact";
+import KategoriKelas from "./kelas/KategoriKelas";
 import "./App.css";
 
 function App() {
@@ -25,6 +25,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/kelas" element={<KategoriKelas />} />
       </Routes>
     </Router>
   );
