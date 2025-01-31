@@ -3,6 +3,7 @@ import { useState } from "react";
 import Home from "./page/Home";
 import About from "./page/About";
 import Contact from "./page/Contact";
+import PageGuru from "./NewPage/PageGuru";
 import "./App.css";
 
 function App() {
@@ -19,12 +20,16 @@ function App() {
           <li>
             <Link to="/contact">Contact</Link>
           </li>
+          <li>
+            <Link to="/pageguru">PageGuru</Link>
+          </li>
         </ul>
       </nav>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/pageguru" element={<PageGuru />} />
       </Routes>
     </Router>
   );
