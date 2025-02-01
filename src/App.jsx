@@ -3,6 +3,9 @@ import Home from "./page/Home";
 import About from "./page/About";
 import Contact from "./page/Contact";
 import PageSiswa from "./Siswa/PageSiswa"; // Update path sesuai folder Siswa
+import PageGuru from "./NewPage/PageGuru";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Sidebar from "./components/Sidebar"; // Make sure Sidebar.jsx exists in src/components/
 import "./App.css";
 
 function App() {
@@ -21,6 +24,7 @@ function App() {
           </li>
           <li>
             <Link to="/siswa">Daftar Siswa</Link> {/* Link ke PageSiswa */}
+            <Link to="/pageguru">PageGuru</Link>
           </li>
         </ul>
       </nav>
@@ -29,6 +33,7 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/siswa" element={<PageSiswa />} /> {/* Daftar siswa */}
+        <Route path="/pageguru" element={<PageGuru />} />
       </Routes>
     </Router>
   );
