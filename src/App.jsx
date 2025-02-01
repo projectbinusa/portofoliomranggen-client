@@ -19,6 +19,9 @@ function App() {
           <li>
             <Link to="/contact">Contact</Link>
           </li>
+          <li>
+            <Link to="/kelas">Kelas</Link>
+          </li>
         </ul>
       </nav>
       <Routes>
