@@ -5,8 +5,8 @@ import Contact from "./page/Contact";
 import KategoriKelas from "./kategori/KategoriKelas";
 import PageSiswa from "./Siswa/PageSiswa"; // Update path sesuai folder Siswa
 import PageGuru from "./NewPage/PageGuru";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Sidebar from "./components/Sidebar"; // Make sure Sidebar.jsx exists in src/components/
+import TambahGuru from "./NewPage/TambahGuru";
+import EditGuru from "./NewPage/EditGuru";
 import "./App.css";
 
 function App() {
@@ -36,6 +36,8 @@ function App() {
         <Route path="/kelas" element={<KategoriKelas />} />
         <Route path="/siswa" element={<PageSiswa />} /> {/* Daftar siswa */}
         <Route path="/pageguru" element={<PageGuru />} />
+        <Route path="/tambahguru" element={<TambahGuru />} />
+        <Route path="/editguru/:id" element={<EditGuru />} />
       </Routes>
     </Router>
   );
