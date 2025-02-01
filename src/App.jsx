@@ -4,6 +4,8 @@ import Home from "./page/Home";
 import About from "./page/About";
 import Contact from "./page/Contact";
 import PageGuru from "./NewPage/PageGuru";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Sidebar from "./components/Sidebar"; // Make sure Sidebar.jsx exists in src/components/
 import "./App.css";
 
 function App() {
