@@ -7,7 +7,7 @@ function App() {
   return (
     <Router>
       <div className="app-container">
-        <Sidebar /> {/* Sidebar visible on all pages */}
+        {/* <Sidebar /> Sidebar visible on all pages */}
         <div className="content">
           <Routes>
             <Route path="/" element={<Sidebar />} />
