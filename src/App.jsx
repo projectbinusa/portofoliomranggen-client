@@ -11,6 +11,7 @@ import DaftarStaff from "./staff/DaftarStaff";
 import TambahStaff from "./staff/TambahStaff";
 import EditStaff from "./staff/EditStaff";
 import Sidebar from "./components/Sidebar"; // Make sure Sidebar.jsx exists in src/components/
+
 import "./App.css";
 
 function App() {
@@ -29,7 +30,9 @@ function App() {
           </li>
           <li>
             <Link to="/siswa">Daftar Siswa</Link> {/* Link ke PageSiswa */}
-            <Link to="/pageguru">PageGuru</Link>
+          </li>
+          <li>
+          <Link to="/pageguru">PageGuru</Link>
           </li>
         </ul>
       </nav>
@@ -45,6 +48,7 @@ function App() {
         <Route path="/daftar-staff" element={<DaftarStaff />} />
         <Route path="/tambah-staff" element={<TambahStaff />} />
         <Route path="/edit-staff/:id" element={<EditStaff />} />
+
       </Routes>
     </Router>
   );
