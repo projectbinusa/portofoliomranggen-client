@@ -7,6 +7,9 @@ import PageSiswa from "./Siswa/PageSiswa"; // Update path sesuai folder Siswa
 import PageGuru from "./NewPage/PageGuru";
 import TambahSiswa from "./Siswa/TambahSiswa";
 import EditSiswa from "./Siswa/EditSiswa";
+import PageOrganisasi from "./Organisasi/PageOrganisasi";
+import TambahOrganisasi from "./Organisasi/TambahOrganisasi";
+import EditOrganisasi from "./Organisasi/EditOrganisasi";
 import "./App.css";
 
 function App() {
@@ -39,7 +42,10 @@ function App() {
         <Route path="/siswa" element={<PageSiswa />} /> {/* Daftar siswa */}
         <Route path="/pageguru" element={<PageGuru />} />
         <Route path="/tambah-siswa" element={<TambahSiswa />} />
-        <Route path="/EditStudent/:id" element={<EditSiswa />} />
+        <Route path="/edit-siswa/:id" element={<EditSiswa />} />
+        <Route path="/organisasi" element={<PageOrganisasi />} />
+        <Route path="/tambah-organisasi" element={<TambahOrganisasi />} />
+        <Route path="/edit-organisasi" element={<EditOrganisasi />} />
       </Routes>
     </Router>
   );
