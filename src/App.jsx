@@ -15,6 +15,9 @@ import EditOrganisasi from "./organisasi/EditOrganisasi";
 import DaftarStaff from "./staff/DaftarStaff";
 import TambahStaff from "./staff/TambahStaff";
 import EditStaff from "./staff/EditStaff";
+import Login from "./page/Login";
+import Register from "./page/Register";
+import TambahPesanan from "./page/TambahPesanan";
 
 import "./App.css";
 
@@ -41,6 +44,11 @@ function App() {
         <Route path="/staff" element={<DaftarStaff />} />
         <Route path="/tambah-staff" element={<TambahStaff />} />
         <Route path="/edit-staff/:id" element={<EditStaff />} />
+
+        <Route path="/Login" element={<Login />} />
+        <Route path="/Register" element={<Register />} />
+
+        <Route path="/tambah-pesanan" element={<TambahPesanan />} />
       </Routes>
     </Router>
   );
