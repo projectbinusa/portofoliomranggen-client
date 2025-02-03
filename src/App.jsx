@@ -5,8 +5,8 @@ import Contact from "./page/Contact";
 import KategoriKelas from "./kategori/KategoriKelas";
 import PageSiswa from "./Siswa/PageSiswa"; // Update path sesuai folder Siswa
 import PageGuru from "./NewPage/PageGuru";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Sidebar from "./components/Sidebar"; // Make sure Sidebar.jsx exists in src/components/
+import TambahSiswa from "./Siswa/TambahSiswa";
+import EditSiswa from "./Siswa/EditSiswa";
 import "./App.css";
 
 function App() {
@@ -25,7 +25,9 @@ function App() {
           </li>
           <li>
             <Link to="/siswa">Daftar Siswa</Link> {/* Link ke PageSiswa */}
-            <Link to="/pageguru">PageGuru</Link>
+          </li>
+          <li>
+          <Link to="/pageguru">PageGuru</Link>
           </li>
         </ul>
       </nav>
@@ -36,6 +38,8 @@ function App() {
         <Route path="/kelas" element={<KategoriKelas />} />
         <Route path="/siswa" element={<PageSiswa />} /> {/* Daftar siswa */}
         <Route path="/pageguru" element={<PageGuru />} />
+        <Route path="/tambah-siswa" element={<TambahSiswa />} />
+        <Route path="/EditStudent/:id" element={<EditSiswa />} />
       </Routes>
     </Router>
   );
