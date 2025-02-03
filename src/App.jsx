@@ -3,8 +3,8 @@ import Home from "./page/Home";
 import About from "./page/About";
 import Contact from "./page/Contact";
 import KategoriKelas from "./kategori/KategoriKelas";
-import PageSiswa from "./Siswa/PageSiswa"; // Update path sesuai folder Siswa
-import PageGuru from "./NewPage/PageGuru";
+import PageSiswa from "./siswa/PageSiswa"; // Update path sesuai folder Siswa
+import PageGuru from "./guru/PageGuru";
 
 import "./App.css";
 
