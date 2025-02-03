@@ -1,5 +1,3 @@
-// src/pages/EditOrganisasi.jsx
-
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -60,7 +58,7 @@ function EditOrganisasi({ organisasiList, setOrganisasiList }) {
               value={editedOrganisasi.namaOrganisasi}
               onChange={handleInputChange}
               placeholder="Nama Organisasi"
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <input
               type="text"
@@ -68,7 +66,7 @@ function EditOrganisasi({ organisasiList, setOrganisasiList }) {
               value={editedOrganisasi.lokasi}
               onChange={handleInputChange}
               placeholder="Lokasi"
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <input
               type="email"
@@ -76,7 +74,7 @@ function EditOrganisasi({ organisasiList, setOrganisasiList }) {
               value={editedOrganisasi.email}
               onChange={handleInputChange}
               placeholder="Email"
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <input
               type="tel"
@@ -84,7 +82,7 @@ function EditOrganisasi({ organisasiList, setOrganisasiList }) {
               value={editedOrganisasi.telepon}
               onChange={handleInputChange}
               placeholder="Telepon"
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
 
             <div className="flex gap-4">

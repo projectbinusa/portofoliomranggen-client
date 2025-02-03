@@ -1,5 +1,3 @@
-// src/pages/TambahOrganisasi.jsx
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar"; // Impor Sidebar
@@ -54,7 +52,7 @@ const TambahOrganisasi = () => {
             value={newOrganisasi.namaOrganisasi}
             onChange={handleInputChange}
             placeholder="Nama Organisasi"
-            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <input
             type="text"
@@ -62,7 +60,7 @@ const TambahOrganisasi = () => {
             value={newOrganisasi.lokasi}
             onChange={handleInputChange}
             placeholder="Lokasi"
-            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <input
             type="email"
@@ -70,7 +68,7 @@ const TambahOrganisasi = () => {
             value={newOrganisasi.email}
             onChange={handleInputChange}
             placeholder="Email"
-            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <input
             type="text"
@@ -78,7 +76,7 @@ const TambahOrganisasi = () => {
             value={newOrganisasi.telepon}
             onChange={handleInputChange}
             placeholder="Nomor Telepon"
-            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
 
           <div className="flex justify-between">
