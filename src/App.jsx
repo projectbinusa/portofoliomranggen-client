@@ -5,7 +5,6 @@ import Contact from "./page/Contact";
 import KategoriKelas from "./kategori/KategoriKelas";
 import PageSiswa from "./Siswa/PageSiswa"; // Update path sesuai folder Siswa
 import PageGuru from "./NewPage/PageGuru";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Sidebar from "./components/Sidebar"; // Make sure Sidebar.jsx exists in src/components/
 import "./App.css";
 
