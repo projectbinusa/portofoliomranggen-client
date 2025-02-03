@@ -3,8 +3,6 @@ import Home from "./page/Home";
 import About from "./page/About";
 import Contact from "./page/Contact";
 import KategoriKelas from "./kategori/KategoriKelas";
-import PageSiswa from "./siswa/PageSiswa";
-import PageGuru from "./guru/PageGuru"; // ✅ Tambahkan import PageGuru
 
 import "./App.css";
 
@@ -35,9 +33,7 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/kategori-kelas" element={<KategoriKelas />} />
-        <Route path="/siswa" element={<PageSiswa />} />
-        <Route path="/pageguru" element={<PageGuru />} />{" "}
-        {/* ✅ Perbaiki error */}
+
       </Routes>
     </Router>
   );

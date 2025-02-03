@@ -47,11 +47,11 @@ const TambahGuru = () => {
       <Sidebar />
 
       {/* Konten Form */}
-      <div className="flex-1 p-5 flex justify-center items-center ml-16"> {/* Menambahkan margin-left lebih besar */}
-        <div className="bg-white shadow-md rounded-lg p-4 w-full max-w-4xl ml-12 mr-12">
+      <div className="flex-1 p-5 flex justify-center items-start ml-60"> {/* Menambahkan margin-left lebih besar dan mengubah justify-center ke justify-start */}
+        <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-4xl ml-50 mr-12 border border-gray-300"> {/* Margin kiri di-set ke 0 untuk menggeser */}
           <h2 className="text-2xl font-bold mb-6 text-center">Tambah Guru</h2>
           <form onSubmit={handleSubmit}>
-            <div className="space-y-4">
+            <div className="space-y-6">
               {/** Input Nama */}
               <div className="flex items-center">
                 <label className="w-48 text-gray-700">Nama</label>
@@ -61,7 +61,7 @@ const TambahGuru = () => {
                   value={formData.nama}
                   onChange={handleChange}
                   placeholder="Nama"
-                  className="w-full p-4 border rounded-lg"
+                  className="w-full p-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
 
@@ -74,7 +74,7 @@ const TambahGuru = () => {
                   value={formData.nip}
                   onChange={handleChange}
                   placeholder="NIP"
-                  className="w-full p-4 border rounded-lg"
+                  className="w-full p-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
 
@@ -87,7 +87,7 @@ const TambahGuru = () => {
                   value={formData.alamat}
                   onChange={handleChange}
                   placeholder="Alamat"
-                  className="w-full p-4 border rounded-lg"
+                  className="w-full p-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
 
@@ -100,11 +100,11 @@ const TambahGuru = () => {
                   value={formData.nomorHp}
                   onChange={handleChange}
                   placeholder="Nomor HP"
-                  className="w-full p-4 border rounded-lg"
+                  className="w-full p-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
 
-              {/** Input Tahun Diterima (dihapus kalender) */}
+              {/** Input Tahun Diterima */}
               <div className="flex items-center">
                 <label className="w-48 text-gray-700">Tahun Diterima</label>
                 <input
@@ -113,7 +113,7 @@ const TambahGuru = () => {
                   value={formData.tahunDiterima}
                   onChange={handleChange}
                   placeholder="Tahun Diterima"
-                  className="w-full p-4 border rounded-lg"
+                  className="w-full p-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
 
@@ -126,7 +126,7 @@ const TambahGuru = () => {
                   value={formData.lamaKerja}
                   onChange={handleChange}
                   placeholder="Lama Kerja (Tahun)"
-                  className="w-full p-4 border rounded-lg"
+                  className="w-full p-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
             </div>
@@ -136,13 +136,13 @@ const TambahGuru = () => {
               <button
                 type="button"
                 onClick={() => navigate("/pageguru")}
-                className="w-32 px-4 py-1 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition"
+                className="w-32 px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition"
               >
                 Batal
               </button>
               <button
                 type="submit"
-                className="w-32 px-4 py-1 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
+                className="w-32 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
               >
                 Simpan
               </button>
