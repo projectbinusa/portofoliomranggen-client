@@ -7,6 +7,9 @@ import PageSiswa from "./Siswa/PageSiswa"; // Update path sesuai folder Siswa
 import PageGuru from "./NewPage/PageGuru";
 import TambahKategori from "./kategori/TambahKategori";
 import EditKategori from "./kategori/EditKategori";
+import DaftarStaff from "./staff/DaftarStaff";
+import TambahStaff from "./staff/TambahStaff";
+import EditStaff from "./staff/EditStaff";
 import Sidebar from "./components/Sidebar"; // Make sure Sidebar.jsx exists in src/components/
 import "./App.css";
 
@@ -25,7 +28,6 @@ function App() {
             <Link to="/contact">Contact</Link>
           </li>
           <li>
-            <Link to="/kategori-kelas">Kelas</Link>
             <Link to="/siswa">Daftar Siswa</Link> {/* Link ke PageSiswa */}
             <Link to="/pageguru">PageGuru</Link>
           </li>
@@ -40,6 +42,9 @@ function App() {
         <Route path="/pageguru" element={<PageGuru />} />
         <Route path="/tambah-kategori-kelas" element={<TambahKategori />} />
         <Route path="/edit-kategori-kelas" element={<EditKategori />} />
+        <Route path="/daftar-staff" element={<DaftarStaff />} />
+        <Route path="/tambah-staff" element={<TambahStaff />} />
+        <Route path="/edit-staff/:id" element={<EditStaff />} />
       </Routes>
     </Router>
   );
