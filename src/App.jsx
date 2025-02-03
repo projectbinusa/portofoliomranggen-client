@@ -3,10 +3,10 @@ import Home from "./page/Home";
 import About from "./page/About";
 import Contact from "./page/Contact";
 import KategoriKelas from "./kategori/KategoriKelas";
-import PageSiswa from "./Siswa/PageSiswa"; // Update path sesuai folder Siswa
-import PageGuru from "./Guru/PageGuru";
-import TambahGuru from "./Guru/TambahGuru";
-import EditGuru from "./Guru/EditGuru";
+import PageSiswa from "./siswa/PageSiswa"; // Update path sesuai folder Siswa
+import PageGuru from "./guru/PageGuru";
+import TambahGuru from "./guru/TambahGuru";
+import EditGuru from "./guru/EditGuru";
 import "./App.css";
 
 function App() {
@@ -40,7 +40,8 @@ function App() {
         <Route path="/kategori-kelas" element={<KategoriKelas />} />
         <Route path="/siswa" element={<PageSiswa />} /> {/* Daftar siswa */}
         <Route path="/pageguru" element={<PageGuru />} />
-
+        <Route path="/tambahguru" element={<TambahGuru />} />
+        <Route path="/editguru/:id" element={<EditGuru />} />
       </Routes>
     </Router>
   );
