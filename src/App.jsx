@@ -24,9 +24,12 @@ function App() {
             <Link to="/contact">Contact</Link>
           </li>
           <li>
-            <Link to="/siswa">Daftar Siswa</Link> {/* Link ke PageSiswa */}
+            <Link to="/kategori-kelas">Kelas</Link>
           </li>
-          <li> <Link to="/pageguru">PageGuru</Link>
+          <li> <Link to="/siswa">Daftar Siswa</Link> {/* Link ke PageSiswa */}
+          </li>
+          <li>
+          <Link to="/pageguru">PageGuru</Link>
           </li>
         </ul>
       </nav>
@@ -34,11 +37,10 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
-        <Route path="/kelas" element={<KategoriKelas />} />
+        <Route path="/kategori-kelas" element={<KategoriKelas />} />
         <Route path="/siswa" element={<PageSiswa />} /> {/* Daftar siswa */}
         <Route path="/pageguru" element={<PageGuru />} />
-        <Route path="/tambahguru" element={<TambahGuru />} />
-        <Route path="/editguru/:id" element={<EditGuru />} />
+
       </Routes>
     </Router>
   );
