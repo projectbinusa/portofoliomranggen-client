@@ -6,10 +6,6 @@ import KategoriKelas from "./kategori/KategoriKelas";
 import PageSiswa from "./Siswa/PageSiswa"; // Update path sesuai folder Siswa
 import PageGuru from "./NewPage/PageGuru";
 
-import Sidebar from "./components/Sidebar"; // Make sure Sidebar.jsx exists in src/components/
-
-
-
 import "./App.css";
 
 function App() {
@@ -28,10 +24,13 @@ function App() {
           </li>
           <li>
             <Link to="/kategori-kelas">Kelas</Link>
+          </li>
+          <li>
+            {" "}
             <Link to="/siswa">Daftar Siswa</Link> {/* Link ke PageSiswa */}
           </li>
           <li>
-          <Link to="/pageguru">PageGuru</Link>
+            <Link to="/pageguru">PageGuru</Link>
           </li>
         </ul>
       </nav>
@@ -42,7 +41,6 @@ function App() {
         <Route path="/kategori-kelas" element={<KategoriKelas />} />
         <Route path="/siswa" element={<PageSiswa />} /> {/* Daftar siswa */}
         <Route path="/pageguru" element={<PageGuru />} />
-
       </Routes>
     </Router>
   );
