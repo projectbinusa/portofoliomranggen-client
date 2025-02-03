@@ -3,7 +3,11 @@ import Home from "./page/Home";
 import About from "./page/About";
 import Contact from "./page/Contact";
 import KategoriKelas from "./kategori/KategoriKelas";
-
+import PageSiswa from "./Siswa/PageSiswa";
+import PageGuru from "./Guru/PageGuru";
+import DaftarStaff from "./staff/DaftarStaff";
+import TambahStaff from "./staff/TambahStaff";
+import EditStaff from "./staff/DaftarStaff";
 
 import "./App.css";
 
@@ -37,7 +41,9 @@ function App() {
         <Route path="/kategori-kelas" element={<KategoriKelas />} />
         <Route path="/siswa" element={<PageSiswa />} /> {/* Daftar siswa */}
         <Route path="/pageguru" element={<PageGuru />} />
-
+        <Route path="/daftar-staff" element={<DaftarStaff />} />
+        <Route path="/tambah-staff" element={<TambahStaff />} />
+        <Route path="/edit-staff" element={<EditStaff />} />
       </Routes>
     </Router>
   );

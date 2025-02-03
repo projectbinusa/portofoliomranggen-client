@@ -13,7 +13,6 @@ const KategoriKelas = () => {
 
   const navigate = useNavigate();
 
-  // Fungsi untuk mengarahkan ke halaman edit kategori kelas dengan ID
   const handleEdit = (id) => {
     navigate(`/edit-kategori-kelas/${id}`);
   };
@@ -53,11 +52,11 @@ const KategoriKelas = () => {
         </div>
 
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-          <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+          <table className="w-full text-sm text-left text-gray-700 border border-gray-400">
+            <thead className="text-xs font-bold uppercase bg-gray-200 border-b border-gray-500">
               <tr>
-                <th className="px-6 py-3">No</th>
-                <th className="px-6 py-3">Kelas</th>
+                <th className="px-6 py-3 border-r border-gray-400">No</th>
+                <th className="px-6 py-3 border-r border-gray-400">Kelas</th>
                 <th className="px-6 py-3">Aksi</th>
               </tr>
             </thead>
@@ -65,21 +64,21 @@ const KategoriKelas = () => {
               {kelasData.map((kelas, index) => (
                 <tr
                   key={kelas.id}
-                  className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+                  className="bg-white border-b border-gray-400 hover:bg-gray-100"
                 >
-                  <td className="px-6 py-4">{index + 1}</td>
-                  <td className="px-6 py-4 font-medium">{kelas.nama}</td>
+                  <td className="px-6 py-4 border-r border-gray-400">{index + 1}</td>
+                  <td className="px-6 py-4 font-medium border-r border-gray-400">{kelas.nama}</td>
                   <td className="px-6 py-4 flex gap-3">
                     <button
-                      onClick={() => handleEdit(kelas.id)} // Menambahkan onClick untuk Edit
-                      className="flex items-center gap-2 bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600 transition"
-                    >
+                      onClick={() => handleEdit(kelas.id)}
+                      className="flex items-center gap-2 bg-blue-500 text-white px-3 py-1
+                       rounded-md hover:bg-blue-600 transition">
                       <Pencil size={18} />
                     </button>
                     <button
                       onClick={() => handleDelete(kelas.id)}
-                      className="flex items-center gap-2 bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 transition"
-                    >
+                      className="flex items-center gap-2 bg-red-500 text-white px-3 py-1
+                       rounded-md hover:bg-red-600 transition">
                       <Trash2 size={18} />
                     </button>
                   </td>
