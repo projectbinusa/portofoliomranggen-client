@@ -51,19 +51,19 @@ function EditSiswa({ students, setStudents }) {
   return (
     <div className="flex">
       <Sidebar /> {/* Menambahkan Sidebar di sini */}
-      <div className="flex-1 p-6">
-        <div className="max-w-lg mx-auto bg-white shadow-lg rounded-lg p-6">
+      <div className="flex-1 p-4">
+        <div className="max-w-xl mx-auto bg-white shadow-lg rounded-lg p-4">
           <h1 className="text-2xl font-semibold text-gray-700 text-center mb-4">
             Edit Siswa
           </h1>
-          <div className="grid grid-cols-1 gap-4">
+          <div className="space-y-4">
             <input
               type="text"
               name="nama"
               value={editedStudent.nama}
               onChange={handleInputChange}
               placeholder="Nama"
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-2 border-2 border-gray-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <input
               type="text"
@@ -71,7 +71,7 @@ function EditSiswa({ students, setStudents }) {
               value={editedStudent.nisn}
               onChange={handleInputChange}
               placeholder="NISN"
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-2 border-2 border-gray-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <input
               type="text"
@@ -79,7 +79,7 @@ function EditSiswa({ students, setStudents }) {
               value={editedStudent.alamat}
               onChange={handleInputChange}
               placeholder="Alamat"
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-2 border-2 border-gray-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <input
               type="text"
@@ -87,7 +87,7 @@ function EditSiswa({ students, setStudents }) {
               value={editedStudent.namaOrangTua}
               onChange={handleInputChange}
               placeholder="Nama Orang Tua"
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-2 border-2 border-gray-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <input
               type="text"
@@ -95,7 +95,7 @@ function EditSiswa({ students, setStudents }) {
               value={editedStudent.nomerHpOrangTua}
               onChange={handleInputChange}
               placeholder="Nomor HP Orang Tua"
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-2 border-2 border-gray-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <input
               type="text"
@@ -103,7 +103,7 @@ function EditSiswa({ students, setStudents }) {
               value={editedStudent.nomerHp}
               onChange={handleInputChange}
               placeholder="Nomor HP"
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-2 border-2 border-gray-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <input
               type="text"
@@ -111,19 +111,19 @@ function EditSiswa({ students, setStudents }) {
               value={editedStudent.ttl}
               onChange={handleInputChange}
               placeholder="Tempat, Tanggal Lahir"
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-2 border-2 border-gray-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
 
             <div className="flex gap-4">
               <button
                 onClick={handleUpdateStudent}
-                className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition"
+                className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
               >
                 Simpan Perubahan
               </button>
               <button
                 onClick={() => navigate("/siswa")}
-                className="w-full bg-gray-500 text-white py-3 rounded-lg hover:bg-gray-600 transition"
+                className="w-full bg-gray-500 text-white py-2 rounded-lg hover:bg-gray-600 transition"
               >
                 Batal
               </button>
