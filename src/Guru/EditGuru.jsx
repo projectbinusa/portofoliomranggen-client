@@ -49,13 +49,14 @@ const EditGuru = () => {
   };
 
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div className="flex h-full bg-white">
       {/* Sidebar */}
       <Sidebar />
 
       {/* Konten Form */}
       <div className="flex-1 flex justify-center items-center p-6">
-        <div className="bg-white shadow-md rounded-lg p-8 w-full max-w-3xl">
+        <div className="bg-white shadow-md rounded-lg p-8 w-full max-w-3xl ml-60 border border-gray-300">
+          {/* Menambahkan border dan margin kiri untuk geser ke kanan */}
           <h2 className="text-2xl font-bold mb-6 text-center">Edit Guru</h2>
           <form onSubmit={handleSubmit} className="space-y-4">
             {/** Form input dengan label di kiri dan input di kanan */}
@@ -67,14 +68,15 @@ const EditGuru = () => {
               tahunDiterima: "Tahun Diterima",
               lamaKerja: "Lama Kerja (Tahun)",
             }).map(([key, label]) => (
-              <div key={key} className="flex items-center">
+              <div key={key} className="flex items-center border-b border-gray-200 py-2">
+                {/* Menambahkan border bawah pada tiap field */}
                 <label className="w-48 text-gray-700">{label}</label>
                 <input
                   type="text"
                   name={key}
                   value={formData[key]}
                   onChange={handleChange}
-                  className="w-full p-2 border rounded-lg"
+                  className="w-[500px] p-2 border rounded-lg"
                 />
               </div>
             ))}

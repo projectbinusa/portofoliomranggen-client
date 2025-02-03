@@ -72,9 +72,16 @@ const PageGuru = () => {
   };
 
   // Filter berdasarkan input pencarian
-  const filteredGuru = pageguru.filter((guru) =>
-    guru.nama.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredGuru = pageguru.filter((guru) => {
+    return (
+      guru.nama.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      guru.nip.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      guru.alamat.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      guru.nomorHp.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      guru.tahunDiterima.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      guru.lamaKerja.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  });
 
   return (
     <div className="flex h-screen">
@@ -96,13 +103,13 @@ const PageGuru = () => {
           <div className="relative mb-4">
             <input
               type="text"
-              placeholder="Cari berdasarkan nama..."
+              placeholder="Cari berdasarkan semua data..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full px-10 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
             />
             {/* Ikon kaca pembesar (search) */}
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-black-400 w-5 h-5" />
 
             {/* Ikon silang untuk menghapus input */}
             {searchTerm && (
@@ -115,7 +122,7 @@ const PageGuru = () => {
             )}
           </div>
 
-          <div className="overflow-x-auto shadow-md sm:rounded-lg">
+          <div className="overflow-x-auto shadow-md sm:rounded-lg bg-white p-4 border border-gray-200">
             <table className="w-full text-sm text-left text-gray-500">
               <thead className="text-xs text-gray-700 uppercase bg-gray-100">
                 <tr>
