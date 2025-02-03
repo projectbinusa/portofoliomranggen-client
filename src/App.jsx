@@ -4,8 +4,9 @@ import About from "./page/About";
 import Contact from "./page/Contact";
 import KategoriKelas from "./kategori/KategoriKelas";
 import PageSiswa from "./Siswa/PageSiswa"; // Update path sesuai folder Siswa
-import PageGuru from "./NewPage/PageGuru";
-
+import PageGuru from "./Guru/PageGuru";
+import TambahGuru from "./Guru/TambahGuru";
+import EditGuru from "./Guru/EditGuru";
 import "./App.css";
 
 function App() {
@@ -24,7 +25,8 @@ function App() {
           </li>
           <li>
             <Link to="/kategori-kelas">Kelas</Link>
-            <Link to="/siswa">Daftar Siswa</Link> {/* Link ke PageSiswa */}
+          </li>
+          <li> <Link to="/siswa">Daftar Siswa</Link> {/* Link ke PageSiswa */}
           </li>
           <li>
           <Link to="/pageguru">PageGuru</Link>
