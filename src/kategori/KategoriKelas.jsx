@@ -14,7 +14,7 @@ const KategoriKelas = () => {
   const navigate = useNavigate();
 
   const handleEdit = (id) => {
-    navigate(`/edit-kategori-kelas/${id}`);
+    navigate(`/edit-kategori/:id`);
   };
 
   const handleDelete = (id) => {
@@ -44,7 +44,7 @@ const KategoriKelas = () => {
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-xl font-semibold">Kategori Kelas</h1>
           <button
-            onClick={() => navigate("/tambah-kategori-kelas")}
+            onClick={() => navigate("/tambah-kategori")}
             className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition"
           >
             Tambah Kelas
@@ -66,19 +66,25 @@ const KategoriKelas = () => {
                   key={kelas.id}
                   className="bg-white border-b border-gray-400 hover:bg-gray-100"
                 >
-                  <td className="px-6 py-4 border-r border-gray-400">{index + 1}</td>
-                  <td className="px-6 py-4 font-medium border-r border-gray-400">{kelas.nama}</td>
+                  <td className="px-6 py-4 border-r border-gray-400">
+                    {index + 1}
+                  </td>
+                  <td className="px-6 py-4 font-medium border-r border-gray-400">
+                    {kelas.nama}
+                  </td>
                   <td className="px-6 py-4 flex gap-3">
                     <button
                       onClick={() => handleEdit(kelas.id)}
                       className="flex items-center gap-2 bg-blue-500 text-white px-3 py-1
-                       rounded-md hover:bg-blue-600 transition">
+                       rounded-md hover:bg-blue-600 transition"
+                    >
                       <Pencil size={18} />
                     </button>
                     <button
                       onClick={() => handleDelete(kelas.id)}
                       className="flex items-center gap-2 bg-red-500 text-white px-3 py-1
-                       rounded-md hover:bg-red-600 transition">
+                       rounded-md hover:bg-red-600 transition"
+                    >
                       <Trash2 size={18} />
                     </button>
                   </td>

@@ -54,7 +54,9 @@ const PageSiswa = () => {
       student.nisn.toLowerCase().includes(searchTerm.toLowerCase()) ||
       student.alamat.toLowerCase().includes(searchTerm.toLowerCase()) ||
       student.namaOrangTua.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      student.nomerHpOrangTua.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      student.nomerHpOrangTua
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase()) ||
       student.nomerHp.toLowerCase().includes(searchTerm.toLowerCase()) ||
       student.ttl.toLowerCase().includes(searchTerm.toLowerCase())
     );
@@ -69,7 +71,7 @@ const PageSiswa = () => {
             <h2 className="text-xl font-bold">Daftar Siswa</h2>
             <button
               className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition"
-              onClick={() => navigate("/tambahsiswa")}
+              onClick={() => navigate("/tambah-siswa")}
             >
               Tambah Siswa
             </button>
@@ -106,9 +108,15 @@ const PageSiswa = () => {
                   <th className="px-6 py-3 border-b border-gray-300">Nama</th>
                   <th className="px-6 py-3 border-b border-gray-300">NISN</th>
                   <th className="px-6 py-3 border-b border-gray-300">Alamat</th>
-                  <th className="px-6 py-3 border-b border-gray-300">Nama Orang Tua</th>
-                  <th className="px-6 py-3 border-b border-gray-300">Nomor HP Orang Tua</th>
-                  <th className="px-6 py-3 border-b border-gray-300">Nomor HP</th>
+                  <th className="px-6 py-3 border-b border-gray-300">
+                    Nama Orang Tua
+                  </th>
+                  <th className="px-6 py-3 border-b border-gray-300">
+                    Nomor HP Orang Tua
+                  </th>
+                  <th className="px-6 py-3 border-b border-gray-300">
+                    Nomor HP
+                  </th>
                   <th className="px-6 py-3 border-b border-gray-300">TTL</th>
                   <th className="px-6 py-3 border-b border-gray-300">Aksi</th>
                 </tr>
@@ -117,16 +125,32 @@ const PageSiswa = () => {
                 {filteredStudents.length > 0 ? (
                   filteredStudents.map((student, index) => (
                     <tr key={student.id} className="bg-white hover:bg-gray-50">
-                      <td className="px-6 py-4 border-b border-gray-300">{index + 1}</td>
-                      <td className="px-6 py-4 border-b border-gray-300">{student.nama}</td>
-                      <td className="px-6 py-4 border-b border-gray-300">{student.nisn}</td>
-                      <td className="px-6 py-4 border-b border-gray-300">{student.alamat}</td>
-                      <td className="px-6 py-4 border-b border-gray-300">{student.namaOrangTua}</td>
-                      <td className="px-6 py-4 border-b border-gray-300">{student.nomerHpOrangTua}</td>
-                      <td className="px-6 py-4 border-b border-gray-300">{student.nomerHp}</td>
-                      <td className="px-6 py-4 border-b border-gray-300">{student.ttl}</td>
+                      <td className="px-6 py-4 border-b border-gray-300">
+                        {index + 1}
+                      </td>
+                      <td className="px-6 py-4 border-b border-gray-300">
+                        {student.nama}
+                      </td>
+                      <td className="px-6 py-4 border-b border-gray-300">
+                        {student.nisn}
+                      </td>
+                      <td className="px-6 py-4 border-b border-gray-300">
+                        {student.alamat}
+                      </td>
+                      <td className="px-6 py-4 border-b border-gray-300">
+                        {student.namaOrangTua}
+                      </td>
+                      <td className="px-6 py-4 border-b border-gray-300">
+                        {student.nomerHpOrangTua}
+                      </td>
+                      <td className="px-6 py-4 border-b border-gray-300">
+                        {student.nomerHp}
+                      </td>
+                      <td className="px-6 py-4 border-b border-gray-300">
+                        {student.ttl}
+                      </td>
                       <td className="px-6 py-4 border-b border-gray-300 flex space-x-2">
-                        <Link to={`/editsiswa/${student.id}`}>
+                        <Link to={`/edit-siswa/:id`}>
                           <button className="flex items-center gap-2 bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600 transition">
                             <Pencil size={18} />
                           </button>

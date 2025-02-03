@@ -93,7 +93,7 @@ const PageGuru = () => {
             <h2 className="text-xl font-bold">Daftar Guru</h2>
             <button
               className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition"
-              onClick={() => navigate("/tambahguru")}
+              onClick={() => navigate("/tambah-guru")}
             >
               Tambah Guru
             </button>
@@ -139,7 +139,10 @@ const PageGuru = () => {
               <tbody>
                 {filteredGuru.length > 0 ? (
                   filteredGuru.map((guru, index) => (
-                    <tr key={guru.id} className="bg-white border-b hover:bg-gray-50">
+                    <tr
+                      key={guru.id}
+                      className="bg-white border-b hover:bg-gray-50"
+                    >
                       <td className="px-6 py-4">{index + 1}</td>
                       <td className="px-6 py-4">{guru.nama}</td>
                       <td className="px-6 py-4">{guru.nip}</td>
@@ -148,7 +151,7 @@ const PageGuru = () => {
                       <td className="px-6 py-4">{guru.tahunDiterima}</td>
                       <td className="px-6 py-4">{guru.lamaKerja}</td>
                       <td className="px-6 py-4 flex space-x-2">
-                        <Link to={`/editguru/${guru.id}`}>
+                        <Link to={`/edit-guru/:id"`}>
                           <button className="flex items-center gap-2 bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600 transition">
                             <Pencil size={18} />
                           </button>

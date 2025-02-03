@@ -48,7 +48,7 @@ const PageOrganisasi = () => {
                 <th className="px-6 py-3">Lokasi</th>
                 <th className="px-6 py-3">Email</th>
                 <th className="px-6 py-3">Telepon</th>
-                <th className="px-6 py-3">Aksi</th> 
+                <th className="px-6 py-3">Aksi</th>
               </tr>
             </thead>
             <tbody>
@@ -66,7 +66,7 @@ const PageOrganisasi = () => {
                     <td className="px-6 py-4 flex gap-3">
                       <Link
                         to={{
-                          pathname: `/edit-organisasi`,
+                          pathname: `/edit-organisasi/:id`,
                           state: { organisasi, index }, // Mengirim data organisasi dan index
                         }}
                         className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition"
