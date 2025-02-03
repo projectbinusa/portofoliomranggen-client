@@ -3,8 +3,7 @@ import Home from "./page/Home";
 import About from "./page/About";
 import Contact from "./page/Contact";
 import KategoriKelas from "./kategori/KategoriKelas";
-import PageSiswa from "./siswa/PageSiswa"; // Update path sesuai folder Siswa
-import PageGuru from "./guru/PageGuru";
+
 
 import "./App.css";
 
@@ -23,10 +22,7 @@ function App() {
             <Link to="/contact">Contact</Link>
           </li>
           <li>
-            <Link to="/kategori-kelas">Kelas</Link>
-          </li>
-          <li>
-            {" "}
+
             <Link to="/siswa">Daftar Siswa</Link> {/* Link ke PageSiswa */}
           </li>
           <li>
@@ -41,6 +37,7 @@ function App() {
         <Route path="/kategori-kelas" element={<KategoriKelas />} />
         <Route path="/siswa" element={<PageSiswa />} /> {/* Daftar siswa */}
         <Route path="/pageguru" element={<PageGuru />} />
+
       </Routes>
     </Router>
   );
