@@ -9,7 +9,6 @@ const DaftarStaff = () => {
   const [staffData, setStaffData] = useState([]);
   const navigate = useNavigate();
 
-  // Ambil data staff dari API
   useEffect(() => {
     fetch(`${API_STAFF}/all`)
       .then((response) => response.json())
@@ -17,12 +16,10 @@ const DaftarStaff = () => {
       .catch((error) => console.error("Error fetching data:", error));
   }, []);
 
-  // Fungsi navigasi untuk edit
   const handleEdit = (id) => {
     navigate(`/edit-staff/${id}`);
   };
 
-  // Fungsi untuk menghapus data dengan konfirmasi
   const handleDelete = (id) => {
     Swal.fire({
       title: "Apakah Anda yakin?",
@@ -52,23 +49,19 @@ const DaftarStaff = () => {
     });
   };
 
-  // Fungsi untuk memformat tanggal agar hanya tampil dd-mm-yyyy
   const formatDateDisplay = (rawDate) => {
-    if (!rawDate) return "-"; // Jika tanggal kosong, tampilkan "-"
+    if (!rawDate) return "-";
     
-    // Mengubah string tanggal ISO (yyyy-MM-dd) menjadi objek Date
     const dateObj = new Date(rawDate);
     
-    // Cek apakah tanggal valid
     if (isNaN(dateObj.getTime())) {
-      return "-"; // Jika tidak valid, tampilkan "-"
+      return "-";
     }
 
     const day = String(dateObj.getDate()).padStart(2, "0");
     const month = String(dateObj.getMonth() + 1).padStart(2, "0");
     const year = dateObj.getFullYear();
     
-    // Mengembalikan format dd-mm-yyyy
     return `${day}-${month}-${year}`;
   };
 
@@ -87,43 +80,43 @@ const DaftarStaff = () => {
         </div>
 
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-          <table className="w-full text-sm text-left text-gray-500">
-            <thead className="text-xs text-gray-700 uppercase bg-gray-50">
+          <table className="w-full text-sm text-left text-gray-700 border border-gray-400">
+            <thead className="text-xs uppercase bg-gray-200 border-b-2 border-gray-500">
               <tr>
-                <th className="px-6 py-3">No</th>
-                <th className="px-6 py-3">Nama</th>
-                <th className="px-6 py-3">Alamat</th>
-                <th className="px-6 py-3">No. Telepon</th>
-                <th className="px-6 py-3">Awal Bekerja</th>
-                <th className="px-6 py-3">Lama Kerja</th>
-                <th className="px-6 py-3">Create Date</th>
-                <th className="px-6 py-3">Aksi</th>
+                <th className="px-6 py-3 border border-gray-500">No</th>
+                <th className="px-6 py-3 border border-gray-500">Nama</th>
+                <th className="px-6 py-3 border border-gray-500">Alamat</th>
+                <th className="px-6 py-3 border border-gray-500">No. Telepon</th>
+                <th className="px-6 py-3 border border-gray-500">Awal Bekerja</th>
+                <th className="px-6 py-3 border border-gray-500">Lama Kerja</th>
+                <th className="px-6 py-3 border border-gray-500">Create Date</th>
+                <th className="px-6 py-3 border border-gray-500">Aksi</th>
               </tr>
             </thead>
             <tbody>
               {staffData.map((staff, index) => (
                 <tr
                   key={staff.id}
-                  className="bg-white border-b hover:bg-gray-50"
+                  className="bg-white border-b border-gray-400 hover:bg-gray-100"
                 >
-                  <td className="px-6 py-4">{index + 1}</td>
-                  <td className="px-6 py-4 font-medium">{staff.nama}</td>
-                  <td className="px-6 py-4">{staff.alamat}</td>
-                  <td className="px-6 py-4">{staff.noTelepon}</td>
-                  <td className="px-6 py-4">{formatDateDisplay(staff.awalBekerja)}</td>
-                  <td className="px-6 py-4">{staff.lamaKerja}</td>
-                  <td className="px-6 py-4">{formatDateDisplay(staff.createDate)}</td>
-                  <td className="px-6 py-4 flex gap-3">
+                  <td className="px-6 py-4 border border-gray-400">{index + 1}</td>
+                  <td className="px-6 py-4 font-medium border border-gray-400">{staff.nama}</td>
+                  <td className="px-6 py-4 border border-gray-400">{staff.alamat}</td>
+                  <td className="px-6 py-4 border border-gray-400">{staff.noTelepon}</td>
+                  <td className="px-6 py-4 border border-gray-400">{formatDateDisplay(staff.awalBekerja)}</td>
+                  <td className="px-6 py-4 border border-gray-400">{staff.lamaKerja}</td>
+                  <td className="px-6 py-4 border border-gray-400">{formatDateDisplay(staff.createDate)}</td>
+                  <td className="px-6 py-4 flex gap-3 border border-gray-400">
                     <button
                       onClick={() => handleEdit(staff.id)}
-                      className="flex items-center gap-2 bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600 transition"
-                    >
+                      className="flex items-center gap-2 bg-blue-500
+                       text-white px-3 py-1 rounded-md hover:bg-blue-600 transition">
                       <Pencil size={18} />
                     </button>
                     <button
                       onClick={() => handleDelete(staff.id)}
-                      className="flex items-center gap-2 bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 transition"
-                    >
+                      className="flex items-center gap-2 bg-red-500
+                       text-white px-3 py-1 rounded-md hover:bg-red-600 transition">
                       <Trash2 size={18} />
                     </button>
                   </td>
@@ -131,7 +124,7 @@ const DaftarStaff = () => {
               ))}
               {staffData.length === 0 && (
                 <tr>
-                  <td colSpan="8" className="px-6 py-4 text-center">
+                  <td colSpan="8" className="px-6 py-4 text-center border border-gray-400">
                     Tidak ada data staff.
                   </td>
                 </tr>

@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Untuk navigasi
+import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
-import { API_STAFF } from "../utils/BaseUrl"; // Pastikan URL sudah benar, misalnya "http://localhost:4321/api/staff"
-import Swal from "sweetalert2"; // Untuk notifikasi
+import { API_STAFF } from "../utils/BaseUrl";
+import Swal from "sweetalert2";
 
 const TambahStaff = () => {
   const [staff, setStaff] = useState({
@@ -16,7 +16,6 @@ const TambahStaff = () => {
 
   const navigate = useNavigate();
 
-  // Tangani perubahan input
   const handleChange = (e) => {
     setStaff({ ...staff, [e.target.name]: e.target.value });
   };
@@ -24,7 +23,6 @@ const TambahStaff = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validasi: pastikan semua field terisi
     if (
       !staff.nama ||
       !staff.alamat ||
@@ -42,8 +40,6 @@ const TambahStaff = () => {
       return;
     }
 
-    // Karena input tipe "date" mengembalikan format "YYYY-MM-DD",
-    // kita tambahkan "T00:00:00" agar backend dapat memparsing ke LocalDateTime.
     const formattedCreateDate = staff.createDate.includes("T")
       ? staff.createDate
       : `${staff.createDate}T00:00:00`;
@@ -56,14 +52,13 @@ const TambahStaff = () => {
       alamat: staff.alamat,
       noTelepon: staff.noTelepon,
       awalBekerja: formattedAwalBekerja,
-      lamaKerja: staff.lamaKerja, // Kirim sebagai string
+      lamaKerja: staff.lamaKerja,
       createDate: formattedCreateDate,
     };
 
     console.log("Payload yang dikirim:", staffDTO);
 
     try {
-      // Pastikan endpoint URL sudah benar, misalnya: "http://localhost:4321/api/staff/tambah"
       const response = await fetch(`${API_STAFF}/tambah`, {
         method: "POST",
         headers: {
@@ -133,8 +128,8 @@ const TambahStaff = () => {
             </button>
             <button
               type="submit"
-              className="bg-green-600 text-white font-semibold px-6 py-2 rounded-lg hover:bg-green-700 transition"
-            >
+              className="bg-green-600 text-white font-semibold px-6 py-2
+               rounded-lg hover:bg-green-700 transition">
               Simpan
             </button>
           </div>

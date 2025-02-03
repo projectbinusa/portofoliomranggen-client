@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
-import Swal from "sweetalert2"; // SweetAlert untuk konfirmasi
-import axios from "axios"; // Pastikan axios sudah diinstall
-import Sidebar from "../components/Sidebar"; // Pastikan Sidebar ada
-import { API_STAFF } from "../utils/BaseUrl"; // API base URL yang sudah didefinisikan
-import { useParams, useNavigate } from "react-router-dom"; // Mengimpor useNavigate untuk redirect
+import Swal from "sweetalert2";
+import axios from "axios";
+import Sidebar from "../components/Sidebar";
+import { API_STAFF } from "../utils/BaseUrl";
+import { useParams, useNavigate } from "react-router-dom";
 
 const EditStaff = () => {
-  const { id } = useParams(); // Menyusun ulang untuk mendapatkan 'id' dengan benar
-  const navigate = useNavigate(); // Hook untuk redirect setelah update
+  const { id } = useParams();
+  const navigate = useNavigate();
   const [staff, setStaff] = useState({
     nama: "",
     alamat: "",
@@ -17,15 +17,14 @@ const EditStaff = () => {
     createDate: "",
   });
 
-  // Menarik data staff berdasarkan ID saat komponen dimuat
   useEffect(() => {
     const fetchStaff = async () => {
       try {
-        const response = await axios.get(`${API_STAFF}/getById/${id}`); // Gunakan id di sini
+        const response = await axios.get(`${API_STAFF}/getById/${id}`);
         if (response.status === 200) {
           const data = response.data;
           console.log("Data Staff diterima: ", data);
-          setStaff(data); // Menyimpan data staff ke state
+          setStaff(data);
         } else {
           Swal.fire({
             title: "Not Found",
@@ -46,9 +45,9 @@ const EditStaff = () => {
     };
 
     if (id) {
-      fetchStaff(); // Fetch data hanya jika id ada
+      fetchStaff();
     }
-  }, [id]); // Mengambil data saat `id` berubah
+  }, [id]);
 
   const handleChange = (e) => {
     setStaff({ ...staff, [e.target.name]: e.target.value });
@@ -58,7 +57,7 @@ const EditStaff = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.put(`${API_STAFF}/editById/${id}`, staff); // Gunakan id di sini
+      const response = await axios.put(`${API_STAFF}/editById/${id}`, staff); 
       if (response.status === 200) {
         Swal.fire({
           title: "Sukses!",
@@ -66,7 +65,7 @@ const EditStaff = () => {
           icon: "success",
           confirmButtonText: "Ok",
         }).then(() => {
-          navigate("/daftar-staff"); // Mengarahkan kembali ke halaman daftar staff setelah berhasil
+          navigate("/daftar-staff");
         });
       } else {
         throw new Error("Gagal mengedit staff");
@@ -116,8 +115,8 @@ const EditStaff = () => {
             </button>
             <button
               type="submit"
-              className="bg-green-600 text-white font-semibold px-6 py-2 rounded-lg hover:bg-green-700 transition"
-            >
+              className="bg-green-600 text-white font-semibold px-6 py-2
+               rounded-lg hover:bg-green-700 transition">
               Simpan
             </button>
           </div>

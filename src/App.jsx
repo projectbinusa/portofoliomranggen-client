@@ -4,6 +4,7 @@ import About from "./page/About";
 import Contact from "./page/Contact";
 import KategoriKelas from "./kategori/KategoriKelas";
 
+
 import "./App.css";
 
 function App() {
