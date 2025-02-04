@@ -1,141 +1,98 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 import Sidebar from "../components/Sidebar";
+import { API_GURU } from "../utils/BaseUrl";
 
 const TambahGuru = () => {
   const navigate = useNavigate();
+  const { idAdmin } = useParams();
+
+  useEffect(() => {
+    console.log("idAdmin:", idAdmin);
+  }, [idAdmin]);
 
   const [formData, setFormData] = useState({
-    nama: "",
+    namaGuru: "",
     nip: "",
     alamat: "",
-    nomorHp: "",
+    nomerHp: "",
     tahunDiterima: "",
     lamaKerja: "",
   });
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (
-      !formData.nama ||
-      !formData.nip ||
-      !formData.alamat ||
-      !formData.nomorHp ||
-      !formData.tahunDiterima ||
-      !formData.lamaKerja
-    ) {
+    if (!idAdmin) {
+      Swal.fire("Error", "ID Admin tidak ditemukan!", "error");
+      return;
+    }
+
+    if (Object.values(formData).some((value) => !value)) {
       Swal.fire("Error", "Semua kolom harus diisi!", "error");
       return;
     }
 
-    Swal.fire("Sukses", "Data guru berhasil ditambahkan!", "success");
+    const formDataWithLamaKerja = {
+      ...formData,
+      lamaKerja: parseInt(formData.lamaKerja, 10),
+    };
 
-    setTimeout(() => {
-      navigate("/guru");
-    }, 1000);
+    try {
+      const response = await fetch(`${API_GURU}/tambah/${idAdmin}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formDataWithLamaKerja),
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || "Gagal menambahkan data guru");
+      }
+
+      Swal.fire("Sukses", "Data guru berhasil ditambahkan!", "success");
+      setTimeout(() => navigate("/guru"), 1000);
+    } catch (error) {
+      Swal.fire("Error", error.message, "error");
+    }
   };
 
   return (
     <div className="flex h-screen">
-      {/* Sidebar */}
       <Sidebar />
-
-      {/* Konten Form */}
       <div className="flex-1 p-5 flex justify-center items-start ml-60">
-        {" "}
-        {/* Menambahkan margin-left lebih besar dan mengubah justify-center ke justify-start */}
-        <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-4xl ml-50 mr-12 border border-gray-300">
-          {" "}
-          {/* Margin kiri di-set ke 0 untuk menggeser */}
+        <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-4xl border border-gray-300">
           <h2 className="text-2xl font-bold mb-6 text-center">Tambah Guru</h2>
           <form onSubmit={handleSubmit}>
             <div className="space-y-6">
-              {/** Input Nama */}
-              <div className="flex items-center">
-                <label className="w-48 text-gray-700">Nama</label>
-                <input
-                  type="text"
-                  name="nama"
-                  value={formData.nama}
-                  onChange={handleChange}
-                  placeholder="Nama"
-                  className="w-full p-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-
-              {/** Input NIP */}
-              <div className="flex items-center">
-                <label className="w-48 text-gray-700">NIP</label>
-                <input
-                  type="text"
-                  name="nip"
-                  value={formData.nip}
-                  onChange={handleChange}
-                  placeholder="NIP"
-                  className="w-full p-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-
-              {/** Input Alamat */}
-              <div className="flex items-center">
-                <label className="w-48 text-gray-700">Alamat</label>
-                <input
-                  type="text"
-                  name="alamat"
-                  value={formData.alamat}
-                  onChange={handleChange}
-                  placeholder="Alamat"
-                  className="w-full p-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-
-              {/** Input Nomor HP */}
-              <div className="flex items-center">
-                <label className="w-48 text-gray-700">Nomor HP</label>
-                <input
-                  type="text"
-                  name="nomorHp"
-                  value={formData.nomorHp}
-                  onChange={handleChange}
-                  placeholder="Nomor HP"
-                  className="w-full p-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-
-              {/** Input Tahun Diterima */}
-              <div className="flex items-center">
-                <label className="w-48 text-gray-700">Tahun Diterima</label>
-                <input
-                  type="text"
-                  name="tahunDiterima"
-                  value={formData.tahunDiterima}
-                  onChange={handleChange}
-                  placeholder="Tahun Diterima"
-                  className="w-full p-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-
-              {/** Input Lama Kerja */}
-              <div className="flex items-center">
-                <label className="w-48 text-gray-700">Lama Kerja</label>
-                <input
-                  type="number"
-                  name="lamaKerja"
-                  value={formData.lamaKerja}
-                  onChange={handleChange}
-                  placeholder="Lama Kerja (Tahun)"
-                  className="w-full p-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
+              {Object.keys(formData).map((key) => {
+                const label = key.replace(/([A-Z])/g, " $1").toLowerCase().replace(/^./, (str) => str.toUpperCase());
+                return (
+                  <div key={key} className="flex items-center">
+                    <label className="w-48 text-gray-700 capitalize">{label}</label>
+                    <input
+                      type={key === "lamaKerja" ? "number" : "text"}
+                      name={key}
+                      value={formData[key]}
+                      onChange={handleChange}
+                      placeholder={`Masukkan ${label}`}
+                      className="w-full p-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+                );
+              })}
             </div>
-
-            {/* Tombol Simpan & Batal */}
             <div className="flex justify-end space-x-4 mt-6">
               <button
                 type="button"
