@@ -50,11 +50,11 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-[#00b894] via-[#00b894] to-[#00b894]">
+    <div className="min-h-screen flex items-center justify-center">
       <div className="bg-white shadow-lg rounded-lg p-8 max-w-md w-full">
         <h2 className="text-3xl font-semibold text-center text-gray-800 mb-6">REGISTER</h2>
         <form className="space-y-6" onSubmit={handleSubmit}>
-          <div>
+          <div className="flex flex-col items-start">
             <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
               Nama Lengkap
             </label>
@@ -69,7 +69,7 @@ const Register = () => {
               required
             />
           </div>
-          <div>
+          <div className="flex flex-col items-start">
             <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
               Email
             </label>
@@ -84,7 +84,7 @@ const Register = () => {
               required
             />
           </div>
-          <div>
+          <div className="flex flex-col items-start">
             <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
               Password
             </label>
