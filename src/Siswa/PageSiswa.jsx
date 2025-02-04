@@ -28,7 +28,6 @@ const PageSiswa = () => {
       nomerHp: "08765432101",
       ttl: "Jakarta, 15 Februari 2006",
     },
-    // Data siswa lainnya
   ]);
 
   const handleDeleteStudent = (id) => {
@@ -47,28 +46,25 @@ const PageSiswa = () => {
     });
   };
 
-  // Filter berdasarkan input pencarian
   const filteredStudents = students.filter((student) => {
     return (
       student.nama.toLowerCase().includes(searchTerm.toLowerCase()) ||
       student.nisn.toLowerCase().includes(searchTerm.toLowerCase()) ||
       student.alamat.toLowerCase().includes(searchTerm.toLowerCase()) ||
       student.namaOrangTua.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      student.nomerHpOrangTua
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase()) ||
+      student.nomerHpOrangTua.toLowerCase().includes(searchTerm.toLowerCase()) ||
       student.nomerHp.toLowerCase().includes(searchTerm.toLowerCase()) ||
       student.ttl.toLowerCase().includes(searchTerm.toLowerCase())
     );
   });
-  return (
-    <div className="flex h-screen">
-      <Sidebar />
 
+  return (
+    <div className="flex h-screen bg-gray-0">
+      <Sidebar />
       <div className="flex-1 p-6 ml-64">
-        <div className="container mx-auto p-4">
+        <div className="container mx-auto shadow-lg">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-bold">Daftar Siswa</h2>
+            <h2 className="text-2xl font-bold text-gray-700">Daftar Siswa</h2>
             <button
               className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition"
               onClick={() => navigate("/tambah-siswa")}
@@ -77,19 +73,15 @@ const PageSiswa = () => {
             </button>
           </div>
 
-          {/* Input Pencarian */}
           <div className="relative mb-4">
             <input
               type="text"
-              placeholder="cari berdasarkan semua..."
+              placeholder="Cari siswa..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full px-10 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
             />
-            {/* Ikon kaca pembesar (search) */}
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-
-            {/* Ikon silang untuk menghapus input */}
             {searchTerm && (
               <button
                 onClick={() => setSearchTerm("")}
@@ -100,67 +92,50 @@ const PageSiswa = () => {
             )}
           </div>
 
-          <div className="overflow-x-auto shadow-md sm:rounded-lg">
-            <table className="w-full text-sm text-left text-gray-500 border-collapse">
-              <thead className="text-xs text-gray-700 uppercase bg-gray-200">
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm text-left border border-gray-200 shadow-md rounded-lg">
+              <thead className="text-xs text-gray-700 uppercase bg-gray-300">
                 <tr>
-                  <th className="px-6 py-3 border-b border-gray-300">No</th>
-                  <th className="px-6 py-3 border-b border-gray-300">Nama</th>
-                  <th className="px-6 py-3 border-b border-gray-300">NISN</th>
-                  <th className="px-6 py-3 border-b border-gray-300">Alamat</th>
-                  <th className="px-6 py-3 border-b border-gray-300">
-                    Nama Orang Tua
-                  </th>
-                  <th className="px-6 py-3 border-b border-gray-300">
-                    Nomor HP Orang Tua
-                  </th>
-                  <th className="px-6 py-3 border-b border-gray-300">
-                    Nomor HP
-                  </th>
-                  <th className="px-6 py-3 border-b border-gray-300">TTL</th>
-                  <th className="px-6 py-3 border-b border-gray-300">Aksi</th>
+                  {[
+                    "No",
+                    "Nama",
+                    "NISN",
+                    "Alamat",
+                    "Nama Orang Tua",
+                    "No HP Orang Tua",
+                    "No HP",
+                    "TTL",
+                    "Aksi",
+                  ].map((header, index) => (
+                    <th key={index} className="px-6 py-3 border border-gray-300 text-center">
+                      {header}
+                    </th>
+                  ))}
                 </tr>
               </thead>
               <tbody>
                 {filteredStudents.length > 0 ? (
                   filteredStudents.map((student, index) => (
-                    <tr key={student.id} className="bg-white hover:bg-gray-50">
-                      <td className="px-6 py-4 border-b border-gray-300">
-                        {index + 1}
-                      </td>
-                      <td className="px-6 py-4 border-b border-gray-300">
-                        {student.nama}
-                      </td>
-                      <td className="px-6 py-4 border-b border-gray-300">
-                        {student.nisn}
-                      </td>
-                      <td className="px-6 py-4 border-b border-gray-300">
-                        {student.alamat}
-                      </td>
-                      <td className="px-6 py-4 border-b border-gray-300">
-                        {student.namaOrangTua}
-                      </td>
-                      <td className="px-6 py-4 border-b border-gray-300">
-                        {student.nomerHpOrangTua}
-                      </td>
-                      <td className="px-6 py-4 border-b border-gray-300">
-                        {student.nomerHp}
-                      </td>
-                      <td className="px-6 py-4 border-b border-gray-300">
-                        {student.ttl}
-                      </td>
-                      <td className="px-6 py-4 border-b border-gray-300 flex space-x-2">
-                        <Link to={`/edit-siswa/:id`}>
-                          <button className="flex items-center gap-2 bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600 transition">
+                    <tr key={student.id} className="bg-white px-6 py-3 hover:bg-gray-100">
+                      <td className="px-6 py-3 border border-gray-300 text-center">{index + 1}</td>
+                      <td className="px-6 py-3 border border-gray-300">{student.nama}</td>
+                      <td className="px-6 py-3 border border-gray-300">{student.nisn}</td>
+                      <td className="px-6 py-3 border border-gray-300">{student.alamat}</td>
+                      <td className="px-6 py-3 border border-gray-300">{student.namaOrangTua}</td>
+                      <td className="px-6 py-3 border border-gray-300">{student.nomerHpOrangTua}</td>
+                      <td className="px-6 py-3 border border-gray-300">{student.nomerHp}</td>
+                      <td className="px-6 py-3 border border-gray-300">{student.ttl}</td>
+                      <td className="px-6 py-3 border border-gray-300 flex space-x-2 justify-center">
+                        <Link to={`/edit-siswa/${student.id}`}>
+                          <button className="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600 transition">
                             <Pencil size={18} />
                           </button>
                         </Link>
-
                         <button
-                          className="flex items-center gap-2 bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 transition"
+                          className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 transition"
                           onClick={() => handleDeleteStudent(student.id)}
                         >
-                          <Trash2 className="w-4 h-4 mr-1" />
+                          <Trash2 className="w-4 h-4" />
                         </button>
                       </td>
                     </tr>

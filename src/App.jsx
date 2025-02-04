@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 
 import PageSiswa from "./siswa/PageSiswa";
 import TambahSiswa from "./siswa/TambahSiswa";
@@ -12,19 +12,12 @@ import EditKategori from "./kategori/EditKategori";
 import PageOrganisasi from "./organisasi/PageOrganisasi";
 import TambahOrganisasi from "./organisasi/TambahOrganisasi";
 import EditOrganisasi from "./organisasi/EditOrganisasi";
-import DaftarStaff from "./staff/DaftarStaff";
-import TambahStaff from "./staff/TambahStaff";
-import EditStaff from "./staff/EditStaff";
-import Login from "./page/Login";
-import Register from "./page/Register";
-import TambahPesanan from "./page/TambahPesanan";
 
 import "./App.css";
 
 function App() {
   return (
     <Router>
-<<<<<<< HEAD
       <nav className="nav-bar">
         <ul>
           <li>
@@ -39,8 +32,6 @@ function App() {
           </li>
         </ul>
       </nav>
-=======
->>>>>>> 6004aa233bdac518719f785dfdce883d21c61968
       <Routes>
         <Route path="/siswa" element={<PageSiswa />} />
         <Route path="/tambah-siswa" element={<TambahSiswa />} />
@@ -56,21 +47,8 @@ function App() {
 
         <Route path="/organisasi" element={<PageOrganisasi />} />
         <Route path="/tambah-organisasi" element={<TambahOrganisasi />} />
-<<<<<<< HEAD
         <Route path="/edit-organisasi" element={<EditOrganisasi />} />
         <Route path="/kategori-kelas" element={<KategoriKelas />} />
-=======
-        <Route path="/edit-organisasi/:id" element={<EditOrganisasi />} />
-
-        <Route path="/staff" element={<DaftarStaff />} />
-        <Route path="/tambah-staff" element={<TambahStaff />} />
-        <Route path="/edit-staff/:id" element={<EditStaff />} />
-
-        <Route path="/Login" element={<Login />} />
-        <Route path="/Register" element={<Register />} />
-
-        <Route path="/tambah-pesanan" element={<TambahPesanan />} />
->>>>>>> 6004aa233bdac518719f785dfdce883d21c61968
       </Routes>
     </Router>
   );

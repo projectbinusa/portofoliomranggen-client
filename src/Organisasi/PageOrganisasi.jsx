@@ -20,7 +20,6 @@ const PageOrganisasi = () => {
   ]);
 
   const handleHapus = (index) => {
-    // Implementasikan fungsi untuk menghapus data organisasi
     const updatedList = organisasiList.filter((_, i) => i !== index);
     setOrganisasiList(updatedList);
   };
@@ -39,36 +38,30 @@ const PageOrganisasi = () => {
           </Link>
         </div>
 
-        <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-          <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 border-separate border-spacing-0.5">
-            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <div className="relative overflow-x-auto shadow-md rounded-lg">
+          <table className="w-full text-sm text-left text-gray-700 border border-gray-300">
+            <thead className="text-xs text-gray-700 uppercase bg-gray-200">
               <tr>
-                <th className="px-6 py-3">No</th>
-                <th className="px-6 py-3">Nama Organisasi</th>
-                <th className="px-6 py-3">Lokasi</th>
-                <th className="px-6 py-3">Email</th>
-                <th className="px-6 py-3">Telepon</th>
-                <th className="px-6 py-3">Aksi</th>
+                <th className="px-6 py-3 border border-gray-300 text-center">No</th>
+                <th className="px-6 py-3 border border-gray-300">Nama Organisasi</th>
+                <th className="px-6 py-3 border border-gray-300">Lokasi</th>
+                <th className="px-6 py-3 border border-gray-300">Email</th>
+                <th className="px-6 py-3 border border-gray-300">Telepon</th>
+                <th className="px-6 py-3 border border-gray-300 text-center">Aksi</th>
               </tr>
             </thead>
             <tbody>
               {organisasiList.length > 0 ? (
                 organisasiList.map((organisasi, index) => (
-                  <tr
-                    key={index}
-                    className="bg-white border-b-2 border-gray-300 dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
-                  >
-                    <td className="px-6 py-4">{index + 1}</td>
-                    <td className="px-6 py-4">{organisasi.namaOrganisasi}</td>
-                    <td className="px-6 py-4">{organisasi.lokasi}</td>
-                    <td className="px-6 py-4">{organisasi.email}</td>
-                    <td className="px-6 py-4">{organisasi.telepon}</td>
-                    <td className="px-6 py-4 flex gap-3">
+                  <tr key={index} className="bg-white border-b border-gray-300">
+                    <td className="px-6 py-4 text-center border border-gray-300">{index + 1}</td>
+                    <td className="px-6 py-4 border border-gray-300">{organisasi.namaOrganisasi}</td>
+                    <td className="px-6 py-4 border border-gray-300">{organisasi.lokasi}</td>
+                    <td className="px-6 py-4 border border-gray-300">{organisasi.email}</td>
+                    <td className="px-6 py-4 border border-gray-300">{organisasi.telepon}</td>
+                    <td className="px-6 py-4 flex justify-center gap-2 border border-gray-300">
                       <Link
-                        to={{
-                          pathname: `/edit-organisasi/:id`,
-                          state: { organisasi, index }, // Mengirim data organisasi dan index
-                        }}
+                        to={`/edit-organisasi/${index}`}
                         className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition"
                       >
                         <Pencil size={20} />
