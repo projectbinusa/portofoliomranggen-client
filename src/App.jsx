@@ -12,40 +12,22 @@ import EditKategori from "./kategori/EditKategori";
 import PageOrganisasi from "./organisasi/PageOrganisasi";
 import TambahOrganisasi from "./organisasi/TambahOrganisasi";
 import EditOrganisasi from "./organisasi/EditOrganisasi";
-
 import DaftarStaff from "./staff/DaftarStaff";
 import TambahStaff from "./staff/TambahStaff";
 import EditStaff from "./staff/EditStaff";
 import Login from "./page/Login";
 import Register from "./page/Register";
-
-import TambahPesanan from "./page/TambahPesanan";
+import TambahPesanan from "./pesanan/TambahPesanan";
 import KegiatanSekolah from "./sekolah/KegiatanSekolah";
-
-import TambahPesanan from "./Pesanan/TambahPesanan";
-
-
+import Home from "./components/Home";
 
 import "./App.css";
 
 function App() {
   return (
     <Router>
-      <nav className="nav-bar">
-        <ul>
-          <li>
-            <Link to="/siswa">Daftar Siswa</Link>
-
-          </li>
-          <li>
-            <Link to="/pageguru">PageGuru</Link> {/* Link ke PageGuru */}
-          </li>
-          <li>
-            <Link to="/organisasi">Page Organisasi</Link>
-          </li>
-        </ul>
-      </nav>
       <Routes>
+        <Route path="/" element={<Home />} />
         <Route path="/siswa" element={<PageSiswa />} />
         <Route path="/tambah-siswa" element={<TambahSiswa />} />
         <Route path="/edit-siswa/:id" element={<EditSiswa />} />
@@ -60,23 +42,17 @@ function App() {
 
         <Route path="/organisasi" element={<PageOrganisasi />} />
         <Route path="/tambah-organisasi" element={<TambahOrganisasi />} />
-
-        <Route path="/edit-organisasi" element={<EditOrganisasi />} />
-        <Route path="/kategori-kelas" element={<KategoriKelas />} />
-
         <Route path="/edit-organisasi/:id" element={<EditOrganisasi />} />
 
         <Route path="/staff" element={<DaftarStaff />} />
         <Route path="/tambah-staff" element={<TambahStaff />} />
         <Route path="/edit-staff/:id" element={<EditStaff />} />
 
-        <Route path="/Login" element={<Login />} />
-        <Route path="/Register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
 
         <Route path="/tambah-pesanan" element={<TambahPesanan />} />
-
         <Route path="/kegiatan-sekolah" element={<KegiatanSekolah />} />
-
       </Routes>
     </Router>
   );
