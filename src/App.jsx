@@ -20,18 +20,6 @@ function App() {
       <nav className="nav-bar">
         <ul>
           <li>
-
-            <Link to="/siswa">Daftar Siswa</Link> {/* Link ke PageSiswa */}
-
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/about">About</Link>
-          </li>
-          <li>
-            <Link to="/contact">Contact</Link>
-          </li>
-          <li>
             <Link to="/siswa">Daftar Siswa</Link>
 
           </li>
@@ -53,13 +41,7 @@ function App() {
         <Route path="/organisasi" element={<PageOrganisasi />} />
         <Route path="/tambah-organisasi" element={<TambahOrganisasi />} />
         <Route path="/edit-organisasi" element={<EditOrganisasi />} />
-
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<Contact />} />
         <Route path="/kategori-kelas" element={<KategoriKelas />} />
-
-
       </Routes>
     </Router>
   );
