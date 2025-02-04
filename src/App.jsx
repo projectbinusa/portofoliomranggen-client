@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 
 import PageSiswa from "./siswa/PageSiswa";
 import TambahSiswa from "./siswa/TambahSiswa";
@@ -12,6 +12,7 @@ import EditKategori from "./kategori/EditKategori";
 import PageOrganisasi from "./organisasi/PageOrganisasi";
 import TambahOrganisasi from "./organisasi/TambahOrganisasi";
 import EditOrganisasi from "./organisasi/EditOrganisasi";
+
 import DaftarStaff from "./staff/DaftarStaff";
 import TambahStaff from "./staff/TambahStaff";
 import EditStaff from "./staff/EditStaff";
@@ -24,11 +25,26 @@ import KegiatanSekolah from "./sekolah/KegiatanSekolah";
 import TambahPesanan from "./Pesanan/TambahPesanan";
 
 
+
 import "./App.css";
 
 function App() {
   return (
     <Router>
+      <nav className="nav-bar">
+        <ul>
+          <li>
+            <Link to="/siswa">Daftar Siswa</Link>
+
+          </li>
+          <li>
+            <Link to="/pageguru">PageGuru</Link> {/* Link ke PageGuru */}
+          </li>
+          <li>
+            <Link to="/organisasi">Page Organisasi</Link>
+          </li>
+        </ul>
+      </nav>
       <Routes>
         <Route path="/siswa" element={<PageSiswa />} />
         <Route path="/tambah-siswa" element={<TambahSiswa />} />
@@ -44,6 +60,10 @@ function App() {
 
         <Route path="/organisasi" element={<PageOrganisasi />} />
         <Route path="/tambah-organisasi" element={<TambahOrganisasi />} />
+
+        <Route path="/edit-organisasi" element={<EditOrganisasi />} />
+        <Route path="/kategori-kelas" element={<KategoriKelas />} />
+
         <Route path="/edit-organisasi/:id" element={<EditOrganisasi />} />
 
         <Route path="/staff" element={<DaftarStaff />} />
@@ -56,6 +76,7 @@ function App() {
         <Route path="/tambah-pesanan" element={<TambahPesanan />} />
 
         <Route path="/kegiatan-sekolah" element={<KegiatanSekolah />} />
+
       </Routes>
     </Router>
   );
