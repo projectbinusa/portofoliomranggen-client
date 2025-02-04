@@ -38,9 +38,11 @@ function EditOrganisasi({ organisasiList, setOrganisasiList }) {
       setOrganisasiList(updatedOrganisasi);
     }
 
-    Swal.fire({ icon: "success", title: "Data berhasil diperbarui!" }).then(() => {
-      navigate("/organisasi");
-    });
+    Swal.fire({ icon: "success", title: "Data berhasil diperbarui!" }).then(
+      () => {
+        navigate("/organisasi");
+      }
+    );
   };
 
   return (

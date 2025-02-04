@@ -24,7 +24,6 @@ function EditSiswa({ students, setStudents }) {
       setEditedStudent(student); // Set form dengan data siswa yang ingin diedit
     }
   }, [student]);
-  
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -43,9 +42,11 @@ function EditSiswa({ students, setStudents }) {
       setStudents(updatedStudents);
     }
 
-    Swal.fire({ icon: "success", title: "Data berhasil diperbarui!" }).then(() => {
-      navigate("/siswa");
-    });
+    Swal.fire({ icon: "success", title: "Data berhasil diperbarui!" }).then(
+      () => {
+        navigate("/siswa");
+      }
+    );
   };
 
   return (

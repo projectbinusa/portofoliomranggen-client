@@ -36,7 +36,14 @@ const EditGuru = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!formData.nama || !formData.nip || !formData.alamat || !formData.nomorHp || !formData.tahunDiterima || !formData.lamaKerja) {
+    if (
+      !formData.nama ||
+      !formData.nip ||
+      !formData.alamat ||
+      !formData.nomorHp ||
+      !formData.tahunDiterima ||
+      !formData.lamaKerja
+    ) {
       Swal.fire("Error", "Semua kolom harus diisi!", "error");
       return;
     }
@@ -44,7 +51,7 @@ const EditGuru = () => {
     Swal.fire("Sukses", "Data guru berhasil diubah!", "success");
 
     setTimeout(() => {
-      navigate("/pageguru");
+      navigate("/guru");
     }, 1000);
   };
 
@@ -68,7 +75,10 @@ const EditGuru = () => {
               tahunDiterima: "Tahun Diterima",
               lamaKerja: "Lama Kerja (Tahun)",
             }).map(([key, label]) => (
-              <div key={key} className="flex items-center border-b border-gray-200 py-2">
+              <div
+                key={key}
+                className="flex items-center border-b border-gray-200 py-2"
+              >
                 {/* Menambahkan border bawah pada tiap field */}
                 <label className="w-48 text-gray-700">{label}</label>
                 <input
@@ -85,7 +95,7 @@ const EditGuru = () => {
             <div className="flex justify-end space-x-4 mt-6">
               <button
                 type="button"
-                onClick={() => navigate("/pageguru")}
+                onClick={() => navigate("/guru")}
                 className="w-32 px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition"
               >
                 Batal

@@ -29,7 +29,10 @@ const TambahOrganisasi = () => {
       return;
     }
 
-    Swal.fire({ icon: "success", title: "Organisasi berhasil ditambahkan!" }).then(() => {
+    Swal.fire({
+      icon: "success",
+      title: "Organisasi berhasil ditambahkan!",
+    }).then(() => {
       navigate("/organisasi"); // Kembali ke halaman daftar organisasi setelah sukses
     });
   };

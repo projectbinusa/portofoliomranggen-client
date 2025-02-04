@@ -1,5 +1,13 @@
 import { useState } from "react";
-import { HiHome, HiUser, HiCog, HiLogout } from "react-icons/hi";
+import {
+  HiHome,
+  HiUser,
+  HiClipboardList,
+  HiOfficeBuilding,
+  HiAcademicCap,
+  HiUsers,
+  HiLogout,
+} from "react-icons/hi";
 
 export default function App() {
   const [isOpen, setIsOpen] = useState(true);
@@ -18,10 +26,21 @@ export default function App() {
           </h1>
         </div>
         <ul className="mt-4 space-y-2 px-3">
-          <SidebarItem icon={<HiHome />} text="Home" />
-          <SidebarItem icon={<HiUser />} text="Profile" />
-          <SidebarItem icon={<HiCog />} text="Settings" />
-          <SidebarItem icon={<HiLogout />} text="Logout" />
+          <SidebarItem icon={<HiHome />} text="Dashboard" href="/home" />
+          <SidebarItem icon={<HiUser />} text="Guru" href="/guru" />
+          <SidebarItem
+            icon={<HiClipboardList />}
+            text="Kategori"
+            href="/kategori-kelas"
+          />
+          <SidebarItem
+            icon={<HiOfficeBuilding />}
+            text="Organisasi"
+            href="/organisasi"
+          />
+          <SidebarItem icon={<HiAcademicCap />} text="Siswa" href="/siswa" />
+          <SidebarItem icon={<HiUsers />} text="Staf" href="/staff" />
+          <SidebarItem icon={<HiLogout />} text="Logout" href="/logout" />
         </ul>
       </aside>
 
@@ -30,11 +49,11 @@ export default function App() {
   );
 }
 
-function SidebarItem({ icon, text }) {
+function SidebarItem({ icon, text, href }) {
   return (
     <li>
       <a
-        href="#"
+        href={href}
         className="flex items-center space-x-3 p-3 rounded-md hover:bg-green-600 transition"
       >
         <span className="text-xl">{icon}</span>
