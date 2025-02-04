@@ -1,59 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import Sidebar from "../components/Sidebar";
 import { Pencil, Trash2, Search, X } from "lucide-react";
+import axios from "axios";
+import { API_GURU } from "../utils/BaseUrl";
 
 const PageGuru = () => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
-  const [pageguru, setPageGuru] = useState([
-    {
-      id: 1,
-      nama: "Faiqah Nisa Azzahra",
-      nip: "123456",
-      alamat: "Pelem, Pulutan, Nagasari, Boyolali",
-      nomorHp: "08123456789",
-      tahunDiterima: "2020",
-      lamaKerja: "3 Tahun",
-    },
-    {
-      id: 2,
-      nama: "Rodiyatul Khofifah",
-      nip: "654321",
-      alamat: "Karangasem, Sayung, Demak",
-      nomorHp: "0816741276726",
-      tahunDiterima: "2010",
-      lamaKerja: "14 Tahun",
-    },
-    {
-      id: 3,
-      nama: "Mihnatun Naja Fuadah",
-      nip: "654321",
-      alamat: "Tungu, Godong, Grobogan",
-      nomorHp: "081442432552",
-      tahunDiterima: "2018",
-      lamaKerja: "5 Tahun",
-    },
-    {
-      id: 4,
-      nama: "Devi Mahya Kumila",
-      nip: "654321",
-      alamat: "Ginggang, Gubug, Grobogan",
-      nomorHp: "087324673396",
-      tahunDiterima: "2018",
-      lamaKerja: "5 Tahun",
-    },
-    {
-      id: 5,
-      nama: "Eka Yuni Rahmawati",
-      nip: "654321",
-      alamat: "Gaji, Guntur, Demak",
-      nomorHp: "0813784747643",
-      tahunDiterima: "2018",
-      lamaKerja: "2 Tahun",
-    },
-  ]);
+  const [pageguru, setPageGuru] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:4321/api/admin/guru/all")
+      .then((response) => {
+        setPageGuru(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }, []);
 
   const handleDeletePageGuru = (id) => {
     Swal.fire({
@@ -65,21 +32,28 @@ const PageGuru = () => {
       cancelButtonText: "Batal",
     }).then((result) => {
       if (result.isConfirmed) {
-        setPageGuru(pageguru.filter((guru) => guru.id !== id));
-        Swal.fire("Dihapus!", "Data guru telah dihapus.", "success");
+        axios
+          .delete(`${API_GURU}/delete/${id}`)
+          .then(() => {
+            setPageGuru(pageguru.filter((guru) => guru.id !== id));
+            Swal.fire("Dihapus!", "Data guru telah dihapus.", "success");
+          })
+          .catch((error) => {
+            console.error("Error deleting guru:", error);
+            Swal.fire("Gagal!", "Terjadi kesalahan saat menghapus data.", "error");
+          });
       }
     });
   };
 
-  // Filter berdasarkan input pencarian
   const filteredGuru = pageguru.filter((guru) => {
     return (
-      guru.nama.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      guru.namaGuru.toLowerCase().includes(searchTerm.toLowerCase()) ||
       guru.nip.toLowerCase().includes(searchTerm.toLowerCase()) ||
       guru.alamat.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      guru.nomorHp.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      guru.tahunDiterima.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      guru.lamaKerja.toLowerCase().includes(searchTerm.toLowerCase())
+      guru.nomerHp.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      guru.tahunDiterima.toString().includes(searchTerm.toLowerCase()) ||
+      guru.lamaKerja.toString().includes(searchTerm.toLowerCase())
     );
   });
 
@@ -106,12 +80,10 @@ const PageGuru = () => {
               placeholder="Cari berdasarkan semua data..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full px-10 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              className="w-full px-10 py-2 border border-black rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
             />
-            {/* Ikon kaca pembesar (search) */}
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-black-400 w-5 h-5" />
 
-            {/* Ikon silang untuk menghapus input */}
             {searchTerm && (
               <button
                 onClick={() => setSearchTerm("")}
@@ -122,46 +94,66 @@ const PageGuru = () => {
             )}
           </div>
 
-          <div className="overflow-x-auto shadow-md sm:rounded-lg bg-white p-4 border border-gray-200">
-            <table className="w-full text-sm text-left text-gray-500">
-              <thead className="text-xs text-gray-700 uppercase bg-gray-100">
+          {/* Tabel Daftar Guru dengan border hitam */}
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm text-left shadow-md rounded-lg">
+              <thead className="text-xs text-gray-700 uppercase bg-gray-300">
                 <tr>
-                  <th className="px-6 py-3">No</th>
-                  <th className="px-6 py-3">Nama</th>
-                  <th className="px-6 py-3">NIP</th>
-                  <th className="px-6 py-3">Alamat</th>
-                  <th className="px-6 py-3">Nomor HP</th>
-                  <th className="px-6 py-3">Tahun Diterima</th>
-                  <th className="px-6 py-3">Lama Kerja</th>
-                  <th className="px-6 py-3">Aksi</th>
+                  {[
+                    "No",
+                    "Nama",
+                    "NIP",
+                    "Alamat",
+                    "Nomor HP",
+                    "Tahun Diterima",
+                    "Lama Kerja",
+                    "Aksi",
+                  ].map((header, index) => (
+                    <th
+                      key={index}
+                      className="px-6 py-3 border border-black text-center"
+                    >
+                      {header}
+                    </th>
+                  ))}
                 </tr>
               </thead>
               <tbody>
                 {filteredGuru.length > 0 ? (
                   filteredGuru.map((guru, index) => (
-                    <tr
-                      key={guru.id}
-                      className="bg-white border-b hover:bg-gray-50"
-                    >
-                      <td className="px-6 py-4">{index + 1}</td>
-                      <td className="px-6 py-4">{guru.nama}</td>
-                      <td className="px-6 py-4">{guru.nip}</td>
-                      <td className="px-6 py-4">{guru.alamat}</td>
-                      <td className="px-6 py-4">{guru.nomorHp}</td>
-                      <td className="px-6 py-4">{guru.tahunDiterima}</td>
-                      <td className="px-6 py-4">{guru.lamaKerja}</td>
-                      <td className="px-6 py-4 flex space-x-2">
-                        <Link to={`/edit-guru/:id"`}>
-                          <button className="flex items-center gap-2 bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600 transition">
+                    <tr key={guru.id} className="bg-white hover:bg-gray-100">
+                      <td className="px-6 py-3 border border-black text-center">
+                        {index + 1}
+                      </td>
+                      <td className="px-6 py-3 border border-black">
+                        {guru.namaGuru}
+                      </td>
+                      <td className="px-6 py-3 border border-black">
+                        {guru.nip}
+                      </td>
+                      <td className="px-6 py-3 border border-black">
+                        {guru.alamat}
+                      </td>
+                      <td className="px-6 py-3 border border-black">
+                        {guru.nomerHp}
+                      </td>
+                      <td className="px-6 py-3 border border-black">
+                        {guru.tahunDiterima}
+                      </td>
+                      <td className="px-6 py-3 border border-black">
+                        {guru.lamaKerja}
+                      </td>
+                      <td className="px-3 py-2 border border-black flex space-x-2 justify-center">
+                        <Link to={`/edit-guru/${guru.id}`}>
+                          <button className="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600 transition">
                             <Pencil size={18} />
                           </button>
                         </Link>
-
                         <button
-                          className="flex items-center gap-2 bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 transition"
+                          className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 transition"
                           onClick={() => handleDeletePageGuru(guru.id)}
                         >
-                          <Trash2 className="w-4 h-4 mr-1" />
+                          <Trash2 className="w-4 h-4" />
                         </button>
                       </td>
                     </tr>

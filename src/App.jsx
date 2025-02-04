@@ -13,6 +13,19 @@ import PageOrganisasi from "./organisasi/PageOrganisasi";
 import TambahOrganisasi from "./organisasi/TambahOrganisasi";
 import EditOrganisasi from "./organisasi/EditOrganisasi";
 
+import DaftarStaff from "./staff/DaftarStaff";
+import TambahStaff from "./staff/TambahStaff";
+import EditStaff from "./staff/EditStaff";
+import Login from "./page/Login";
+import Register from "./page/Register";
+
+import TambahPesanan from "./page/TambahPesanan";
+import KegiatanSekolah from "./sekolah/KegiatanSekolah";
+
+import TambahPesanan from "./Pesanan/TambahPesanan";
+
+
+
 import "./App.css";
 
 function App() {
@@ -47,8 +60,23 @@ function App() {
 
         <Route path="/organisasi" element={<PageOrganisasi />} />
         <Route path="/tambah-organisasi" element={<TambahOrganisasi />} />
+
         <Route path="/edit-organisasi" element={<EditOrganisasi />} />
         <Route path="/kategori-kelas" element={<KategoriKelas />} />
+
+        <Route path="/edit-organisasi/:id" element={<EditOrganisasi />} />
+
+        <Route path="/staff" element={<DaftarStaff />} />
+        <Route path="/tambah-staff" element={<TambahStaff />} />
+        <Route path="/edit-staff/:id" element={<EditStaff />} />
+
+        <Route path="/Login" element={<Login />} />
+        <Route path="/Register" element={<Register />} />
+
+        <Route path="/tambah-pesanan" element={<TambahPesanan />} />
+
+        <Route path="/kegiatan-sekolah" element={<KegiatanSekolah />} />
+
       </Routes>
     </Router>
   );
