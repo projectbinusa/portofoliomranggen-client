@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
+import { API_LOGIN } from "../utils/BaseUrl";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -11,24 +12,24 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("/api/login", { email, password });
-      if (response.data.success) {
-        Swal.fire("Success!", "You have logged in successfully.", "success");
-        navigate("/dashboard");  // Ganti sesuai rute yang sesuai
-      } else {
-        Swal.fire("Error", "Invalid credentials", "error");
+      const response = await axios.post(`${API_LOGIN}/login`, { email, password });
+
+      if (response.status === 200) {
+        localStorage.setItem("token", response.data.token);
+        Swal.fire("Success!", "Login berhasil.", "success");
+        navigate("/dashboard");
       }
     } catch (error) {
-      Swal.fire("Error", "Something went wrong. Please try again.", "error");
+      Swal.fire("Error", error.response?.data || "Login gagal. Coba lagi.", "error");
     }
   };
 
   return (
     <section className="dark:bg-gray-900">
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-        <div className="w-full rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+        <div className="w-full rounded-lg shadow-lg border-2 border-gray-600 dark:border-gray-700 md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-            <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+            <h1 className="text-xl font-bold text-gray-900 md:text-2xl dark:text-white">
               LOGIN
             </h1>
             <form className="space-y-4 md:space-y-6" onSubmit={handleLogin}>
@@ -36,10 +37,9 @@ const Login = () => {
                 <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
                 <input 
                   type="email" 
-                  name="email" 
                   id="email" 
-                  className="border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="masukkan email anda" 
+                  className="border-2 border-gray-600 text-gray-900 rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-500"
+                  placeholder="Masukkan email Anda" 
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -49,10 +49,9 @@ const Login = () => {
                 <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
                 <input 
                   type="password" 
-                  name="password" 
                   id="password" 
-                  placeholder="masukkan password anda" 
-                  className="border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="Masukkan password Anda" 
+                  className="border-2 border-gray-600 text-gray-900 rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-500"
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -60,7 +59,7 @@ const Login = () => {
               </div>
               <button
                 type="submit"
-                className="w-full bg-teal-500 text-white py-3 rounded-lg font-semibold hover:bg-teal-400 transition duration-300"
+                className="w-full bg-teal-500 text-white py-3 rounded-lg font-semibold hover:bg-teal-400"
               >
                 LOGIN
               </button>
