@@ -57,7 +57,7 @@ const EditStaff = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.put(`${API_STAFF}/editById/${id}`, staff); 
+      const response = await axios.put(`${API_STAFF}/editById/${id}`, staff);
       if (response.status === 200) {
         Swal.fire({
           title: "Sukses!",
@@ -65,7 +65,7 @@ const EditStaff = () => {
           icon: "success",
           confirmButtonText: "Ok",
         }).then(() => {
-          navigate("/daftar-staff");
+          navigate("/staff");
         });
       } else {
         throw new Error("Gagal mengedit staff");
@@ -90,7 +90,7 @@ const EditStaff = () => {
       <div className="flex-1 p-8 ml-4">
         <h2 className="text-2xl font-semibold mb-6 text-gray-800">Edit Staff</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
-          {[ 
+          {[
             { label: "Nama", name: "nama", type: "text" },
             { label: "Alamat", name: "alamat", type: "text" },
             { label: "Nomor Telepon", name: "noTelepon", type: "text" },
@@ -110,13 +110,18 @@ const EditStaff = () => {
             </div>
           ))}
           <div className="flex justify-end gap-4 mt-6">
-            <button type="button" className="text-black font-semibold hover:underline">
+            <button
+              type="button"
+              className="text-black font-semibold hover:underline"
+              onClick={() => navigate("/staff")}
+            >
               Batal
             </button>
             <button
               type="submit"
               className="bg-green-600 text-white font-semibold px-6 py-2
-               rounded-lg hover:bg-green-700 transition">
+               rounded-lg hover:bg-green-700 transition"
+            >
               Simpan
             </button>
           </div>

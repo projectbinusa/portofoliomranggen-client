@@ -1,36 +1,26 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Sidebar from "../components/Sidebar";
-import { API_STAFF } from "../utils/BaseUrl";
 import Swal from "sweetalert2";
+import Sidebar from "../components/Sidebar";
 
-const TambahStaff = () => {
-  const [staff, setStaff] = useState({
+const TambahProduk = () => {
+  const [produk, setProduk] = useState({
     nama: "",
-    alamat: "",
-    noTelepon: "",
-    awalBekerja: "",
-    lamaKerja: "",
-    createDate: "",
+    deskripsi: "",
+    kondisi: "",
+    harga: "",
   });
 
   const navigate = useNavigate();
 
   const handleChange = (e) => {
-    setStaff({ ...staff, [e.target.name]: e.target.value });
+    setProduk({ ...produk, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (
-      !staff.nama ||
-      !staff.alamat ||
-      !staff.noTelepon ||
-      !staff.awalBekerja ||
-      !staff.lamaKerja ||
-      !staff.createDate
-    ) {
+    if (!produk.nama || !produk.deskripsi || !produk.kondisi || !produk.harga) {
       Swal.fire({
         title: "Gagal!",
         text: "Semua field harus diisi.",
@@ -40,37 +30,28 @@ const TambahStaff = () => {
       return;
     }
 
-    const formattedCreateDate = staff.createDate.includes("T")
-      ? staff.createDate
-      : `${staff.createDate}T00:00:00`;
-    const formattedAwalBekerja = staff.awalBekerja.includes("T")
-      ? staff.awalBekerja
-      : `${staff.awalBekerja}T00:00:00`;
-
-    const staffDTO = {
-      nama: staff.nama,
-      alamat: staff.alamat,
-      noTelepon: staff.noTelepon,
-      awalBekerja: formattedAwalBekerja,
-      lamaKerja: staff.lamaKerja,
-      createDate: formattedCreateDate,
+    const produkDTO = {
+      nama: produk.nama,
+      deskripsi: produk.deskripsi,
+      kondisi: produk.kondisi,
+      harga: produk.harga,
     };
 
-    console.log("Payload yang dikirim:", staffDTO);
+    console.log("Payload yang dikirim:", produkDTO);
 
     try {
-      const response = await fetch(`${API_STAFF}/tambah`, {
+      const response = await fetch("/api/produk/tambah", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(staffDTO),
+        body: JSON.stringify(produkDTO),
       });
 
       if (!response.ok) {
         const errorData = await response.json();
         console.error("Response error:", errorData);
-        throw new Error(`Error: ${errorData.message || "Gagal menambahkan staff"}`);
+        throw new Error(`Error: ${errorData.message || "Gagal menambahkan produk"}`);
       }
 
       const data = await response.json();
@@ -78,11 +59,11 @@ const TambahStaff = () => {
 
       Swal.fire({
         title: "Sukses!",
-        text: "Data staf berhasil ditambahkan.",
+        text: "Produk berhasil ditambahkan.",
         icon: "success",
         confirmButtonText: "Ok",
       }).then(() => {
-        navigate("/staff");
+        navigate("/produk");
       });
     } catch (error) {
       console.error("Error:", error.message);
@@ -97,26 +78,24 @@ const TambahStaff = () => {
 
   return (
     <div className="flex">
-      <div className="w-64">
-        <Sidebar />
-      </div>
+          <div className="w-64">
+            <Sidebar />
+          </div>
       <div className="flex-1 p-8 ml-4">
-        <h2 className="text-2xl font-semibold mb-6 text-gray-800">Tambah Staff</h2>
+        <h2 className="text-2xl font-semibold mb-6 text-gray-800">Tambah Produk</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
-          {[
-            { label: "Nama", name: "nama", type: "text" },
-            { label: "Alamat", name: "alamat", type: "text" },
-            { label: "Nomor Telepon", name: "noTelepon", type: "text" },
-            { label: "Awal Bekerja", name: "awalBekerja", type: "date" },
-            { label: "Lama Kerja (Tahun)", name: "lamaKerja", type: "text" },
-            { label: "Tanggal Dibuat", name: "createDate", type: "date" },
+          {[ 
+            { label: "Nama Produk", name: "nama", type: "text" },
+            { label: "Deskripsi", name: "deskripsi", type: "text" },
+            { label: "Kondisi", name: "kondisi", type: "text" },
+            { label: "Harga", name: "harga", type: "number" },
           ].map((field) => (
             <div key={field.name} className="flex items-center gap-4">
               <label className="w-1/5 text-gray-700 font-medium">{field.label}</label>
               <input
                 type={field.type}
                 name={field.name}
-                value={staff[field.name]}
+                value={produk[field.name]}
                 onChange={handleChange}
                 className="w-4/5 border rounded-md p-3 focus:ring-2 focus:ring-blue-500"
               />
@@ -126,15 +105,13 @@ const TambahStaff = () => {
             <button
               type="button"
               className="text-black font-semibold hover:underline"
-              onClick={() => navigate("/staff")}
-            >
+              onClick={() => navigate("/produk")}>
               Batal
             </button>
             <button
               type="submit"
               className="bg-green-600 text-white font-semibold px-6 py-2
-               rounded-lg hover:bg-green-700 transition"
-            >
+               rounded-lg hover:bg-green-700 transition">
               Simpan
             </button>
           </div>
@@ -144,4 +121,4 @@ const TambahStaff = () => {
   );
 };
 
-export default TambahStaff;
+export default TambahProduk;

@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Pencil, Trash2 } from "lucide-react";
+import { Pencil, Trash2, Search } from "lucide-react";
 import Sidebar from "../components/Sidebar";
 import Swal from "sweetalert2";
 import { API_STAFF } from "../utils/BaseUrl";
 
 const DaftarStaff = () => {
   const [staffData, setStaffData] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -65,6 +66,12 @@ const DaftarStaff = () => {
     return `${day}-${month}-${year}`;
   };
 
+  const filteredStaff = staffData.filter((staff) =>
+    `${staff.nama} ${staff.alamat} ${staff.noTelepon}`
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase())
+  );
+
   return (
     <div className="flex">
       <Sidebar />
@@ -79,22 +86,33 @@ const DaftarStaff = () => {
           </button>
         </div>
 
+        <div className="relative flex items-center mb-4">
+          <Search className="absolute ml-3 text-gray-500" size={20} />
+          <input
+            type="text"
+            placeholder="Cari staff berdasarkan nama, alamat, atau no. telepon..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="pl-10 pr-4 py-2 w-full border border-gray-400
+             rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+        </div>
+
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
           <table className="w-full text-sm text-left text-gray-700 border border-gray-400">
             <thead className="text-xs uppercase bg-gray-200 border-b-2 border-gray-500">
               <tr>
-                <th className="px-6 py-3 border border-gray-500">No</th>
-                <th className="px-6 py-3 border border-gray-500">Nama</th>
-                <th className="px-6 py-3 border border-gray-500">Alamat</th>
-                <th className="px-6 py-3 border border-gray-500">No. Telepon</th>
-                <th className="px-6 py-3 border border-gray-500">Awal Bekerja</th>
-                <th className="px-6 py-3 border border-gray-500">Lama Kerja</th>
-                <th className="px-6 py-3 border border-gray-500">Create Date</th>
-                <th className="px-6 py-3 border border-gray-500">Aksi</th>
+                <th className="px-6 py-3 border border-gray-500 text-center">No</th>
+                <th className="px-6 py-3 border border-gray-500 text-center">Nama</th>
+                <th className="px-6 py-3 border border-gray-500 text-center">Alamat</th>
+                <th className="px-6 py-3 border border-gray-500 text-center">No. Telepon</th>
+                <th className="px-6 py-3 border border-gray-500 text-center">Awal Bekerja</th>
+                <th className="px-6 py-3 border border-gray-500 text-center">Lama Kerja</th>
+                <th className="px-6 py-3 border border-gray-500 text-center">Create Date</th>
+                <th className="px-6 py-3 border border-gray-500 text-center">Aksi</th>
               </tr>
             </thead>
             <tbody>
-              {staffData.map((staff, index) => (
+              {filteredStaff.map((staff, index) => (
                 <tr
                   key={staff.id}
                   className="bg-white border-b border-gray-400 hover:bg-gray-100"
@@ -122,10 +140,10 @@ const DaftarStaff = () => {
                   </td>
                 </tr>
               ))}
-              {staffData.length === 0 && (
+              {filteredStaff.length === 0 && (
                 <tr>
                   <td colSpan="8" className="px-6 py-4 text-center border border-gray-400">
-                    Tidak ada data staff.
+                    Tidak ada data staff yang sesuai.
                   </td>
                 </tr>
               )}

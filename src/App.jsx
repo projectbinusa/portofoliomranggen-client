@@ -20,7 +20,9 @@ import Register from "./page/Register";
 import TambahPesanan from "./pesanan/TambahPesanan";
 import KegiatanSekolah from "./sekolah/KegiatanSekolah";
 import Home from "./components/Home";
-
+import ProdukList from "./produk/ProdukList";
+import TambahProduk from "./produk/TambahProduk";
+import EditProduk from "./produk/EditProduk";
 import "./App.css";
 
 function App() {
@@ -53,6 +55,10 @@ function App() {
 
         <Route path="/tambah-pesanan" element={<TambahPesanan />} />
         <Route path="/kegiatan-sekolah" element={<KegiatanSekolah />} />
+
+        <Route path="/produk" element={<ProdukList />} />
+        <Route path="/tambah-produk" element={<TambahProduk />} />
+        <Route path="/edit-produk" element={<EditProduk />} />
       </Routes>
     </Router>
   );
