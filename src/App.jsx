@@ -18,6 +18,7 @@ import EditStaff from "./staff/EditStaff";
 import Login from "./page/Login";
 import Register from "./page/Register";
 import TambahPesanan from "./page/TambahPesanan";
+import VisiMisi from "./page/VisiMisi";
 
 import "./App.css";
 
@@ -49,6 +50,7 @@ function App() {
         <Route path="/Register" element={<Register />} />
 
         <Route path="/tambah-pesanan" element={<TambahPesanan />} />
+        <Route path="/visi-misi" element={<VisiMisi />} />
       </Routes>
     </Router>
   );
