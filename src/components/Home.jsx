@@ -2,56 +2,64 @@ import React from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
+const eventImages = [
+  "https://media.istockphoto.com/id/1227322603/id/vektor/template-tiket-konser-acara-musik-tiket-tiket-tiket-tiket-desain-flyer.jpg?s=612x612&w=0&k=20&c=h9SET1t1b-Wohr0PGib_ZwqYMetXEY4kUdJLwwr18mM=",
+  "https://media.kompas.tv/library/image/content_article/article_img/20210802121301.jpg",
+  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0dSN8ImfRwYdQ5BrvEa5z5wYUIAZszRKG_g&s",
+  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaOmGcdZQ-pCjFN5UItfgx9MnP_5Py47j0wA&s",
+  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtTdWEuGRgu558zr376dyS9cuPlcJA6zTSfkJQGtJZsaSOqj83CeiGs4rx0kNzJh7UxCM&usqp=CAU",
+  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9KT3zQ-5kPsUS14IMSd_ltxEw9vANBi9jxA&s",
+];
+
 const Home = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-emerald-600 flex flex-col items-center p-6">
+    <div className="min-h-screen w-full bg-gradient-to-br from-[#00b894] to-blue-500 flex flex-col items-center p-8">
       <motion.h1
-        className="text-5xl font-extrabold mb-6 text-white drop-shadow-lg"
+        className="text-6xl font-extrabold mb-8 text-white drop-shadow-lg text-center"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
+        transition={{ duration: 0.6 }}
       >
-        Selamat Datang di TicketMaster
+        Selamat Datang di <span className="text-yellow-300">AppTicket</span>
       </motion.h1>
 
       <motion.div
-        className="w-full max-w-2xl bg-white shadow-2xl rounded-2xl p-6 text-center"
+        className="w-full max-w-3xl bg-white/80 shadow-2xl backdrop-blur-lg rounded-3xl p-8 text-center"
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.5 }}
+        transition={{ duration: 0.6 }}
       >
-        <p className="text-lg text-gray-700 mb-4">
+        <p className="text-lg text-gray-700 mb-6 font-medium">
           Temukan dan pesan tiket untuk acara, konser, dan pertunjukan favorit
-          Anda!
+          Anda dengan mudah dan cepat!
         </p>
         <button
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg"
+          className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-purple-600 hover:to-blue-500 text-white font-semibold py-3 px-6 rounded-lg shadow-lg transition-all duration-300"
           onClick={() => navigate("/login")}
         >
           Masuk
         </button>
       </motion.div>
 
-      <div className="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-5xl">
-        {[1, 2, 3, 4, 5, 6].map((event) => (
+      <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-6xl">
+        {eventImages.map((image, index) => (
           <motion.div
-            key={event}
-            className="bg-white shadow-lg rounded-xl p-4 flex flex-col items-center text-center"
-            whileHover={{ scale: 1.05 }}
+            key={index}
+            className="bg-white/90 shadow-lg backdrop-blur-md rounded-xl p-5 flex flex-col items-center text-center transform transition duration-300 hover:scale-105 hover:shadow-2xl"
+            whileHover={{ scale: 1.07 }}
           >
             <img
-              src="https://static.promediateknologi.id/crop/0x0:0x0/0x0/webp/photo/p2/131/2024/08/09/Screenshot_20240809-154726-2513334198.jpg"
-              alt="Acara"
-              className="h-40 w-full rounded-lg mb-4 object-cover"
+              src={image}
+              alt={`Acara ${index + 1}`}
+              className="h-48 w-full rounded-lg mb-4 object-cover"
             />
-
-            <h2 className="text-xl font-semibold text-gray-800">
-              Acara Menarik {event}
+            <h2 className="text-2xl font-semibold text-gray-800">
+              Acara Menarik {index + 1}
             </h2>
             <p className="text-gray-600 text-sm">Tanggal: Segera Diumumkan</p>
-            <button className="mt-3 bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg">
+            <button className="mt-4 bg-green-500 hover:bg-green-600 text-white py-2 px-6 rounded-lg shadow-md transition-all duration-300">
               Dapatkan Tiket
             </button>
           </motion.div>
