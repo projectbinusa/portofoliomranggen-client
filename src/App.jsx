@@ -22,7 +22,9 @@ import KegiatanSekolah from "./sekolah/KegiatanSekolah";
 import TambahKegiatan from "./sekolah/TambahKegiatan";
 import EditKegiatan from "./sekolah/EditKegiatan";
 import Home from "./components/Home";
-
+import ProdukList from "./produk/ProdukList";
+import TambahProduk from "./produk/TambahProduk";
+import EditProduk from "./produk/EditProduk";
 import "./App.css";
 
 function App() {
@@ -55,8 +57,15 @@ function App() {
 
         <Route path="/tambah-pesanan" element={<TambahPesanan />} />
         <Route path="/kegiatan-sekolah" element={<KegiatanSekolah />} />
+
+
+        <Route path="/produk" element={<ProdukList />} />
+        <Route path="/tambah-produk" element={<TambahProduk />} />
+        <Route path="/edit-produk" element={<EditProduk />} />
+
         <Route path="/tambah-kegiatan" element={<TambahKegiatan />} />
         <Route path="/edit-kegiatan/:id" element={<EditKegiatan />} />
+
       </Routes>
     </Router>
   );
