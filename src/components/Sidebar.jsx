@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Swal from "sweetalert2";
 import {
   HiHome,
   HiUser,
@@ -12,6 +13,23 @@ import {
 export default function App() {
   const [isOpen, setIsOpen] = useState(true);
 
+  const handleLogout = () => {
+    Swal.fire({
+      title: "Apakah Anda yakin?",
+      text: "Anda akan keluar dari akun!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Ya, keluar!",
+      cancelButtonText: "Batal",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Redirect to logout page or clear session
+        window.location.href = "/login";
+      }
+    });
+  };
   return (
     <div className="flex h-screen">
       {/* Sidebar */}
@@ -40,11 +58,19 @@ export default function App() {
           />
           <SidebarItem icon={<HiAcademicCap />} text="Siswa" href="/siswa" />
           <SidebarItem icon={<HiUsers />} text="Staf" href="/staff" />
-          <SidebarItem icon={<HiLogout />} text="Logout" href="/logout" />
+          <li>
+            <button
+              onClick={handleLogout}
+              className="flex items-center space-x-3 p-3 w-full text-left rounded-md hover:bg-green-600 transition"
+            >
+              <span className="text-xl">
+                <HiLogout />
+              </span>
+              <span>Logout</span>
+            </button>
+          </li>
         </ul>
       </aside>
-
-      {/* Content */}
     </div>
   );
 }
