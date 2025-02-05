@@ -95,65 +95,59 @@ const PageGuru = () => {
           </div>
 
           {/* Tabel Daftar Guru dengan border hitam */}
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm text-left shadow-md rounded-lg">
-              <thead className="text-xs text-gray-700 uppercase bg-gray-300">
+          <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+            <table className="w-full text-sm text-left text-gray-700 border border-gray-400">
+              <thead className="text-xs font-bold uppercase bg-gray-200 border-b border-gray-500">
                 <tr>
-                  {[
-                    "No",
-                    "Nama",
-                    "NIP",
-                    "Alamat",
-                    "Nomor HP",
-                    "Tahun Diterima",
-                    "Lama Kerja",
-                    "Aksi",
-                  ].map((header, index) => (
-                    <th
-                      key={index}
-                      className="px-6 py-3 border border-black text-center"
-                    >
-                      {header}
-                    </th>
-                  ))}
+                  <th className="px-6 py-3 border-r border-gray-400">No</th>
+                  <th className="px-6 py-3 border-r border-gray-400">Nama</th>
+                  <th className="px-6 py-3 border-r border-gray-400">NIP</th>
+                  <th className="px-6 py-3 border-r border-gray-400">Alamat</th>
+                  <th className="px-6 py-3 border-r border-gray-400">Nomor HP</th>
+                  <th className="px-6 py-3 border-r border-gray-400">Tahun Diterima</th>
+                  <th className="px-6 py-3 border-r border-gray-400">Lama Kerja</th>
+                  <th className="px-6 py-3">Aksi</th>
                 </tr>
               </thead>
               <tbody>
                 {filteredGuru.length > 0 ? (
                   filteredGuru.map((guru, index) => (
-                    <tr key={guru.id} className="bg-white hover:bg-gray-100">
-                      <td className="px-6 py-3 border border-black text-center">
+                    <tr
+                      key={guru.id}
+                      className="bg-white border-b border-gray-400 hover:bg-gray-100"
+                    >
+                      <td className="px-6 py-4 border-r border-gray-400">
                         {index + 1}
                       </td>
-                      <td className="px-6 py-3 border border-black">
+                      <td className="px-6 py-4 font-medium border-r border-gray-400">
                         {guru.namaGuru}
                       </td>
-                      <td className="px-6 py-3 border border-black">
+                      <td className="px-6 py-4 border-r border-gray-400">
                         {guru.nip}
                       </td>
-                      <td className="px-6 py-3 border border-black">
+                      <td className="px-6 py-4 border-r border-gray-400">
                         {guru.alamat}
                       </td>
-                      <td className="px-6 py-3 border border-black">
+                      <td className="px-6 py-4 border-r border-gray-400">
                         {guru.nomerHp}
                       </td>
-                      <td className="px-6 py-3 border border-black">
+                      <td className="px-6 py-4 border-r border-gray-400">
                         {guru.tahunDiterima}
                       </td>
-                      <td className="px-6 py-3 border border-black">
+                      <td className="px-6 py-4 border-r border-gray-400">
                         {guru.lamaKerja}
                       </td>
-                      <td className="px-3 py-2 border border-black flex space-x-2 justify-center">
+                      <td className="px-6 py-4 flex gap-3">
                         <Link to={`/edit-guru/${guru.id}`}>
-                          <button className="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600 transition">
+                          <button className="flex items-center gap-2 bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600 transition">
                             <Pencil size={18} />
                           </button>
                         </Link>
                         <button
-                          className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 transition"
                           onClick={() => handleDeletePageGuru(guru.id)}
+                          className="flex items-center gap-2 bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 transition"
                         >
-                          <Trash2 className="w-4 h-4" />
+                          <Trash2 size={18} />
                         </button>
                       </td>
                     </tr>

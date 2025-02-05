@@ -19,6 +19,8 @@ import Login from "./page/Login";
 import Register from "./page/Register";
 import TambahPesanan from "./pesanan/TambahPesanan";
 import KegiatanSekolah from "./sekolah/KegiatanSekolah";
+import TambahKegiatan from "./sekolah/TambahKegiatan";
+import EditKegiatan from "./sekolah/EditKegiatan";
 import Home from "./components/Home";
 
 import "./App.css";
@@ -53,6 +55,8 @@ function App() {
 
         <Route path="/tambah-pesanan" element={<TambahPesanan />} />
         <Route path="/kegiatan-sekolah" element={<KegiatanSekolah />} />
+        <Route path="/tambah-kegiatan" element={<TambahKegiatan />} />
+        <Route path="/edit-kegiatan/:id" element={<EditKegiatan />} />
       </Routes>
     </Router>
   );
