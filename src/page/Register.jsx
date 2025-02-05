@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
+import { API_REGISTER } from "../utils/BaseUrl";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -51,7 +52,7 @@ const Register = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center">
-      <div className="bg-white shadow-lg rounded-lg p-8 max-w-md w-full">
+      <div className="bg-white shadow-lg rounded-lg p-8 max-w-md w-full border-2 border-gray-600">
         <h2 className="text-3xl font-semibold text-center text-gray-800 mb-6">REGISTER</h2>
         <form className="space-y-6" onSubmit={handleSubmit}>
           <div className="flex flex-col items-start">
@@ -63,7 +64,7 @@ const Register = () => {
               id="name"
               name="name"
               placeholder="Masukkan nama lengkap Anda"
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+              className="w-full px-4 py-2 border-2 border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
               value={formData.name}
               onChange={handleChange}
               required
@@ -78,7 +79,7 @@ const Register = () => {
               id="email"
               name="email"
               placeholder="Masukkan email Anda"
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+              className="w-full px-4 py-2 border-2 border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
               value={formData.email}
               onChange={handleChange}
               required
@@ -93,7 +94,7 @@ const Register = () => {
               id="password"
               name="password"
               placeholder="Masukkan password Anda"
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+              className="w-full px-4 py-2 border-2 border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
               value={formData.password}
               onChange={handleChange}
               required
