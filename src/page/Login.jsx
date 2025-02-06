@@ -21,8 +21,9 @@ const Login = () => {
         // Store token in localStorage
         localStorage.setItem("token", response.data.token);
         
-        // Optionally, store user data (e.g., admin data)
-        localStorage.setItem("adminData", JSON.stringify(response.data));
+        // Store admin data (id and role) in localStorage
+        localStorage.setItem("adminId", response.data.data.id);
+        localStorage.setItem("adminRole", response.data.data.role);
 
         Swal.fire("Success!", "Login berhasil.", "success");
         navigate("/dashboard");
@@ -30,7 +31,8 @@ const Login = () => {
     } catch (error) {
       Swal.fire("Error", error.response?.data || "Login gagal. Coba lagi.", "error");
     }
-  };
+};
+
 
   return (
     <section className="dark:bg-gray-900">
