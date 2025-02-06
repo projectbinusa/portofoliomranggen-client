@@ -8,6 +8,7 @@ import {
   HiAcademicCap,
   HiUsers,
   HiLogout,
+  HiShoppingCart,
 } from "react-icons/hi";
 
 export default function App() {
@@ -58,6 +59,7 @@ export default function App() {
           />
           <SidebarItem icon={<HiAcademicCap />} text="Siswa" href="/siswa" />
           <SidebarItem icon={<HiUsers />} text="Staf" href="/staff" />
+          <SidebarItem icon={<HiShoppingCart />} text="Pesanan" href="/page-pesanan" />
           <li>
             <button
               onClick={handleLogout}

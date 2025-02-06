@@ -9,3 +9,4 @@ export const API_REGISTER = `${url}/admin`;
 export const API_LOGIN = `${url}`;
 export const API_BUKU = `${url}/admin/buku`;
 export const API_PRODUK = `${url}/produk`;
+export const API_KEGIATAN = `${url}/kegiatan`;
