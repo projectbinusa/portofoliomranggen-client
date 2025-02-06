@@ -97,18 +97,19 @@ const PageGuru = () => {
           {/* Tabel Daftar Guru dengan border hitam */}
           <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
             <table className="w-full text-sm text-left text-gray-700 border border-gray-400">
-              <thead className="text-xs font-bold uppercase bg-gray-200 border-b border-gray-500">
-                <tr>
-                  <th className="px-6 py-3 border-r border-gray-400">No</th>
-                  <th className="px-6 py-3 border-r border-gray-400">Nama</th>
-                  <th className="px-6 py-3 border-r border-gray-400">NIP</th>
-                  <th className="px-6 py-3 border-r border-gray-400">Alamat</th>
-                  <th className="px-6 py-3 border-r border-gray-400">Nomor HP</th>
-                  <th className="px-6 py-3 border-r border-gray-400">Tahun Diterima</th>
-                  <th className="px-6 py-3 border-r border-gray-400">Lama Kerja</th>
-                  <th className="px-6 py-3">Aksi</th>
-                </tr>
-              </thead>
+            <thead className="text-xs font-bold uppercase bg-gray-200 border-b border-gray-500">
+              <tr>
+                <th className="px-6 py-3 border-r border-gray-400 text-center">No</th>
+                <th className="px-6 py-3 border-r border-gray-400 text-center">Nama</th>
+                <th className="px-6 py-3 border-r border-gray-400 text-center">NIP</th>
+                <th className="px-6 py-3 border-r border-gray-400 text-center">Alamat</th>
+                <th className="px-6 py-3 border-r border-gray-400 text-center">Nomor HP</th>
+                <th className="px-6 py-3 border-r border-gray-400 text-center">Tahun Diterima</th>
+                <th className="px-6 py-3 border-r border-gray-400 text-center">Lama Kerja</th>
+                <th className="px-6 py-3 text-center">Aksi</th>
+              </tr>
+            </thead>
+
               <tbody>
                 {filteredGuru.length > 0 ? (
                   filteredGuru.map((guru, index) => (
