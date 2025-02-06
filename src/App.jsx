@@ -58,7 +58,7 @@ function App() {
         <Route path="/register" element={<Register />} />
 
         <Route path="/page-pesanan" element={<PagePesanan />} />
-        <Route path="/edit-pesanan" element={<EditPesanan />} />
+        <Route path="/edit-pesanan/:id" element={<EditPesanan />} />
         <Route path="/tambah-pesanan" element={<TambahPesanan />} />
 
 
