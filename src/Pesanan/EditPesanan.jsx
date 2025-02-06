@@ -1,10 +1,11 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
 import Sidebar from "../components/Sidebar";
 
-const TambahPesanan = () => {
+const EditPesanan = () => {
+  const { id } = useParams();
   const [formData, setFormData] = useState({
     produk: "",
     jumlah: "",
@@ -14,6 +15,20 @@ const TambahPesanan = () => {
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    // Fetch data pesanan berdasarkan ID (dummy data)
+    const fetchPesanan = async () => {
+      const data = {
+        produk: "Contoh Produk",
+        jumlah: "10",
+        harga: "50000",
+        kondisi: "Baru",
+      };
+      setFormData(data);
+    };
+    fetchPesanan();
+  }, [id]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -21,7 +36,8 @@ const TambahPesanan = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Pesanan Ditambahkan:", formData);
+    console.log("Pesanan Diperbarui:", formData);
+    navigate("/dashboard");
   };
 
   return (
@@ -29,7 +45,7 @@ const TambahPesanan = () => {
       <Sidebar />
       <div className="flex-1 flex items-center justify-center">
         <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md border-2 border-gray-600">
-          <h2 className="text-xl font-bold mb-4 text-gray-700">Tambah Pesanan</h2>
+          <h2 className="text-xl font-bold mb-4 text-gray-700">Edit Pesanan</h2>
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="flex flex-col items-start">
               <label className="block text-gray-600">Nama Pesanan</label>
@@ -99,4 +115,4 @@ const TambahPesanan = () => {
   );
 };
 
-export default TambahPesanan;
+export default EditPesanan;

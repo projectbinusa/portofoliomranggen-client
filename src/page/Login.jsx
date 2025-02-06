@@ -12,8 +12,11 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${API_LOGIN}/login`, { email, password });
-
+      const response = await axios.post(`${API_LOGIN}/login`, 
+        { email, password }, 
+        { headers: { 'Content-Type': 'application/json' } }
+      );
+      
       if (response.status === 200) {
         localStorage.setItem("token", response.data.token);
         Swal.fire("Success!", "Login berhasil.", "success");
