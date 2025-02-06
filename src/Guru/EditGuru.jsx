@@ -16,26 +16,34 @@ const EditGuru = () => {
     lamaKerja: "",
   });
 
+  // Retrieve admin data from localStorage
+  const adminData = JSON.parse(localStorage.getItem("adminData"));
+  const idAdmin = adminData ? adminData.id : null;
+
   // Ambil data guru berdasarkan ID dari API
   useEffect(() => {
     const fetchGuru = async () => {
       try {
-        const response = await fetch(`${API_GURU}/getById/${id}`); // Panggil endpoint dengan /getById/{id}
-        const data = await response.json();
+        if (idAdmin) {
+          const response = await fetch(`${API_GURU}/getById/${id}/${idAdmin}`); // Pass idAdmin in the API request
+          const data = await response.json();
 
-        if (!response.ok) {
-          throw new Error(data.message || "Gagal mengambil data guru");
+          if (!response.ok) {
+            throw new Error(data.message || "Gagal mengambil data guru");
+          }
+
+          // Pastikan data yang diterima cocok dengan formData
+          setFormData({
+            namaGuru: data.namaGuru || "",
+            nip: data.nip || "",
+            alamat: data.alamat || "",
+            nomerHp: data.nomerHp || "",
+            tahunDiterima: data.tahunDiterima || "",
+            lamaKerja: data.lamaKerja || "",
+          });
+        } else {
+          Swal.fire("Error", "ID Admin tidak ditemukan!", "error");
         }
-
-        // Pastikan data yang diterima cocok dengan formData
-        setFormData({
-          namaGuru: data.namaGuru || "",
-          nip: data.nip || "",
-          alamat: data.alamat || "",
-          nomerHp: data.nomerHp || "",
-          tahunDiterima: data.tahunDiterima || "",
-          lamaKerja: data.lamaKerja || "",
-        });
       } catch (error) {
         console.error("Error saat mengambil data guru:", error);
         Swal.fire("Error", error.message, "error");
@@ -43,7 +51,7 @@ const EditGuru = () => {
     };
 
     if (id) fetchGuru();
-  }, [id]);
+  }, [id, idAdmin]);
 
   // Handle input form
   const handleChange = (e) => {
@@ -60,7 +68,7 @@ const EditGuru = () => {
     }
 
     try {
-      const response = await fetch(`${API_GURU}/edit/${id}`, {
+      const response = await fetch(`${API_GURU}/edit/${id}/${idAdmin}`, { // Pass idAdmin in the API request
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

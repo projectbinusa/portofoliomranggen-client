@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import Sidebar from "../components/Sidebar";
 import { API_GURU } from "../utils/BaseUrl";
 
 const TambahGuru = () => {
   const navigate = useNavigate();
-  const { idAdmin } = useParams();
 
+  // Get admin data from localStorage
+  const idAdmin = (localStorage.getItem("adminId"));
+ 
   useEffect(() => {
     console.log("idAdmin:", idAdmin);
   }, [idAdmin]);
