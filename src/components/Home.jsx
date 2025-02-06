@@ -15,7 +15,7 @@ const Home = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-[#00b894] to-blue-500 flex flex-col items-center p-8">
+    <div className="min-h-screen w-full bg-gradient-to-br from-[#06b492] to-blue-500 flex flex-col items-center p-8">
       <motion.h1
         className="text-6xl font-extrabold mb-8 text-white drop-shadow-lg text-center"
         initial={{ opacity: 0, y: -20 }}
@@ -26,12 +26,12 @@ const Home = () => {
       </motion.h1>
 
       <motion.div
-        className="w-full max-w-3xl bg-white/80 shadow-2xl backdrop-blur-lg rounded-3xl p-8 text-center"
+        className="w-full max-w-3xl bg-transparent shadow-2xl backdrop-blur-lg rounded-3xl p-8 text-center"
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.6 }}
       >
-        <p className="text-lg text-gray-700 mb-6 font-medium">
+        <p className="text-lg text-gray-100 mb-6 font-medium">
           Temukan dan pesan tiket untuk acara, konser, dan pertunjukan favorit
           Anda dengan mudah dan cepat!
         </p>
@@ -43,22 +43,22 @@ const Home = () => {
         </button>
       </motion.div>
 
-      <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-6xl">
+      <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-full px-10">
         {eventImages.map((image, index) => (
           <motion.div
             key={index}
-            className="bg-white/90 shadow-lg backdrop-blur-md rounded-xl p-5 flex flex-col items-center text-center transform transition duration-300 hover:scale-105 hover:shadow-2xl"
+            className="bg-transparent shadow-lg backdrop-blur-md rounded-xl p-5 flex flex-col items-center text-center transform transition duration-300 hover:scale-105 hover:shadow-2xl"
             whileHover={{ scale: 1.07 }}
           >
             <img
               src={image}
               alt={`Acara ${index + 1}`}
-              className="h-48 w-full rounded-lg mb-4 object-cover"
+              className="h-60 w-full rounded-lg mb-4 object-cover"
             />
-            <h2 className="text-2xl font-semibold text-gray-800">
+            <h2 className="text-2xl font-semibold text-white">
               Acara Menarik {index + 1}
             </h2>
-            <p className="text-gray-600 text-sm">Tanggal: Segera Diumumkan</p>
+            <p className="text-gray-200 text-sm">Tanggal: Segera Diumumkan</p>
             <button className="mt-4 bg-green-500 hover:bg-green-600 text-white py-2 px-6 rounded-lg shadow-md transition-all duration-300">
               Dapatkan Tiket
             </button>
