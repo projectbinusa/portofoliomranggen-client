@@ -1,27 +1,68 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import { Pencil, Trash2 } from "lucide-react";
+import Swal from "sweetalert2";
+import axios from "axios";
+import { API_ORGANISASI } from "../utils/BaseUrl";
 
 const PageOrganisasi = () => {
-  const [organisasiList, setOrganisasiList] = useState([
-    {
-      namaOrganisasi: "Organisasi A",
-      lokasi: "Lokasi A",
-      email: "emailA@example.com",
-      telepon: "081234567890",
-    },
-    {
-      namaOrganisasi: "Organisasi B",
-      lokasi: "Lokasi B",
-      email: "emailB@example.com",
-      telepon: "081298765432",
-    },
-  ]);
+  const [organisasiList, setOrganisasiList] = useState([]);
 
-  const handleHapus = (index) => {
-    const updatedList = organisasiList.filter((_, i) => i !== index);
-    setOrganisasiList(updatedList);
+  // Retrieve adminId from localStorage
+  const idAdmin = JSON.parse(localStorage.getItem("adminId"));
+
+  // Fetch organizations on component mount
+  useEffect(() => {
+    const fetchOrganisasi = async () => {
+      try {
+        const response = await axios.get(`${API_ORGANISASI}/all`);
+        if (response.status === 200) {
+          setOrganisasiList(response.data);
+        } else {
+          Swal.fire({
+            title: "Error",
+            text: "Gagal mengambil data organisasi.",
+            icon: "error",
+            confirmButtonText: "Ok",
+          });
+        }
+      } catch (error) {
+        Swal.fire({
+          title: "Error",
+          text: "Terjadi kesalahan saat mengambil data organisasi.",
+          icon: "error",
+          confirmButtonText: "Ok",
+        });
+      }
+    };
+
+    fetchOrganisasi();
+  }, []);
+
+  // Handle delete organization
+  const handleHapus = async (id) => {
+    try {
+      const response = await axios.delete(`${API_ORGANISASI}/delete/${id}`);
+      if (response.status === 204) {
+        Swal.fire({
+          title: "Sukses",
+          text: "Organisasi berhasil dihapus.",
+          icon: "success",
+          confirmButtonText: "Ok",
+        });
+        setOrganisasiList(organisasiList.filter((org) => org.id !== id));
+      } else {
+        throw new Error("Gagal menghapus organisasi");
+      }
+    } catch (error) {
+      Swal.fire({
+        title: "Error",
+        text: "Terjadi kesalahan saat menghapus organisasi.",
+        icon: "error",
+        confirmButtonText: "Ok",
+      });
+    }
   };
 
   return (
@@ -40,20 +81,21 @@ const PageOrganisasi = () => {
 
         <div className="relative overflow-x-auto shadow-md rounded-lg">
           <table className="w-full text-sm text-left text-gray-700 border border-gray-300">
-            <thead className="text-xs text-gray-700 uppercase bg-gray-200">
+            <thead className="text-xs text-gray-700 uppercase bg-gray-200 text-center">
               <tr>
-                <th className="px-6 py-3 border border-gray-300 text-center">No</th>
+                <th className="px-6 py-3 border border-gray-300">No</th>
                 <th className="px-6 py-3 border border-gray-300">Nama Organisasi</th>
                 <th className="px-6 py-3 border border-gray-300">Lokasi</th>
                 <th className="px-6 py-3 border border-gray-300">Email</th>
                 <th className="px-6 py-3 border border-gray-300">Telepon</th>
-                <th className="px-6 py-3 border border-gray-300 text-center">Aksi</th>
+                <th className="px-6 py-3 border border-gray-300">Aksi</th>
               </tr>
             </thead>
+
             <tbody>
               {organisasiList.length > 0 ? (
                 organisasiList.map((organisasi, index) => (
-                  <tr key={index} className="bg-white border-b border-gray-300">
+                  <tr key={organisasi.id} className="bg-white border-b border-gray-300">
                     <td className="px-6 py-4 text-center border border-gray-300">{index + 1}</td>
                     <td className="px-6 py-4 border border-gray-300">{organisasi.namaOrganisasi}</td>
                     <td className="px-6 py-4 border border-gray-300">{organisasi.lokasi}</td>
@@ -61,13 +103,13 @@ const PageOrganisasi = () => {
                     <td className="px-6 py-4 border border-gray-300">{organisasi.telepon}</td>
                     <td className="px-6 py-4 flex justify-center gap-2 border border-gray-300">
                       <Link
-                        to={`/edit-organisasi/${index}`}
+                        to={`/edit-organisasi/${organisasi.id}`}
                         className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition"
                       >
                         <Pencil size={20} />
                       </Link>
                       <button
-                        onClick={() => handleHapus(index)}
+                        onClick={() => handleHapus(organisasi.id)}
                         className="bg-red-500 text-white p-2 rounded-md hover:bg-red-600 transition"
                       >
                         <Trash2 size={20} />
