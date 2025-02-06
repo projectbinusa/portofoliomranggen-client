@@ -25,6 +25,8 @@ import Home from "./components/Home";
 import ProdukList from "./produk/ProdukList";
 import TambahProduk from "./produk/TambahProduk";
 import EditProduk from "./produk/EditProduk";
+import EditPesanan from "./pesanan/EditPesanan";
+import PagePesanan from "./pesanan/PagePesanan";
 import "./App.css";
 
 function App() {
@@ -55,14 +57,16 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
+        <Route path="/page-pesanan" element={<PagePesanan />} />
+        <Route path="/edit-pesanan" element={<EditPesanan />} />
         <Route path="/tambah-pesanan" element={<TambahPesanan />} />
-        <Route path="/kegiatan-sekolah" element={<KegiatanSekolah />} />
 
 
         <Route path="/produk" element={<ProdukList />} />
         <Route path="/tambah-produk" element={<TambahProduk />} />
         <Route path="/edit-produk" element={<EditProduk />} />
 
+        <Route path="/kegiatan-sekolah" element={<KegiatanSekolah />} />
         <Route path="/tambah-kegiatan" element={<TambahKegiatan />} />
         <Route path="/edit-kegiatan/:id" element={<EditKegiatan />} />
 
