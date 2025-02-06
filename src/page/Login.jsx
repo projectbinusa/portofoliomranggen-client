@@ -18,7 +18,12 @@ const Login = () => {
       );
       
       if (response.status === 200) {
+        // Store token in localStorage
         localStorage.setItem("token", response.data.token);
+        
+        // Optionally, store user data (e.g., admin data)
+        localStorage.setItem("adminData", JSON.stringify(response.data));
+
         Swal.fire("Success!", "Login berhasil.", "success");
         navigate("/dashboard");
       }
