@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
+import Sambutan from "./page/Sambutan"; // Perbarui jalur impor ke folder "page"
 import PageSiswa from "./siswa/PageSiswa";
 import TambahSiswa from "./siswa/TambahSiswa";
 import EditSiswa from "./siswa/EditSiswa";
@@ -26,6 +27,7 @@ function App() {
   return (
     <Router>
       <Routes>
+        <Route path="/" element={<Sambutan />} /> {/* Rute Sambutan */}
         <Route path="/siswa" element={<PageSiswa />} />
         <Route path="/tambah-siswa" element={<TambahSiswa />} />
         <Route path="/edit-siswa/:id" element={<EditSiswa />} />
