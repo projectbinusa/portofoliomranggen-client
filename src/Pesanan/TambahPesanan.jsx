@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
-import Sidebar from "../components/Sidebar";
 
 const TambahPesanan = () => {
   const [formData, setFormData] = useState({
@@ -26,7 +25,6 @@ const TambahPesanan = () => {
 
   return (
     <div className="flex min-h-screen">
-      <Sidebar />
       <div className="flex-1 flex items-center justify-center">
         <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md border-2 border-gray-600">
           <h2 className="text-xl font-bold mb-4 text-gray-700">Tambah Pesanan</h2>
