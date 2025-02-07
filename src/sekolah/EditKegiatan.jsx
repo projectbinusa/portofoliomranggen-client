@@ -2,36 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import Sidebar from "../components/Sidebar";
-
-const kegiatanSekolah = [
-  {
-    id: 1,
-    nama: "Lomba Sains",
-    deskripsi: "Kompetisi sains tingkat sekolah",
-    tingkat: "Sekolah",
-    penyelenggara: "OSIS",
-    penanggungJawab: "Pak Budi",
-    hasil: "Piala & Sertifikat",
-  },
-  {
-    id: 2,
-    nama: "Lomba Basket",
-    deskripsi: "Turnamen basket antar kelas",
-    tingkat: "Sekolah",
-    penyelenggara: "Ekstrakurikuler Basket",
-    penanggungJawab: "Bu Siti",
-    hasil: "Medali",
-  },
-  {
-    id: 3,
-    nama: "Olimpiade Matematika",
-    deskripsi: "Kompetisi matematika tingkat nasional",
-    tingkat: "Nasional",
-    penyelenggara: "Dinas Pendidikan",
-    penanggungJawab: "Pak Joko",
-    hasil: "Sertifikat & Beasiswa",
-  },
-];
+import { API_KEGIATAN } from "../utils/BaseUrl"; // Import API URL
 
 const EditKegiatan = () => {
   const { id } = useParams();
@@ -45,26 +16,36 @@ const EditKegiatan = () => {
     hasil: "",
   });
 
+  // Fetch kegiatan data when the component mounts
   useEffect(() => {
-    const selectedKegiatan = kegiatanSekolah.find((kegiatan) => kegiatan.id === parseInt(id));
-    if (selectedKegiatan) {
-      setKegiatan(selectedKegiatan);
-    } else {
-      Swal.fire({
-        title: "Tidak Ditemukan",
-        text: "Kegiatan dengan ID tersebut tidak ditemukan.",
-        icon: "error",
-        confirmButtonText: "Ok",
-      });
-      navigate("/kegiatan-sekolah");
-    }
+    const fetchKegiatan = async () => {
+      try {
+        const response = await fetch(`${API_KEGIATAN}/getById/${id}`);
+        const data = await response.json();
+        if (response.ok) {
+          setKegiatan(data);
+        } else {
+          throw new Error("Kegiatan tidak ditemukan");
+        }
+      } catch (error) {
+        Swal.fire({
+          title: "Error",
+          text: error.message,
+          icon: "error",
+          confirmButtonText: "OK",
+        });
+        navigate("/kegiatan-sekolah");
+      }
+    };
+
+    fetchKegiatan();
   }, [id, navigate]);
 
   const handleChange = (e) => {
     setKegiatan({ ...kegiatan, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (
@@ -84,14 +65,36 @@ const EditKegiatan = () => {
       return;
     }
 
-    Swal.fire({
-      title: "Sukses!",
-      text: "Kegiatan berhasil diperbarui.",
-      icon: "success",
-      confirmButtonText: "OK",
-    }).then(() => {
-      navigate("/kegiatan-sekolah");
-    });
+    try {
+      const response = await fetch(`${API_KEGIATAN}/editById/${id}`, {
+        method: "PUT", // Use PUT method to update data
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(kegiatan),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        Swal.fire({
+          title: "Sukses!",
+          text: "Kegiatan berhasil diperbarui.",
+          icon: "success",
+          confirmButtonText: "OK",
+        }).then(() => {
+          navigate("/kegiatan-sekolah");
+        });
+      } else {
+        throw new Error(data.message || "Gagal memperbarui data kegiatan");
+      }
+    } catch (error) {
+      Swal.fire({
+        title: "Error",
+        text: error.message,
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    }
   };
 
   return (
@@ -103,7 +106,7 @@ const EditKegiatan = () => {
             Edit Kegiatan Sekolah
           </h2>
           <form onSubmit={handleSubmit} className="space-y-6">
-            {[
+            {[ 
               { label: "Nama Kegiatan", name: "nama" },
               { label: "Deskripsi", name: "deskripsi" },
               { label: "Tingkat", name: "tingkat" },
