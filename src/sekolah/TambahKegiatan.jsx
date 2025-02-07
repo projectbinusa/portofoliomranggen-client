@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import Swal from "sweetalert2";
+import { API_KEGIATAN } from "../utils/BaseUrl"; // Ensure the correct base URL is imported
 
 const TambahKegiatan = () => {
   const [kegiatan, setKegiatan] = useState({
@@ -16,38 +17,38 @@ const TambahKegiatan = () => {
   const navigate = useNavigate();
 
   const handleChange = (e) => {
-    setKegiatan({ ...kegiatan, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setKegiatan((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (
-      !kegiatan.nama ||
-      !kegiatan.deskripsi ||
-      !kegiatan.tingkat ||
-      !kegiatan.penyelenggara ||
-      !kegiatan.penanggungJawab ||
-      !kegiatan.hasil
-    ) {
-      Swal.fire({
-        title: "Gagal!",
-        text: "Semua field harus diisi.",
-        icon: "error",
-        confirmButtonText: "Ok",
+    try {
+      const response = await fetch(`${API_KEGIATAN}/tambah`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(kegiatan),
       });
-      return;
-    }
 
-    // Simulate successful form submission
-    Swal.fire({
-      title: "Sukses!",
-      text: "Kegiatan berhasil ditambahkan.",
-      icon: "success",
-      confirmButtonText: "Ok",
-    }).then(() => {
-      navigate("/kegiatan-sekolah");
-    });
+      const data = await response.json();
+      if (response.ok) {
+        // If the response is successful
+        Swal.fire("Sukses", "Data kegiatan berhasil ditambahkan!", "success");
+        setTimeout(() => navigate("/kegiatan-sekolah"), 1000); // Navigate after 1 second
+      } else {
+        // If response is not ok (status code other than 2xx)
+        throw new Error(data.message || "Gagal menambahkan data kegiatan");
+      }
+    } catch (error) {
+      // Show error if any
+      Swal.fire("Error", error.message, "error");
+    }
   };
 
   return (
@@ -58,7 +59,7 @@ const TambahKegiatan = () => {
       <div className="flex-1 p-8 ml-4">
         <h2 className="text-2xl font-semibold mb-6 text-gray-800">Tambah Kegiatan Sekolah</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
-          {[
+          {[ 
             { label: "Nama Kegiatan", name: "nama", type: "text" },
             { label: "Deskripsi", name: "deskripsi", type: "text" },
             { label: "Tingkat", name: "tingkat", type: "text" },
