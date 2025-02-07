@@ -25,7 +25,14 @@ const EditSiswa = () => {
         if (response.status === 200) {
           const data = response.data;
           console.log("Data Siswa diterima: ", data);
-          setStudent(data);
+
+          // Pastikan tanggal lahir dalam format YYYY-MM-DD untuk input date
+          const formattedData = {
+            ...data,
+            tanggalLahir: data.tanggalLahir ? data.tanggalLahir.split("T")[0] : "",
+          };
+
+          setStudent(formattedData);
         } else {
           Swal.fire({
             title: "Not Found",
@@ -83,49 +90,51 @@ const EditSiswa = () => {
   };
 
   return (
-    <div className="flex">
-      <div className="w-64">
+    <div className="flex min-h-screen bg-gray-100">
+      <div className="w-64 min-h-screen bg-white shadow-md">
         <Sidebar />
       </div>
-      <div className="flex-1 p-8 ml-4">
-        <h2 className="text-2xl font-semibold mb-6 text-gray-800">Edit Siswa</h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {[
-            { label: "Nama", name: "nama", type: "text" },
-            { label: "NISN", name: "nisn", type: "text" },
-            { label: "Alamat", name: "alamat", type: "text" },
-            { label: "Nama Orangtua", name: "namaOrangtua", type: "text" },
-            { label: "Nomor HP Orangtua", name: "nomerHpOrangtua", type: "text" },
-            { label: "Nomor HP", name: "nomerHp", type: "text" },
-            { label: "Tanggal Lahir", name: "tanggalLahir", type: "date" },
-          ].map((field) => (
-            <div key={field.name} className="flex items-center gap-4">
-              <label className="w-1/5 text-gray-700 font-medium">{field.label}</label>
-              <input
-                type={field.type}
-                name={field.name}
-                value={student[field.name]}
-                onChange={handleChange}
-                className="w-4/5 border rounded-md p-3 focus:ring-2 focus:ring-blue-500"
-              />
+      <div className="flex-1 flex flex-col justify-center items-center p-8">
+        <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-2xl">
+          <h2 className="text-2xl font-semibold mb-6 text-gray-800 text-center">Edit Siswa</h2>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            {[
+              { label: "Nama", name: "nama", type: "text" },
+              { label: "NISN", name: "nisn", type: "text" },
+              { label: "Alamat", name: "alamat", type: "text" },
+              { label: "Nama Orangtua", name: "namaOrangtua", type: "text" },
+              { label: "Nomor HP Orangtua", name: "nomerHpOrangtua", type: "tel" },
+              { label: "Nomor HP", name: "nomerHp", type: "tel" },
+              { label: "Tanggal Lahir", name: "tanggalLahir", type: "date" },
+            ].map((field) => (
+              <div key={field.name} className="flex flex-col">
+                <label className="text-gray-700 font-medium">{field.label}</label>
+                <input
+                  type={field.type}
+                  name={field.name}
+                  value={student[field.name]}
+                  onChange={handleChange}
+                  className="mt-1 border rounded-md p-3 focus:ring-2 focus:ring-blue-500 w-full"
+                />
+              </div>
+            ))}
+            <div className="flex justify-between mt-6">
+              <button
+                type="button"
+                className="bg-gray-500 text-white font-semibold px-6 py-2 rounded-lg hover:bg-gray-600 transition"
+                onClick={() => navigate("/siswa")}
+              >
+                Batal
+              </button>
+              <button
+                type="submit"
+                className="bg-green-600 text-white font-semibold px-6 py-2 rounded-lg hover:bg-green-700 transition"
+              >
+                Simpan
+              </button>
             </div>
-          ))}
-          <div className="flex justify-end gap-4 mt-6">
-            <button
-              type="button"
-              className="text-black font-semibold hover:underline"
-              onClick={() => navigate("/siswa")}
-            >
-              Batal
-            </button>
-            <button
-              type="submit"
-              className="bg-green-600 text-white font-semibold px-6 py-2 rounded-lg hover:bg-green-700 transition"
-            >
-              Simpan
-            </button>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
     </div>
   );

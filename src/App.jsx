@@ -33,8 +33,10 @@ import TambahBuku from "./buku/TambahBuku";
 import EditBuku from "./buku/EditBuku";
 
 import User from "./user/User";
+import TambahUser from "./user/TambahUser";
 
 import "./App.css";
+import EditUser from "./user/EditUser";
 
 function App() {
   return (
@@ -82,6 +84,8 @@ function App() {
         <Route path="/edit-buku/:id" element={<EditBuku />} />
 
         <Route path="/user" element={<User />} />
+        <Route path="/tambah-user" element={<TambahUser />} />
+        <Route path="/edit-user/:id" element={<EditUser />} />
 
 
       </Routes>

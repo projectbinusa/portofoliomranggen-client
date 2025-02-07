@@ -70,6 +70,10 @@ export default function App() {
             text="Kegiatan"
             href="/kegiatan-sekolah"
           />
+           <SidebarItem 
+           icon={<HiUser />}
+            text="User" 
+            href="/user" />
           <li>
             <button
               onClick={handleLogout}
