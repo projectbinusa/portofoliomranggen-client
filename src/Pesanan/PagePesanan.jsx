@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Swal from "sweetalert2"; // Notifikasi
+import Swal from "sweetalert2";
 import Sidebar from "../components/Sidebar";
-import { FaPlus } from "react-icons/fa"; // Import ikon plus
+import { FaPlus, FaEdit, FaTrash, FaSearch } from "react-icons/fa";
 
 const PagePesanan = () => {
   const [pesanan, setPesanan] = useState([]);
@@ -69,7 +69,6 @@ const PagePesanan = () => {
     }
   };
 
-  // Fungsi untuk memfilter pesanan berdasarkan query pencarian
   const filteredPesanan = pesanan.filter((item) =>
     item.namaPesanan.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -78,20 +77,22 @@ const PagePesanan = () => {
     <div className="flex min-h-screen">
       <Sidebar />
       <div className="flex-1 p-4 max-w-4xl ml-auto mr-10">
-        <div className="flex mb-4 items-center">
-          <input
-            type="text"
-            placeholder="Cari Pesanan..."
-            className="border-2 border-gray-800 p-2 rounded-lg w-1/3"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
+        <div className="flex mb-4 items-center gap-2">
+          <div className="relative w-1/3">
+            <input
+              type="text"
+              placeholder="Cari Pesanan..."
+              className="border-2 border-gray-800 p-2 pl-10 rounded-lg w-full"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            <FaSearch className="absolute left-3 top-3 text-gray-500" />
+          </div>
           <button
-            className="bg-green-500 text-white p-2 rounded-lg hover:bg-green-600 ml-auto flex items-center" // `ml-auto` untuk memindahkan ke kanan
+            className="bg-green-500 text-white p-2 rounded-lg hover:bg-green-600 ml-auto flex items-center"
             onClick={() => navigate("/tambah-pesanan")}
           >
-            <FaPlus className="mr-2" /> {/* Menambahkan ikon di kiri */}
-            Tambah Pesanan
+            <FaPlus className="mr-5 ml-5" />
           </button>
         </div>
         <div className="overflow-x-auto">
@@ -114,19 +115,21 @@ const PagePesanan = () => {
                   <td className="border-2 border-gray-800 p-2">{item.jumlah}</td>
                   <td className="border-2 border-gray-800 p-2">{item.harga}</td>
                   <td className="border-2 border-gray-800 p-2">{item.kondisi}</td>
-                  <td className="border-2 border-gray-800 p-2 space-x-2">
-                    <button
-                      className="bg-yellow-500 text-white px-2 py-1 rounded-lg hover:bg-yellow-600"
-                      onClick={() => navigate(`/edit-pesanan/${item.id}`)}
-                    >
-                      Edit
-                    </button>
-                    <button
-                      className="bg-red-500 text-white px-2 py-1 rounded-lg hover:bg-red-600"
-                      onClick={() => handleDelete(item.id)}
-                    >
-                      Hapus
-                    </button>
+                  <td className="border-2 border-gray-800 p-2">
+                    <div className="flex justify-center gap-2">
+                      <button
+                        className="bg-yellow-500 text-white px-2 py-1 rounded-lg hover:bg-yellow-600 flex items-center"
+                        onClick={() => navigate(`/edit-pesanan/${item.id}`)}
+                      >
+                        <FaEdit />
+                      </button>
+                      <button
+                        className="bg-red-500 text-white px-2 py-1 rounded-lg hover:bg-red-600 flex items-center"
+                        onClick={() => handleDelete(item.id)}
+                      >
+                        <FaTrash />
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}

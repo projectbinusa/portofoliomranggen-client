@@ -3,7 +3,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
 import Swal from "sweetalert2"; // Notifikasi
-import Sidebar from "../components/Sidebar";
 
 const EditPesanan = () => {
   const { id } = useParams();
