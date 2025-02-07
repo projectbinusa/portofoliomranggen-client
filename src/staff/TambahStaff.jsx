@@ -100,7 +100,7 @@ const TambahStaff = () => {
       <div className="w-64">
         <Sidebar />
       </div>
-      <div className="flex-1 p-8 ml-4">
+      <div className="flex-1 p-8 ml-4">  
         <h2 className="text-2xl font-semibold mb-6 text-gray-800">Tambah Staff</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           {[

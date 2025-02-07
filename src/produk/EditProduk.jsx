@@ -137,7 +137,7 @@ const EditProduk = () => {
   return (
     <div className="flex min-h-screen">
       <Sidebar />
-      <div className="flex-1 p-6 ml-64 pb-10">
+      <div className="flex-1 p-8 ml-64 mt-10">
         <h2 className="text-2xl font-semibold mb-6 text-gray-800">Edit Produk</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           {[{
