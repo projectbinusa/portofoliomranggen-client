@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Sidebar from "../components/Sidebar";
 import Swal from "sweetalert2";
-import { API_KEGIATAN } from "../utils/BaseUrl"; // Ensure the correct base URL is imported
+import Sidebar from "../components/Sidebar";
+import { API_KEGIATAN } from "../utils/BaseUrl";
 
 const TambahKegiatan = () => {
+  const navigate = useNavigate();
+  const idAdmin = localStorage.getItem("adminId") || "";
+
   const [kegiatan, setKegiatan] = useState({
     nama: "",
     deskripsi: "",
@@ -13,8 +16,6 @@ const TambahKegiatan = () => {
     penanggungJawab: "",
     hasil: "",
   });
-
-  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -27,73 +28,72 @@ const TambahKegiatan = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!idAdmin) {
+      Swal.fire("Error", "ID Admin tidak ditemukan!", "error");
+      return;
+    }
+
+    if (Object.values(kegiatan).some((value) => !value.trim())) {
+      Swal.fire("Error", "Semua kolom harus diisi!", "error");
+      return;
+    }
+
     try {
       const response = await fetch(`${API_KEGIATAN}/tambah`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(kegiatan),
       });
 
       const data = await response.json();
-      if (response.ok) {
-        // If the response is successful
-        Swal.fire("Sukses", "Data kegiatan berhasil ditambahkan!", "success");
-        setTimeout(() => navigate("/kegiatan-sekolah"), 1000); // Navigate after 1 second
-      } else {
-        // If response is not ok (status code other than 2xx)
-        throw new Error(data.message || "Gagal menambahkan data kegiatan");
-      }
+      if (!response.ok) throw new Error(data.message || "Gagal menambahkan kegiatan");
+
+      Swal.fire("Sukses", "Data kegiatan berhasil ditambahkan!", "success");
+      setTimeout(() => navigate("/kegiatan-sekolah"), 1000);
     } catch (error) {
-      // Show error if any
       Swal.fire("Error", error.message, "error");
     }
   };
 
   return (
-    <div className="flex">
-      <div className="w-64">
-        <Sidebar />
-      </div>
-      <div className="flex-1 p-8 ml-4">
-        <h2 className="text-2xl font-semibold mb-6 text-gray-800">Tambah Kegiatan Sekolah</h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {[ 
-            { label: "Nama Kegiatan", name: "nama", type: "text" },
-            { label: "Deskripsi", name: "deskripsi", type: "text" },
-            { label: "Tingkat", name: "tingkat", type: "text" },
-            { label: "Penyelenggara", name: "penyelenggara", type: "text" },
-            { label: "Penanggung Jawab", name: "penanggungJawab", type: "text" },
-            { label: "Hasil", name: "hasil", type: "text" },
-          ].map((field) => (
-            <div key={field.name} className="flex items-center gap-4">
-              <label className="w-1/5 text-gray-700 font-medium">{field.label}</label>
-              <input
-                type={field.type}
-                name={field.name}
-                value={kegiatan[field.name]}
-                onChange={handleChange}
-                className="w-4/5 border rounded-md p-3 focus:ring-2 focus:ring-blue-500"
-              />
+    <div className="flex h-screen overflow-hidden">
+      <Sidebar />
+      <div className="flex-1 flex items-center justify-center p-4">
+        <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-lg border border-gray-300">
+          <h2 className="text-xl font-bold mb-4 text-left">Tambah Kegiatan Sekolah</h2>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {Object.keys(kegiatan).map((key) => (
+              <div key={key} className="flex flex-col">
+                 <label className="w-1/3 text-gray-700 text-sm font-medium text-left capitalize">
+                  {key.replace(/([A-Z])/g, " $1").trim()}
+                </label>
+                <input
+                  type="text"
+                  name={key}
+                  value={kegiatan[key]}
+                  onChange={handleChange}
+                  placeholder={`Masukkan ${key.replace(/([A-Z])/g, " $1").trim()}`}
+                  className="p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+            ))}
+            <div className="flex justify-end space-x-2 mt-4">
+              <button
+                type="button"
+                onClick={() => navigate("/kegiatan-sekolah")}
+                className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition"
+              >
+                Batal
+              </button>
+              <button
+                type="submit"
+                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
+              >
+                Simpan
+              </button>
             </div>
-          ))}
-          <div className="flex justify-end gap-4 mt-6">
-            <button
-              type="button"
-              className="text-black font-semibold hover:underline"
-              onClick={() => navigate("/kegiatan-sekolah")}
-            >
-              Batal
-            </button>
-            <button
-              type="submit"
-              className="bg-green-600 text-white font-semibold px-6 py-2 rounded-lg hover:bg-green-700 transition"
-            >
-              Simpan
-            </button>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
     </div>
   );
