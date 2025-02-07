@@ -27,13 +27,13 @@ import TambahProduk from "./produk/TambahProduk";
 import EditProduk from "./produk/EditProduk";
 import EditPesanan from "./pesanan/EditPesanan";
 import PagePesanan from "./pesanan/PagePesanan";
-
-import DaftarBuku from "./buku/DaftarBuku";
+import DaftarBuku from "./buku/Daftarbuku";
 import TambahBuku from "./buku/TambahBuku";
 import EditBuku from "./buku/EditBuku";
-
 import User from "./user/User";
-
+import Uang from "./keuangan/Uang";
+import TambahUang from "./keuangan/TambahUang";
+import EditUang from "./keuangan/EditUang";
 import "./App.css";
 
 function App() {
@@ -82,6 +82,10 @@ function App() {
         <Route path="/edit-buku/:id" element={<EditBuku />} />
 
         <Route path="/user" element={<User />} />
+
+        <Route path="/uang" element={<Uang />} />
+        <Route path="/tambah-uang" element={<TambahUang />} />
+        <Route path="/edit-uang/:id" element={<EditUang />} />
 
 
       </Routes>

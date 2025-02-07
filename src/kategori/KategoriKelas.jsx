@@ -40,7 +40,7 @@ const KategoriKelas = () => {
     <div className="flex">
       <Sidebar />
 
-      <div className="ml-64 p-6 flex-1">
+      <div className="ml-48 p-6 flex-1">
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-xl font-semibold">Kategori Kelas</h1>
           <button

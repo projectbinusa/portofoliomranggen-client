@@ -12,6 +12,7 @@ const TambahProduk = () => {
     harga: "",
   });
 
+  const [foto, setFoto] = useState(null); // State untuk foto
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -21,32 +22,30 @@ const TambahProduk = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!produk.nama || !produk.deskripsi || !produk.kondisi || !produk.harga) {
+    // Validasi jika foto tidak dipilih
+    if (!produk.nama || !produk.deskripsi || !produk.kondisi || !produk.harga || !foto) {
       Swal.fire({
         title: "Gagal!",
-        text: "Semua field harus diisi.",
+        text: "Semua field dan foto harus diisi.",
         icon: "error",
         confirmButtonText: "Ok",
       });
       return;
     }
 
-    const produkDTO = {
-      nama: produk.nama,
-      deskripsi: produk.deskripsi,
-      kondisi: produk.kondisi,
-      harga: produk.harga,
-    };
-
-    console.log("Payload yang dikirim:", produkDTO);
+    // Membuat FormData untuk mengirim data termasuk file
+    const formData = new FormData();
+    formData.append("nama", produk.nama);
+    formData.append("deskripsi", produk.deskripsi);
+    formData.append("kondisi", produk.kondisi);
+    formData.append("harga", produk.harga);
+    formData.append("foto", foto); // Menambahkan file foto
 
     try {
+      // Kirim data ke API
       const response = await fetch(`${API_PRODUK}/tambah`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(produkDTO),
+        body: formData, // Mengirim FormData yang berisi data dan foto
       });
 
       if (!response.ok) {
@@ -82,7 +81,7 @@ const TambahProduk = () => {
       <div className="w-64">
         <Sidebar />
       </div>
-      <div className="flex-1 p-8 ml-4">
+      <div className="flex-1 p-8 ml-4 mt-10">
         <h2 className="text-2xl font-semibold mb-6 text-gray-800">Tambah Produk</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           {[ 
@@ -98,9 +97,23 @@ const TambahProduk = () => {
                 name={field.name}
                 value={produk[field.name]}
                 onChange={handleChange}
-                className="w-4/5 border rounded-md p-3 focus:ring-2 focus:ring-blue-500"/>
+                className="w-4/5 border rounded-md p-3 focus:ring-2 focus:ring-blue-500"
+              />
             </div>
           ))}
+
+          {/* Input untuk foto produk */}
+          <div className="flex items-center gap-4">
+            <label className="w-1/5 text-gray-700 font-medium">Foto Produk</label>
+            <input
+              type="file"
+              name="foto"
+              accept="image/*"
+              onChange={(e) => setFoto(e.target.files[0])}
+              className="w-4/5 border rounded-md p-3"
+            />
+          </div>
+
           <div className="flex justify-end gap-4 mt-6">
             <button
               type="button"
@@ -110,8 +123,7 @@ const TambahProduk = () => {
             </button>
             <button
               type="submit"
-              className="bg-green-600 text-white font-semibold px-6 py-2
-               rounded-lg hover:bg-green-700 transition">
+              className="bg-green-600 text-white font-semibold px-6 py-2 rounded-lg hover:bg-green-700 transition">
               Simpan
             </button>
           </div>
