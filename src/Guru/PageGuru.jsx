@@ -95,7 +95,7 @@ const PageGuru = () => {
           </div>
 
           {/* Tabel Daftar Guru dengan border hitam */}
-          <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+          <div className="relative overflow-x-auto shadow-md">
             <table className="w-full text-sm text-left text-gray-700 border border-gray-400">
             <thead className="text-xs font-bold uppercase bg-gray-200 border-b border-gray-500">
               <tr>
