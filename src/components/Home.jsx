@@ -15,7 +15,7 @@ const Home = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-[#06b492] to-blue-500 flex flex-col items-center p-8">
+    <div className="min-h-screen w-full bg-gradient-to-br from-[#00b894] to-[#0984e3] flex flex-col items-center p-8">
       <motion.h1
         className="text-6xl font-extrabold mb-8 text-white drop-shadow-lg text-center"
         initial={{ opacity: 0, y: -20 }}
