@@ -27,7 +27,13 @@ import TambahProduk from "./produk/TambahProduk";
 import EditProduk from "./produk/EditProduk";
 import EditPesanan from "./pesanan/EditPesanan";
 import PagePesanan from "./pesanan/PagePesanan";
+
+import DaftarBuku from "./buku/DaftarBuku";
+import TambahBuku from "./buku/TambahBuku";
+import EditBuku from "./buku/EditBuku";
+
 import User from "./user/User";
+
 import "./App.css";
 
 function App() {
@@ -62,16 +68,21 @@ function App() {
         <Route path="/edit-pesanan/:id" element={<EditPesanan />} />
         <Route path="/tambah-pesanan" element={<TambahPesanan />} />
 
-
         <Route path="/produk" element={<ProdukList />} />
         <Route path="/tambah-produk" element={<TambahProduk />} />
-        <Route path="/edit-produk" element={<EditProduk />} />
+        <Route path="/edit-produk/:id" element={<EditProduk />} />
 
         <Route path="/kegiatan-sekolah" element={<KegiatanSekolah />} />
         <Route path="/tambah-kegiatan" element={<TambahKegiatan />} />
         <Route path="/edit-kegiatan/:id" element={<EditKegiatan />} />
 
+
+        <Route path="/buku" element={<DaftarBuku />} />
+        <Route path="/tambah-buku" element={<TambahBuku />} />
+        <Route path="/edit-buku/:id" element={<EditBuku />} />
+
         <Route path="/user" element={<User />} />
+
 
       </Routes>
     </Router>

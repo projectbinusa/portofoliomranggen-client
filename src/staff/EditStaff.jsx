@@ -120,8 +120,7 @@ const EditStaff = () => {
             <button
               type="submit"
               className="bg-green-600 text-white font-semibold px-6 py-2
-               rounded-lg hover:bg-green-700 transition"
-            >
+               rounded-lg hover:bg-green-700 transition">
               Simpan
             </button>
           </div>

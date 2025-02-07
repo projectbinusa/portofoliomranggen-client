@@ -80,8 +80,8 @@ const DaftarStaff = () => {
           <h1 className="text-xl font-semibold">Daftar Staff</h1>
           <button
             onClick={() => navigate("/tambah-staff")}
-            className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition"
-          >
+            className="bg-green-500 text-white px-4 py-2
+             rounded-md hover:bg-green-600 transition">
             Tambah Staff
           </button>
         </div>
@@ -98,7 +98,7 @@ const DaftarStaff = () => {
         </div>
 
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-          <table className="w-full text-sm text-left text-gray-700 border border-gray-400">
+          <table className="w-full text-sm text-left text-gray-700 border border-gray-500">
             <thead className="text-xs uppercase bg-gray-200 border-b-2 border-gray-500">
               <tr>
                 <th className="px-6 py-3 border border-gray-500 text-center">No</th>
@@ -124,7 +124,8 @@ const DaftarStaff = () => {
                   <td className="px-6 py-4 border border-gray-400">{formatDateDisplay(staff.awalBekerja)}</td>
                   <td className="px-6 py-4 border border-gray-400">{staff.lamaKerja}</td>
                   <td className="px-6 py-4 border border-gray-400">{formatDateDisplay(staff.createDate)}</td>
-                  <td className="px-6 py-4 flex gap-3 border border-gray-400">
+                  <td className="px-6 py-7 flex gap-3">
+                    
                     <button
                       onClick={() => handleEdit(staff.id)}
                       className="flex items-center gap-2 bg-blue-500

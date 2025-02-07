@@ -14,7 +14,7 @@ const KategoriKelas = () => {
   const navigate = useNavigate();
 
   const handleEdit = (id) => {
-    navigate(`/edit-kategori/:id`);
+    navigate(`/edit-kategori`);
   };
 
   const handleDelete = (id) => {
@@ -57,7 +57,7 @@ const KategoriKelas = () => {
               <tr>
                 <th className="px-6 py-3 border-r border-gray-400 text-center">No</th>
                 <th className="px-6 py-3 border-r border-gray-400 text-center">Kelas</th>
-                <th className="px-2 py-1 text-center">Aksi</th>
+                <th className="px-6 py-3">Aksi</th>
               </tr>
             </thead>
             <tbody>
@@ -72,7 +72,7 @@ const KategoriKelas = () => {
                   <td className="px-6 py-4 font-medium border-r border-gray-400">
                     {kelas.nama}
                   </td>
-                  <td className="px-6 py-7 flex gap-3">
+                  <td className="px-6 py-4 flex gap-3">
                     <button
                       onClick={() => handleEdit(kelas.id)}
                       className="flex items-center gap-2 bg-blue-500 text-white px-3 py-1
