@@ -27,6 +27,7 @@ import TambahProduk from "./produk/TambahProduk";
 import EditProduk from "./produk/EditProduk";
 import EditPesanan from "./pesanan/EditPesanan";
 import PagePesanan from "./pesanan/PagePesanan";
+import User from "./user/User";
 import "./App.css";
 
 function App() {
@@ -69,6 +70,8 @@ function App() {
         <Route path="/kegiatan-sekolah" element={<KegiatanSekolah />} />
         <Route path="/tambah-kegiatan" element={<TambahKegiatan />} />
         <Route path="/edit-kegiatan/:id" element={<EditKegiatan />} />
+
+        <Route path="/user" element={<User />} />
 
       </Routes>
     </Router>

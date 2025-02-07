@@ -1,14 +1,15 @@
 import { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
 import Swal from "sweetalert2";
-import Sidebar from "../components/Sidebar"; // Pastikan path ini sesuai dengan lokasi Sidebar Anda
+import axios from "axios";
+import Sidebar from "../components/Sidebar";
+import { API_ORGANISASI } from "../utils/BaseUrl";
+import { useParams, useNavigate } from "react-router-dom";
 
-function EditOrganisasi({ organisasiList, setOrganisasiList }) {
+const EditOrganisasi = () => {
+  const { id } = useParams(); // Get organization ID from URL
   const navigate = useNavigate();
-  const location = useLocation();
-  const { organisasi, index } = location.state || {}; // Ambil data dari state
 
-  const [editedOrganisasi, setEditedOrganisasi] = useState({
+  const [organisasi, setOrganisasi] = useState({
     namaOrganisasi: "",
     lokasi: "",
     email: "",
@@ -16,96 +17,111 @@ function EditOrganisasi({ organisasiList, setOrganisasiList }) {
   });
 
   useEffect(() => {
-    if (organisasi) {
-      setEditedOrganisasi(organisasi); // Set form dengan data organisasi yang ingin diedit
-    }
-  }, [organisasi]);
+    const fetchOrganisasi = async () => {
+      try {
+        const response = await axios.get(`${API_ORGANISASI}/getById/${id}`);
+        if (response.status === 200) {
+          setOrganisasi(response.data); // Set form with existing organization data
+        } else {
+          Swal.fire({
+            title: "Not Found",
+            text: "Organisasi dengan ID tersebut tidak ditemukan.",
+            icon: "error",
+            confirmButtonText: "Ok",
+          });
+        }
+      } catch (error) {
+        console.error("Error fetching organization data:", error);
+        Swal.fire({
+          title: "Error",
+          text: "Terjadi kesalahan saat mengambil data organisasi.",
+          icon: "error",
+          confirmButtonText: "Ok",
+        });
+      }
+    };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setEditedOrganisasi((prev) => ({ ...prev, [name]: value }));
+    if (id) {
+      fetchOrganisasi();
+    }
+  }, [id]);
+
+  const handleChange = (e) => {
+    setOrganisasi({ ...organisasi, [e.target.name]: e.target.value });
   };
 
-  const handleUpdateOrganisasi = () => {
-    if (Object.values(editedOrganisasi).some((value) => value.trim() === "")) {
-      Swal.fire({ icon: "warning", title: "Semua data harus diisi!" });
-      return;
-    }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-    if (organisasiList && setOrganisasiList) {
-      const updatedOrganisasi = [...organisasiList];
-      updatedOrganisasi[index] = editedOrganisasi; // Update organisasi yang sudah ada
-      setOrganisasiList(updatedOrganisasi);
-    }
-
-    Swal.fire({ icon: "success", title: "Data berhasil diperbarui!" }).then(
-      () => {
-        navigate("/organisasi");
+    try {
+      const response = await axios.put(`${API_ORGANISASI}/editById/${id}`, organisasi);
+      if (response.status === 200) {
+        Swal.fire({
+          title: "Sukses!",
+          text: "Data organisasi berhasil diperbarui.",
+          icon: "success",
+          confirmButtonText: "Ok",
+        }).then(() => {
+          navigate("/organisasi"); // Redirect to organization list page
+        });
+      } else {
+        throw new Error("Gagal mengedit organisasi");
       }
-    );
+    } catch (error) {
+      console.error("Error:", error);
+      Swal.fire({
+        title: "Gagal!",
+        text: "Terjadi kesalahan saat mengedit data organisasi.",
+        icon: "error",
+        confirmButtonText: "Ok",
+      });
+    }
   };
 
   return (
     <div className="flex">
-      <Sidebar /> {/* Menambahkan Sidebar di sini */}
-      <div className="flex-1 p-6">
-        <div className="max-w-lg mx-auto bg-white shadow-lg rounded-lg p-6">
-          <h1 className="text-2xl font-semibold text-gray-700 text-center mb-4">
-            Edit Organisasi
-          </h1>
-          <div className="grid grid-cols-1 gap-4">
-            <input
-              type="text"
-              name="namaOrganisasi"
-              value={editedOrganisasi.namaOrganisasi}
-              onChange={handleInputChange}
-              placeholder="Nama Organisasi"
-              className="w-full p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-            <input
-              type="text"
-              name="lokasi"
-              value={editedOrganisasi.lokasi}
-              onChange={handleInputChange}
-              placeholder="Lokasi"
-              className="w-full p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-            <input
-              type="email"
-              name="email"
-              value={editedOrganisasi.email}
-              onChange={handleInputChange}
-              placeholder="Email"
-              className="w-full p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-            <input
-              type="tel"
-              name="telepon"
-              value={editedOrganisasi.telepon}
-              onChange={handleInputChange}
-              placeholder="Telepon"
-              className="w-full p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-
-            <div className="flex gap-4">
-              <button
-                onClick={handleUpdateOrganisasi}
-                className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition"
-              >
-                Simpan Perubahan
-              </button>
-              <button
-                onClick={() => navigate("/organisasi")}
-                className="w-full bg-gray-500 text-white py-3 rounded-lg hover:bg-gray-600 transition"
-              >
-                Batal
-              </button>
+      <div className="w-64">
+        <Sidebar />
+      </div>
+      <div className="flex-1 p-8 ml-4">
+        <h2 className="text-2xl font-semibold mb-6 text-gray-800">Edit Organisasi</h2>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {[
+            { label: "Nama Organisasi", name: "namaOrganisasi", type: "text" },
+            { label: "Lokasi", name: "lokasi", type: "text" },
+            { label: "Email", name: "email", type: "email" },
+            { label: "Telepon", name: "telepon", type: "tel" },
+          ].map((field) => (
+            <div key={field.name} className="flex items-center gap-4">
+              <label className="w-1/5 text-gray-700 font-medium">{field.label}</label>
+              <input
+                type={field.type}
+                name={field.name}
+                value={organisasi[field.name]}
+                onChange={handleChange}
+                className="w-4/5 border rounded-md p-3 focus:ring-2 focus:ring-blue-500"
+              />
             </div>
+          ))}
+          <div className="flex justify-end gap-4 mt-6">
+            <button
+              type="button"
+              className="text-black font-semibold hover:underline"
+              onClick={() => navigate("/organisasi")}
+            >
+              Batal
+            </button>
+            <button
+              type="submit"
+              className="bg-green-600 text-white font-semibold px-6 py-2 rounded-lg hover:bg-green-700 transition"
+            >
+              Simpan
+            </button>
           </div>
-        </div>
+        </form>
       </div>
     </div>
   );
-}
+};
 
 export default EditOrganisasi;

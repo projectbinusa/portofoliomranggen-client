@@ -1,19 +1,17 @@
 import { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
 import Swal from "sweetalert2";
+import axios from "axios";
 import Sidebar from "../components/Sidebar";
 import { API_SISWA } from "../utils/BaseUrl";
+import { useParams, useNavigate } from "react-router-dom";
 
-function EditSiswa() {
+const EditSiswa = () => {
+  const { id } = useParams();
   const navigate = useNavigate();
-  const location = useLocation();
-  const { student } = location.state || {}; // Ambil data dari state atau default {}
-
-  const [editedStudent, setEditedStudent] = useState({
-    id: "",
+  const [student, setStudent] = useState({
     nama: "",
     nisn: "",
-    tempatTinggal: "",
+    alamat: "",
     namaOrangtua: "",
     nomerHpOrangtua: "",
     nomerHp: "",
@@ -21,101 +19,116 @@ function EditSiswa() {
   });
 
   useEffect(() => {
-    if (student) {
-      console.log("Student data received:", student);
-      setEditedStudent((prev) => ({ ...prev, ...student }));
-    }
-  }, [student]);
+    const fetchStudent = async () => {
+      try {
+        const response = await axios.get(`${API_SISWA}/getById/${id}`);
+        if (response.status === 200) {
+          const data = response.data;
+          console.log("Data Siswa diterima: ", data);
+          setStudent(data);
+        } else {
+          Swal.fire({
+            title: "Not Found",
+            text: "Siswa dengan ID tersebut tidak ditemukan.",
+            icon: "error",
+            confirmButtonText: "Ok",
+          });
+        }
+      } catch (error) {
+        console.error("Error fetching student data:", error);
+        Swal.fire({
+          title: "Error",
+          text: "Terjadi kesalahan saat mengambil data siswa.",
+          icon: "error",
+          confirmButtonText: "Ok",
+        });
+      }
+    };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setEditedStudent((prev) => ({ ...prev, [name]: value }));
+    if (id) {
+      fetchStudent();
+    }
+  }, [id]);
+
+  const handleChange = (e) => {
+    setStudent({ ...student, [e.target.name]: e.target.value });
   };
 
-  const handleUpdateStudent = async () => {
-    if (!editedStudent.id) {
-      Swal.fire({
-        icon: "error",
-        title: "Data tidak valid!",
-        text: "ID siswa tidak ditemukan.",
-      });
-      return;
-    }
-
-    // Cek jika ada input yang kosong (khusus untuk string, agar tidak error di number)
-    if (Object.entries(editedStudent).some(([key, value]) => key !== "id" && value === "")) {
-      Swal.fire({ icon: "warning", title: "Semua data harus diisi!" });
-      return;
-    }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
     try {
-      const response = await fetch(`${API_SISWA}/editById/${editedStudent.id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...editedStudent,
-          nisn: editedStudent.nisn ? Number(editedStudent.nisn) : null,
-          nomerHp: editedStudent.nomerHp ? Number(editedStudent.nomerHp) : null,
-          nomerHpOrangtua: editedStudent.nomerHpOrangtua ? Number(editedStudent.nomerHpOrangtua) : null,
-        }),
-      });
-
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.message || "Gagal memperbarui data");
-
-      Swal.fire({ icon: "success", title: "Data berhasil diperbarui!" }).then(() => {
-        navigate("/siswa");
-      });
+      const response = await axios.put(`${API_SISWA}/editById/${id}`, student);
+      if (response.status === 200) {
+        Swal.fire({
+          title: "Sukses!",
+          text: "Data siswa berhasil diperbarui.",
+          icon: "success",
+          confirmButtonText: "Ok",
+        }).then(() => {
+          navigate("/siswa");
+        });
+      } else {
+        throw new Error("Gagal mengedit siswa");
+      }
     } catch (error) {
-      Swal.fire({ icon: "error", title: "Gagal memperbarui data", text: error.message });
+      console.error("Error:", error);
+      Swal.fire({
+        title: "Gagal!",
+        text: "Terjadi kesalahan saat mengedit data siswa.",
+        icon: "error",
+        confirmButtonText: "Ok",
+      });
     }
   };
 
   return (
     <div className="flex">
-      <Sidebar />
-      <div className="flex-1 p-4">
-        <div className="max-w-xl mx-auto bg-white shadow-lg rounded-lg p-4">
-          <h1 className="text-2xl font-semibold text-gray-700 text-center mb-4">Edit Siswa</h1>
-          <div className="space-y-4">
-            {[
-              { name: "nama", type: "text", placeholder: "Nama" },
-              { name: "nisn", type: "number", placeholder: "NISN" },
-              { name: "tempatTinggal", type: "text", placeholder: "Tempat Tinggal" },
-              { name: "namaOrangtua", type: "text", placeholder: "Nama Orang Tua" },
-              { name: "nomerHpOrangtua", type: "number", placeholder: "Nomor HP Orang Tua" },
-              { name: "nomerHp", type: "number", placeholder: "Nomor HP" },
-              { name: "tanggalLahir", type: "date", placeholder: "Tanggal Lahir" },
-            ].map((field) => (
+      <div className="w-64">
+        <Sidebar />
+      </div>
+      <div className="flex-1 p-8 ml-4">
+        <h2 className="text-2xl font-semibold mb-6 text-gray-800">Edit Siswa</h2>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {[
+            { label: "Nama", name: "nama", type: "text" },
+            { label: "NISN", name: "nisn", type: "text" },
+            { label: "Alamat", name: "alamat", type: "text" },
+            { label: "Nama Orangtua", name: "namaOrangtua", type: "text" },
+            { label: "Nomor HP Orangtua", name: "nomerHpOrangtua", type: "text" },
+            { label: "Nomor HP", name: "nomerHp", type: "text" },
+            { label: "Tanggal Lahir", name: "tanggalLahir", type: "date" },
+          ].map((field) => (
+            <div key={field.name} className="flex items-center gap-4">
+              <label className="w-1/5 text-gray-700 font-medium">{field.label}</label>
               <input
-                key={field.name}
                 type={field.type}
                 name={field.name}
-                value={editedStudent[field.name] || ""}
-                onChange={handleInputChange}
-                placeholder={field.placeholder}
-                className="w-full p-2 border-2 border-gray-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                value={student[field.name]}
+                onChange={handleChange}
+                className="w-4/5 border rounded-md p-3 focus:ring-2 focus:ring-blue-500"
               />
-            ))}
-            <div className="flex gap-4">
-              <button
-                onClick={handleUpdateStudent}
-                className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
-              >
-                Simpan Perubahan
-              </button>
-              <button
-                onClick={() => navigate("/siswa")}
-                className="w-full bg-gray-500 text-white py-2 rounded-lg hover:bg-gray-600 transition"
-              >
-                Batal
-              </button>
             </div>
+          ))}
+          <div className="flex justify-end gap-4 mt-6">
+            <button
+              type="button"
+              className="text-black font-semibold hover:underline"
+              onClick={() => navigate("/siswa")}
+            >
+              Batal
+            </button>
+            <button
+              type="submit"
+              className="bg-green-600 text-white font-semibold px-6 py-2 rounded-lg hover:bg-green-700 transition"
+            >
+              Simpan
+            </button>
           </div>
-        </div>
+        </form>
       </div>
     </div>
   );
-}
+};
 
 export default EditSiswa;
