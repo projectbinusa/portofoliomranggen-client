@@ -3,6 +3,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import PrivateRoute from "./components/PrivateRoute";
 
+import Dashboard from "./tampilan/Dashboard";
 import PageSiswa from "./siswa/PageSiswa";
 import TambahSiswa from "./siswa/TambahSiswa";
 import EditSiswa from "./siswa/EditSiswa";
@@ -48,6 +49,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/dashboard" element={<Dashboard />} />
 
         {/* Rute yang memerlukan autentikasi */}
         <Route
