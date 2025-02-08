@@ -1,4 +1,7 @@
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+// src/App.js
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import PrivateRoute from "./components/PrivateRoute";
 
 import PageSiswa from "./siswa/PageSiswa";
 import TambahSiswa from "./siswa/TambahSiswa";
@@ -27,13 +30,10 @@ import TambahProduk from "./produk/TambahProduk";
 import EditProduk from "./produk/EditProduk";
 import EditPesanan from "./pesanan/EditPesanan";
 import PagePesanan from "./pesanan/PagePesanan";
-
-import DaftarBuku from "./buku/DaftarBuku";
+import DaftarBuku from "./buku/Daftarbuku";
 import TambahBuku from "./buku/TambahBuku";
 import EditBuku from "./buku/EditBuku";
-
 import User from "./user/User";
-import TambahUser from "./user/TambahUser";
 
 import "./App.css";
 import EditUser from "./user/EditUser";
@@ -42,27 +42,8 @@ function App() {
   return (
     <Router>
       <Routes>
+        {/* Rute publik */}
         <Route path="/" element={<Home />} />
-        <Route path="/siswa" element={<PageSiswa />} />
-        <Route path="/tambah-siswa" element={<TambahSiswa />} />
-        <Route path="/edit-siswa/:id" element={<EditSiswa />} />
-
-        <Route path="/guru" element={<PageGuru />} />
-        <Route path="/tambah-guru" element={<TambahGuru />} />
-        <Route path="/edit-guru/:id" element={<EditGuru />} />
-
-        <Route path="/kategori-kelas" element={<KategoriKelas />} />
-        <Route path="/tambah-kategori" element={<TambahKategori />} />
-        <Route path="/edit-kategori/:id" element={<EditKategori />} />
-
-        <Route path="/organisasi" element={<PageOrganisasi />} />
-        <Route path="/tambah-organisasi" element={<TambahOrganisasi />} />
-        <Route path="/edit-organisasi/:id" element={<EditOrganisasi />} />
-
-        <Route path="/staff" element={<DaftarStaff />} />
-        <Route path="/tambah-staff" element={<TambahStaff />} />
-        <Route path="/edit-staff/:id" element={<EditStaff />} />
-
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
@@ -84,8 +65,6 @@ function App() {
         <Route path="/edit-buku/:id" element={<EditBuku />} />
 
         <Route path="/user" element={<User />} />
-        <Route path="/tambah-user" element={<TambahUser />} />
-        <Route path="/edit-user/:id" element={<EditUser />} />
 
 
       </Routes>

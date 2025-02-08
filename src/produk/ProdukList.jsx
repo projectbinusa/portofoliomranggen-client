@@ -90,7 +90,7 @@ const ProductList = () => {
     <div className="flex min-h-screen">
       <Sidebar />
 
-      <div className="flex-1 p-6 ml-64">
+      <div className="ml-48 p-6 flex-1">
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-xl font-semibold">Daftar Produk</h1>
           <button

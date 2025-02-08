@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import Sidebar from "../components/Sidebar";
@@ -38,7 +38,7 @@ const KegiatanSekolah = () => {
             Swal.fire("Dihapus!", "Data kegiatan telah dihapus.", "success");
             setKegiatanSekolah(kegiatanSekolah.filter((kegiatan) => kegiatan.id !== id)); // Update the local list
           })
-          .catch((error) => {
+          .catch(() => {
             Swal.fire("Error", "Gagal menghapus data kegiatan.", "error");
           });
       }
@@ -94,8 +94,8 @@ const KegiatanSekolah = () => {
           </div>
 
           {/* Tabel Daftar Kegiatan */}
-          <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-            <table className="w-full text-sm text-left text-gray-700 border border-black-800">
+          <div className="relative overflow-x-auto shadow-md">
+            <table className="w-full text-sm text-left text-gray-700 border border-black">
               <thead className="text-xs font-bold uppercase bg-gray-200 border-b border-gray-500">
                 <tr>
                   <th className="px-6 py-3 border-r border-gray-800 text-center">No</th>
