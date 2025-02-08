@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useNavigate, Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import {
   HiHome,
@@ -11,11 +11,13 @@ import {
   HiLogout,
   HiShoppingCart,
   HiCalendar,
+  HiMenu,
+  HiX,
 } from "react-icons/hi";
 
 export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(true);
-  const navigate = useNavigate(); // Inisialisasi useNavigate
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     Swal.fire({
@@ -29,9 +31,7 @@ export default function Sidebar() {
       cancelButtonText: "Batal",
     }).then((result) => {
       if (result.isConfirmed) {
-        // Hapus token atau data autentikasi dari localStorage
         localStorage.removeItem("authToken");
-        // Arahkan pengguna ke halaman login menggunakan useNavigate
         navigate("/login", { replace: true });
       }
     });
@@ -41,39 +41,77 @@ export default function Sidebar() {
     <div className="flex h-screen">
       {/* Sidebar */}
       <aside
-        className={`${
-          isOpen ? "translate-x-0" : "-translate-x-full"
-        } fixed top-0 left-0 w-64 h-screen bg-gradient-to-b from-green-500 to-green-700 text-white transition-transform duration-300`}
+        className={`fixed top-0 left-0 h-screen transition-all duration-300 transform bg-gradient-to-b from-green-500 to-green-700 text-white shadow-lg ${
+          isOpen ? "w-64" : "w-20"
+        }`}
       >
-        <div className="p-5 flex justify-center items-center border-b border-green-400">
-          <h1 className="text-2xl font-extrabold tracking-wider text-white text-center">
-            TICKET
+        <div className="relative flex items-center justify-center p-5 border-b border-green-400">
+          <h1
+            className={`text-2xl font-extrabold tracking-wider text-center transition-opacity duration-300 ${
+              isOpen ? "opacity-100" : "opacity-0"
+            }`}
+          >
+            Sidebar Menu
           </h1>
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="absolute -right-4 top-5 bg-green-700 p-2 rounded-full shadow-md hover:bg-green-600 focus:outline-none"
+          >
+            {isOpen ? (
+              <HiX className="w-5 h-5" />
+            ) : (
+              <HiMenu className="w-5 h-5" />
+            )}
+          </button>
         </div>
-        <ul className="mt-4 space-y-2 px-3">
-          <SidebarItem icon={<HiHome />} text="Dashboard" href="/home" />
-          <SidebarItem icon={<HiUser />} text="Guru" href="/guru" />
+        <ul className="mt-4 space-y-2">
           <SidebarItem
+            isOpen={isOpen}
+            icon={<HiHome />}
+            text="Dashboard"
+            to="/home"
+          />
+          <SidebarItem
+            isOpen={isOpen}
+            icon={<HiUser />}
+            text="Guru"
+            to="/guru"
+          />
+          <SidebarItem
+            isOpen={isOpen}
             icon={<HiClipboardList />}
             text="Kategori"
-            href="/kategori-kelas"
+            to="/kategori-kelas"
           />
           <SidebarItem
+            isOpen={isOpen}
             icon={<HiOfficeBuilding />}
             text="Organisasi"
-            href="/organisasi"
+            to="/organisasi"
           />
-          <SidebarItem icon={<HiAcademicCap />} text="Siswa" href="/siswa" />
-          <SidebarItem icon={<HiUsers />} text="Staf" href="/staff" />
           <SidebarItem
+            isOpen={isOpen}
+            icon={<HiAcademicCap />}
+            text="Siswa"
+            to="/siswa"
+          />
+          <SidebarItem
+            isOpen={isOpen}
+            icon={<HiUsers />}
+            text="Staf"
+            to="/staff"
+          />
+          <SidebarItem
+            isOpen={isOpen}
             icon={<HiShoppingCart />}
             text="Pesanan"
-            href="/page-pesanan"
+            to="/page-pesanan"
           />
           <SidebarItem
+            isOpen={isOpen}
             icon={<HiCalendar />}
             text="Kegiatan"
-            href="/kegiatan-sekolah"
+            to="/kegiatan-sekolah"
           />
            <SidebarItem 
            icon={<HiUser />}
@@ -87,25 +125,30 @@ export default function Sidebar() {
               <span className="text-xl">
                 <HiLogout />
               </span>
-              <span>Logout</span>
+              {isOpen && <span>Logout</span>}
             </button>
           </li>
         </ul>
       </aside>
+
+      {/* Placeholder untuk konten utama */}
+      <div className="flex-1 p-10">
+        {/* Konten halaman akan muncul di sini */}
+      </div>
     </div>
   );
 }
 
-function SidebarItem({ icon, text, href }) {
+function SidebarItem({ icon, text, to, isOpen }) {
   return (
     <li>
-      <a
-        href={href}
+      <Link
+        to={to}
         className="flex items-center space-x-3 p-3 rounded-md hover:bg-green-600 transition"
       >
         <span className="text-xl">{icon}</span>
-        <span>{text}</span>
-      </a>
+        {isOpen && <span>{text}</span>}
+      </Link>
     </li>
   );
 }
