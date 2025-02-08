@@ -8,7 +8,7 @@ const API_USER = "http://localhost:4321/api/user";
 
 const TambahUser = () => {
   const navigate = useNavigate();
-  const [user, setUser] = useState({ username: "", password: "" });
+  const [user, setUser] = useState({ username: "", email: "", password: "" });
 
   const handleChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
@@ -16,18 +16,21 @@ const TambahUser = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!user.username || !user.password) {
+    if (!user.username || !user.email || !user.password) {
       Swal.fire("Gagal!", "Semua field harus diisi.", "error");
       return;
     }
 
     try {
-      await axios.post(`${API_USER}/create`, user);
-      Swal.fire("Sukses!", "User berhasil ditambahkan.", "success").then(() => {
-        navigate("/user");
-      });
+      const response = await axios.post(`${API_USER}/register`, user);
+      if (response.status === 201) {
+        Swal.fire("Sukses!", "User berhasil ditambahkan.", "success").then(() => {
+          navigate("/user");
+        });
+      }
     } catch (error) {
-      Swal.fire("Gagal!", "Terjadi kesalahan.", "error");
+      console.error("Error:", error);
+      Swal.fire("Gagal!", error.response?.data || "Terjadi kesalahan.", "error");
     }
   };
 
@@ -44,6 +47,16 @@ const TambahUser = () => {
                 type="text"
                 name="username"
                 value={user.username}
+                onChange={handleChange}
+                className="mt-1 border rounded-md p-2 focus:ring-2 focus:ring-blue-500 w-full"
+              />
+            </div>
+            <div className="flex flex-col">
+              <label className="text-gray-600 font-medium">Email</label>
+              <input
+                type="email"
+                name="email"
+                value={user.email}
                 onChange={handleChange}
                 className="mt-1 border rounded-md p-2 focus:ring-2 focus:ring-blue-500 w-full"
               />

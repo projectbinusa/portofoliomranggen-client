@@ -9,12 +9,12 @@ const API_USER = "http://localhost:4321/api/user";
 const EditUser = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const [user, setUser] = useState({ username: "", password: "" });
+  const [user, setUser] = useState({ username: "", password: "", email: "", role: "" });
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     axios
-      .get(`${API_USER}/${id}`)
+      .get(`${API_USER}/edit/${id}`)
       .then((response) => {
         setUser(response.data);
       })
@@ -32,13 +32,13 @@ const EditUser = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!user.username || !user.password) {
+    if (!user.username || !user.password || !user.email || !user.role) {
       Swal.fire("Gagal!", "Semua field harus diisi.", "error");
       return;
     }
 
     try {
-      await axios.put(`${API_USER}/update/${id}`, user);
+      await axios.put(`${API_USER}/edit/${id}`, user);
       Swal.fire("Sukses!", "Data user berhasil diperbarui.", "success").then(() => {
         navigate("/user");
       });
@@ -69,11 +69,31 @@ const EditUser = () => {
                 />
               </div>
               <div className="flex flex-col">
+                <label className="text-gray-700 font-medium">Email</label>
+                <input
+                  type="email"
+                  name="email"
+                  value={user.email}
+                  onChange={handleChange}
+                  className="mt-1 border rounded-md p-2 w-full"
+                />
+              </div>
+              <div className="flex flex-col">
                 <label className="text-gray-700 font-medium">Password</label>
                 <input
                   type="password"
                   name="password"
                   value={user.password}
+                  onChange={handleChange}
+                  className="mt-1 border rounded-md p-2 w-full"
+                />
+              </div>
+              <div className="flex flex-col">
+                <label className="text-gray-700 font-medium">Role</label>
+                <input
+                  type="text"
+                  name="role"
+                  value={user.role}
                   onChange={handleChange}
                   className="mt-1 border rounded-md p-2 w-full"
                 />
