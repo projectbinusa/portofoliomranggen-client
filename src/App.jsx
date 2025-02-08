@@ -250,6 +250,54 @@ function App() {
             </PrivateRoute>
           }
         />
+        <Route
+          path="/page-pesanan"
+          element={
+            <PrivateRoute>
+              <PagePesanan />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/tambah-pesanan"
+          element={
+            <PrivateRoute>
+              <TambahPesanan />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/edit-pesanan"
+          element={
+            <PrivateRoute>
+              <EditPesanan />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/daftar-buku"
+          element={
+            <PrivateRoute>
+              <DaftarBuku />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/tambah-buku"
+          element={
+            <PrivateRoute>
+              <TambahBuku />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/edit-buku"
+          element={
+            <PrivateRoute>
+              <EditBuku />
+            </PrivateRoute>
+          }
+        />
       </Routes>
     </Router>
   );

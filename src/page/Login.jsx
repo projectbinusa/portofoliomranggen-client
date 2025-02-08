@@ -28,7 +28,7 @@ const Login = () => {
         localStorage.setItem("adminRole", response.data.data.role);
 
         Swal.fire("Success!", "Login berhasil.", "success");
-        navigate("/page-pesanan");
+        navigate("/dashboard");
       }
     } catch (error) {
       Swal.fire(
