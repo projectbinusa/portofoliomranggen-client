@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Pencil, Trash2, Search } from "lucide-react";
+import { FaPlus } from "react-icons/fa";
 import Sidebar from "../components/Sidebar";
 import Swal from "sweetalert2";
 import axios from "axios";
@@ -18,7 +19,7 @@ const ProductList = () => {
         const mappedProducts = response.data.map((product) => ({
           id: product.id,
           name: product.nama,
-          price: product.harga,
+          price: product.harga || 0,
           description: product.deskripsi,
           fotoUrl: product.fotoUrl,
           condition: product.kondisi,
@@ -26,18 +27,12 @@ const ProductList = () => {
         setProducts(mappedProducts);
       } catch (error) {
         console.error("Terjadi kesalahan saat mengambil data produk:", error);
-        Swal.fire({
-          title: "Gagal!",
-          text: "Tidak dapat mengambil data produk.",
-          icon: "error",
-          confirmButtonText: "Ok",
-        });
+        Swal.fire("Gagal!", "Tidak dapat mengambil data produk.", "error");
       }
     };
-  
+
     fetchProducts();
   }, []);
-  
 
   const filteredProducts = products.filter((product) => {
     const searchLower = searchTerm.toLowerCase();
@@ -67,50 +62,39 @@ const ProductList = () => {
       if (result.isConfirmed) {
         try {
           await axios.delete(`${API_PRODUK}/delete/${id}`);
-          Swal.fire({
-            title: "Dihapus!",
-            text: "Produk telah dihapus.",
-            icon: "success",
-            confirmButtonText: "Ok",
-          });
+          Swal.fire("Dihapus!", "Produk telah dihapus.", "success");
           setProducts(products.filter((product) => product.id !== id));
         } catch (error) {
-          Swal.fire({
-            title: "Gagal!",
-            text: "Tidak dapat menghapus produk.",
-            icon: "error",
-            confirmButtonText: "Ok",
-          });
+          Swal.fire("Gagal!", "Tidak dapat menghapus produk.", "error");
         }
       }
     });
-  };  
+  };
 
   return (
     <div className="flex min-h-screen">
       <Sidebar />
 
-      <div className="ml-48 p-6 flex-1">
+      <div className="flex-1 p-6 ml-64">
         <div className="flex justify-between items-center mb-4">
-          <h1 className="text-xl font-semibold">Daftar Produk</h1>
+          <div className="relative flex-1 max-w-md">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" size={18} />
+            <input
+              type="text"
+              placeholder="Cari produk..."
+              className="w-full px-3 py-2 pl-10 pr-4 text-sm border-2 border-gray-600 rounded-md 
+               focus:outline-none focus:ring-2 focus:ring-blue-500"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+
           <button
             onClick={() => navigate("/tambah-produk")}
-            className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition"
-          >
-            Tambah Produk
+            className="flex items-center gap-2 bg-green-500 text-white px-4 py-2
+             rounded-md hover:bg-green-600 transition">
+            <FaPlus size={16} />
           </button>
-        </div>
-
-        <div className="mb-4 relative">
-          <input
-            type="text"
-            placeholder="Cari produk..."
-            className="w-full px-3 py-2 pl-8 pr-4 text-sm border border-gray-400
-             rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-          <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-500" size={16} />
         </div>
 
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -132,10 +116,7 @@ const ProductList = () => {
                   <tr key={product.id} className="bg-white border-b border-gray-400 hover:bg-gray-100">
                     <td className="px-6 py-4 border border-gray-400 text-center">{index + 1}</td>
                     <td className="px-6 py-4 border border-gray-400 text-center">
-                      <img
-                        src={product.fotoUrl}
-                        alt={product.name}
-                        className="w-16 h-16 object-cover rounded-md"/>
+                      <img src={product.fotoUrl} alt={product.name} className="w-16 h-16 object-cover rounded-md" />
                     </td>
                     <td className="px-6 py-4 font-medium border border-gray-400">{product.name}</td>
                     <td className="px-6 py-4 border border-gray-400">{product.description}</td>
@@ -143,11 +124,11 @@ const ProductList = () => {
                     <td className="px-6 py-4 border border-gray-400 text-center">
                       Rp {product.price.toLocaleString()}
                     </td>
-                    <td className="px-6 py-9 flex gap-3 justify-center border">
+                    <td className="px-6 py-4 flex gap-3 justify-center border">
                       <button
                         onClick={() => handleEdit(product.id)}
-                        className="flex items-center gap-2 bg-blue-500
-                         text-white px-3 py-1 rounded-md hover:bg-blue-600 transition">
+                        className="flex items-center gap-2 bg-blue-500 text-white px-3 py-1
+                         rounded-md hover:bg-blue-600 transition">
                         <Pencil size={18} />
                       </button>
                       <button
