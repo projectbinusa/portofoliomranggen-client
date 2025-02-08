@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import Swal from "sweetalert2";
 import {
   HiHome,
@@ -12,8 +13,9 @@ import {
   HiCalendar,
 } from "react-icons/hi";
 
-export default function App() {
+export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(true);
+  const navigate = useNavigate(); // Inisialisasi useNavigate
 
   const handleLogout = () => {
     Swal.fire({
@@ -27,11 +29,14 @@ export default function App() {
       cancelButtonText: "Batal",
     }).then((result) => {
       if (result.isConfirmed) {
-        // Redirect to logout page or clear session
-        window.location.href = "/login";
+        // Hapus token atau data autentikasi dari localStorage
+        localStorage.removeItem("authToken");
+        // Arahkan pengguna ke halaman login menggunakan useNavigate
+        navigate("/login", { replace: true });
       }
     });
   };
+
   return (
     <div className="flex h-screen">
       {/* Sidebar */}

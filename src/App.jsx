@@ -1,4 +1,7 @@
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+// src/App.js
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import PrivateRoute from "./components/PrivateRoute";
 
 import PageSiswa from "./siswa/PageSiswa";
 import TambahSiswa from "./siswa/TambahSiswa";
@@ -34,60 +37,219 @@ import User from "./user/User";
 import Uang from "./keuangan/Uang";
 import TambahUang from "./keuangan/TambahUang";
 import EditUang from "./keuangan/EditUang";
+
 import "./App.css";
 
 function App() {
   return (
     <Router>
       <Routes>
+        {/* Rute publik */}
         <Route path="/" element={<Home />} />
-        <Route path="/siswa" element={<PageSiswa />} />
-        <Route path="/tambah-siswa" element={<TambahSiswa />} />
-        <Route path="/edit-siswa/:id" element={<EditSiswa />} />
-
-        <Route path="/guru" element={<PageGuru />} />
-        <Route path="/tambah-guru" element={<TambahGuru />} />
-        <Route path="/edit-guru/:id" element={<EditGuru />} />
-
-        <Route path="/kategori-kelas" element={<KategoriKelas />} />
-        <Route path="/tambah-kategori" element={<TambahKategori />} />
-        <Route path="/edit-kategori/:id" element={<EditKategori />} />
-
-        <Route path="/organisasi" element={<PageOrganisasi />} />
-        <Route path="/tambah-organisasi" element={<TambahOrganisasi />} />
-        <Route path="/edit-organisasi/:id" element={<EditOrganisasi />} />
-
-        <Route path="/staff" element={<DaftarStaff />} />
-        <Route path="/tambah-staff" element={<TambahStaff />} />
-        <Route path="/edit-staff/:id" element={<EditStaff />} />
-
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
-        <Route path="/page-pesanan" element={<PagePesanan />} />
-        <Route path="/edit-pesanan/:id" element={<EditPesanan />} />
-        <Route path="/tambah-pesanan" element={<TambahPesanan />} />
-
-        <Route path="/produk" element={<ProdukList />} />
-        <Route path="/tambah-produk" element={<TambahProduk />} />
-        <Route path="/edit-produk/:id" element={<EditProduk />} />
-
-        <Route path="/kegiatan-sekolah" element={<KegiatanSekolah />} />
-        <Route path="/tambah-kegiatan" element={<TambahKegiatan />} />
-        <Route path="/edit-kegiatan/:id" element={<EditKegiatan />} />
-
-
-        <Route path="/buku" element={<DaftarBuku />} />
-        <Route path="/tambah-buku" element={<TambahBuku />} />
-        <Route path="/edit-buku/:id" element={<EditBuku />} />
-
-        <Route path="/user" element={<User />} />
-
-        <Route path="/uang" element={<Uang />} />
-        <Route path="/tambah-uang" element={<TambahUang />} />
-        <Route path="/edit-uang/:id" element={<EditUang />} />
-
-
+        {/* Rute yang memerlukan autentikasi */}
+        <Route
+          path="/siswa"
+          element={
+            <PrivateRoute>
+              <PageSiswa />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/tambah-siswa"
+          element={
+            <PrivateRoute>
+              <TambahSiswa />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/edit-siswa/:id"
+          element={
+            <PrivateRoute>
+              <EditSiswa />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/guru"
+          element={
+            <PrivateRoute>
+              <PageGuru />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/tambah-guru"
+          element={
+            <PrivateRoute>
+              <TambahGuru />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/edit-guru/:id"
+          element={
+            <PrivateRoute>
+              <EditGuru />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/kategori-kelas"
+          element={
+            <PrivateRoute>
+              <KategoriKelas />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/tambah-kategori"
+          element={
+            <PrivateRoute>
+              <TambahKategori />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/edit-kategori/:id"
+          element={
+            <PrivateRoute>
+              <EditKategori />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/organisasi"
+          element={
+            <PrivateRoute>
+              <PageOrganisasi />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/tambah-organisasi"
+          element={
+            <PrivateRoute>
+              <TambahOrganisasi />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/edit-organisasi/:id"
+          element={
+            <PrivateRoute>
+              <EditOrganisasi />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/staff"
+          element={
+            <PrivateRoute>
+              <DaftarStaff />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/tambah-staff"
+          element={
+            <PrivateRoute>
+              <TambahStaff />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/edit-staff/:id"
+          element={
+            <PrivateRoute>
+              <EditStaff />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/produk"
+          element={
+            <PrivateRoute>
+              <ProdukList />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/tambah-produk"
+          element={
+            <PrivateRoute>
+              <TambahProduk />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/edit-produk/:id"
+          element={
+            <PrivateRoute>
+              <EditProduk />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/kegiatan-sekolah"
+          element={
+            <PrivateRoute>
+              <KegiatanSekolah />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/tambah-kegiatan"
+          element={
+            <PrivateRoute>
+              <TambahKegiatan />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/edit-kegiatan/:id"
+          element={
+            <PrivateRoute>
+              <EditKegiatan />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/uang"
+          element={
+            <PrivateRoute>
+              <Uang />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/tambah-uang"
+          element={
+            <PrivateRoute>
+              <TambahUang />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/edit-uang/:id"
+          element={
+            <PrivateRoute>
+              <EditUang />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/user"
+          element={
+            <PrivateRoute>
+              <User />
+            </PrivateRoute>
+          }
+        />
       </Routes>
     </Router>
   );
