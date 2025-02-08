@@ -37,7 +37,6 @@ import User from "./user/User";
 
 import "./App.css";
 import EditUser from "./user/EditUser";
-import TambahUser from "./user/TambahUser";
 
 function App() {
   return (
@@ -66,10 +65,6 @@ function App() {
         <Route path="/edit-buku/:id" element={<EditBuku />} />
 
         <Route path="/user" element={<User />} />
-        <Route path="/tambah-user" element={<TambahUser />} />
-        <Route path="/siswa" element={<PageSiswa />} />
-        <Route path="/edit-siswa/:id" element={<EditSiswa />} />
-
 
       </Routes>
     </Router>
