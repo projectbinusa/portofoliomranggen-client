@@ -18,7 +18,7 @@ import TambahStaff from "./staff/TambahStaff";
 import EditStaff from "./staff/EditStaff";
 import Login from "./page/Login";
 import Register from "./page/Register";
-import TambahPesanan from "./page/TambahPesanan";
+import TambahPesanan from "./page/tambahpesanan";
 import VisiMisi from "./page/VisiMisi";
 
 import "./App.css";
