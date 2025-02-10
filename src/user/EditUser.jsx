@@ -9,39 +9,54 @@ const API_USER = "http://localhost:4321/api/user";
 const EditUser = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const [user, setUser] = useState({ username: "", password: "", email: "", role: "" });
+  const [user, setUser] = useState({  username: "", email: "", password: "" });
+  const [originalUser, setOriginalUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    axios
-      .get(`${API_USER}/edit/${id}`)
-      .then((response) => {
+    const fetchUser = async () => {
+      try {
+        const response = await axios.get(`${API_USER}/${id}`);
         setUser(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching user data:", error);
-      })
-      .finally(() => {
+        setOriginalUser(response.data);
+      } catch (error) {
+        console.error("Error fetching user:", error);
+        Swal.fire("Error", "Gagal mengambil data user.", "error");
+      } finally {
         setIsLoading(false);
-      });
+      }
+    };
+    fetchUser();
   }, [id]);
 
   const handleChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
 
+  const isDataChanged = () => {
+    return JSON.stringify(user) !== JSON.stringify(originalUser);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!user.username || !user.password || !user.email || !user.role) {
+    if (!user.username || !user.email || !user.password ) {
       Swal.fire("Gagal!", "Semua field harus diisi.", "error");
       return;
     }
 
+    if (!isDataChanged()) {
+      Swal.fire("Info", "Tidak ada perubahan yang dilakukan.", "info");
+      return;
+    }
+
     try {
-      await axios.put(`${API_USER}/edit/${id}`, user);
-      Swal.fire("Sukses!", "Data user berhasil diperbarui.", "success").then(() => {
-        navigate("/user");
-      });
+      const response = await axios.put(`${API_USER}/edit/${id}`, user);
+
+      if (response.status === 200) {
+        Swal.fire("Sukses!", "Data user berhasil diperbarui.", "success").then(() => {
+          navigate("/user");
+        });
+      }
     } catch (error) {
       console.error("Error updating user:", error);
       Swal.fire("Error", "Gagal memperbarui data.", "error");
@@ -58,46 +73,23 @@ const EditUser = () => {
             <p className="text-center">Loading...</p>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="flex flex-col">
-                <label className="text-gray-700 font-medium">Username</label>
-                <input
-                  type="text"
-                  name="username"
-                  value={user.username}
-                  onChange={handleChange}
-                  className="mt-1 border rounded-md p-2 w-full"
-                />
-              </div>
-              <div className="flex flex-col">
-                <label className="text-gray-700 font-medium">Email</label>
-                <input
-                  type="email"
-                  name="email"
-                  value={user.email}
-                  onChange={handleChange}
-                  className="mt-1 border rounded-md p-2 w-full"
-                />
-              </div>
-              <div className="flex flex-col">
-                <label className="text-gray-700 font-medium">Password</label>
-                <input
-                  type="password"
-                  name="password"
-                  value={user.password}
-                  onChange={handleChange}
-                  className="mt-1 border rounded-md p-2 w-full"
-                />
-              </div>
-              <div className="flex flex-col">
-                <label className="text-gray-700 font-medium">Role</label>
-                <input
-                  type="text"
-                  name="role"
-                  value={user.role}
-                  onChange={handleChange}
-                  className="mt-1 border rounded-md p-2 w-full"
-                />
-              </div>
+              {[
+               
+                { label: "Username", name: "username", type: "text" },
+                { label: "Email", name: "email", type: "email" },
+                { label: "Password", name: "password", type: "password" },
+              ].map(({ label, name, type }) => (
+                <div key={name} className="flex flex-col">
+                  <label className="text-gray-700 font-medium">{label}</label>
+                  <input
+                    type={type}
+                    name={name}
+                    value={user[name]}
+                    onChange={handleChange}
+                    className="mt-1 border rounded-md p-2 w-full"
+                  />
+                </div>
+              ))}
               <div className="flex justify-between mt-4">
                 <button
                   type="button"

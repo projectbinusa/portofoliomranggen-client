@@ -50,13 +50,16 @@ const User = () => {
   };
 
   const filteredUsers = users.filter((user) => {
-    return user.username.toLowerCase().includes(searchTerm.toLowerCase());
+    return (
+      user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.email.toString().includes(searchTerm) ||
+      user.password.toLowerCase().includes(searchTerm.toLowerCase())
+    );
   });
-
   return (
     <div className="flex h-screen bg-gray-100">
       <Sidebar />
-      <div className="flex-1 p-6 ml-64">
+      <div className="flex-1 p-6 ml-40">
         <div className="container mx-auto shadow-lg">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-2xl font-bold text-gray-700">Daftar User</h2>

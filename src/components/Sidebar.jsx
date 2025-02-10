@@ -115,6 +115,14 @@ export default function Sidebar() {
             text="Kegiatan"
             to="/kegiatan-sekolah"
           />
+
+          {/* <SidebarItem
+            isOpen={isOpen}
+            icon={<HiUsers />}
+            text=""
+            to="/user"
+          /> */}
+
           <SidebarItem
             isOpen={isOpen}
             icon={<HiClipboardList />}

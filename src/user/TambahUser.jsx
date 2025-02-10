@@ -8,7 +8,13 @@ const API_USER = "http://localhost:4321/api/user";
 
 const TambahUser = () => {
   const navigate = useNavigate();
-  const [user, setUser] = useState({ username: "", email: "", password: "" });
+  const [user, setUser] = useState({
+    adminId: "",
+    username: "",
+    email: "",
+    password: "",
+    id: 0, // Sesuai dengan curl request
+  });
 
   const handleChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
@@ -16,61 +22,51 @@ const TambahUser = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!user.username || !user.email || !user.password) {
+    if (!user.adminId || !user.username || !user.email || !user.password) {
       Swal.fire("Gagal!", "Semua field harus diisi.", "error");
       return;
     }
 
     try {
-      const response = await axios.post(`${API_USER}/register`, user);
-      if (response.status === 201) {
+      const response = await axios.post(`${API_USER}/tambah`, user);
+      console.log("Response Data:", response.data);
+
+      if (response.status === 200 || response.status === 201) {
         Swal.fire("Sukses!", "User berhasil ditambahkan.", "success").then(() => {
           navigate("/user");
         });
       }
     } catch (error) {
       console.error("Error:", error);
-      Swal.fire("Gagal!", error.response?.data || "Terjadi kesalahan.", "error");
+      console.error("Response Data:", error.response?.data);
+      Swal.fire("Gagal!", error.response?.data?.message || "Terjadi kesalahan di server.", "error");
     }
   };
 
   return (
     <div className="flex h-screen bg-gray-100">
       <Sidebar />
-      <div className="flex-1 flex flex-col justify-center items-center p-6">
-        <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-md">
+      <div className="flex-1 flex flex-col justify-center items-center p-4">
+        <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-lg">
           <h2 className="text-xl font-semibold mb-4 text-gray-800 text-center">Tambah User</h2>
           <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="flex flex-col">
-              <label className="text-gray-600 font-medium">Username</label>
-              <input
-                type="text"
-                name="username"
-                value={user.username}
-                onChange={handleChange}
-                className="mt-1 border rounded-md p-2 focus:ring-2 focus:ring-blue-500 w-full"
-              />
-            </div>
-            <div className="flex flex-col">
-              <label className="text-gray-600 font-medium">Email</label>
-              <input
-                type="email"
-                name="email"
-                value={user.email}
-                onChange={handleChange}
-                className="mt-1 border rounded-md p-2 focus:ring-2 focus:ring-blue-500 w-full"
-              />
-            </div>
-            <div className="flex flex-col">
-              <label className="text-gray-600 font-medium">Password</label>
-              <input
-                type="password"
-                name="password"
-                value={user.password}
-                onChange={handleChange}
-                className="mt-1 border rounded-md p-2 focus:ring-2 focus:ring-blue-500 w-full"
-              />
-            </div>
+            {[
+              { label: "Admin ID", name: "adminId", type: "number" },
+              { label: "Username", name: "username", type: "text" },
+              { label: "Email", name: "email", type: "email" },
+              { label: "Password", name: "password", type: "password" },
+            ].map(({ label, name, type }) => (
+              <div key={name} className="flex flex-col">
+                <label className="text-sm text-gray-600 font-medium">{label}</label>
+                <input
+                  type={type}
+                  name={name}
+                  value={user[name]}
+                  onChange={handleChange}
+                  className="mt-1 border rounded-md p-2 focus:ring-2 focus:ring-blue-500 w-full"
+                />
+              </div>
+            ))}
             <div className="flex justify-between mt-4">
               <button
                 type="button"
