@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import axios from "axios";
-import Sidebar from "../components/Sidebar";
 import { API_STAFF } from "../utils/BaseUrl";
 import { useParams, useNavigate } from "react-router-dom";
 
@@ -82,11 +81,6 @@ const EditStaff = () => {
   };
 
   return (
-    <div className="flex">
-      <div className="w-64">
-        <Sidebar />
-      </div>
-
       <div className="flex-1 p-8 ml-4">
         <h2 className="text-2xl font-semibold mb-6 text-gray-800">Edit Staff</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -126,7 +120,6 @@ const EditStaff = () => {
           </div>
         </form>
       </div>
-    </div>
   );
 };
 

@@ -50,7 +50,7 @@ const DaftarBuku = () => {
   };
 
   const filteredBuku = bukuData.filter((buku) =>
-    `${buku.judulBuku} ${buku.isbn} ${buku.penerbit} ${buku.pengarang}`
+    `${buku.judulBuku} ${buku.penerbit} ${buku.pengarang}`
       .toLowerCase()
       .includes(searchQuery.toLowerCase())
   );
@@ -58,7 +58,7 @@ const DaftarBuku = () => {
   return (
     <div className="flex">
       <Sidebar />
-      <div className="ml-64 p-6 flex-1">
+      <div className="flex-1 p-6 ml-48 pl-4">
         <div className="flex justify-between items-center mb-4">
           <div className="relative w-1/3">
             <Search className="absolute ml-3 text-gray-500 top-3 left-3" size={20} />
@@ -85,12 +85,12 @@ const DaftarBuku = () => {
               <tr>
                 <th className="px-6 py-3 border border-gray-500 text-center">No</th>
                 <th className="px-6 py-3 border border-gray-500 text-center">Judul Buku</th>
-                <th className="px-6 py-3 border border-gray-500 text-center">ISBN</th>
                 <th className="px-6 py-3 border border-gray-500 text-center">Penerbit</th>
                 <th className="px-6 py-3 border border-gray-500 text-center">Pengarang</th>
                 <th className="px-6 py-3 border border-gray-500 text-center">Tahun Terbit</th>
                 <th className="px-6 py-3 border border-gray-500 text-center">Jumlah Halaman</th>
-                <th className="px-6 py-3 border border-gray-500 text-center">Foto</th>
+                <th className="px-6 py-3 border border-gray-500 text-center">Foto Buku (URL)</th>
+                <th className="px-6 py-3 border border-gray-500 text-center">ID Admin</th>
                 <th className="px-6 py-3 border border-gray-500 text-center">Aksi</th>
               </tr>
             </thead>
@@ -99,14 +99,12 @@ const DaftarBuku = () => {
                 <tr key={buku.id} className="bg-white border-b border-gray-400 hover:bg-gray-100">
                   <td className="px-6 py-4 border border-gray-400 text-center">{index + 1}</td>
                   <td className="px-6 py-4 font-medium border border-gray-400">{buku.judulBuku}</td>
-                  <td className="px-6 py-4 border border-gray-400">{buku.isbn}</td>
                   <td className="px-6 py-4 border border-gray-400">{buku.penerbit}</td>
                   <td className="px-6 py-4 border border-gray-400">{buku.pengarang}</td>
                   <td className="px-6 py-4 border border-gray-400 text-center">{buku.tahunTerbit}</td>
                   <td className="px-6 py-4 border border-gray-400 text-center">{buku.jumlahHalaman}</td>
-                  <td className="px-6 py-4 border border-gray-400 text-center">
-                    <img src={buku.fotoUrl} alt={buku.judulBuku} className="w-16 h-20 object-cover mx-auto" />
-                  </td>
+                  <td className="px-6 py-4 border border-gray-400 text-center">{buku.fotoUrl} </td>
+                  <td className="px-6 py-4 border border-gray-400 text-center">{buku.idAdmin}</td>
                   <td className="px-6 py-4 flex justify-center gap-3">
                     <button
                       onClick={() => handleEdit(buku.id)}
