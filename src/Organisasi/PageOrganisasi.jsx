@@ -75,22 +75,22 @@ const PageOrganisasi = () => {
             to="/tambah-organisasi"
             className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition"
           >
-            + Tambah
+             Tambah
           </Link>
         </div>
 
         <div className="relative overflow-x-auto shadow-md rounded-lg">
           <table className="w-full text-sm text-left text-gray-700 border border-gray-300">
-            <thead className="text-xs text-gray-700 uppercase bg-gray-200 text-center">
-              <tr>
-                <th className="px-6 py-3 border border-gray-300">No</th>
-                <th className="px-6 py-3 border border-gray-300">Nama Organisasi</th>
-                <th className="px-6 py-3 border border-gray-300">Lokasi</th>
-                <th className="px-6 py-3 border border-gray-300">Email</th>
-                <th className="px-6 py-3 border border-gray-300">Telepon</th>
-                <th className="px-6 py-3 border border-gray-300">Aksi</th>
-              </tr>
-            </thead>
+          <thead className="text-xs text-gray-700 uppercase bg-gray-200">
+         <tr>
+          <th className="px-6 py-3 border border-gray-300 text-center">No</th>
+          <th className="px-6 py-3 border border-gray-300 text-center">Nama Organisasi</th>
+          <th className="px-6 py-3 border border-gray-300 text-center">Lokasi</th>
+          <th className="px-6 py-3 border border-gray-300 text-center">Email</th>
+          <th className="px-6 py-3 border border-gray-300 text-center">Telepon</th>
+          <th className="px-6 py-3 border border-gray-300 text-center">Aksi</th>
+           </tr>
+          </thead>
 
             <tbody>
               {organisasiList.length > 0 ? (

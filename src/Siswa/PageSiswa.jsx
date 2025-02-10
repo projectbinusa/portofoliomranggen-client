@@ -9,7 +9,6 @@ const API_SISWA = "http://localhost:4321/api/siswa";
 
 const idAdmin = JSON.parse(localStorage.getItem("adminId"));
 
-
 const PageSiswa = () => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
@@ -63,7 +62,7 @@ const PageSiswa = () => {
   return (
     <div className="flex h-screen bg-gray-100">
       <Sidebar />
-      <div className="flex-1 p-6 ml-64">
+      <div className="flex-1 p-6 ml-48 pl-4"> {/* Menambah jarak ke kanan */}
         <div className="container mx-auto shadow-lg">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-2xl font-bold text-gray-700">Daftar Siswa</h2>
@@ -101,8 +100,23 @@ const PageSiswa = () => {
               <table className="w-full text-sm border border-gray-200">
                 <thead className="text-xs text-gray-700 uppercase bg-gray-300">
                   <tr>
-                    {["No", "Nama", "NISN", "Alamat", "Nama Orang Tua", "No HP Orang Tua", "No HP", "Tanggal Lahir", "Aksi"].map((header, index) => (
-                      <th key={index} className="px-6 py-3 border border-gray-300 text-center">{header}</th>
+                    {[
+                      "No",
+                      "Nama",
+                      "NISN",
+                      "Alamat",
+                      "Nama Orang Tua",
+                      "No HP Orang Tua",
+                      "No HP",
+                      "Tanggal Lahir",
+                      "Aksi",
+                    ].map((header, index) => (
+                      <th
+                        key={index}
+                        className="px-6 py-3 border border-gray-300 text-center"
+                      >
+                        {header}
+                      </th>
                     ))}
                   </tr>
                 </thead>
@@ -110,14 +124,30 @@ const PageSiswa = () => {
                   {filteredStudents.length > 0 ? (
                     filteredStudents.map((student, index) => (
                       <tr key={student.id} className="bg-white hover:bg-gray-100">
-                        <td className="px-6 py-3 border border-gray-300 text-center">{index + 1}</td>
-                        <td className="px-6 py-3 border border-gray-300">{student.nama}</td>
-                        <td className="px-6 py-3 border border-gray-300">{student.nisn}</td>
-                        <td className="px-6 py-3 border border-gray-300">{student.alamat}</td>
-                        <td className="px-6 py-3 border border-gray-300">{student.namaOrangtua}</td>
-                        <td className="px-6 py-3 border border-gray-300">{student.nomerHpOrangtua}</td>
-                        <td className="px-6 py-3 border border-gray-300">{student.nomerHp}</td>
-                        <td className="px-6 py-3 border border-gray-300">{student.tanggalLahir}</td>
+                        <td className="px-6 py-3 border border-gray-300 text-center">
+                          {index + 1}
+                        </td>
+                        <td className="px-6 py-3 border border-gray-300">
+                          {student.nama}
+                        </td>
+                        <td className="px-6 py-3 border border-gray-300">
+                          {student.nisn}
+                        </td>
+                        <td className="px-6 py-3 border border-gray-300">
+                          {student.alamat}
+                        </td>
+                        <td className="px-6 py-3 border border-gray-300">
+                          {student.namaOrangtua}
+                        </td>
+                        <td className="px-6 py-3 border border-gray-300">
+                          {student.nomerHpOrangtua}
+                        </td>
+                        <td className="px-6 py-3 border border-gray-300">
+                          {student.nomerHp}
+                        </td>
+                        <td className="px-6 py-3 border border-gray-300">
+                          {student.tanggalLahir}
+                        </td>
                         <td className="px-6 py-3 border border-gray-300 flex justify-center space-x-2">
                           <Link to={`/edit-siswa/${student.id}`}>
                             <button className="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600">
@@ -135,7 +165,9 @@ const PageSiswa = () => {
                     ))
                   ) : (
                     <tr>
-                      <td colSpan="9" className="text-center py-4 text-gray-500">Tidak ada data siswa yang sesuai.</td>
+                      <td colSpan="9" className="text-center py-4 text-gray-500">
+                        Tidak ada data siswa yang sesuai.
+                      </td>
                     </tr>
                   )}
                 </tbody>

@@ -24,8 +24,10 @@ const EditSiswa = () => {
         const response = await axios.get(`${API_SISWA}/getById/${id}`);
         if (response.status === 200) {
           const data = response.data;
-          console.log("Data Siswa diterima: ", data);
-          setStudent(data);
+          setStudent({
+            ...data,
+            tanggalLahir: data.tanggalLahir ? data.tanggalLahir.split("T")[0] : "",
+          });
         } else {
           Swal.fire({
             title: "Not Found",
@@ -84,36 +86,48 @@ const EditSiswa = () => {
 
   return (
     <div className="flex">
+      {/* Sidebar */}
       <div className="w-64">
         <Sidebar />
       </div>
-      <div className="flex-1 p-8 ml-4">
+
+      {/* Form */}
+      <div className="flex-1 p-8">
         <h2 className="text-2xl font-semibold mb-6 text-gray-800">Edit Siswa</h2>
+
         <form onSubmit={handleSubmit} className="space-y-4">
-          {[
-            { label: "Nama", name: "nama", type: "text" },
-            { label: "NISN", name: "nisn", type: "text" },
-            { label: "Alamat", name: "alamat", type: "text" },
-            { label: "Nama Orangtua", name: "namaOrangtua", type: "text" },
-            { label: "Nomor HP Orangtua", name: "nomerHpOrangtua", type: "text" },
-            { label: "Nomor HP", name: "nomerHp", type: "text" },
-            { label: "Tanggal Lahir", name: "tanggalLahir", type: "date" },
-          ].map((field) => (
-            <div key={field.name} className="flex items-center gap-4">
-              <label className="w-1/5 text-gray-700 font-medium">{field.label}</label>
-              <input
-                type={field.type}
-                name={field.name}
-                value={student[field.name]}
-                onChange={handleChange}
-                className="w-4/5 border rounded-md p-3 focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-          ))}
-          <div className="flex justify-end gap-4 mt-6">
+          {/* Grid Label dan Input */}
+          <div className="grid grid-cols-2 gap-4 items-center w-full max-w-2xl">
+            {[
+              { label: "Nama", name: "nama", type: "text" },
+              { label: "NISN", name: "nisn", type: "text" },
+              { label: "Alamat", name: "alamat", type: "text" },
+              { label: "Nama Orangtua", name: "namaOrangtua", type: "text" },
+              { label: "Nomor HP Orangtua", name: "nomerHpOrangtua", type: "tel" },
+              { label: "Nomor HP", name: "nomerHp", type: "tel" },
+              { label: "Tanggal Lahir", name: "tanggalLahir", type: "date" },
+            ].map((field) => (
+              <>
+                <label key={`label-${field.name}`} className="text-gray-700 font-medium">
+                  {field.label}
+                </label>
+                <input
+                  key={field.name}
+                  type={field.type}
+                  name={field.name}
+                  value={student[field.name]}
+                  onChange={handleChange}
+                  className="border border-gray-400 rounded-md p-2 w-full focus:ring-2 focus:ring-blue-500"
+                />
+              </>
+            ))}
+          </div>
+
+          {/* Tombol Aksi */}
+          <div className="flex gap-4 mt-6">
             <button
               type="button"
-              className="text-black font-semibold hover:underline"
+              className="bg-gray-500 text-white font-semibold px-6 py-2 rounded-lg hover:bg-gray-600 transition"
               onClick={() => navigate("/siswa")}
             >
               Batal

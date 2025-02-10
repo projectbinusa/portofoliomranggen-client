@@ -94,7 +94,7 @@ const User = () => {
               <table className="w-full text-sm border border-gray-200">
                 <thead className="text-xs text-gray-700 uppercase bg-gray-300">
                   <tr>
-                    {["No", "Username", "Password", "Aksi"].map((header, index) => (
+                    {["No", "Username", "Email", "Password", "Aksi"].map((header, index) => (
                       <th key={index} className="px-6 py-3 border border-gray-300 text-center">{header}</th>
                     ))}
                   </tr>
@@ -105,6 +105,7 @@ const User = () => {
                       <tr key={user.id} className="bg-white hover:bg-gray-100">
                         <td className="px-6 py-3 border border-gray-300 text-center">{index + 1}</td>
                         <td className="px-6 py-3 border border-gray-300">{user.username}</td>
+                        <td className="px-6 py-3 border border-gray-300">{user.email}</td>
                         <td className="px-6 py-3 border border-gray-300">{user.password}</td>
                         <td className="px-6 py-3 border border-gray-300 flex justify-center space-x-2">
                           <Link to={`/edit-user/${user.id}`}>
@@ -123,7 +124,7 @@ const User = () => {
                     ))
                   ) : (
                     <tr>
-                      <td colSpan="4" className="text-center py-4 text-gray-500">Tidak ada data user yang sesuai.</td>
+                      <td colSpan="5" className="text-center py-4 text-gray-500">Tidak ada data user yang sesuai.</td>
                     </tr>
                   )}
                 </tbody>
