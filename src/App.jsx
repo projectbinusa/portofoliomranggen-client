@@ -1,9 +1,16 @@
-// src/App.jsx
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import PrivateRoute from "./components/PrivateRoute";
 
 import Dashboard from "./tampilan/Dashboard";
+
+// **Import Komponen Publik**
+import Home from "./components/Home";
+import Login from "./page/Login";
+import Register from "./page/Register";
+import Sambutan from "./page/Sambutan";
+import VisiMisi from "./page/visimisi";  // ✅ Perbaikan Nama Impor
+import NotFoundPage from "./page/NotFoundPage";
 
 // **Import Komponen Siswa**
 import PageSiswa from "./siswa/PageSiswa";
@@ -30,14 +37,10 @@ import DaftarStaff from "./staff/DaftarStaff";
 import TambahStaff from "./staff/TambahStaff";
 import EditStaff from "./staff/EditStaff";
 
-// **Import Komponen Autentikasi**
-import Login from "./page/Login";
-import Register from "./page/Register";
-
 // **Import Komponen Pesanan**
+import PagePesanan from "./pesanan/PagePesanan";
 import TambahPesanan from "./pesanan/TambahPesanan";
 import EditPesanan from "./pesanan/EditPesanan";
-import PagePesanan from "./pesanan/PagePesanan";
 
 // **Import Komponen Sekolah**
 import KegiatanSekolah from "./sekolah/KegiatanSekolah";
@@ -58,6 +61,7 @@ import EditBuku from "./buku/EditBuku";
 import User from "./user/User";
 import EditUser from "./user/EditUser";
 
+
 // **Import Komponen Utama**
 import Home from "./components/Home";
 
@@ -77,240 +81,49 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/sambutan" element={<Sambutan />} />
+        <Route path="/visimisi" element={<VisiMisi />} /> {/* ✅ Sudah diperbaiki */}
 
         {/* Rute yang dilindungi dengan PrivateRoute */}
-        <Route
-          path="/dashboard"
-          element={
-            <PrivateRoute>
-              <Dashboard />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/siswa"
-          element={
-            <PrivateRoute>
-              <PageSiswa />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/tambah-siswa"
-          element={
-            <PrivateRoute>
-              <TambahSiswa />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/edit-siswa/:id"
-          element={
-            <PrivateRoute>
-              <EditSiswa />
-            </PrivateRoute>
-          }
-        />
+        <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
+        <Route path="/siswa" element={<PrivateRoute><PageSiswa /></PrivateRoute>} />
+        <Route path="/tambah-siswa" element={<PrivateRoute><TambahSiswa /></PrivateRoute>} />
+        <Route path="/edit-siswa/:id" element={<PrivateRoute><EditSiswa /></PrivateRoute>} />
 
-        <Route
-          path="/guru"
-          element={
-            <PrivateRoute>
-              <PageGuru />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/tambah-guru"
-          element={
-            <PrivateRoute>
-              <TambahGuru />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/edit-guru/:id"
-          element={
-            <PrivateRoute>
-              <EditGuru />
-            </PrivateRoute>
-          }
-        />
+        <Route path="/guru" element={<PrivateRoute><PageGuru /></PrivateRoute>} />
+        <Route path="/tambah-guru" element={<PrivateRoute><TambahGuru /></PrivateRoute>} />
+        <Route path="/edit-guru/:id" element={<PrivateRoute><EditGuru /></PrivateRoute>} />
 
-        <Route
-          path="/kategori-kelas"
-          element={
-            <PrivateRoute>
-              <KategoriKelas />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/tambah-kategori"
-          element={
-            <PrivateRoute>
-              <TambahKategori />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/edit-kategori/:id"
-          element={
-            <PrivateRoute>
-              <EditKategori />
-            </PrivateRoute>
-          }
-        />
+        <Route path="/kategori-kelas" element={<PrivateRoute><KategoriKelas /></PrivateRoute>} />
+        <Route path="/tambah-kategori" element={<PrivateRoute><TambahKategori /></PrivateRoute>} />
+        <Route path="/edit-kategori/:id" element={<PrivateRoute><EditKategori /></PrivateRoute>} />
 
-        <Route
-          path="/organisasi"
-          element={
-            <PrivateRoute>
-              <PageOrganisasi />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/tambah-organisasi"
-          element={
-            <PrivateRoute>
-              <TambahOrganisasi />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/edit-organisasi/:id"
-          element={
-            <PrivateRoute>
-              <EditOrganisasi />
-            </PrivateRoute>
-          }
-        />
+        <Route path="/organisasi" element={<PrivateRoute><PageOrganisasi /></PrivateRoute>} />
+        <Route path="/tambah-organisasi" element={<PrivateRoute><TambahOrganisasi /></PrivateRoute>} />
+        <Route path="/edit-organisasi/:id" element={<PrivateRoute><EditOrganisasi /></PrivateRoute>} />
 
-        <Route
-          path="/staff"
-          element={
-            <PrivateRoute>
-              <DaftarStaff />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/tambah-staff"
-          element={
-            <PrivateRoute>
-              <TambahStaff />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/edit-staff/:id"
-          element={
-            <PrivateRoute>
-              <EditStaff />
-            </PrivateRoute>
-          }
-        />
+        <Route path="/staff" element={<PrivateRoute><DaftarStaff /></PrivateRoute>} />
+        <Route path="/tambah-staff" element={<PrivateRoute><TambahStaff /></PrivateRoute>} />
+        <Route path="/edit-staff/:id" element={<PrivateRoute><EditStaff /></PrivateRoute>} />
 
-        <Route
-          path="/page-pesanan"
-          element={
-            <PrivateRoute>
-              <PagePesanan />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/edit-pesanan/:id"
-          element={
-            <PrivateRoute>
-              <EditPesanan />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/tambah-pesanan"
-          element={
-            <PrivateRoute>
-              <TambahPesanan />
-            </PrivateRoute>
-          }
-        />
+        <Route path="/page-pesanan" element={<PrivateRoute><PagePesanan /></PrivateRoute>} />
+        <Route path="/edit-pesanan/:id" element={<PrivateRoute><EditPesanan /></PrivateRoute>} />
+        <Route path="/tambah-pesanan" element={<PrivateRoute><TambahPesanan /></PrivateRoute>} />
 
-        <Route
-          path="/produk"
-          element={
-            <PrivateRoute>
-              <ProdukList />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/tambah-produk"
-          element={
-            <PrivateRoute>
-              <TambahProduk />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/edit-produk/:id"
-          element={
-            <PrivateRoute>
-              <EditProduk />
-            </PrivateRoute>
-          }
-        />
+        <Route path="/produk" element={<PrivateRoute><ProdukList /></PrivateRoute>} />
+        <Route path="/tambah-produk" element={<PrivateRoute><TambahProduk /></PrivateRoute>} />
+        <Route path="/edit-produk/:id" element={<PrivateRoute><EditProduk /></PrivateRoute>} />
 
-        <Route
-          path="/kegiatan-sekolah"
-          element={
-            <PrivateRoute>
-              <KegiatanSekolah />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/tambah-kegiatan"
-          element={
-            <PrivateRoute>
-              <TambahKegiatan />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/edit-kegiatan/:id"
-          element={
-            <PrivateRoute>
-              <EditKegiatan />
-            </PrivateRoute>
-          }
-        />
+        <Route path="/kegiatan-sekolah" element={<PrivateRoute><KegiatanSekolah /></PrivateRoute>} />
+        <Route path="/tambah-kegiatan" element={<PrivateRoute><TambahKegiatan /></PrivateRoute>} />
+        <Route path="/edit-kegiatan/:id" element={<PrivateRoute><EditKegiatan /></PrivateRoute>} />
 
-        <Route
-          path="/buku"
-          element={
-            <PrivateRoute>
-              <DaftarBuku />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/tambah-buku"
-          element={
-            <PrivateRoute>
-              <TambahBuku />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/edit-buku/:id"
-          element={
-            <PrivateRoute>
-              <EditBuku />
-            </PrivateRoute>
-          }
-        />
+        <Route path="/buku" element={<PrivateRoute><DaftarBuku /></PrivateRoute>} />
+        <Route path="/tambah-buku" element={<PrivateRoute><TambahBuku /></PrivateRoute>} />
+        <Route path="/edit-buku/:id" element={<PrivateRoute><EditBuku /></PrivateRoute>} />
+
+        <Route path="/user" element={<PrivateRoute><User /></PrivateRoute>} />
+        <Route path="/edit-user/:id" element={<PrivateRoute><EditUser /></PrivateRoute>} />
 
         <Route
           path="/user"
@@ -352,6 +165,8 @@ function App() {
             </PrivateRoute>
           }
         />
+        {/* Rute Not Found */}
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </Router>
   );
