@@ -13,11 +13,17 @@ import {
   HiCalendar,
   HiMenu,
   HiX,
+  HiChevronDown,
 } from "react-icons/hi";
 
 export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(true);
+  const [dropdowns, setDropdowns] = useState({});
   const navigate = useNavigate();
+
+  const toggleDropdown = (menu) => {
+    setDropdowns((prev) => ({ ...prev, [menu]: !prev[menu] }));
+  };
 
   const handleLogout = () => {
     Swal.fire({
@@ -31,8 +37,7 @@ export default function Sidebar() {
       cancelButtonText: "Batal",
     }).then((result) => {
       if (result.isConfirmed) {
-        localStorage.removeItem("token"); // Make sure the token is removed
-        // Dispatch the event to notify about authentication change
+        localStorage.removeItem("token");
         window.dispatchEvent(new Event("authChange"));
         navigate("/login", { replace: true });
       }
@@ -41,7 +46,6 @@ export default function Sidebar() {
 
   return (
     <div className="flex h-screen">
-      {/* Sidebar */}
       <aside
         className={`fixed top-0 left-0 h-screen transition-all duration-300 transform bg-gradient-to-b from-green-500 to-green-700 text-white shadow-lg ${
           isOpen ? "w-64" : "w-20"
@@ -49,7 +53,7 @@ export default function Sidebar() {
       >
         <div className="relative flex items-center justify-center p-5 border-b border-green-400">
           <h1
-            className={`text-2xl font-extrabold tracking-wider text-center transition-opacity duration-300 ${
+            className={`text-2xl font-extrabold tracking-wider transition-opacity duration-300 ${
               isOpen ? "opacity-100" : "opacity-0"
             }`}
           >
@@ -73,61 +77,38 @@ export default function Sidebar() {
             text="Dashboard"
             to="/dashboard"
           />
-          <SidebarItem
+
+          <DropdownItem
             isOpen={isOpen}
             icon={<HiUser />}
-            text="Guru"
-            to="/guru"
+            text="Data"
+            items={[
+              { text: "Guru", to: "/guru" },
+              { text: "Siswa", to: "/siswa" },
+              { text: "Staf", to: "/staff" },
+            ]}
+            dropdownOpen={dropdowns["data"]}
+            toggleDropdown={() => toggleDropdown("data")}
           />
-          <SidebarItem
+
+          <DropdownItem
             isOpen={isOpen}
             icon={<HiClipboardList />}
-            text="Kategori"
-            to="/kategori-kelas"
+            text="Manajemen"
+            items={[
+              { text: "Kategori", to: "/kategori-kelas" },
+              { text: "Organisasi", to: "/organisasi" },
+              { text: "Kegiatan", to: "/kegiatan-sekolah" },
+            ]}
+            dropdownOpen={dropdowns["manajemen"]}
+            toggleDropdown={() => toggleDropdown("manajemen")}
           />
-          <SidebarItem
-            isOpen={isOpen}
-            icon={<HiOfficeBuilding />}
-            text="Organisasi"
-            to="/organisasi"
-          />
-          <SidebarItem
-            isOpen={isOpen}
-            icon={<HiAcademicCap />}
-            text="Siswa"
-            to="/siswa"
-          />
-          <SidebarItem
-            isOpen={isOpen}
-            icon={<HiUsers />}
-            text="Staf"
-            to="/staff"
-          />
+
           <SidebarItem
             isOpen={isOpen}
             icon={<HiShoppingCart />}
             text="Pesanan"
-            to="/page-pesanan"
-          />
-          <SidebarItem
-            isOpen={isOpen}
-            icon={<HiCalendar />}
-            text="Kegiatan"
-            to="/kegiatan-sekolah"
-          />
-
-          {/* <SidebarItem
-            isOpen={isOpen}
-            icon={<HiUsers />}
-            text=""
-            to="/user"
-          /> */}
-
-          <SidebarItem
-            isOpen={isOpen}
-            icon={<HiClipboardList />}
-            text="Kategori"
-            to="/page-kategori"
+            to="/pesanan"
           />
 
           <li>
@@ -143,8 +124,6 @@ export default function Sidebar() {
           </li>
         </ul>
       </aside>
-
-      {/* Placeholder untuk konten utama */}
       <div className="flex-1 p-10">
         {/* Konten halaman akan muncul di sini */}
       </div>
@@ -162,6 +141,47 @@ function SidebarItem({ icon, text, to, isOpen }) {
         <span className="text-xl">{icon}</span>
         {isOpen && <span>{text}</span>}
       </Link>
+    </li>
+  );
+}
+
+function DropdownItem({
+  icon,
+  text,
+  items,
+  isOpen,
+  dropdownOpen,
+  toggleDropdown,
+}) {
+  return (
+    <li>
+      <button
+        onClick={toggleDropdown}
+        className="flex items-center justify-between w-full p-3 rounded-md hover:bg-green-600 transition"
+      >
+        <div className="flex items-center space-x-3">
+          <span className="text-xl">{icon}</span>
+          {isOpen && <span>{text}</span>}
+        </div>
+        {isOpen && (
+          <HiChevronDown
+            className={`transform ${dropdownOpen ? "rotate-180" : "rotate-0"}`}
+          />
+        )}
+      </button>
+      {dropdownOpen && (
+        <ul className="ml-6 mt-2 space-y-2">
+          {items.map((item, index) => (
+            <SidebarItem
+              key={index}
+              icon={null}
+              text={item.text}
+              to={item.to}
+              isOpen={isOpen}
+            />
+          ))}
+        </ul>
+      )}
     </li>
   );
 }

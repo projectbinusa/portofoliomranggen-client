@@ -39,20 +39,19 @@ const TambahOrganisasi = () => {
         throw new Error(errorData.message || "Gagal menambahkan organisasi");
       }
 
-      Swal.fire("Sukses!", "Organisasi berhasil ditambahkan.", "success").then(() => {
-        navigate("/organisasi");
-      });
+      Swal.fire("Sukses!", "Organisasi berhasil ditambahkan.", "success").then(
+        () => {
+          navigate("/organisasi");
+        }
+      );
     } catch (error) {
       Swal.fire("Gagal!", `Terjadi kesalahan: ${error.message}`, "error");
     }
   };
 
   return (
-
     <div className="flex">
       <Sidebar />
-
-
       <div className="flex-1 p-10 ml-64 mt-20">
         <div className="max-w-lg mx-auto bg-white p-12 rounded-md shadow-md">
           <form onSubmit={handleSubmit}>
@@ -60,11 +59,12 @@ const TambahOrganisasi = () => {
               <div className="flex justify-between items-center mb-4">
                 <h1 className="text-xl font-semibold">Tambah Organisasi</h1>
               </div>
-
               {Object.keys(organisasi).map((field) => (
                 <div key={field}>
                   <label className="block text-base font-medium text-gray-700">
-                    {field.replace(/([A-Z])/g, " $1").replace(/^./, (str) => str.toUpperCase())}
+                    {field
+                      .replace(/([A-Z])/g, " $1")
+                      .replace(/^./, (str) => str.toUpperCase())}
                   </label>
                   <input
                     type={field === "email" ? "email" : "text"}
@@ -76,7 +76,6 @@ const TambahOrganisasi = () => {
                   />
                 </div>
               ))}
-
               <div className="pt-1">
                 <button
                   type="submit"
@@ -89,6 +88,7 @@ const TambahOrganisasi = () => {
           </form>
         </div>
       </div>
+    </div>
   );
 };
 
