@@ -9,14 +9,14 @@ const EditBuku = () => {
   const { id } = useParams();
   const [buku, setBuku] = useState({
     judulBuku: "",
-    isbn: "",
     penerbit: "",
     pengarang: "",
     tahunTerbit: "",
     jumlahHalaman: "",
-    fotoUrl: "",
+    idAdmin: "",
+    fotoUrl: "", 
   });
-  const [file, setFile] = useState(null);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -40,12 +40,12 @@ const EditBuku = () => {
 
     if (
       !buku.judulBuku ||
-      !buku.isbn ||
       !buku.penerbit ||
       !buku.pengarang ||
       !buku.tahunTerbit ||
       !buku.jumlahHalaman ||
-      !buku.fotoUrl
+      !buku.idAdmin ||
+      !buku.fotoUrl 
     ) {
       Swal.fire({
         title: "Gagal!",
@@ -57,24 +57,9 @@ const EditBuku = () => {
     }
 
     try {
-      const formData = new FormData();
-      formData.append("buku", JSON.stringify(buku));
-      if (file) {
-        formData.append("file", file);
-      }
+    
+      await axios.put(`${API_BUKU}/edit/${id}`, buku);
 
-      const idAdmin = 1; 
-
-      const response = await axios.put(
-        `${API_BUKU}/edit/${id}/${idAdmin}`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      
       Swal.fire({
         title: "Sukses!",
         text: "Data buku berhasil diperbarui.",
@@ -96,20 +81,20 @@ const EditBuku = () => {
 
   return (
     <div className="flex">
-          <div className="w-64">
-            <Sidebar />
-          </div>
+      <div className="w-64">
+        <Sidebar />
+      </div>
       <div className="flex-1 p-8 ml-4">
         <h2 className="text-2xl font-semibold mb-6 text-gray-800">Edit Buku</h2>
         <form onSubmit={handleSubmit} className="space-y-6">
-          {[ 
+          {[  
             { label: "Judul Buku", name: "judulBuku", type: "text" },
-            { label: "ISBN", name: "isbn", type: "text" },
             { label: "Penerbit", name: "penerbit", type: "text" },
             { label: "Pengarang", name: "pengarang", type: "text" },
             { label: "Tahun Terbit", name: "tahunTerbit", type: "number" },
             { label: "Jumlah Halaman", name: "jumlahHalaman", type: "number" },
-            { label: "Foto URL", name: "fotoUrl", type: "text" }
+            { label: "Id Admin", name: "idAdmin", type: "number" },
+            { label: "Foto Buku (URL)", name: "fotoUrl", type: "text" }, 
           ].map((field) => (
             <div key={field.name} className="flex items-center gap-4">
               <label className="w-1/5 text-gray-700 font-medium">{field.label}</label>
@@ -118,21 +103,24 @@ const EditBuku = () => {
                 name={field.name}
                 value={buku[field.name] || ""}
                 onChange={handleChange}
-                className="w-4/5 border rounded-md p-3 focus:ring-2 focus:ring-blue-500"/>
+                className="w-4/5 border rounded-md p-3 focus:ring-2 focus:ring-blue-500"
+              />
             </div>
           ))}
-          
+
           <div className="flex justify-end gap-4 mt-6">
             <button
               type="button"
               className="text-black font-semibold hover:underline"
-              onClick={() => navigate("/buku")}>
+              onClick={() => navigate("/buku")}
+            >
               Batal
             </button>
             <button
               type="submit"
               className="bg-green-600 text-white font-semibold px-6 py-2
-               rounded-lg hover:bg-green-700 transition">
+               rounded-lg hover:bg-green-700 transition"
+            >
               Simpan
             </button>
           </div>

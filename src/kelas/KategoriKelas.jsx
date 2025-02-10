@@ -19,7 +19,7 @@ const KategoriKelas = () => {
   }, []);
 
   const handleEdit = (id) => {
-    navigate(`/edit-kategori/${id}`);
+    navigate(`/edit-kategori-kelas/${id}`);
   };
 
   const handleDelete = (id) => {
@@ -54,7 +54,7 @@ const KategoriKelas = () => {
     <div className="flex">
       <Sidebar />
 
-      <div className="flex-1 p-6 ml-64">
+      <div className="flex-1 p-6 ml-48 pl-4">
         <div className="flex justify-between items-center mb-4">
           <div className="relative w-1/3">
             <input
@@ -69,7 +69,7 @@ const KategoriKelas = () => {
           </div>
 
           <button
-            onClick={() => navigate("/tambah-kategori")}
+            onClick={() => navigate("/tambah-kategori-kelas")}
             className="flex items-center gap-2 bg-green-500 text-white px-4 py-2
              rounded-md hover:bg-green-600 transition">
             <FaPlus size={16} />

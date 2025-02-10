@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Sidebar from "../components/Sidebar";
 import Swal from "sweetalert2";
 import { API_ORGANISASI } from "../utils/BaseUrl";
 
@@ -49,8 +48,11 @@ const TambahOrganisasi = () => {
   };
 
   return (
+
     <div className="flex">
       <Sidebar />
+
+
       <div className="flex-1 p-10 ml-64 mt-20">
         <div className="max-w-lg mx-auto bg-white p-12 rounded-md shadow-md">
           <form onSubmit={handleSubmit}>
@@ -87,7 +89,6 @@ const TambahOrganisasi = () => {
           </form>
         </div>
       </div>
-    </div>
   );
 };
 

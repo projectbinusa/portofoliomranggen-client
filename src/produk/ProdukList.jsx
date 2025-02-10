@@ -18,11 +18,11 @@ const ProductList = () => {
         const response = await axios.get(`${API_PRODUK}/all`);
         const mappedProducts = response.data.map((product) => ({
           id: product.id,
-          name: product.nama,
-          price: product.harga || 0,
-          description: product.deskripsi,
+          nama: product.nama,
+          harga: product.harga || 0,
+          deskripsi: product.deskripsi,
           fotoUrl: product.fotoUrl,
-          condition: product.kondisi,
+          kondisi: product.kondisi,
         }));
         setProducts(mappedProducts);
       } catch (error) {
@@ -37,10 +37,10 @@ const ProductList = () => {
   const filteredProducts = products.filter((product) => {
     const searchLower = searchTerm.toLowerCase();
     return (
-      (product.name && product.name.toLowerCase().includes(searchLower)) ||
-      (product.description && product.description.toLowerCase().includes(searchLower)) ||
-      (product.condition && product.condition.toLowerCase().includes(searchLower)) ||
-      product.price.toString().includes(searchLower)
+      (product.nama && product.nama.toLowerCase().includes(searchLower)) ||
+      (product.deskripsi && product.deskripsi.toLowerCase().includes(searchLower)) ||
+      (product.kondisi && product.kondisi.toLowerCase().includes(searchLower)) ||
+      product.harga.toString().includes(searchLower)
     );
   });
 
@@ -75,7 +75,7 @@ const ProductList = () => {
     <div className="flex min-h-screen">
       <Sidebar />
 
-      <div className="flex-1 p-6 ml-64">
+      <div className="flex-1 p-6 ml-48 pl-4">
         <div className="flex justify-between items-center mb-4">
           <div className="relative flex-1 max-w-md">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" size={18} />
@@ -94,6 +94,7 @@ const ProductList = () => {
             className="flex items-center gap-2 bg-green-500 text-white px-4 py-2
              rounded-md hover:bg-green-600 transition">
             <FaPlus size={16} />
+            Tambah Produk
           </button>
         </div>
 
@@ -116,13 +117,17 @@ const ProductList = () => {
                   <tr key={product.id} className="bg-white border-b border-gray-400 hover:bg-gray-100">
                     <td className="px-6 py-4 border border-gray-400 text-center">{index + 1}</td>
                     <td className="px-6 py-4 border border-gray-400 text-center">
-                      <img src={product.fotoUrl} alt={product.name} className="w-16 h-16 object-cover rounded-md" />
+                      {product.fotoUrl ? (
+                        <img src={product.fotoUrl} alt="Foto Produk" className="w-16 h-16 object-cover rounded-md" />
+                      ) : (
+                        "Tidak Ada Gambar"
+                      )}
                     </td>
-                    <td className="px-6 py-4 font-medium border border-gray-400">{product.name}</td>
-                    <td className="px-6 py-4 border border-gray-400">{product.description}</td>
-                    <td className="px-6 py-4 border border-gray-400 text-center">{product.condition}</td>
+                    <td className="px-6 py-4 font-medium border border-gray-400">{product.nama}</td>
+                    <td className="px-6 py-4 border border-gray-400">{product.deskripsi}</td>
+                    <td className="px-6 py-4 border border-gray-400 text-center">{product.kondisi}</td>
                     <td className="px-6 py-4 border border-gray-400 text-center">
-                      Rp {product.price.toLocaleString()}
+                      Rp {product.harga.toLocaleString()}
                     </td>
                     <td className="px-6 py-4 flex gap-3 justify-center border">
                       <button
