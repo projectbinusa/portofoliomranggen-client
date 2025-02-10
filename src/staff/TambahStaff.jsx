@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Sidebar from "../components/Sidebar";
 import { API_STAFF } from "../utils/BaseUrl";
 import Swal from "sweetalert2";
 
@@ -96,10 +95,6 @@ const TambahStaff = () => {
   };
 
   return (
-    <div className="flex">
-      <div className="w-64">
-        <Sidebar />
-      </div>
       <div className="flex-1 p-8 ml-4">  
         <h2 className="text-2xl font-semibold mb-6 text-gray-800">Tambah Staff</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -140,7 +135,6 @@ const TambahStaff = () => {
           </div>
         </form>
       </div>
-    </div>
   );
 };
 
