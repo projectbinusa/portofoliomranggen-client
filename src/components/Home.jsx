@@ -36,11 +36,27 @@ const Home = () => {
           Anda dengan mudah dan cepat!
         </p>
         <button
-          className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-purple-600 hover:to-blue-500 text-white font-semibold py-3 px-6 rounded-lg shadow-lg transition-all duration-300"
+          className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-purple-600 hover:to-blue-500 text-white font-semibold py-3 px-6 rounded-lg shadow-lg transition-all duration-300 mb-4"
           onClick={() => navigate("/login")}
         >
           Masuk
         </button>
+        <div className="flex gap-4 justify-center">
+          <motion.button
+            className="bg-gradient-to-r from-green-400 to-teal-500 hover:from-teal-500 hover:to-green-400 text-white font-semibold py-3 px-6 rounded-lg shadow-lg transition-all duration-300"
+            whileHover={{ scale: 1.05 }}
+            onClick={() => navigate("/visimisi")}
+          >
+            Visi & Misi
+          </motion.button>
+          <motion.button
+            className="bg-gradient-to-r from-orange-400 to-red-500 hover:from-red-500 hover:to-orange-400 text-white font-semibold py-3 px-6 rounded-lg shadow-lg transition-all duration-300"
+            whileHover={{ scale: 1.05 }}
+            onClick={() => navigate("/sambutan")}
+          >
+            Sambutan
+          </motion.button>
+        </div>
       </motion.div>
 
       <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-full px-10">
