@@ -3,6 +3,21 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import PrivateRoute from "./components/PrivateRoute";
 
+
+import Dashboard from "./tampilan/Dashboard";
+import PageSiswa from "./siswa/PageSiswa";
+import TambahSiswa from "./siswa/TambahSiswa";
+import EditSiswa from "./siswa/EditSiswa";
+import PageGuru from "./guru/PageGuru";
+import TambahGuru from "./guru/TambahGuru";
+import EditGuru from "./guru/EditGuru";
+import KategoriKelas from "./kategori/KategoriKelas";
+import TambahKategori from "./kategori/TambahKategori";
+import EditKategori from "./kategori/EditKategori";
+import PageOrganisasi from "./organisasi/PageOrganisasi";
+import TambahOrganisasi from "./organisasi/TambahOrganisasi";
+import EditOrganisasi from "./organisasi/EditOrganisasi";
+
 import PageSiswa from "./Siswa/PageSiswa";
 import TambahSiswa from "./Siswa/TambahSiswa";
 import EditSiswa from "./Siswa/EditSiswa";
@@ -15,6 +30,7 @@ import EditKategori from "./kelas/EditKategori";
 import PageOrganisasi from "./Organisasi/PageOrganisasi";
 import TambahOrganisasi from "./Organisasi/TambahOrganisasi";
 import EditOrganisasi from "./Organisasi/EditOrganisasi";
+
 import DaftarStaff from "./staff/DaftarStaff";
 import TambahStaff from "./staff/TambahStaff";
 import EditStaff from "./staff/EditStaff";
@@ -46,6 +62,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/dashboard" element={<Dashboard />} />
 
         <Route path="/page-pesanan" element={<PagePesanan />} />
         <Route path="/edit-pesanan/:id" element={<EditPesanan />} />
