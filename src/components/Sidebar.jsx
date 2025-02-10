@@ -113,6 +113,10 @@ export default function Sidebar() {
             text="Kegiatan"
             to="/kegiatan-sekolah"
           />
+           <SidebarItem 
+           icon={<HiUser />}
+            text="User" 
+            href="/user" />
           <li>
             <button
               onClick={handleLogout}
