@@ -71,7 +71,7 @@ export default function Sidebar() {
             isOpen={isOpen}
             icon={<HiHome />}
             text="Dashboard"
-            to="/home"
+            to="/dashboard"
           />
           <SidebarItem
             isOpen={isOpen}
