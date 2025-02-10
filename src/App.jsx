@@ -57,6 +57,7 @@ import EditBuku from "./buku/EditBuku";
 // **Import Komponen User**
 import User from "./user/User";
 import EditUser from "./user/EditUser";
+import TambahUser from "./user/TambahUser";
 
 // **Import Komponen Utama**
 import Home from "./components/Home";
@@ -319,6 +320,14 @@ function App() {
           element={
             <PrivateRoute>
               <EditUser />
+            </PrivateRoute>
+          }
+         /> 
+        <Route
+          path="/tambah-user"
+          element={
+            <PrivateRoute>
+              <TambahUser />
             </PrivateRoute>
           }
         />

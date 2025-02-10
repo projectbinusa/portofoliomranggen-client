@@ -8,7 +8,6 @@ import { useParams, useNavigate } from "react-router-dom";
 const EditOrganisasi = () => {
   const { id } = useParams(); // Get organization ID from URL
   const navigate = useNavigate();
-
   const [organisasi, setOrganisasi] = useState({
     namaOrganisasi: "",
     lokasi: "",
@@ -21,7 +20,7 @@ const EditOrganisasi = () => {
       try {
         const response = await axios.get(`${API_ORGANISASI}/getById/${id}`);
         if (response.status === 200) {
-          setOrganisasi(response.data); // Set form with existing organization data
+          setOrganisasi(response.data);
         } else {
           Swal.fire({
             title: "Not Found",
@@ -31,7 +30,6 @@ const EditOrganisasi = () => {
           });
         }
       } catch (error) {
-        console.error("Error fetching organization data:", error);
         Swal.fire({
           title: "Error",
           text: "Terjadi kesalahan saat mengambil data organisasi.",
@@ -62,13 +60,12 @@ const EditOrganisasi = () => {
           icon: "success",
           confirmButtonText: "Ok",
         }).then(() => {
-          navigate("/organisasi"); // Redirect to organization list page
+          navigate("/organisasi");
         });
       } else {
         throw new Error("Gagal mengedit organisasi");
       }
     } catch (error) {
-      console.error("Error:", error);
       Swal.fire({
         title: "Gagal!",
         text: "Terjadi kesalahan saat mengedit data organisasi.",
@@ -80,45 +77,49 @@ const EditOrganisasi = () => {
 
   return (
     <div className="flex">
-      <div className="w-64">
-        <Sidebar />
-      </div>
-      <div className="flex-1 p-8 ml-4">
-        <h2 className="text-2xl font-semibold mb-6 text-gray-800">Edit Organisasi</h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {[
-            { label: "Nama Organisasi", name: "namaOrganisasi", type: "text" },
-            { label: "Lokasi", name: "lokasi", type: "text" },
-            { label: "Email", name: "email", type: "email" },
-            { label: "Telepon", name: "telepon", type: "tel" },
-          ].map((field) => (
-            <div key={field.name} className="flex items-center gap-4">
-              <label className="w-1/5 text-gray-700 font-medium">{field.label}</label>
-              <input
-                type={field.type}
-                name={field.name}
-                value={organisasi[field.name]}
-                onChange={handleChange}
-                className="w-4/5 border rounded-md p-3 focus:ring-2 focus:ring-blue-500"
-              />
+      <Sidebar />
+      <div className="flex-1 p-10 ml-55 ">
+        <div className="max-w-2xl mx-auto bg-white p-12 rounded-lg shadow-lg border border-gray-200">
+          <h1 className="text-2xl font-semibold text-gray-800 mb-6 text-center">Edit Organisasi</h1>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            {[ 
+              { label: "Nama Organisasi", name: "namaOrganisasi", type: "text" },
+              { label: "Lokasi", name: "lokasi", type: "text" },
+              { label: "Email", name: "email", type: "email" },
+              { label: "Telepon", name: "telepon", type: "tel" },
+            ].map((field) => (
+              <div key={field.name}>
+                <label htmlFor={field.name} className="block text-base font-medium text-gray-700">
+                  {field.label}
+                </label>
+                <input
+                  type={field.type}
+                  id={field.name}
+                  name={field.name}
+                  value={organisasi[field.name]}
+                  onChange={handleChange}
+                  className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
+                  required
+                />
+              </div>
+            ))}
+            <div className="flex justify-between space-x-4 pt-4">
+              <button
+                type="button"
+                className="px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400"
+                onClick={() => navigate("/organisasi")}
+              >
+                Batal
+              </button>
+              <button
+                type="submit"
+                className="px-6 py-2 bg-green-600 text-white rounded-lg shadow-sm font-medium hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+              >
+                Simpan Perubahan
+              </button>
             </div>
-          ))}
-          <div className="flex justify-end gap-4 mt-6">
-            <button
-              type="button"
-              className="text-black font-semibold hover:underline"
-              onClick={() => navigate("/organisasi")}
-            >
-              Batal
-            </button>
-            <button
-              type="submit"
-              className="bg-green-600 text-white font-semibold px-6 py-2 rounded-lg hover:bg-green-700 transition"
-            >
-              Simpan
-            </button>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
     </div>
   );

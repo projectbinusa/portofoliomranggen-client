@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import Swal from "sweetalert2";
@@ -20,6 +20,14 @@ const TambahSiswa = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setStudent((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`;
   };
 
   const handleSubmit = async (e) => {
@@ -50,16 +58,21 @@ const TambahSiswa = () => {
     }
 
     const studentDTO = {
-      ...student,
+      id: 0,
+      nama: student.nama,
       nisn: parseInt(student.nisn),
-      nomerHp: parseInt(student.nomerHp),
+      alamat: student.alamat,
+      namaOrangtua: student.namaOrangtua,
       nomerHpOrangtua: parseInt(student.nomerHpOrangtua),
+      nomerHp: parseInt(student.nomerHp),
+      tanggalLahir: formatDate(student.tanggalLahir), // Format tanggal ke "DD-MM-YYYY"
     };
 
     try {
       const response = await fetch(`${API_SISWA}/tambah`, {
         method: "POST",
         headers: {
+          "Accept": "*/*",
           "Content-Type": "application/json",
         },
         body: JSON.stringify(studentDTO),
@@ -98,7 +111,7 @@ const TambahSiswa = () => {
               <div key={field} className="flex flex-col">
                 <label className="text-sm text-gray-600 font-medium">{field.replace(/([A-Z])/g, ' $1').replace(/^./, (str) => str.toUpperCase())}</label>
                 <input
-                  type={field.includes("tanggalLahir") ? "date" : "text"}
+                  type={field === "tanggalLahir" ? "date" : "text"}
                   name={field}
                   value={student[field]}
                   onChange={handleChange}

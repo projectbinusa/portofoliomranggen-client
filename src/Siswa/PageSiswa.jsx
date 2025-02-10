@@ -62,7 +62,7 @@ const PageSiswa = () => {
   return (
     <div className="flex h-screen bg-gray-100">
       <Sidebar />
-      <div className="flex-1 p-6 ml-48 pl-4"> {/* Menambah jarak ke kanan */}
+      <div className="flex-1 p-1 ml-40">
         <div className="container mx-auto shadow-lg">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-2xl font-bold text-gray-700">Daftar Siswa</h2>
@@ -74,47 +74,26 @@ const PageSiswa = () => {
             </button>
           </div>
 
-          <div className="relative mb-4">
+          <div className="relative mb-4 w-1/3">
             <input
               type="text"
               placeholder="Cari siswa..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full px-10 py-2 border rounded-md"
+              className="w-full px-3 py-2 pl-10 pr-4 text-sm border-2 border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-            {searchTerm && (
-              <button
-                onClick={() => setSearchTerm("")}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            )}
+            <Search className="absolute left-3 top-3 text-gray-500" size={14} />
           </div>
 
           {isLoading ? (
             <p className="text-center py-4">Loading data...</p>
           ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm border border-gray-200">
-                <thead className="text-xs text-gray-700 uppercase bg-gray-300">
+            <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+              <table className="w-full text-sm text-left text-gray-700 border border-gray-400">
+                <thead className="text-xs font-bold uppercase bg-gray-200 border-b border-gray-500">
                   <tr>
-                    {[
-                      "No",
-                      "Nama",
-                      "NISN",
-                      "Alamat",
-                      "Nama Orang Tua",
-                      "No HP Orang Tua",
-                      "No HP",
-                      "Tanggal Lahir",
-                      "Aksi",
-                    ].map((header, index) => (
-                      <th
-                        key={index}
-                        className="px-6 py-3 border border-gray-300 text-center"
-                      >
+                    {["No", "Nama", "NISN", "Alamat", "Nama Orang Tua", "No HP Orang Tua", "No HP", "Tanggal Lahir", "Aksi"].map((header, index) => (
+                      <th key={index} className="px-6 py-3 border-r border-gray-400 text-center">
                         {header}
                       </th>
                     ))}
@@ -123,32 +102,16 @@ const PageSiswa = () => {
                 <tbody>
                   {filteredStudents.length > 0 ? (
                     filteredStudents.map((student, index) => (
-                      <tr key={student.id} className="bg-white hover:bg-gray-100">
-                        <td className="px-6 py-3 border border-gray-300 text-center">
-                          {index + 1}
-                        </td>
-                        <td className="px-6 py-3 border border-gray-300">
-                          {student.nama}
-                        </td>
-                        <td className="px-6 py-3 border border-gray-300">
-                          {student.nisn}
-                        </td>
-                        <td className="px-6 py-3 border border-gray-300">
-                          {student.alamat}
-                        </td>
-                        <td className="px-6 py-3 border border-gray-300">
-                          {student.namaOrangtua}
-                        </td>
-                        <td className="px-6 py-3 border border-gray-300">
-                          {student.nomerHpOrangtua}
-                        </td>
-                        <td className="px-6 py-3 border border-gray-300">
-                          {student.nomerHp}
-                        </td>
-                        <td className="px-6 py-3 border border-gray-300">
-                          {student.tanggalLahir}
-                        </td>
-                        <td className="px-6 py-3 border border-gray-300 flex justify-center space-x-2">
+                      <tr key={student.id} className="bg-white border-b border-gray-400 hover:bg-gray-100">
+                        <td className="px-6 py-4 border-r border-gray-400 text-center">{index + 1}</td>
+                        <td className="px-6 py-4 border-r border-gray-400 text-center">{student.nama}</td>
+                        <td className="px-6 py-4 border-r border-gray-400 text-center">{student.nisn}</td>
+                        <td className="px-6 py-4 border-r border-gray-400 text-center">{student.alamat}</td>
+                        <td className="px-6 py-4 border-r border-gray-400 text-center">{student.namaOrangtua}</td>
+                        <td className="px-6 py-4 border-r border-gray-400 text-center">{student.nomerHpOrangtua}</td>
+                        <td className="px-6 py-4 border-r border-gray-400 text-center">{student.nomerHp}</td>
+                        <td className="px-6 py-4 border-r border-gray-400 text-center">{student.tanggalLahir}</td>
+                        <td className="px-4 py-4 flex justify-center gap-3">
                           <Link to={`/edit-siswa/${student.id}`}>
                             <button className="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600">
                               <Pencil size={18} />
@@ -158,7 +121,7 @@ const PageSiswa = () => {
                             className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600"
                             onClick={() => handleDeleteStudent(student.id)}
                           >
-                            <Trash2 className="w-4 h-4" />
+                            <Trash2 size={18} />
                           </button>
                         </td>
                       </tr>

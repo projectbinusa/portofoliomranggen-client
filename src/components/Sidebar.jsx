@@ -115,7 +115,12 @@ export default function Sidebar() {
             text="Kegiatan"
             to="/kegiatan-sekolah"
           />
-
+          {/* <SidebarItem
+            isOpen={isOpen}
+            icon={<HiUsers />}
+            text=""
+            to="/user"
+          /> */}
           <li>
             <button
               onClick={handleLogout}
