@@ -61,6 +61,12 @@ import EditUser from "./user/EditUser";
 // **Import Komponen Utama**
 import Home from "./components/Home";
 
+// **Import Komponen Kategori**
+import PageKategori from "./kategori/PageKategori";
+import TambahKategoriA from "./kategori/TambahKategoriA";
+import EditKategoriA from "./kategori/EditKategoriA";
+
+
 import "./App.css";
 
 function App() {
@@ -319,6 +325,30 @@ function App() {
           element={
             <PrivateRoute>
               <EditUser />
+            </PrivateRoute>
+          }
+        />
+         <Route
+          path="/page-kategori"
+          element={
+            <PrivateRoute>
+              <PageKategori />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/tambah-kategori-a"
+          element={
+            <PrivateRoute>
+              <TambahKategoriA />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/edit-kategori-a/:id"
+          element={
+            <PrivateRoute>
+              <EditKategoriA />
             </PrivateRoute>
           }
         />
