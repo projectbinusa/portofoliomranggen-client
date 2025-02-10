@@ -61,7 +61,7 @@ const PageGuru = () => {
     <div className="flex h-screen">
       <Sidebar />
 
-      <div className="flex-1 p-6 ml-64">
+      <div className="flex-1 p-6 ml-40">
         <div className="container mx-auto p-4">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-bold">Daftar Guru</h2>
@@ -72,43 +72,42 @@ const PageGuru = () => {
               Tambah Guru
             </button>
           </div>
+              {/* Input Pencarian */}
+              <div className="relative w-1/3 mb-4">
+                  <input
+                    type="text"
+                    placeholder="Cari berdasarkan semua data..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="w-full px-10 py-2 border border-black rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                  />
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-black-400 w-5 h-5" />
 
-          {/* Input Pencarian */}
-          <div className="relative mb-4">
-            <input
-              type="text"
-              placeholder="Cari berdasarkan semua data..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full px-10 py-2 border border-black rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
-            />
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-black-400 w-5 h-5" />
-
-            {searchTerm && (
-              <button
-                onClick={() => setSearchTerm("")}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            )}
-          </div>
+                  {searchTerm && (
+                    <button
+                      onClick={() => setSearchTerm("")}
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    >
+                      <X className="w-5 h-5" />
+                    </button>
+                  )}
+                </div>
 
           {/* Tabel Daftar Guru dengan border hitam */}
-          <div className="relative overflow-x-auto shadow-md">
+          <div className="relative overflow-x-auto shadow-md ml-1"> {/* Menambahkan margin kiri */}
             <table className="w-full text-sm text-left text-gray-700 border border-gray-400">
-            <thead className="text-xs font-bold uppercase bg-gray-200 border-b border-gray-500">
-              <tr>
-                <th className="px-6 py-3 border-r border-gray-400 text-center">No</th>
-                <th className="px-6 py-3 border-r border-gray-400 text-center">Nama</th>
-                <th className="px-6 py-3 border-r border-gray-400 text-center">NIP</th>
-                <th className="px-6 py-3 border-r border-gray-400 text-center">Alamat</th>
-                <th className="px-6 py-3 border-r border-gray-400 text-center">Nomor HP</th>
-                <th className="px-6 py-3 border-r border-gray-400 text-center">Tahun Diterima</th>
-                <th className="px-6 py-3 border-r border-gray-400 text-center">Lama Kerja</th>
-                <th className="px-6 py-3 text-center">Aksi</th>
-              </tr>
-            </thead>
+              <thead className="text-xs font-bold uppercase bg-gray-200 border-b border-gray-500">
+                <tr>
+                  <th className="px-6 py-3 border-r border-gray-400 text-center">No</th>
+                  <th className="px-6 py-3 border-r border-gray-400 text-center">Nama</th>
+                  <th className="px-6 py-3 border-r border-gray-400 text-center">NIP</th>
+                  <th className="px-6 py-3 border-r border-gray-400 text-center">Alamat</th>
+                  <th className="px-6 py-3 border-r border-gray-400 text-center">Nomor HP</th>
+                  <th className="px-6 py-3 border-r border-gray-400 text-center">Tahun Diterima</th>
+                  <th className="px-6 py-3 border-r border-gray-400 text-center">Lama Kerja</th>
+                  <th className="px-6 py-3 text-center">Aksi</th>
+                </tr>
+              </thead>
 
               <tbody>
                 {filteredGuru.length > 0 ? (
@@ -117,27 +116,13 @@ const PageGuru = () => {
                       key={guru.id}
                       className="bg-white border-b border-gray-400 hover:bg-gray-100"
                     >
-                      <td className="px-6 py-4 border-r border-gray-400">
-                        {index + 1}
-                      </td>
-                      <td className="px-6 py-4 font-medium border-r border-gray-400">
-                        {guru.namaGuru}
-                      </td>
-                      <td className="px-6 py-4 border-r border-gray-400">
-                        {guru.nip}
-                      </td>
-                      <td className="px-6 py-4 border-r border-gray-400">
-                        {guru.alamat}
-                      </td>
-                      <td className="px-6 py-4 border-r border-gray-400">
-                        {guru.nomerHp}
-                      </td>
-                      <td className="px-6 py-4 border-r border-gray-400">
-                        {guru.tahunDiterima}
-                      </td>
-                      <td className="px-6 py-4 border-r border-gray-400">
-                        {guru.lamaKerja}
-                      </td>
+                      <td className="px-6 py-4 border-r border-gray-400">{index + 1}</td>
+                      <td className="px-6 py-4 font-medium border-r border-gray-400">{guru.namaGuru}</td>
+                      <td className="px-6 py-4 border-r border-gray-400">{guru.nip}</td>
+                      <td className="px-6 py-4 border-r border-gray-400">{guru.alamat}</td>
+                      <td className="px-6 py-4 border-r border-gray-400">{guru.nomerHp}</td>
+                      <td className="px-6 py-4 border-r border-gray-400">{guru.tahunDiterima}</td>
+                      <td className="px-6 py-4 border-r border-gray-400">{guru.lamaKerja}</td>
                       <td className="px-6 py-4 flex gap-3">
                         <Link to={`/edit-guru/${guru.id}`}>
                           <button className="flex items-center gap-2 bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600 transition">
@@ -163,6 +148,7 @@ const PageGuru = () => {
               </tbody>
             </table>
           </div>
+
         </div>
       </div>
     </div>

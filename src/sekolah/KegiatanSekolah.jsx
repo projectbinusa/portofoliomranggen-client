@@ -60,8 +60,8 @@ const KegiatanSekolah = () => {
     <div className="flex h-screen">
       <Sidebar />
 
-      <div className="flex-1 p-6 ml-64">
-        <div className="container mx-auto p-4">
+      <div className="flex-1 p-6 ml-40">
+        <div className="container mx-auto p-3">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-bold">Daftar Kegiatan Sekolah</h2>
             <button
@@ -73,7 +73,7 @@ const KegiatanSekolah = () => {
           </div>
 
           {/* Input Pencarian */}
-          <div className="relative mb-4">
+          <div className="relative w-1/3 mb-4">
             <input
               type="text"
               placeholder="Cari berdasarkan semua data..."
