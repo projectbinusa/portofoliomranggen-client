@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Pencil, Trash2, Search } from "lucide-react";
+import {FaPlus} from "react-icons/fa";
 import Sidebar from "../components/Sidebar";
 import Swal from "sweetalert2";
 import { API_STAFF } from "../utils/BaseUrl";
@@ -75,26 +76,26 @@ const DaftarStaff = () => {
   return (
     <div className="flex">
       <Sidebar />
-      <div className="ml-48 p-6 flex-1">
+      <div className="flex-1 p-6 ml-64">
         <div className="flex justify-between items-center mb-4">
-          <h1 className="text-xl font-semibold">Daftar Staff</h1>
-          <button
-            onClick={() => navigate("/tambah-staff")}
-            className="bg-green-500 text-white px-4 py-2
-             rounded-md hover:bg-green-600 transition">
-            Tambah Staff
-          </button>
-        </div>
+          <div className="relative w-1/3">
+            <Search className="absolute ml-3 text-gray-500 top-3 left-3" size={20} />
+            <input
+              type="text"
+              placeholder="Cari staff..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-12 pr-4 py-2 w-full px-3 py-2 pl-10 pr-4 text-sm border-2 border-gray-600 rounded-md 
+               focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
 
-        <div className="relative flex items-center mb-4">
-          <Search className="absolute ml-3 text-gray-500" size={20} />
-          <input
-            type="text"
-            placeholder="Cari staff berdasarkan nama, alamat, atau no. telepon..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-10 pr-4 py-2 w-full border border-gray-400
-             rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+          <button
+           onClick={() => navigate("/tambah-staff")}
+           className="flex items-center gap-2 bg-green-500 text-white px-4 py-2
+           rounded-md hover:bg-green-600 transition">
+           <FaPlus size={16} />
+          </button>
         </div>
 
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -113,29 +114,25 @@ const DaftarStaff = () => {
             </thead>
             <tbody>
               {filteredStaff.map((staff, index) => (
-                <tr
-                  key={staff.id}
-                  className="bg-white border-b border-gray-400 hover:bg-gray-100"
-                >
-                  <td className="px-6 py-4 border border-gray-400">{index + 1}</td>
+                <tr key={staff.id} className="bg-white border-b border-gray-400 hover:bg-gray-100">
+                  <td className="px-6 py-4 border border-gray-400 text-center">{index + 1}</td>
                   <td className="px-6 py-4 font-medium border border-gray-400">{staff.nama}</td>
                   <td className="px-6 py-4 border border-gray-400">{staff.alamat}</td>
                   <td className="px-6 py-4 border border-gray-400">{staff.noTelepon}</td>
                   <td className="px-6 py-4 border border-gray-400">{formatDateDisplay(staff.awalBekerja)}</td>
                   <td className="px-6 py-4 border border-gray-400">{staff.lamaKerja}</td>
                   <td className="px-6 py-4 border border-gray-400">{formatDateDisplay(staff.createDate)}</td>
-                  <td className="px-6 py-7 flex gap-3">
-                    
+                  <td className="px-6 py-4 flex justify-center gap-3">
                     <button
                       onClick={() => handleEdit(staff.id)}
-                      className="flex items-center gap-2 bg-blue-500
-                       text-white px-3 py-1 rounded-md hover:bg-blue-600 transition">
+                      className="flex items-center gap-2 bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600 transition"
+                    >
                       <Pencil size={18} />
                     </button>
                     <button
                       onClick={() => handleDelete(staff.id)}
-                      className="flex items-center gap-2 bg-red-500
-                       text-white px-3 py-1 rounded-md hover:bg-red-600 transition">
+                      className="flex items-center gap-2 bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 transition"
+                    >
                       <Trash2 size={18} />
                     </button>
                   </td>

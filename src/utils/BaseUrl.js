@@ -14,3 +14,4 @@ export const API_ORGANISASI = `${url}/organisasi`;
 export const API_USER = `${url}/user`;
 export const API_KEGIATAN = `${url}/kegiatan`;
 export const API_KEUANGAN = `${url}/keuangan`;
+export const API_KELAS = `${url}/kelas`;
