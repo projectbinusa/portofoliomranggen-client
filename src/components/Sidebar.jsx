@@ -31,7 +31,9 @@ export default function Sidebar() {
       cancelButtonText: "Batal",
     }).then((result) => {
       if (result.isConfirmed) {
-        localStorage.removeItem("authToken");
+        localStorage.removeItem("token"); // Make sure the token is removed
+        // Dispatch the event to notify about authentication change
+        window.dispatchEvent(new Event("authChange"));
         navigate("/login", { replace: true });
       }
     });
@@ -113,10 +115,7 @@ export default function Sidebar() {
             text="Kegiatan"
             to="/kegiatan-sekolah"
           />
-           <SidebarItem 
-           icon={<HiUser />}
-            text="User" 
-            href="/user" />
+
           <li>
             <button
               onClick={handleLogout}

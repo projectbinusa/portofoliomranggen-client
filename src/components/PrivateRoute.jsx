@@ -1,16 +1,20 @@
-// src/components/PrivateRoute.jsx
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { isAuthenticated } from "../utils/Auth";
 
 const PrivateRoute = ({ children }) => {
-  if (!isAuthenticated()) {
-    console.log("Pengguna belum login, mengarahkan ke /login");
-    return <Navigate to="/login" replace />;
-  }
+  const [auth, setAuth] = useState(isAuthenticated());
 
-  console.log("Pengguna terautentikasi, mengakses halaman");
-  return children;
+  useEffect(() => {
+    const handleAuthChange = () => {
+      setAuth(isAuthenticated());
+    };
+
+    window.addEventListener("authChange", handleAuthChange);
+    return () => window.removeEventListener("authChange", handleAuthChange);
+  }, []);
+
+  return auth ? children : <Navigate to="/login" replace />;
 };
 
 export default PrivateRoute;

@@ -1,10 +1,8 @@
-// src/page/Login.jsx
-
 import React, { useState } from "react";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { API_LOGIN } from "../utils/BaseUrl"; // Hanya impor dari sini
+import { API_LOGIN } from "../utils/BaseUrl"; // Pastikan variabel ini sudah benar
 import "font-awesome/css/font-awesome.min.css"; // Import font-awesome
 
 const Login = () => {
@@ -27,13 +25,16 @@ const Login = () => {
         localStorage.setItem("adminId", response.data.data.id);
         localStorage.setItem("adminRole", response.data.data.role);
 
+        // Dispatch event untuk memberi tahu perubahan status login
+        window.dispatchEvent(new Event("authChange"));
+
         Swal.fire("Success!", "Login berhasil.", "success");
-        navigate("/dashboard");
+        navigate("/dashboard"); // Redirect ke dashboard setelah login
       }
     } catch (error) {
       Swal.fire(
         "Error",
-        error.response?.data || "Login gagal. Coba lagi.",
+        error.response?.data?.message || "Login gagal. Coba lagi.",
         "error"
       );
     }
