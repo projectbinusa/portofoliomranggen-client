@@ -140,7 +140,7 @@ function App() {
           }
         />
         <Route
-          path="/tambah-kategori"
+          path="/tambah-kategori-kelas"
           element={
             <PrivateRoute>
               <TambahKategori />
@@ -148,7 +148,7 @@ function App() {
           }
         />
         <Route
-          path="/edit-kategori/:id"
+          path="/edit-kategori-kelas/:id"
           element={
             <PrivateRoute>
               <EditKategori />
