@@ -76,26 +76,26 @@ const KategoriKelas = () => {
           </button>
         </div>
 
-        <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-          <table className="w-full text-sm text-left text-gray-700 border border-gray-400">
-            <thead className="text-xs font-bold uppercase bg-gray-200 border-b border-gray-500">
+        <div className="relative overflow-x-auto shadow-md">
+          <table className="w-full text-sm text-left text-gray-700">
+            <thead className="text-xs uppercase bg-gray-200 text-gray-700">
               <tr>
-                <th className="px-6 py-3 border-r border-gray-400 text-center">No</th>
-                <th className="px-6 py-3 border-r border-gray-400 text-center">Nama Kelas</th>
+                <th className="px-6 py-3 text-center">No</th>
+                <th className="px-6 py-3 text-center">Nama Kelas</th>
                 <th className="px-4 py-3 text-center">Aksi</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="bg-gray-100">
               {filteredData.length > 0 ? (
                 filteredData.map((kelas, index) => (
                   <tr
                     key={kelas.id}
-                    className="bg-white border-b border-gray-400 hover:bg-gray-100"
+                    className="hover:bg-gray-100"
                   >
-                    <td className="px-6 py-4 border-r border-gray-400 text-center">
+                    <td className="px-6 py-4 text-center">
                       {index + 1}
                     </td>
-                    <td className="px-6 py-4 font-medium border-r border-gray-400 text-center">
+                    <td className="px-6 py-4 font-medium text-center">
                       {kelas.namaKelas}
                     </td>
                     <td className="px-4 py-4 flex justify-center gap-3">

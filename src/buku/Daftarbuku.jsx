@@ -79,32 +79,32 @@ const DaftarBuku = () => {
           </button>
         </div>
 
-        <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-          <table className="w-full text-sm text-left text-gray-700 border border-gray-400">
-            <thead className="text-xs uppercase bg-gray-200 border-b-2 border-gray-500">
+        <div className="relative overflow-x-auto shadow-md">
+          <table className="w-full text-sm text-left text-gray-700">
+            <thead className="text-xs uppercase bg-gray-200 text-gray-700">
               <tr>
-                <th className="px-6 py-3 border border-gray-500 text-center">No</th>
-                <th className="px-6 py-3 border border-gray-500 text-center">Judul Buku</th>
-                <th className="px-6 py-3 border border-gray-500 text-center">Penerbit</th>
-                <th className="px-6 py-3 border border-gray-500 text-center">Pengarang</th>
-                <th className="px-6 py-3 border border-gray-500 text-center">Tahun Terbit</th>
-                <th className="px-6 py-3 border border-gray-500 text-center">Jumlah Halaman</th>
-                <th className="px-6 py-3 border border-gray-500 text-center">Foto Buku (URL)</th>
-                <th className="px-6 py-3 border border-gray-500 text-center">ID Admin</th>
-                <th className="px-6 py-3 border border-gray-500 text-center">Aksi</th>
+                <th className="px-6 py-3 text-center">No</th>
+                <th className="px-6 py-3 text-center">Judul Buku</th>
+                <th className="px-6 py-3 text-center">Penerbit</th>
+                <th className="px-6 py-3 text-center">Pengarang</th>
+                <th className="px-6 py-3 text-center">Tahun Terbit</th>
+                <th className="px-6 py-3 text-center">Jumlah Halaman</th>
+                <th className="px-6 py-3 text-center">Foto Buku (URL)</th>
+                <th className="px-6 py-3 text-center">ID Admin</th>
+                <th className="px-6 py-3 text-center">Aksi</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="bg-gray-100">
               {filteredBuku.map((buku, index) => (
-                <tr key={buku.id} className="bg-white border-b border-gray-400 hover:bg-gray-100">
-                  <td className="px-6 py-4 border border-gray-400 text-center">{index + 1}</td>
-                  <td className="px-6 py-4 font-medium border border-gray-400">{buku.judulBuku}</td>
-                  <td className="px-6 py-4 border border-gray-400">{buku.penerbit}</td>
-                  <td className="px-6 py-4 border border-gray-400">{buku.pengarang}</td>
-                  <td className="px-6 py-4 border border-gray-400 text-center">{buku.tahunTerbit}</td>
-                  <td className="px-6 py-4 border border-gray-400 text-center">{buku.jumlahHalaman}</td>
-                  <td className="px-6 py-4 border border-gray-400 text-center">{buku.fotoUrl} </td>
-                  <td className="px-6 py-4 border border-gray-400 text-center">{buku.idAdmin}</td>
+                <tr key={buku.id} className="hover:bg-gray-100">
+                  <td className="px-6 py-4 text-center">{index + 1}</td>
+                  <td className="px-6 py-4 font-medium">{buku.judulBuku}</td>
+                  <td className="px-6 py-4 text-center">{buku.penerbit}</td>
+                  <td className="px-6 py-4 text-center">{buku.pengarang}</td>
+                  <td className="px-6 py-4 text-center">{buku.tahunTerbit}</td>
+                  <td className="px-6 py-4 text-center">{buku.jumlahHalaman}</td>
+                  <td className="px-6 py-4 text-center">{buku.fotoUrl} </td>
+                  <td className="px-6 py-4 text-center">{buku.idAdmin}</td>
                   <td className="px-6 py-4 flex justify-center gap-3">
                     <button
                       onClick={() => handleEdit(buku.id)}
@@ -123,7 +123,7 @@ const DaftarBuku = () => {
               ))}
               {filteredBuku.length === 0 && (
                 <tr>
-                  <td colSpan="9" className="px-6 py-4 text-center border border-gray-400">
+                  <td colSpan="9" className="px-6 py-4 text-center">
                     Tidak ada data buku yang sesuai.
                   </td>
                 </tr>

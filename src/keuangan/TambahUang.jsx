@@ -72,32 +72,32 @@ const TambahUang = () => {
       </div>
       <div className="flex-1 p-8 ml-4 mt-10">
         <h2 className="text-2xl font-semibold mb-6 text-gray-800">Tambah Data Keuangan</h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4 mt-6">
           {[
             { label: "Nama", name: "nama", type: "text" },
             { label: "Harga", name: "harga", type: "number" },
             { label: "Jumlah", name: "jumlah", type: "number" },
             { label: "Kategori Pembiayaan", name: "kategoriPembiayaan", type: "text" },
           ].map((field) => (
-            <div key={field.name} className="flex items-center gap-4">
-              <label className="w-1/5 text-gray-700 font-medium">{field.label}</label>
+            <div key={field.name} className="flex items-center">
+              <label className="w-40 text-gray-700 font-medium text-left">{field.label}</label>
               <input
                 type={field.type}
                 name={field.name}
                 value={formData[field.name]}
                 onChange={handleChange}
-                className="w-4/5 border rounded-md p-3 focus:ring-2 focus:ring-blue-500"
+                className="flex-1 border rounded-md p-3 focus:ring-2 focus:ring-blue-500"
               />
             </div>
           ))}
 
-          <div className="flex items-center gap-4">
-            <label className="w-1/5 text-gray-700 font-medium">Catatan</label>
+          <div className="flex items-start">
+            <label className="w-40 text-gray-700 font-medium text-left mt-2">Catatan</label>
             <textarea
               name="catatan"
               value={formData.catatan}
               onChange={handleChange}
-              className="w-4/5 border rounded-md p-3 focus:ring-2 focus:ring-blue-500"
+              className="flex-1 border rounded-md p-3 focus:ring-2 focus:ring-blue-500"
             ></textarea>
           </div>
 

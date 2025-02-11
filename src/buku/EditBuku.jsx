@@ -14,7 +14,7 @@ const EditBuku = () => {
     tahunTerbit: "",
     jumlahHalaman: "",
     idAdmin: "",
-    fotoUrl: "", 
+    fotoUrl: "",
   });
 
   const navigate = useNavigate();
@@ -45,7 +45,7 @@ const EditBuku = () => {
       !buku.tahunTerbit ||
       !buku.jumlahHalaman ||
       !buku.idAdmin ||
-      !buku.fotoUrl 
+      !buku.fotoUrl
     ) {
       Swal.fire({
         title: "Gagal!",
@@ -57,7 +57,6 @@ const EditBuku = () => {
     }
 
     try {
-    
       await axios.put(`${API_BUKU}/edit/${id}`, buku);
 
       Swal.fire({
@@ -87,23 +86,23 @@ const EditBuku = () => {
       <div className="flex-1 p-8 ml-4">
         <h2 className="text-2xl font-semibold mb-6 text-gray-800">Edit Buku</h2>
         <form onSubmit={handleSubmit} className="space-y-6">
-          {[  
+          {[
             { label: "Judul Buku", name: "judulBuku", type: "text" },
             { label: "Penerbit", name: "penerbit", type: "text" },
             { label: "Pengarang", name: "pengarang", type: "text" },
             { label: "Tahun Terbit", name: "tahunTerbit", type: "number" },
             { label: "Jumlah Halaman", name: "jumlahHalaman", type: "number" },
-            { label: "Id Admin", name: "idAdmin", type: "number" },
-            { label: "Foto Buku (URL)", name: "fotoUrl", type: "text" }, 
+            { label: "ID Admin", name: "idAdmin", type: "number" },
+            { label: "Foto Buku (URL)", name: "fotoUrl", type: "text" },
           ].map((field) => (
-            <div key={field.name} className="flex items-center gap-4">
-              <label className="w-1/5 text-gray-700 font-medium">{field.label}</label>
+            <div key={field.name} className="flex items-center">
+              <label className="w-40 text-gray-700 font-medium text-left">{field.label}</label>
               <input
                 type={field.type}
                 name={field.name}
                 value={buku[field.name] || ""}
                 onChange={handleChange}
-                className="w-4/5 border rounded-md p-3 focus:ring-2 focus:ring-blue-500"
+                className="flex-1 border rounded-md p-3 focus:ring-2 focus:ring-blue-500"
               />
             </div>
           ))}
@@ -118,8 +117,7 @@ const EditBuku = () => {
             </button>
             <button
               type="submit"
-              className="bg-green-600 text-white font-semibold px-6 py-2
-               rounded-lg hover:bg-green-700 transition"
+              className="bg-green-600 text-white font-semibold px-6 py-2 rounded-lg hover:bg-green-700 transition"
             >
               Simpan
             </button>

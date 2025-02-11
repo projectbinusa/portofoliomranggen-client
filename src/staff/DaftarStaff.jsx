@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Pencil, Trash2, Search } from "lucide-react";
-import {FaPlus} from "react-icons/fa";
+import { FaPlus } from "react-icons/fa";
 import Sidebar from "../components/Sidebar";
 import Swal from "sweetalert2";
 import { API_STAFF } from "../utils/BaseUrl";
@@ -53,9 +53,9 @@ const DaftarStaff = () => {
 
   const formatDateDisplay = (rawDate) => {
     if (!rawDate) return "-";
-    
+
     const dateObj = new Date(rawDate);
-    
+
     if (isNaN(dateObj.getTime())) {
       return "-";
     }
@@ -63,7 +63,7 @@ const DaftarStaff = () => {
     const day = String(dateObj.getDate()).padStart(2, "0");
     const month = String(dateObj.getMonth() + 1).padStart(2, "0");
     const year = dateObj.getFullYear();
-    
+
     return `${day}-${month}-${year}`;
   };
 
@@ -85,54 +85,55 @@ const DaftarStaff = () => {
               placeholder="Cari staff..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-12 pr-4 py-2 w-full px-3 py-2 pl-10 pr-4 text-sm border-2 border-gray-600 rounded-md 
+              className="pl-12 pr-4 py-2 w-full text-sm border-2 border-gray-600 rounded-md 
                focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
           <button
-           onClick={() => navigate("/tambah-staff")}
-           className="flex items-center gap-2 bg-green-500 text-white px-4 py-2
-           rounded-md hover:bg-green-600 transition">
-           <FaPlus size={16} />
+            onClick={() => navigate("/tambah-staff")}
+            className="flex items-center gap-2 bg-green-500 text-white px-4 py-2
+           rounded-md hover:bg-green-600 transition"
+          >
+            <FaPlus size={16} />
           </button>
         </div>
 
-        <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-          <table className="w-full text-sm text-left text-gray-700 border border-gray-500">
-            <thead className="text-xs uppercase bg-gray-200 border-b-2 border-gray-500">
+        <div className="relative overflow-x-auto shadow-md">
+          <table className="w-full text-sm text-left text-gray-700">
+            <thead className="text-xs uppercase bg-gray-200 text-gray-700">
               <tr>
-                <th className="px-6 py-3 border border-gray-500 text-center">No</th>
-                <th className="px-6 py-3 border border-gray-500 text-center">Nama</th>
-                <th className="px-6 py-3 border border-gray-500 text-center">Alamat</th>
-                <th className="px-6 py-3 border border-gray-500 text-center">No. Telepon</th>
-                <th className="px-6 py-3 border border-gray-500 text-center">Awal Bekerja</th>
-                <th className="px-6 py-3 border border-gray-500 text-center">Lama Kerja</th>
-                <th className="px-6 py-3 border border-gray-500 text-center">Create Date</th>
-                <th className="px-6 py-3 border border-gray-500 text-center">Aksi</th>
+                <th className="px-6 py-3 text-center">No</th>
+                <th className="px-6 py-3 text-center">Nama</th>
+                <th className="px-6 py-3 text-center">Alamat</th>
+                <th className="px-6 py-3 text-center">No. Telepon</th>
+                <th className="px-6 py-3 text-center">Awal Bekerja</th>
+                <th className="px-6 py-3 text-center">Lama Kerja</th>
+                <th className="px-6 py-3 text-center">Create Date</th>
+                <th className="px-6 py-3 text-center">Aksi</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="bg-gray-100">
               {filteredStaff.map((staff, index) => (
-                <tr key={staff.id} className="bg-white border-b border-gray-400 hover:bg-gray-100">
-                  <td className="px-6 py-4 border border-gray-400 text-center">{index + 1}</td>
-                  <td className="px-6 py-4 font-medium border border-gray-400">{staff.nama}</td>
-                  <td className="px-6 py-4 border border-gray-400">{staff.alamat}</td>
-                  <td className="px-6 py-4 border border-gray-400">{staff.noTelepon}</td>
-                  <td className="px-6 py-4 border border-gray-400">{formatDateDisplay(staff.awalBekerja)}</td>
-                  <td className="px-6 py-4 border border-gray-400">{staff.lamaKerja}</td>
-                  <td className="px-6 py-4 border border-gray-400">{formatDateDisplay(staff.createDate)}</td>
+                <tr key={staff.id} className="hover:bg-gray-100">
+                  <td className="px-6 py-4 text-center">{index + 1}</td>
+                  <td className="px-6 py-4">{staff.nama}</td>
+                  <td className="px-6 py-4">{staff.alamat}</td>
+                  <td className="px-6 py-4">{staff.noTelepon}</td>
+                  <td className="px-6 py-4">{formatDateDisplay(staff.awalBekerja)}</td>
+                  <td className="px-6 py-4">{staff.lamaKerja}</td>
+                  <td className="px-6 py-4">{formatDateDisplay(staff.createDate)}</td>
                   <td className="px-6 py-4 flex justify-center gap-3">
                     <button
                       onClick={() => handleEdit(staff.id)}
-                      className="flex items-center gap-2 bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600 transition"
-                    >
+                      className="flex items-center gap-2 bg-blue-500
+                       text-white px-3 py-1 rounded-md hover:bg-blue-600 transition">
                       <Pencil size={18} />
                     </button>
                     <button
                       onClick={() => handleDelete(staff.id)}
-                      className="flex items-center gap-2 bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 transition"
-                    >
+                      className="flex items-center gap-2 bg-red-500
+                       text-white px-3 py-1 rounded-md hover:bg-red-600 transition">
                       <Trash2 size={18} />
                     </button>
                   </td>
@@ -140,7 +141,7 @@ const DaftarStaff = () => {
               ))}
               {filteredStaff.length === 0 && (
                 <tr>
-                  <td colSpan="8" className="px-6 py-4 text-center border border-gray-400">
+                  <td colSpan="8" className="px-6 py-4 text-center">
                     Tidak ada data staff yang sesuai.
                   </td>
                 </tr>

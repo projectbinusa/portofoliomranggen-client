@@ -94,46 +94,45 @@ const ProductList = () => {
             className="flex items-center gap-2 bg-green-500 text-white px-4 py-2
              rounded-md hover:bg-green-600 transition">
             <FaPlus size={16} />
-            Tambah Produk
           </button>
         </div>
 
-        <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-          <table className="w-full text-sm text-gray-700 border border-gray-400">
-            <thead className="text-xs uppercase bg-gray-200 border-b-2 border-gray-500">
+        <div className="relative overflow-x-auto shadow-md">
+          <table className="w-full text-sm text-left text-gray-700">
+            <thead className="text-xs uppercase bg-gray-200 text-gray-700">
               <tr>
-                <th className="px-6 py-3 border border-gray-500 text-center">No</th>
-                <th className="px-6 py-3 border border-gray-500 text-center">Foto</th>
-                <th className="px-6 py-3 border border-gray-500 text-center">Nama Produk</th>
-                <th className="px-6 py-3 border border-gray-500 text-center">Deskripsi</th>
-                <th className="px-6 py-3 border border-gray-500 text-center">Kondisi</th>
-                <th className="px-6 py-3 border border-gray-500 text-center">Harga</th>
-                <th className="px-6 py-3 border border-gray-500 text-center">Aksi</th>
+                <th className="px-6 py-3 text-center">No</th>
+                <th className="px-6 py-3 text-center">Foto</th>
+                <th className="px-6 py-3 text-center">Nama Produk</th>
+                <th className="px-6 py-3 text-center">Deskripsi</th>
+                <th className="px-6 py-3 text-center">Kondisi</th>
+                <th className="px-6 py-3 text-center">Harga</th>
+                <th className="px-6 py-3 text-center">Aksi</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="bg-gray-100">
               {filteredProducts.length > 0 ? (
                 filteredProducts.map((product, index) => (
-                  <tr key={product.id} className="bg-white border-b border-gray-400 hover:bg-gray-100">
-                    <td className="px-6 py-4 border border-gray-400 text-center">{index + 1}</td>
-                    <td className="px-6 py-4 border border-gray-400 text-center">
+                  <tr key={product.id} className="hover:bg-gray-100">
+                    <td className="px-6 py-4 text-center">{index + 1}</td>
+                    <td className="px-6 py-4 text-center">
                       {product.fotoUrl ? (
                         <img src={product.fotoUrl} alt="Foto Produk" className="w-16 h-16 object-cover rounded-md" />
                       ) : (
                         "Tidak Ada Gambar"
                       )}
                     </td>
-                    <td className="px-6 py-4 font-medium border border-gray-400">{product.nama}</td>
-                    <td className="px-6 py-4 border border-gray-400">{product.deskripsi}</td>
-                    <td className="px-6 py-4 border border-gray-400 text-center">{product.kondisi}</td>
-                    <td className="px-6 py-4 border border-gray-400 text-center">
+                    <td className="px-6 py-4 font-medium">{product.nama}</td>
+                    <td className="px-6 py-4">{product.deskripsi}</td>
+                    <td className="px-6 py-4 text-center">{product.kondisi}</td>
+                    <td className="px-6 py-4 text-center">
                       Rp {product.harga.toLocaleString()}
                     </td>
-                    <td className="px-6 py-4 flex gap-3 justify-center border">
+                    <td className="px-6 py-4 flex gap-3 justify-center">
                       <button
                         onClick={() => handleEdit(product.id)}
-                        className="flex items-center gap-2 bg-blue-500 text-white px-3 py-1
-                         rounded-md hover:bg-blue-600 transition">
+                        className="flex items-center gap-2 bg-blue-500
+                       text-white px-3 py-1 rounded-md hover:bg-blue-600 transition">
                         <Pencil size={18} />
                       </button>
                       <button
