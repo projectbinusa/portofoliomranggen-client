@@ -61,6 +61,9 @@ import User from "./user/User";
 import EditUser from "./user/EditUser";
 import TambahUser from "./user/TambahUser";
 
+
+import PageProfil from "./profil/PageProfil";
+
 import "./App.css";
 
 function App() {
@@ -337,6 +340,14 @@ function App() {
           element={
             <PrivateRoute>
               <EditUser />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/page-profil"
+          element={
+            <PrivateRoute>
+              <PageProfil />
             </PrivateRoute>
           }
         />

@@ -1,33 +1,30 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import PropTypes from "prop-types"; // Import PropTypes
+import PropTypes from "prop-types"; 
 import { FaChalkboardTeacher, FaUserGraduate, FaLayerGroup, FaUsers, FaCalendarAlt, FaUserTie, FaShoppingCart } from "react-icons/fa";
 import Sidebar from "../components/Sidebar";
 
-function DashboardCard({ icon, label, count, description, color, onClick }) {
+function DashboardCard({ icon, label, count, description, color, textColor, onClick }) {
   return (
-    <div className={`flex flex-col w-64 h-32 ${color} rounded-lg shadow-md text-white p-4 cursor-pointer`} onClick={onClick}>
-      <div className="flex items-center">
-        <div className="text-4xl mr-3">{icon}</div>
-        <div>
-          <p className="text-sm">{label}</p>
-          <h3 className="text-xl font-bold">{count}</h3>
-        </div>
-      </div>
-      <p className="text-xs mt-2 text-white">{description}</p>
+    <div className={`flex flex-col items-center justify-center w-64 h-32 ${color} ${textColor} rounded-lg shadow-md p-3 cursor-pointer`} onClick={onClick}>
+      <div className="text-4xl">{icon}</div>
+      <h3 className="text-2xl font-bold">{count}</h3>
+      <p className="text-sm font-semibold">{label}</p>
+      <p className="text-xs mt-1 text-center">{description}</p>
     </div>
   );
 }
 
-// Menambahkan validasi untuk props
+
 DashboardCard.propTypes = {
-  icon: PropTypes.node.isRequired,  // Untuk komponen React seperti icon
-  label: PropTypes.string.isRequired,  // Label adalah string
-  count: PropTypes.number.isRequired,  // Count adalah number
-  description: PropTypes.string.isRequired,  // Deskripsi adalah string
-  color: PropTypes.string.isRequired,  // Color adalah string
-  onClick: PropTypes.func.isRequired,  // onClick adalah fungsi
+  icon: PropTypes.node.isRequired,
+  label: PropTypes.string.isRequired,
+  count: PropTypes.number.isRequired,
+  description: PropTypes.string.isRequired,
+  color: PropTypes.string.isRequired,
+  textColor: PropTypes.string.isRequired,
+  onClick: PropTypes.func.isRequired,
 };
 
 export default function Dashboard() {
@@ -76,15 +73,14 @@ export default function Dashboard() {
   return (
     <div className="flex min-h-screen">
       <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
-      <div className={`flex-1 p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 transition-all duration-300 ${isSidebarOpen ? "ml-64" : "ml-5"}`}>
-
-        <DashboardCard icon={<FaChalkboardTeacher />} label="Guru" count={dataCounts.guru} description="Total jumlah guru aktif saat ini." color="bg-blue-500" onClick={() => navigate("/guru")} />
-        <DashboardCard icon={<FaUserGraduate />} label="Siswa" count={dataCounts.siswa} description="Total siswa yang terdaftar di sistem." color="bg-green-500" onClick={() => navigate("/siswa")} />
-        <DashboardCard icon={<FaLayerGroup />} label="Kategori Kelas" count={dataCounts.kategoriKelas} description="Jumlah kategori kelas yang tersedia." color="bg-orange-500" onClick={() => navigate("/kategori-kelas")} />
-        <DashboardCard icon={<FaUsers />} label="Organisasi" count={dataCounts.organisasi} description="Total organisasi sekolah yang terdaftar." color="bg-purple-500" onClick={() => navigate("/organisasi")} />
-        <DashboardCard icon={<FaCalendarAlt />} label="Kegiatan Sekolah" count={dataCounts.kegiatan} description="Total kegiatan sekolah yang terdaftar." color="bg-yellow-500" onClick={() => navigate("/kegiatan-sekolah")} />
-        <DashboardCard icon={<FaUserTie />} label="Staff" count={dataCounts.staff} description="Total jumlah staff yang bekerja di sekolah." color="bg-teal-500" onClick={() => navigate("/staff")} />
-        <DashboardCard icon={<FaShoppingCart />} label="Pesanan" count={dataCounts.pesanan} description="Total pesanan yang telah dibuat." color="bg-red-500" onClick={() => navigate("/page-pesanan")} />
+      <div className={`flex-1 p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 transition-all duration-300 ${isSidebarOpen ? "ml-56" : "ml-5"}`}>        
+        <DashboardCard icon={<FaChalkboardTeacher />} label="Guru" count={dataCounts.guru} description="Total jumlah guru aktif saat ini." color="bg-[#3674B5]" textColor="text-white" onClick={() => navigate("/guru")} />
+        <DashboardCard icon={<FaUserGraduate />} label="Siswa" count={dataCounts.siswa} description="Total siswa yang terdaftar di sistem." color="bg-[#578FCA]" textColor="text-white" onClick={() => navigate("/siswa")} />
+        <DashboardCard icon={<FaLayerGroup />} label="Kategori Kelas" count={dataCounts.kategoriKelas} description="Jumlah kategori kelas yang tersedia." color="bg-[#A1E3F9]" textColor="text-gray-900" onClick={() => navigate("/kategori-kelas")} />
+        <DashboardCard icon={<FaUsers />} label="Organisasi" count={dataCounts.organisasi} description="Total organisasi sekolah yang terdaftar." color="bg-[#D1F8EF]" textColor="text-gray-900" onClick={() => navigate("/organisasi")} />
+        <DashboardCard icon={<FaCalendarAlt />} label="Kegiatan Sekolah" count={dataCounts.kegiatan} description="Total kegiatan sekolah yang terdaftar." color="bg-[#3674B5]" textColor="text-white" onClick={() => navigate("/kegiatan-sekolah")} />
+        <DashboardCard icon={<FaUserTie />} label="Staff" count={dataCounts.staff} description="Total jumlah staff yang bekerja di sekolah." color="bg-[#578FCA]" textColor="text-white" onClick={() => navigate("/staff")} />
+        <DashboardCard icon={<FaShoppingCart />} label="Pesanan" count={dataCounts.pesanan} description="Total pesanan yang telah dibuat." color="bg-[#A1E3F9]" textColor="text-gray-900" onClick={() => navigate("/pesanan")} />
       </div>
     </div>
   );
