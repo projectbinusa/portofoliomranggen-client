@@ -12,6 +12,8 @@ const User = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const usersPerPage = 5;
 
   useEffect(() => {
     axios
@@ -49,13 +51,18 @@ const User = () => {
     }
   };
 
-  const filteredUsers = users.filter((user) => {
-    return (
-      user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.email.toString().includes(searchTerm) ||
-      user.password.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-  });
+  const filteredUsers = users.filter((user) =>
+    user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    user.email.toString().includes(searchTerm) ||
+    user.password.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  // Hitung indeks user yang akan ditampilkan
+  const indexOfLastUser = currentPage * usersPerPage;
+  const indexOfFirstUser = indexOfLastUser - usersPerPage;
+  const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
+  const totalPages = Math.ceil(filteredUsers.length / usersPerPage);
+
   return (
     <div className="flex h-screen bg-gray-100">
       <Sidebar />
@@ -103,10 +110,10 @@ const User = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredUsers.length > 0 ? (
-                    filteredUsers.map((user, index) => (
+                  {currentUsers.length > 0 ? (
+                    currentUsers.map((user, index) => (
                       <tr key={user.id} className="bg-white hover:bg-gray-100">
-                        <td className="px-6 py-3 border border-gray-300 text-center">{index + 1}</td>
+                        <td className="px-6 py-3 border border-gray-300 text-center">{indexOfFirstUser + index + 1}</td>
                         <td className="px-6 py-3 border border-gray-300">{user.username}</td>
                         <td className="px-6 py-3 border border-gray-300">{user.email}</td>
                         <td className="px-6 py-3 border border-gray-300">{user.password}</td>
@@ -134,6 +141,29 @@ const User = () => {
               </table>
             </div>
           )}
+
+          {/* Pagination */}
+          <div className="flex justify-between items-center mt-4">
+            <button
+              disabled={currentPage === 1}
+              onClick={() => setCurrentPage(currentPage - 1)}
+              className={`px-4 py-2 rounded-md ${currentPage === 1 ? "bg-gray-300 cursor-not-allowed" : "bg-blue-500 text-white hover:bg-blue-600"}`}
+            >
+              Previous
+            </button>
+
+            <span className="text-gray-700">
+              Halaman {currentPage} dari {totalPages}
+            </span>
+
+            <button
+              disabled={currentPage === totalPages}
+              onClick={() => setCurrentPage(currentPage + 1)}
+              className={`px-4 py-2 rounded-md ${currentPage === totalPages ? "bg-gray-300 cursor-not-allowed" : "bg-blue-500 text-white hover:bg-blue-600"}`}
+            >
+              Next
+            </button>
+          </div>
         </div>
       </div>
     </div>
