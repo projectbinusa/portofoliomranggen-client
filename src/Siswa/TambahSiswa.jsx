@@ -4,7 +4,7 @@ import Swal from "sweetalert2";
 import { API_SISWA } from "../utils/BaseUrl";
 
 const TambahSiswa = () => {
-  const [student, setStudent] = useState({
+  const [siswa, setSiswa] = useState({
     nama: "",
     nisn: "",
     alamat: "",
@@ -18,7 +18,7 @@ const TambahSiswa = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setStudent((prev) => ({ ...prev, [name]: value }));
+    setSiswa((prev) => ({ ...prev, [name]: value }));
   };
 
   const formatDate = (dateString) => {
@@ -28,24 +28,24 @@ const TambahSiswa = () => {
   };
 
   const validateForm = () => {
-    for (const key in student) {
-      if (!student[key]) {
+    for (const key in siswa) {
+      if (!siswa[key]) {
         Swal.fire("Gagal!", `Field "${key}" harus diisi.`, "error");
         return false;
       }
     }
 
-    if (!/^\d+$/.test(student.nisn)) {
+    if (!/^\d+$/.test(siswa.nisn)) {
       Swal.fire("Gagal!", "NISN hanya boleh berisi angka.", "error");
       return false;
     }
 
-    if (!/^\d+$/.test(student.nomerHp)) {
+    if (!/^\d+$/.test(siswa.nomerHp)) {
       Swal.fire("Gagal!", "Nomor HP hanya boleh berisi angka.", "error");
       return false;
     }
 
-    if (!/^\d+$/.test(student.nomerHpOrangtua)) {
+    if (!/^\d+$/.test(siswa.nomerHpOrangtua)) {
       Swal.fire("Gagal!", "Nomor HP Orangtua hanya boleh berisi angka.", "error");
       return false;
     }
@@ -58,18 +58,18 @@ const TambahSiswa = () => {
 
     if (!validateForm()) return;
 
-    const studentDTO = {
+    const siswaDTO = {
       id: 0,
-      nama: student.nama,
-      nisn: parseInt(student.nisn),
-      alamat: student.alamat,
-      namaOrangtua: student.namaOrangtua,
-      nomerHpOrangtua: parseInt(student.nomerHpOrangtua),
-      nomerHp: parseInt(student.nomerHp),
-      tanggalLahir: formatDate(student.tanggalLahir),
+      nama: siswa.nama,
+      nisn: parseInt(siswa.nisn),
+      alamat: siswa.alamat,
+      namaOrangtua: siswa.namaOrangtua,
+      nomerHpOrangtua: parseInt(siswa.nomerHpOrangtua),
+      nomerHp: parseInt(siswa.nomerHp),
+      tanggalLahir: formatDate(siswa.tanggalLahir),
     };
 
-    console.log("Data yang dikirim ke backend:", studentDTO);
+    console.log("Data yang dikirim ke backend:", siswaDTO);
 
     try {
       const response = await fetch(`${API_SISWA}/tambah`, {
@@ -78,7 +78,7 @@ const TambahSiswa = () => {
           "Accept": "application/json",
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(studentDTO),
+        body: JSON.stringify(siswaDTO),
       });
 
       if (!response.ok) {
@@ -111,7 +111,7 @@ const TambahSiswa = () => {
             <input
               type={field === "tanggalLahir" ? "date" : "text"}
               name={field}
-              value={student[field]}
+              value={siswa[field]}
               onChange={handleChange}
               className="w-4/5 border rounded-md p-3 focus:ring-2 focus:ring-blue-500"
             />
