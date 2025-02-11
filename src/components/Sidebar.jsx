@@ -5,12 +5,8 @@ import {
   HiHome,
   HiUser,
   HiClipboardList,
-  HiOfficeBuilding,
-  HiAcademicCap,
-  HiUsers,
-  HiLogout,
   HiShoppingCart,
-  HiCalendar,
+  HiLogout,
   HiMenu,
   HiX,
   HiChevronDown,
@@ -77,40 +73,41 @@ export default function Sidebar() {
             text="Dashboard"
             to="/dashboard"
           />
-
           <DropdownItem
             isOpen={isOpen}
             icon={<HiUser />}
             text="Data"
+            menuKey="data"
+            dropdowns={dropdowns}
+            toggleDropdown={toggleDropdown}
             items={[
               { text: "Guru", to: "/guru" },
               { text: "Siswa", to: "/siswa" },
               { text: "Staf", to: "/staff" },
             ]}
-            dropdownOpen={dropdowns["data"]}
-            toggleDropdown={() => toggleDropdown("data")}
           />
-
           <DropdownItem
             isOpen={isOpen}
             icon={<HiClipboardList />}
             text="Manajemen"
+            menuKey="manajemen"
+            dropdowns={dropdowns}
+            toggleDropdown={toggleDropdown}
             items={[
               { text: "Kategori", to: "/kategori-kelas" },
               { text: "Organisasi", to: "/organisasi" },
               { text: "Kegiatan", to: "/kegiatan-sekolah" },
+              { text: "Produk", to: "/produk" },
+              { text: "Buku", to: "/buku" },
+              { text: "User", to: "/user" },
             ]}
-            dropdownOpen={dropdowns["manajemen"]}
-            toggleDropdown={() => toggleDropdown("manajemen")}
           />
-
           <SidebarItem
             isOpen={isOpen}
             icon={<HiShoppingCart />}
             text="Pesanan"
             to="/pesanan"
           />
-
           <li>
             <button
               onClick={handleLogout}
@@ -150,13 +147,14 @@ function DropdownItem({
   text,
   items,
   isOpen,
-  dropdownOpen,
+  dropdowns,
   toggleDropdown,
+  menuKey,
 }) {
   return (
     <li>
       <button
-        onClick={toggleDropdown}
+        onClick={() => toggleDropdown(menuKey)}
         className="flex items-center justify-between w-full p-3 rounded-md hover:bg-green-600 transition"
       >
         <div className="flex items-center space-x-3">
@@ -165,11 +163,13 @@ function DropdownItem({
         </div>
         {isOpen && (
           <HiChevronDown
-            className={`transform ${dropdownOpen ? "rotate-180" : "rotate-0"}`}
+            className={`transform ${
+              dropdowns[menuKey] ? "rotate-180" : "rotate-0"
+            }`}
           />
         )}
       </button>
-      {dropdownOpen && (
+      {dropdowns[menuKey] && (
         <ul className="ml-6 mt-2 space-y-2">
           {items.map((item, index) => (
             <SidebarItem
