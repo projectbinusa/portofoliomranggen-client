@@ -11,7 +11,7 @@ const TambahBuku = () => {
     tahunTerbit: "",
     jumlahHalaman: "",
     idAdmin: "",
-    fotoUrl: "",  
+    fotoUrl: "",
   });
 
   const navigate = useNavigate();
@@ -30,7 +30,7 @@ const TambahBuku = () => {
       !buku.tahunTerbit ||
       !buku.jumlahHalaman ||
       !buku.idAdmin ||
-      !buku.fotoUrl 
+      !buku.fotoUrl
     ) {
       Swal.fire({
         title: "Gagal!",
@@ -74,48 +74,47 @@ const TambahBuku = () => {
   };
 
   return (
-      <div className="flex-1 p-8 ml-4">
-        <h2 className="text-2xl font-semibold mb-6 text-gray-800">Tambah Buku</h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {[
-            { label: "Judul Buku", name: "judulBuku", type: "text" },
-            { label: "Penerbit", name: "penerbit", type: "text" },
-            { label: "Pengarang", name: "pengarang", type: "text" },
-            { label: "Tahun Terbit", name: "tahunTerbit", type: "number" },
-            { label: "Jumlah Halaman", name: "jumlahHalaman", type: "number" },
-            { label: "ID Admin", name: "idAdmin", type: "number" },
-            { label: "Foto URL", name: "fotoUrl", type: "text" }, 
-          ].map((field) => (
-            <div key={field.name} className="flex items-center gap-4">
-              <label className="w-1/5 text-gray-700 font-medium">{field.label}</label>
-              <input
-                type={field.type}
-                name={field.name}
-                value={buku[field.name]}
-                onChange={handleChange}
-                className="w-4/5 border rounded-md p-3 focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-          ))}
-
-          <div className="flex justify-end gap-4 mt-6">
-            <button
-              type="button"
-              className="text-black font-semibold hover:underline"
-              onClick={() => navigate("/buku")}
-            >
-              Batal
-            </button>
-            <button
-              type="submit"
-              className="bg-green-600 text-white font-semibold px-6 py-2
-               rounded-lg hover:bg-green-700 transition"
-            >
-              Simpan
-            </button>
+    <div className="flex-1 p-8 ml-4">
+      <h2 className="text-2xl font-semibold mb-6 text-gray-800">Tambah Buku</h2>
+      <form onSubmit={handleSubmit} className="space-y-4 mt-6">
+        {[
+          { label: "Judul Buku", name: "judulBuku", type: "text" },
+          { label: "Penerbit", name: "penerbit", type: "text" },
+          { label: "Pengarang", name: "pengarang", type: "text" },
+          { label: "Tahun Terbit", name: "tahunTerbit", type: "number" },
+          { label: "Jumlah Halaman", name: "jumlahHalaman", type: "number" },
+          { label: "ID Admin", name: "idAdmin", type: "number" },
+          { label: "Foto URL", name: "fotoUrl", type: "text" },
+        ].map((field) => (
+          <div key={field.name} className="flex items-center">
+            <label className="w-40 text-gray-700 font-medium text-left">{field.label}</label>
+            <input
+              type={field.type}
+              name={field.name}
+              value={buku[field.name]}
+              onChange={handleChange}
+              className="flex-1 border rounded-md p-3 focus:ring-2 focus:ring-blue-500"
+            />
           </div>
-        </form>
-      </div>
+        ))}
+
+        <div className="flex justify-end gap-4 mt-6">
+          <button
+            type="button"
+            className="text-black font-semibold hover:underline"
+            onClick={() => navigate("/buku")}
+          >
+            Batal
+          </button>
+          <button
+            type="submit"
+            className="bg-green-600 text-white font-semibold px-6 py-2 rounded-lg hover:bg-green-700 transition"
+          >
+            Simpan
+          </button>
+        </div>
+      </form>
+    </div>
   );
 };
 

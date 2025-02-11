@@ -42,7 +42,6 @@ const EditProduk = () => {
     }));
   };
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -63,45 +62,45 @@ const EditProduk = () => {
   };
 
   return (
-      <div className="flex-1 p-8 ml-4">
-        <h2 className="text-2xl font-semibold mb-6 text-gray-800">Edit Produk</h2>
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {[
-            { label: "Nama Produk", name: "nama", type: "text" },
-            { label: "Deskripsi", name: "deskripsi", type: "text" },
-            { label: "Kondisi", name: "kondisi", type: "text" },
-            { label: "Harga", name: "harga", type: "number" },
-            { label: "Foto Produk (URL)", name: "fotoUrl", type: "text" },
-          ].map((field) => (
-            <div key={field.name} className="flex items-center gap-4">
-              <label className="w-1/5 text-gray-700 font-medium">{field.label}</label>
-              <input
-                type={field.type}
-                name={field.name}
-                value={produk[field.name]}
-                onChange={handleChange}
-                className="w-4/5 border rounded-md p-3 focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-          ))}
-
-          <div className="flex justify-end gap-4 mt-6">
-            <button
-              type="button"
-              className="text-black font-semibold hover:underline"
-              onClick={() => navigate("/produk")}  
-            >
-              Batal
-            </button>
-            <button
-              type="submit"
-              className="bg-green-600 text-white font-semibold px-6 py-2 rounded-lg hover:bg-green-700 transition"
-            >
-              Simpan
-            </button>
+    <div className="flex-1 p-8 ml-4 mt-10">
+      <h2 className="text-2xl font-semibold mb-6 text-gray-800">Edit Produk</h2>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        {[
+          { label: "Nama Produk", name: "nama", type: "text" },
+          { label: "Deskripsi", name: "deskripsi", type: "text" },
+          { label: "Kondisi", name: "kondisi", type: "text" },
+          { label: "Harga", name: "harga", type: "number" },
+          { label: "Foto Produk (URL)", name: "fotoUrl", type: "text" },
+        ].map((field) => (
+          <div key={field.name} className="flex items-center gap-4">
+            <label className="w-40 text-gray-700 font-medium text-left">{field.label}</label>
+            <input
+              type={field.type}
+              name={field.name}
+              value={produk[field.name]}
+              onChange={handleChange}
+              className="flex-1 border rounded-md p-3 focus:ring-2 focus:ring-blue-500"
+            />
           </div>
-        </form>
-      </div>
+        ))}
+
+        <div className="flex justify-end gap-4 mt-6">
+          <button
+            type="button"
+            className="text-black font-semibold hover:underline"
+            onClick={() => navigate("/produk")}
+          >
+            Batal
+          </button>
+          <button
+            type="submit"
+            className="bg-green-600 text-white font-semibold px-6 py-2 rounded-lg hover:bg-green-700 transition"
+          >
+            Simpan
+          </button>
+        </div>
+      </form>
+    </div>
   );
 };
 

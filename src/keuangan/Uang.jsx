@@ -82,30 +82,30 @@ const Uang = () => {
           </button>
         </div>
 
-        <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-          <table className="w-full text-sm text-gray-700 border border-gray-500">
-            <thead className="text-xs uppercase bg-gray-200 border-b-2 border-gray-500">
+        <div className="relative overflow-x-auto shadow-md">
+          <table className="w-full text-sm text-left text-gray-700">
+            <thead className="text-xs uppercase bg-gray-200 text-gray-700">
               <tr>
-                <th className="px-6 py-3 border border-gray-500 text-center">No</th>
-                <th className="px-6 py-3 border border-gray-500 text-center">Nama</th>
-                <th className="px-6 py-3 border border-gray-500 text-center">Harga</th>
-                <th className="px-6 py-3 border border-gray-500 text-center">Jumlah</th>
-                <th className="px-6 py-3 border border-gray-500 text-center">Total Harga</th>
-                <th className="px-6 py-3 border border-gray-500 text-center">Kategori</th>
-                <th className="px-6 py-3 border border-gray-500 text-center">Catatan</th>
-                <th className="px-6 py-3 border border-gray-500 text-center">Aksi</th>
+                <th className="px-6 py-3 text-center">No</th>
+                <th className="px-6 py-3 text-center">Nama</th>
+                <th className="px-6 py-3 text-center">Harga</th>
+                <th className="px-6 py-3 text-center">Jumlah</th>
+                <th className="px-6 py-3 text-center">Total Harga</th>
+                <th className="px-6 py-3 text-center">Kategori</th>
+                <th className="px-6 py-3 text-center">Catatan</th>
+                <th className="px-6 py-3 text-center">Aksi</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="bg-gray-100">
               {filteredKeuangan.map((item, index) => (
-                <tr key={item.id} className="bg-white border-b border-gray-400 hover:bg-gray-100">
-                  <td className="px-6 py-4 border border-gray-400 text-center">{index + 1}</td>
-                  <td className="px-6 py-4 border border-gray-400">{item.nama}</td>
-                  <td className="px-6 py-4 border border-gray-400">Rp {item.harga.toLocaleString()}</td>
-                  <td className="px-6 py-4 border border-gray-400">{item.jumlah}</td>
-                  <td className="px-6 py-4 border border-gray-400">Rp {item.totalHarga.toLocaleString()}</td>
-                  <td className="px-6 py-4 border border-gray-400">{item.kategoriPembiayaan}</td>
-                  <td className="px-6 py-4 border border-gray-400">{item.catatan}</td>
+                <tr key={item.id} className="hover:bg-gray-100">
+                  <td className="px-6 py-4 text-center">{index + 1}</td>
+                  <td className="px-6 py-4">{item.nama}</td>
+                  <td className="px-6 py-4">Rp {item.harga.toLocaleString()}</td>
+                  <td className="px-6 py-4">{item.jumlah}</td>
+                  <td className="px-6 py-4">Rp {item.totalHarga.toLocaleString()}</td>
+                  <td className="px-6 py-4">{item.kategoriPembiayaan}</td>
+                  <td className="px-6 py-4">{item.catatan}</td>
                   <td className="px-6 py-4 flex gap-3 justify-center">
                     <button onClick={() => handleEdit(item.id)} className="bg-blue-500 text-white
                      px-3 py-1 rounded-md hover:bg-blue-600 transition">
