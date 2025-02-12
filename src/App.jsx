@@ -60,8 +60,11 @@ import EditBuku from "./buku/EditBuku";
 import User from "./user/User";
 import EditUser from "./user/EditUser";
 import TambahUser from "./user/TambahUser";
-
 import PageProfil from "./profil/PageProfil";
+
+import PageDonasi from "./donasi/PageDonasi";
+import TambahDonasi from "./donasi/TambahDonasi";
+import EditDonasi from "./donasi/EditDonasi";
 
 import "./App.css";
 
@@ -126,6 +129,10 @@ function App() {
         <Route path="/tambah-user" element={<TambahUser />} />
         <Route path="/edit-user/:id" element={<EditUser />} />
         <Route path="/page-profil" element={<PageProfil />} />
+
+        <Route path="/donasi" element={<PageDonasi />} />
+        <Route path="/tambah-donasi" element={<TambahDonasi />} />
+        <Route path="/edit-donasi/:id" element={<EditDonasi />} />
 
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
