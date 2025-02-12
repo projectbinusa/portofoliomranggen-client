@@ -16,3 +16,4 @@ export const API_KEGIATAN = `${url}/kegiatan`;
 export const API_KEUANGAN = `${url}/keuangan`;
 export const API_KELAS = `${url}/kelas`;
 export const API_ADMIN = `${url}/admin`;
+export const API_BERITA = `${url}/berita`;

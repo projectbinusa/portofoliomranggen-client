@@ -61,6 +61,10 @@ import User from "./user/User";
 import EditUser from "./user/EditUser";
 import TambahUser from "./user/TambahUser";
 
+// **Import Komponen Berita**
+import Berita from "./berita/Berita";
+import TambahBerita from "./berita/TambahBerita";
+import EditBerita from "./berita/EditBerita";
 
 import PageProfil from "./profil/PageProfil";
 
@@ -343,6 +347,33 @@ function App() {
             </PrivateRoute>
           }
         />
+
+        {/* Routes untuk Berita */}
+        <Route
+          path="/berita"
+          element={
+            <PrivateRoute>
+              <Berita />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/tambah-berita"
+          element={
+            <PrivateRoute>
+              <TambahBerita />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/edit-berita/:id/:idAdmin"
+          element={
+            <PrivateRoute>
+              <EditBerita />
+            </PrivateRoute>
+          }
+        />
+
         <Route
           path="/page-profil"
           element={
