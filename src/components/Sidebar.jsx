@@ -73,11 +73,18 @@ export default function Sidebar() {
             text="Dashboard"
             to="/dashboard"
           />
-          <DropdownItem
+          <SidebarItem
             isOpen={isOpen}
             icon={<HiUser />}
-            text="Data"
-            menuKey="data"
+            text="Profil"
+            to="/page-profil"
+          />
+
+          <DropdownItem
+            isOpen={isOpen}
+            icon={<HiClipboardList />}
+            text="Manajemen Guru"
+            menuKey="manajemenGuru"
             dropdowns={dropdowns}
             toggleDropdown={toggleDropdown}
             items={[
@@ -86,11 +93,12 @@ export default function Sidebar() {
               { text: "Staf", to: "/staff" },
             ]}
           />
+
           <DropdownItem
             isOpen={isOpen}
             icon={<HiClipboardList />}
-            text="Manajemen"
-            menuKey="manajemen"
+            text="Manajemen Sekolah"
+            menuKey="manajemenSekolah"
             dropdowns={dropdowns}
             toggleDropdown={toggleDropdown}
             items={[
@@ -102,6 +110,7 @@ export default function Sidebar() {
               { text: "User", to: "/user" },
             ]}
           />
+
           <SidebarItem
             isOpen={isOpen}
             icon={<HiShoppingCart />}
