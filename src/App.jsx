@@ -360,7 +360,7 @@ function App() {
         />
 
         <Route path="*" element={<NotFoundPage />} />
-        
+
           {/* Routes untuk Berita */}
           <Route
             path="/berita"
