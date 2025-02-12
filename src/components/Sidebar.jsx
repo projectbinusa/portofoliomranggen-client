@@ -102,9 +102,10 @@ export default function Sidebar() {
             dropdowns={dropdowns}
             toggleDropdown={toggleDropdown}
             items={[
-              { text: "Kategori", to: "/kategori-kelas" },
+              { text: "Kategori Kelas", to: "/kategori-kelas" },
               { text: "Organisasi", to: "/organisasi" },
               { text: "Kegiatan", to: "/kegiatan-sekolah" },
+              { text: "Kategori", to: "/page-kategori" },
               { text: "Produk", to: "/produk" },
               { text: "Buku", to: "/buku" },
               { text: "User", to: "/user" },

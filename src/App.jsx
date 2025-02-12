@@ -61,6 +61,12 @@ import User from "./user/User";
 import EditUser from "./user/EditUser";
 import TambahUser from "./user/TambahUser";
 
+// **Import Komponen Kategori**
+import PageKategori from "./kategori/PageKategori";
+import TambahKategoriA from "./kategori/TambahKategoriA";
+import EditKategoriA from "./kategori/EditKategoriA";
+
+
 import PageProfil from "./profil/PageProfil";
 
 import "./App.css";
@@ -126,6 +132,32 @@ function App() {
         <Route path="/tambah-user" element={<TambahUser />} />
         <Route path="/edit-user/:id" element={<EditUser />} />
         <Route path="/page-profil" element={<PageProfil />} />
+
+         {/* Routes untuk Kategori */}
+         <Route
+          path="/page-kategori"
+          element={
+            <PrivateRoute>
+              <PageKategori />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/tambah-kategori-a"
+          element={
+            <PrivateRoute>
+              <TambahKategoriA />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/edit-kategori-a/:id"
+          element={
+            <PrivateRoute>
+              <EditKategoriA />
+            </PrivateRoute>
+          }
+        />
 
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
