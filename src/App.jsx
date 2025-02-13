@@ -62,6 +62,7 @@ import TambahUser from "./user/TambahUser";
 
 import PageProfil from "./profil/PageProfil";
 
+
 import "./App.css";
 
 function App() {
@@ -125,6 +126,7 @@ function App() {
         <Route path="/tambah-user" element={<TambahUser />} />
         <Route path="/edit-user/:id" element={<EditUser />} />
         <Route path="/page-profil" element={<PageProfil />} />
+        
 
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
