@@ -62,10 +62,16 @@ import TambahUser from "./user/TambahUser";
 
 import PageProfil from "./profil/PageProfil";
 
+
+import PageDonasi from "./donasi/PageDonasi";
+import TambahDonasi from "./donasi/TambahDonasi";
+import EditDonasi from "./donasi/EditDonasi";
+
 // **Import Komponen Kategori**
 import PageKategori from "./kategori/PageKategori";
 import TambahKategoriA from "./kategori/TambahKategoriA";
 import EditKategoriA from "./kategori/EditKategoriA";
+
 
 
 import "./App.css";
@@ -141,6 +147,11 @@ function App() {
         <Route path="/page-kategori" element={<PageKategori />} />
         <Route path="/tambah-kategori-a" element={<TambahKategoriA />} />
         <Route path="/edit-kategori-a/:id" element={<EditKategoriA />} />
+
+
+        <Route path="/donasi" element={<PageDonasi />} />
+        <Route path="/tambah-donasi" element={<TambahDonasi />} />
+        <Route path="/edit-donasi/:id" element={<EditDonasi />} />
 
         <Route path="*" element={<NotFoundPage />} />
 
