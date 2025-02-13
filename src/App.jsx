@@ -60,6 +60,16 @@ import EditBuku from "./buku/EditBuku";
 import User from "./user/User";
 import EditUser from "./user/EditUser";
 import TambahUser from "./user/TambahUser";
+<<<<<<< HEAD
+=======
+
+// **Import Komponen Kategori**
+import PageKategori from "./kategori/PageKategori";
+import TambahKategoriA from "./kategori/TambahKategoriA";
+import EditKategoriA from "./kategori/EditKategoriA";
+
+
+>>>>>>> 2d4d476 (app sidebar)
 import PageProfil from "./profil/PageProfil";
 
 import PageDonasi from "./donasi/PageDonasi";
@@ -133,6 +143,32 @@ function App() {
         <Route path="/donasi" element={<PageDonasi />} />
         <Route path="/tambah-donasi" element={<TambahDonasi />} />
         <Route path="/edit-donasi/:id" element={<EditDonasi />} />
+
+         {/* Routes untuk Kategori */}
+         <Route
+          path="/page-kategori"
+          element={
+            <PrivateRoute>
+              <PageKategori />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/tambah-kategori-a"
+          element={
+            <PrivateRoute>
+              <TambahKategoriA />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/edit-kategori-a/:id"
+          element={
+            <PrivateRoute>
+              <EditKategoriA />
+            </PrivateRoute>
+          }
+        />
 
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
