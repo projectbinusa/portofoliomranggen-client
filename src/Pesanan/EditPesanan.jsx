@@ -72,7 +72,7 @@ const EditPesanan = () => {
           text: "Pesanan berhasil diperbarui",
           icon: "success",
         }).then(() => {
-          navigate("/page-pesanan"); // Kembali ke halaman pesanan
+          navigate("/pesanan"); // Kembali ke halaman pesanan
         });
       } else {
         console.error("Gagal memperbarui pesanan");

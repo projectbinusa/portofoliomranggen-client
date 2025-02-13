@@ -62,8 +62,16 @@ import TambahUser from "./user/TambahUser";
 
 import PageProfil from "./profil/PageProfil";
 
+// **Import Komponen Kategori**
+import PageKategori from "./kategori/PageKategori";
+import TambahKategoriA from "./kategori/TambahKategoriA";
+import EditKategoriA from "./kategori/EditKategoriA";
+
 
 import "./App.css";
+import Berita from "./berita/Berita";
+import TambahBerita from "./berita/TambahBerita";
+import EditBerita from "./berita/EditBerita";
 
 function App() {
   return (
@@ -88,8 +96,8 @@ function App() {
 
         {/* Routes untuk Kategori/Kelas */}
         <Route path="/kategori-kelas" element={<KategoriKelas />} />
-        <Route path="/tambah-kategori" element={<TambahKategori />} />
-        <Route path="/edit-kategori/:id" element={<EditKategori />} />
+        <Route path="/tambah-kategori-kelas" element={<TambahKategori />} />
+        <Route path="/edit-kategori-kelas/:id" element={<EditKategori />} />
 
         {/* Routes untuk Organisasi */}
         <Route path="/organisasi" element={<PageOrganisasi />} />
@@ -127,8 +135,20 @@ function App() {
         <Route path="/edit-user/:id" element={<EditUser />} />
         <Route path="/page-profil" element={<PageProfil />} />
         
+        <Route path="/page-profil" element={<PageProfil />} /> 
+
+        {/* Routes untuk Kategori */}
+        <Route path="/page-kategori" element={<PageKategori />} />
+        <Route path="/tambah-kategori-a" element={<TambahKategoriA />} />
+        <Route path="/edit-kategori-a/:id" element={<EditKategoriA />} />
 
         <Route path="*" element={<NotFoundPage />} />
+
+        {/* Routes untuk Berita */}
+        <Route path="/berita" element={<Berita />} />
+        <Route path="/tambah-berita" element={<TambahBerita />} />
+        <Route path="/edit-berita/:id/:idAdmin" element={<EditBerita />} />
+        
       </Routes>
     </Router>
   );
