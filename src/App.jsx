@@ -1,9 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-<<<<<<< HEAD
 // import PrivateRoute from "./components/PrivateRoute";
-=======
->>>>>>> d52dea42aabd496ee80ccb7c0f313c40ed4ef2ef
 import Dashboard from "./tampilan/Dashboard";
 
 // **Import Komponen Publik**
@@ -63,8 +60,7 @@ import EditBuku from "./buku/EditBuku";
 import User from "./user/User";
 import EditUser from "./user/EditUser";
 import TambahUser from "./user/TambahUser";
-<<<<<<< HEAD
-=======
+
 
 // **Import Komponen Kategori**
 import PageKategori from "./kategori/PageKategori";
@@ -72,14 +68,12 @@ import TambahKategoriA from "./kategori/TambahKategoriA";
 import EditKategoriA from "./kategori/EditKategoriA";
 
 
->>>>>>> 2d4d476 (app sidebar)
+
 import PageProfil from "./profil/PageProfil";
 
 import PageDonasi from "./donasi/PageDonasi";
 import TambahDonasi from "./donasi/TambahDonasi";
 import EditDonasi from "./donasi/EditDonasi";
-
-import PageProfil from "./profil/PageProfil";
 
 import "./App.css";
 
@@ -143,13 +137,10 @@ function App() {
         <Route path="/user" element={<User />} />
         <Route path="/tambah-user" element={<TambahUser />} />
         <Route path="/edit-user/:id" element={<EditUser />} />
-        <Route path="/page-profil" element={<PageProfil />} />
-<<<<<<< HEAD
-
+        <Route path="/page-profil" element={<PageProfil/> } />
         <Route path="/donasi" element={<PageDonasi />} />
         <Route path="/tambah-donasi" element={<TambahDonasi />} />
-        <Route path="/edit-donasi/:id" element={<EditDonasi />} />
-
+        <Route path="/edit-donasi/:id" element={<EditDonasi/>}/>
          {/* Routes untuk Kategori */}
          <Route
           path="/page-kategori"
@@ -175,8 +166,7 @@ function App() {
             </PrivateRoute>
           }
         />
-=======
->>>>>>> d52dea42aabd496ee80ccb7c0f313c40ed4ef2ef
+
 
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
