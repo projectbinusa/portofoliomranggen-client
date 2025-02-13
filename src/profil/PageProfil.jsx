@@ -1,18 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { Camera } from "lucide-react";
+import { Camera, Eye, EyeOff, User, Mail, Lock } from "lucide-react";
 import { API_ADMIN } from "../utils/BaseUrl"; 
 import Sidebar from "../components/Sidebar";
 
 export default function ProfilePage() {
   const [fotoProfil, setFotoProfil] = useState("https://via.placeholder.com/150");
+  const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     username: "",
     email: "",
     password: "",
-    role: "",
   });
 
-  // Ambil foto dari localStorage saat halaman dimuat
   useEffect(() => {
     const savedFoto = localStorage.getItem("fotoProfil");
     if (savedFoto) {
@@ -22,13 +21,12 @@ export default function ProfilePage() {
     const fetchAdminData = async () => {
       try {
         const response = await fetch(`${API_ADMIN}/admin/1`);
-        if (!response.ok) throw new Error("Failed to fetch admin data");
+        if (!response.ok) throw new Error("Gagal mengambil data admin");
         const data = await response.json();
         setFormData({
           username: data.username,
           email: data.email,
           password: data.password,
-          role: data.role,
         });
       } catch (error) {
         console.error("Error fetching admin data:", error);
@@ -37,12 +35,10 @@ export default function ProfilePage() {
     fetchAdminData();
   }, []);
 
-  // Fungsi untuk menangani perubahan input
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
 
-  // Fungsi untuk menangani perubahan foto
   const handleFotoChange = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -50,18 +46,16 @@ export default function ProfilePage() {
       reader.onload = () => {
         const fotoUrl = reader.result;
         setFotoProfil(fotoUrl);
-        localStorage.setItem("fotoProfil", fotoUrl); // Simpan ke localStorage
+        localStorage.setItem("fotoProfil", fotoUrl);
       };
       reader.readAsDataURL(file);
     }
   };
 
   return (
-    <div className="flex h-screen">
-      {/* Sidebar */}
+    <div className="flex h-screen bg-white">
       <Sidebar />
 
-      {/* Konten Profil */}
       <div className="flex-1 flex justify-center items-center p-4">
         <div className="w-full max-w-lg p-8 bg-white rounded-2xl shadow-xl">
           <h1 className="text-3xl font-bold mb-6 text-green-700 text-center">Profile</h1>
@@ -83,21 +77,62 @@ export default function ProfilePage() {
 
           {/* Form Profil */}
           <form className="space-y-4">
-            {["username", "email", "password", "role"].map((id) => (
-              <div key={id} className="flex items-center space-x-4">
-                <label htmlFor={id} className="w-24 text-sm font-medium text-green-700 text-right">
-                  {id.charAt(0).toUpperCase() + id.slice(1)}
-                </label>
+            {/* Username */}
+            <div className="flex flex-col space-y-1">
+              <label htmlFor="username" className="text-sm font-medium text-gray-600 text-left">Username</label>
+              <div className="flex items-center space-x-3">
+                <User className="text-green-600 w-6 h-6" />
                 <input 
-                  id={id} 
+                  id="username" 
                   type="text" 
-                  className="flex-1 p-2 border border-green-300 rounded-lg shadow-sm w-full" 
-                  value={formData[id]} 
+                  className="flex-1 p-2 border border-green-300 rounded-lg shadow-sm w-full focus:ring-2 focus:ring-green-400" 
+                  value={formData.username} 
                   onChange={handleChange} 
-                  required 
+                  placeholder="Username"
                 />
               </div>
-            ))}
+            </div>
+
+            {/* Email */}
+            <div className="flex flex-col space-y-1">
+              <label htmlFor="email" className="text-sm font-medium text-gray-600 text-left">Email</label>
+              <div className="flex items-center space-x-3">
+                <Mail className="text-green-600 w-6 h-6" />
+                <input 
+                  id="email" 
+                  type="email" 
+                  className="flex-1 p-2 border border-green-300 rounded-lg shadow-sm w-full focus:ring-2 focus:ring-green-400" 
+                  value={formData.email} 
+                  onChange={handleChange} 
+                  placeholder="Email"
+                />
+              </div>
+            </div>
+
+            {/* Password */}
+            <div className="flex flex-col space-y-1">
+              <label htmlFor="password" className="text-sm font-medium text-gray-600 text-left">Password</label>
+              <div className="flex items-center space-x-3">
+                <Lock className="text-green-600 w-6 h-6" />
+                <div className="relative flex-1">
+                  <input 
+                    id="password" 
+                    type={showPassword ? "text" : "password"} 
+                    className="p-2 border border-green-300 rounded-lg shadow-sm w-full focus:ring-2 focus:ring-green-400" 
+                    value={formData.password} 
+                    onChange={handleChange} 
+                    placeholder="Password"
+                  />
+                  <button 
+                    type="button" 
+                    className="absolute right-3 top-3 text-gray-500 focus:outline-none"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? <Eye /> : <EyeOff />}
+                  </button>
+                </div>
+              </div>
+            </div>
           </form>
         </div>
       </div>
