@@ -49,7 +49,7 @@ const TambahKategoriKelas = () => {
   };
 
   return (
-      <div className="flex-1 p-10 ml-64 mt-20">
+      <div className="flex-1 p-10 ml-5 mt-20">
         <div className="max-w-lg mx-auto bg-white p-12 rounded-md shadow-md">
           <form onSubmit={handleSubmit}>
             <div className="space-y-6">
