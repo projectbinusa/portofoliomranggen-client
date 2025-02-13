@@ -133,6 +133,8 @@ function App() {
         <Route path="/user" element={<User />} />
         <Route path="/tambah-user" element={<TambahUser />} />
         <Route path="/edit-user/:id" element={<EditUser />} />
+        <Route path="/page-profil" element={<PageProfil />} />
+        
         <Route path="/page-profil" element={<PageProfil />} /> 
 
         {/* Routes untuk Kategori */}

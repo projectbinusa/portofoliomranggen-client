@@ -10,10 +10,8 @@ const PageOrganisasi = () => {
   const [organisasiList, setOrganisasiList] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
 
-  // Retrieve adminId from localStorage
   const idAdmin = JSON.parse(localStorage.getItem("adminId"));
 
-  // Fetch organizations on component mount
   useEffect(() => {
     const fetchOrganisasi = async () => {
       try {
@@ -41,7 +39,6 @@ const PageOrganisasi = () => {
     fetchOrganisasi();
   }, []);
 
-  // Handle delete organization
   const handleHapus = async (id) => {
     try {
       const response = await axios.delete(`${API_ORGANISASI}/delete/${id}`);
@@ -66,7 +63,6 @@ const PageOrganisasi = () => {
     }
   };
 
-  // Filter organisasi berdasarkan pencarian
   const filteredOrganisasi = organisasiList.filter((organisasi) =>
     organisasi.namaOrganisasi.toLowerCase().includes(searchTerm.toLowerCase()) ||
     organisasi.lokasi.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -87,7 +83,6 @@ const PageOrganisasi = () => {
           </Link>
         </div>
 
-        {/* Input Search */}
         <div className="relative mb-4 w-1/3">
           <input
             type="text"
@@ -100,33 +95,32 @@ const PageOrganisasi = () => {
         </div>
 
         <div className="relative overflow-x-auto shadow-md rounded-lg">
-          <table className="w-full text-sm text-left text-gray-700 border border-gray-300">
+          <table className="w-full text-sm text-left text-gray-700">
             <thead className="text-xs text-gray-700 uppercase bg-gray-200">
               <tr>
-                <th className="px-6 py-3 border border-gray-300 text-center">No</th>
-                <th className="px-6 py-3 border border-gray-300 text-center">Nama Organisasi</th>
-                <th className="px-6 py-3 border border-gray-300 text-center">Lokasi</th>
-                <th className="px-6 py-3 border border-gray-300 text-center">Email</th>
-                <th className="px-6 py-3 border border-gray-300 text-center">Telepon</th>
-                <th className="px-6 py-3 border border-gray-300 text-center">Aksi</th>
+                <th className="px-6 py-3 text-center">No</th>
+                <th className="px-6 py-3 text-center">Nama Organisasi</th>
+                <th className="px-6 py-3 text-center">Lokasi</th>
+                <th className="px-6 py-3 text-center">Email</th>
+                <th className="px-6 py-3 text-center">Telepon</th>
+                <th className="px-6 py-3 text-center">Aksi</th>
               </tr>
             </thead>
             <tbody>
               {filteredOrganisasi.length > 0 ? (
                 filteredOrganisasi.map((organisasi, index) => (
-                  <tr key={organisasi.id} className="bg-white border-b border-gray-300">
-                    <td className="px-6 py-4 text-center border border-gray-300">{index + 1}</td>
-                    <td className="px-6 py-4 border border-gray-300">{organisasi.namaOrganisasi}</td>
-                    <td className="px-6 py-4 border border-gray-300">{organisasi.lokasi}</td>
-                    <td className="px-6 py-4 border border-gray-300">{organisasi.email}</td>
-                    <td className="px-6 py-4 border border-gray-300">{organisasi.telepon}</td>
-                    <td className="px-6 py-4 flex justify-center gap-2 border border-gray-300">
+                  <tr key={organisasi.id} className="bg-white ">
+                    <td className="px-6 py-4 text-center">{index + 1}</td>
+                    <td className="px-6 py-4 text-center">{organisasi.namaOrganisasi}</td>
+                    <td className="px-6 py-4 text-center">{organisasi.lokasi}</td>
+                    <td className="px-6 py-4 text-center">{organisasi.email}</td>
+                    <td className="px-6 py-4 text-center">{organisasi.telepon}</td>
+                    <td className="px-6 py-4 flex justify-center gap-2">
                       <Link
                         to={`/edit-organisasi/${organisasi.id}`}
                         className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition"
                       >
                         <Pencil size={20} />
-
                       </Link>
                       <button
                         onClick={() => handleHapus(organisasi.id)}
