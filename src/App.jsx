@@ -96,8 +96,8 @@ function App() {
 
         {/* Routes untuk Kategori/Kelas */}
         <Route path="/kategori-kelas" element={<KategoriKelas />} />
-        <Route path="/tambah-kategori" element={<TambahKategori />} />
-        <Route path="/edit-kategori/:id" element={<EditKategori />} />
+        <Route path="/tambah-kategori-kelas" element={<TambahKategori />} />
+        <Route path="/edit-kategori-kelas/:id" element={<EditKategori />} />
 
         {/* Routes untuk Organisasi */}
         <Route path="/organisasi" element={<PageOrganisasi />} />
