@@ -46,7 +46,7 @@ const TambahPesanan = () => {
           text: "Pesanan berhasil ditambahkan",
           icon: "success",
         }).then(() => {
-          navigate("/page-pesanan"); // Redirect setelah klik OK
+          navigate("/pesanan"); // Redirect setelah klik OK
         });
       } else {
         console.error("Gagal menambahkan pesanan");

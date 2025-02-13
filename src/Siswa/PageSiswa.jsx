@@ -94,26 +94,26 @@ const PageSiswa = () => {
 
           {/* Tabel Data Siswa */}
           <div className="relative overflow-x-auto shadow-md">
-            <table className="w-full text-sm text-left text-gray-700 border border-gray-400">
-              <thead className="text-xs font-bold uppercase bg-gray-200 border-b border-gray-500">
+            <table className="w-full text-sm text-left text-gray-700">
+              <thead className="text-xs uppercase bg-gray-200 text-gray-700">
                 <tr>
                   {["No", "Nama", "NISN", "Alamat", "Nama Orang Tua", "No HP Orang Tua", "No HP", "Tanggal Lahir", "Aksi"].map((header, index) => (
-                    <th key={index} className="px-6 py-3 border-r border-gray-400 text-center">{header}</th>
+                    <th key={index} className="px-6 py-3 text-center">{header}</th>
                   ))}
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="bg-gray-100">
                 {filteredStudents.length > 0 ? (
                   filteredStudents.map((student, index) => (
-                    <tr key={student.id} className="bg-white border-b border-gray-400 hover:bg-gray-100">
-                      <td className="px-6 py-4 border-r border-gray-400 text-center">{index + 1}</td>
-                      <td className="px-6 py-4 border-r border-gray-400 text-center">{student.nama}</td>
-                      <td className="px-6 py-4 border-r border-gray-400 text-center">{student.nisn}</td>
-                      <td className="px-6 py-4 border-r border-gray-400 text-center">{student.alamat}</td>
-                      <td className="px-6 py-4 border-r border-gray-400 text-center">{student.namaOrangtua}</td>
-                      <td className="px-6 py-4 border-r border-gray-400 text-center">{student.nomerHpOrangtua}</td>
-                      <td className="px-6 py-4 border-r border-gray-400 text-center">{student.nomerHp}</td>
-                      <td className="px-6 py-4 border-r border-gray-400 text-center">{student.tanggalLahir}</td>
+                    <tr key={student.id} className="hover:bg-gray-100">
+                      <td className="px-6 py-4 text-center">{index + 1}</td>
+                      <td className="px-6 py-4 text-center">{student.nama}</td>
+                      <td className="px-6 py-4 text-center">{student.nisn}</td>
+                      <td className="px-6 py-4 text-center">{student.alamat}</td>
+                      <td className="px-6 py-4 text-center">{student.namaOrangtua}</td>
+                      <td className="px-6 py-4 text-center">{student.nomerHpOrangtua}</td>
+                      <td className="px-6 py-4 text-center">{student.nomerHp}</td>
+                      <td className="px-6 py-4 text-center">{student.tanggalLahir}</td>
                       <td className="px-6 py-4 flex gap-3 justify-center">
                         <Link to={`/edit-siswa/${student.id}`}>
                           <button className="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600 transition">
