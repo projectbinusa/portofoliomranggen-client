@@ -40,11 +40,10 @@ const EditGuru = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (Object.values(formData).some((value) => !value.trim())) {
+    if (Object.values(formData).some((value) => String(value || "").trim() === "")) {
       Swal.fire("Error", "Semua kolom harus diisi!", "error");
       return;
     }
-
     try {
       const response = await fetch(`${API_GURU}/edit/${id}/${idAdmin}`, {
         method: "PUT",
