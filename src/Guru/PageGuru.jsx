@@ -79,7 +79,7 @@ const PageGuru = () => {
                     placeholder="Cari berdasarkan semua data..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full px-10 py-2 border border-black rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                    className="w-full px-10 py-2 border border-black rounded-md focus:ring-1 focus:ring-gray-400 focus:outline-none"
                   />
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-black-400 w-5 h-5" />
 
