@@ -64,11 +64,6 @@ import TambahUser from "./user/TambahUser";
 
 import PageProfil from "./profil/PageProfil";
 
-// **Import Komponen Berita**
-import Berita from "./berita/Berita";
-import TambahBerita from "./berita/TambahBerita";
-import EditBerita from "./berita/EditBerita";
-
 import "./App.css";
 
 function App() {
@@ -361,31 +356,7 @@ function App() {
 
         <Route path="*" element={<NotFoundPage />} />
 
-          {/* Routes untuk Berita */}
-          <Route
-            path="/berita"
-            element={
-              <PrivateRoute>
-                <Berita />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/tambah-berita"
-            element={
-              <PrivateRoute>
-                <TambahBerita />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/edit-berita/:id/:idAdmin"
-            element={
-              <PrivateRoute>
-                <EditBerita />
-              </PrivateRoute>
-            }
-          />
+         
       </Routes>
     </Router>
   );
