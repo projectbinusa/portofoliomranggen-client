@@ -122,12 +122,48 @@ function App() {
         <Route path="/edit-buku/:id" element={<EditBuku />} />
 
         {/* Routes untuk User */}
+        <Route
+          path="/user"
+          element={
+            <PrivateRoute>
+              <User />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/tambah-user"
+          element={
+            <PrivateRoute>
+              <TambahUser />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/edit-user/:id"
+          element={
+            <PrivateRoute>
+              <EditUser />
+            </PrivateRoute>
+          }
+        />
+
+
+        <Route
+          path="/page-profil"
+          element={
+            <PrivateRoute>
+              <PageProfil />
+            </PrivateRoute>
+          }
+        />
         <Route path="/user" element={<User />} />
         <Route path="/tambah-user" element={<TambahUser />} />
         <Route path="/edit-user/:id" element={<EditUser />} />
         <Route path="/page-profil" element={<PageProfil />} />
 
         <Route path="*" element={<NotFoundPage />} />
+
+         
       </Routes>
     </Router>
   );
