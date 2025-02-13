@@ -15,9 +15,9 @@ const Home = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-[#00b894] to-[#0984e3] flex flex-col items-center p-8">
+    <div className="min-h-screen w-full bg-gradient-to-br from-[#00b894] to-[#0984e3] flex flex-col items-center p-4 md:p-8">
       <motion.h1
-        className="text-6xl font-extrabold mb-8 text-white drop-shadow-lg text-center"
+        className="text-4xl md:text-6xl font-extrabold mb-6 md:mb-8 text-white drop-shadow-lg text-center"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
@@ -26,31 +26,31 @@ const Home = () => {
       </motion.h1>
 
       <motion.div
-        className="w-full max-w-3xl bg-transparent shadow-2xl backdrop-blur-lg rounded-3xl p-8 text-center"
+        className="w-full max-w-3xl bg-transparent shadow-2xl backdrop-blur-lg rounded-3xl p-6 md:p-8 text-center"
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.6 }}
       >
-        <p className="text-lg text-gray-100 mb-6 font-medium">
+        <p className="text-base md:text-lg text-gray-100 mb-4 md:mb-6 font-medium">
           Temukan dan pesan tiket untuk acara, konser, dan pertunjukan favorit
           Anda dengan mudah dan cepat!
         </p>
         <button
-          className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-purple-600 hover:to-blue-500 text-white font-semibold py-3 px-6 rounded-lg shadow-lg transition-all duration-300 mb-4"
+          className="w-full md:w-auto bg-gradient-to-r from-blue-500 to-purple-600 hover:from-purple-600 hover:to-blue-500 text-white font-semibold py-2 px-4 md:py-3 md:px-6 rounded-lg shadow-lg transition-all duration-300 mb-4"
           onClick={() => navigate("/login")}
         >
           Masuk
         </button>
-        <div className="flex gap-4 justify-center">
+        <div className="flex flex-col md:flex-row gap-4 justify-center">
           <motion.button
-            className="bg-gradient-to-r from-green-400 to-teal-500 hover:from-teal-500 hover:to-green-400 text-white font-semibold py-3 px-6 rounded-lg shadow-lg transition-all duration-300"
+            className="bg-gradient-to-r from-green-400 to-teal-500 hover:from-teal-500 hover:to-green-400 text-white font-semibold py-2 px-4 md:py-3 md:px-6 rounded-lg shadow-lg transition-all duration-300"
             whileHover={{ scale: 1.05 }}
             onClick={() => navigate("/visimisi")}
           >
             Visi & Misi
           </motion.button>
           <motion.button
-            className="bg-gradient-to-r from-orange-400 to-red-500 hover:from-red-500 hover:to-orange-400 text-white font-semibold py-3 px-6 rounded-lg shadow-lg transition-all duration-300"
+            className="bg-gradient-to-r from-orange-400 to-red-500 hover:from-red-500 hover:to-orange-400 text-white font-semibold py-2 px-4 md:py-3 md:px-6 rounded-lg shadow-lg transition-all duration-300"
             whileHover={{ scale: 1.05 }}
             onClick={() => navigate("/sambutan")}
           >
@@ -59,23 +59,25 @@ const Home = () => {
         </div>
       </motion.div>
 
-      <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-full px-10">
+      <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-6xl px-4 md:px-10">
         {eventImages.map((image, index) => (
           <motion.div
             key={index}
-            className="bg-transparent shadow-lg backdrop-blur-md rounded-xl p-5 flex flex-col items-center text-center transform transition duration-300 hover:scale-105 hover:shadow-2xl"
+            className="bg-transparent shadow-lg backdrop-blur-md rounded-xl p-4 flex flex-col items-center text-center transform transition duration-300 hover:scale-105 hover:shadow-2xl"
             whileHover={{ scale: 1.07 }}
           >
             <img
               src={image}
               alt={`Acara ${index + 1}`}
-              className="h-60 w-full rounded-lg mb-4 object-cover"
+              className="h-40 sm:h-60 w-full rounded-lg mb-4 object-cover"
             />
-            <h2 className="text-2xl font-semibold text-white">
+            <h2 className="text-xl md:text-2xl font-semibold text-white">
               Acara Menarik {index + 1}
             </h2>
-            <p className="text-gray-200 text-sm">Tanggal: Segera Diumumkan</p>
-            <button className="mt-4 bg-green-500 hover:bg-green-600 text-white py-2 px-6 rounded-lg shadow-md transition-all duration-300">
+            <p className="text-gray-200 text-sm md:text-base">
+              Tanggal: Segera Diumumkan
+            </p>
+            <button className="mt-4 bg-green-500 hover:bg-green-600 text-white py-2 px-4 md:py-2 md:px-6 rounded-lg shadow-md transition-all duration-300">
               Dapatkan Tiket
             </button>
           </motion.div>

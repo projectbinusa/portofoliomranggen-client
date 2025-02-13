@@ -1,6 +1,9 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+<<<<<<< HEAD
 // import PrivateRoute from "./components/PrivateRoute";
+=======
+>>>>>>> d52dea42aabd496ee80ccb7c0f313c40ed4ef2ef
 import Dashboard from "./tampilan/Dashboard";
 
 // **Import Komponen Publik**
@@ -76,6 +79,8 @@ import PageDonasi from "./donasi/PageDonasi";
 import TambahDonasi from "./donasi/TambahDonasi";
 import EditDonasi from "./donasi/EditDonasi";
 
+import PageProfil from "./profil/PageProfil";
+
 import "./App.css";
 
 function App() {
@@ -139,6 +144,7 @@ function App() {
         <Route path="/tambah-user" element={<TambahUser />} />
         <Route path="/edit-user/:id" element={<EditUser />} />
         <Route path="/page-profil" element={<PageProfil />} />
+<<<<<<< HEAD
 
         <Route path="/donasi" element={<PageDonasi />} />
         <Route path="/tambah-donasi" element={<TambahDonasi />} />
@@ -169,6 +175,8 @@ function App() {
             </PrivateRoute>
           }
         />
+=======
+>>>>>>> d52dea42aabd496ee80ccb7c0f313c40ed4ef2ef
 
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
