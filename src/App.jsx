@@ -63,6 +63,9 @@ import TambahUser from "./user/TambahUser";
 import PageProfil from "./profil/PageProfil";
 
 import "./App.css";
+import Berita from "./berita/Berita";
+import TambahBerita from "./berita/TambahBerita";
+import EditBerita from "./berita/EditBerita";
 
 function App() {
   return (
@@ -127,6 +130,12 @@ function App() {
         <Route path="/page-profil" element={<PageProfil />} />
 
         <Route path="*" element={<NotFoundPage />} />
+
+        {/* Routes untuk Berita */}
+        <Route path="/berita" element={<Berita />} />
+        <Route path="/tambah-berita" element={<TambahBerita />} />
+        <Route path="/edit-berita/:id/:idAdmin" element={<EditBerita />} />
+        
       </Routes>
     </Router>
   );
