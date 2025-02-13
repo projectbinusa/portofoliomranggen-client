@@ -1,6 +1,5 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-// import PrivateRoute from "./components/PrivateRoute";
 import Dashboard from "./tampilan/Dashboard";
 
 // **Import Komponen Publik**
@@ -70,6 +69,9 @@ import EditKategoriA from "./kategori/EditKategoriA";
 
 
 import "./App.css";
+import Berita from "./berita/Berita";
+import TambahBerita from "./berita/TambahBerita";
+import EditBerita from "./berita/EditBerita";
 
 function App() {
   return (
@@ -139,6 +141,12 @@ function App() {
         <Route path="/edit-kategori-a/:id" element={<EditKategoriA />} />
 
         <Route path="*" element={<NotFoundPage />} />
+
+        {/* Routes untuk Berita */}
+        <Route path="/berita" element={<Berita />} />
+        <Route path="/tambah-berita" element={<TambahBerita />} />
+        <Route path="/edit-berita/:id/:idAdmin" element={<EditBerita />} />
+        
       </Routes>
     </Router>
   );

@@ -64,10 +64,10 @@ const User = () => {
   const totalPages = Math.ceil(filteredUsers.length / usersPerPage);
 
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div className="flex h-screen">
       <Sidebar />
       <div className="flex-1 p-6 ml-40">
-        <div className="container mx-auto shadow-lg">
+        <div className="container mx-auto">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-2xl font-bold text-gray-700">Daftar User</h2>
             <button
@@ -100,24 +100,24 @@ const User = () => {
           {isLoading ? (
             <p className="text-center py-4">Loading data...</p>
           ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm border border-gray-200">
-                <thead className="text-xs text-gray-700 uppercase bg-gray-300">
+            <div className="relative overflow-x-auto shadow-md">
+              <table className="w-full text-sm text-left text-gray-700">
+                <thead className="text-xs uppercase bg-gray-200 text-gray-700">
                   <tr>
                     {["No", "Username", "Email", "Password", "Aksi"].map((header, index) => (
-                      <th key={index} className="px-6 py-3 border border-gray-300 text-center">{header}</th>
+                      <th key={index} className="px-6 py-3 text-center">{header}</th>
                     ))}
                   </tr>
                 </thead>
-                <tbody>
+                <tbody className="bg-gray-100">
                   {currentUsers.length > 0 ? (
                     currentUsers.map((user, index) => (
-                      <tr key={user.id} className="bg-white hover:bg-gray-100">
-                        <td className="px-6 py-3 border border-gray-300 text-center">{indexOfFirstUser + index + 1}</td>
-                        <td className="px-6 py-3 border border-gray-300">{user.username}</td>
-                        <td className="px-6 py-3 border border-gray-300">{user.email}</td>
-                        <td className="px-6 py-3 border border-gray-300">{user.password}</td>
-                        <td className="px-6 py-3 border border-gray-300 flex justify-center space-x-2">
+                      <tr key={user.id} className="hover:bg-gray-100">
+                        <td className="px-6 py-3 text-center">{indexOfFirstUser + index + 1}</td>
+                        <td className="px-6 py-3">{user.username}</td>
+                        <td className="px-6 py-3">{user.email}</td>
+                        <td className="px-6 py-3">{user.password}</td>
+                        <td className="px-6 py-3 flex justify-center space-x-2">
                           <Link to={`/edit-user/${user.id}`}>
                             <button className="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600">
                               <Pencil size={18} />
