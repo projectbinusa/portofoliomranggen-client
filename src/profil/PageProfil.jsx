@@ -1,13 +1,14 @@
 import { useState, useEffect } from "react";
 import { Camera } from "lucide-react";
+import { API_ADMIN } from "../utils/BaseUrl"; 
 
-const API_ADMIN = "http://localhost:4321/api/admin";
 
 export default function ProfilePage() {
   const [profilePic, setProfilePic] = useState("https://via.placeholder.com/150");
   const [formData, setFormData] = useState({
     username: "",
     email: "",
+    password: "",
     role: "",
   });
 
@@ -58,7 +59,7 @@ export default function ProfilePage() {
         </div>
         
         <form className="space-y-4">
-          {["username", "email", "role", "password"].map((id) => (
+          {["username", "email", "password", "role"].map((id) => (
             <div key={id} className="flex items-center space-x-4">
               <label htmlFor={id} className="w-24 text-sm font-medium text-green-700 text-right">
                 {id.charAt(0).toUpperCase() + id.slice(1)}
