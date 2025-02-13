@@ -16,5 +16,9 @@ export const API_KEGIATAN = `${url}/kegiatan`;
 export const API_KEUANGAN = `${url}/keuangan`;
 export const API_KELAS = `${url}/kelas`;
 export const API_ADMIN = `${url}/admin`;
+<<<<<<< HEAD
+export const API_DONASI = `${url}/donasi`;
+=======
 export const API_BERITA = `${url}/berita`;
 export const API_DONASI = `${url}/donasi`;
+>>>>>>> d52dea42aabd496ee80ccb7c0f313c40ed4ef2ef
