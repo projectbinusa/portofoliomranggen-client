@@ -63,7 +63,7 @@ const PageSiswa = () => {
       <Sidebar />
       <div className="flex-1 p-4 ml-40">
         <div className="container mx-auto">
-          <h2 className="text-xl font-bold mb-4">Daftar Siswa</h2>
+          <h2 className="text-xl font-bold mb-4 text-left">Daftar Siswa</h2>
           <div className="flex justify-between items-center mb-4">
             <div className="relative w-full md:w-1/3">
               <input
@@ -88,7 +88,6 @@ const PageSiswa = () => {
               onClick={() => navigate("/tambah-siswa")}
             >
               <FaPlus size={16} />
-              Tambah Siswa
             </button>
           </div>
 
