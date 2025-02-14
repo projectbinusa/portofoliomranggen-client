@@ -6,6 +6,19 @@ import Sidebar from "../components/Sidebar";
 import Swal from "sweetalert2";
 import { API_KEUANGAN } from "../utils/BaseUrl";
 
+const toTitleCase = (str) => {
+  if (!str) return "";
+  return str
+    .toLowerCase()
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+};
+
+const formatRupiah = (angka) => {
+  return angka.toLocaleString("id-ID");
+};
+
 const Uang = () => {
   const [keuanganData, setKeuanganData] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -37,7 +50,7 @@ const Uang = () => {
         fetch(`${API_KEUANGAN}/delete/${id}`, { method: "DELETE" })
           .then((response) => {
             if (response.ok) {
-              setKeuanganData(keuanganData.filter((item) => item.id !== id));
+              setKeuanganData((prevData) => prevData.filter((item) => item.id !== id));
               Swal.fire("Dihapus!", "Data keuangan telah dihapus.", "success");
             } else {
               Swal.fire("Gagal!", "Gagal menghapus data keuangan.", "error");
@@ -100,11 +113,11 @@ const Uang = () => {
               {filteredKeuangan.map((item, index) => (
                 <tr key={item.id} className="hover:bg-gray-100">
                   <td className="px-6 py-4 text-center">{index + 1}</td>
-                  <td className="px-6 py-4">{item.nama}</td>
-                  <td className="px-6 py-4">Rp {item.harga.toLocaleString()}</td>
-                  <td className="px-6 py-4">{item.jumlah}</td>
-                  <td className="px-6 py-4">Rp {item.totalHarga.toLocaleString()}</td>
-                  <td className="px-6 py-4">{item.kategoriPembiayaan}</td>
+                  <td className="px-6 py-4">{toTitleCase(item.nama)}</td>
+                  <td className="px-6 py-4 text-right">Rp {formatRupiah(item.harga)}</td>
+                  <td className="px-6 py-4 text-center">{formatRupiah(item.jumlah)}</td>
+                  <td className="px-6 py-4 text-right font-semibold">Rp {formatRupiah(item.totalHarga)}</td>
+                  <td className="px-6 py-4">{toTitleCase(item.kategoriPembiayaan)}</td>
                   <td className="px-6 py-4">{item.catatan}</td>
                   <td className="px-6 py-4 flex gap-3 justify-center">
                     <button onClick={() => handleEdit(item.id)} className="bg-blue-500 text-white

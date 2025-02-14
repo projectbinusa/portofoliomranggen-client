@@ -19,7 +19,6 @@ const User = () => {
     axios
       .get(`${API_USER}/all`)
       .then((response) => {
-        console.log("Data dari API:", response.data); // Debugging
         setUsers(response.data || []); // Pastikan selalu array
       })
       .catch((error) => {
@@ -52,13 +51,21 @@ const User = () => {
     }
   };
 
+  const toCamelCase = (text) => {
+    if (!text) return "";
+    return text
+      .toLowerCase()
+      .split(" ")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+  };
+
   const filteredUsers = users.filter((user) =>
     user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
     user.email.toString().includes(searchTerm) ||
     user.password.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Hitung indeks user yang akan ditampilkan
   const indexOfLastUser = currentPage * usersPerPage;
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
   const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
@@ -66,7 +73,6 @@ const User = () => {
 
   return (
     <div className="flex h-screen">
-      {console.log("Users state:", users)} {/* Debugging */}
       <Sidebar />
       <div className="flex-1 p-6 ml-40">
         <div className="container mx-auto">
@@ -119,13 +125,13 @@ const User = () => {
                           {indexOfFirstUser + index + 1}
                         </td>
                         <td className="px-6 py-3 text-center border border-gray-300">
-                          {user.username}
+                          {toCamelCase(user.username)}
                         </td>
                         <td className="px-6 py-3 text-center border border-gray-300">
                           {user.email}
                         </td>
                         <td className="px-6 py-3 text-center border border-gray-300">
-                          {user.password}
+                          {toCamelCase(user.password)}
                         </td>
                         <td className="px-6 py-3 flex justify-center space-x-2 border border-gray-300">
                           <Link to={`/edit-user/${user.id}`}>
@@ -154,7 +160,6 @@ const User = () => {
             </div>
           )}
 
-          {/* Pagination */}
           <div className="flex justify-between items-center mt-4">
             <button
               disabled={currentPage === 1}
