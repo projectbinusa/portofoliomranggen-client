@@ -115,9 +115,9 @@ const User = () => {
                     currentUsers.map((user, index) => (
                       <tr key={user.id} className="hover:bg-gray-100">
                         <td className="px-6 py-3 text-center">{indexOfFirstUser + index + 1}</td>
-                        <td className="px-6 py-3">{user.username}</td>
-                        <td className="px-6 py-3">{user.email}</td>
-                        <td className="px-6 py-3">{user.password}</td>
+                        <td className="px-6 py-3 text-center">{user.username}</td>
+                        <td className="px-6 py-3 text-center">{user.email}</td>
+                        <td className="px-6 py-3 text-center">{user.password}</td>
                         <td className="px-6 py-3 flex justify-center space-x-2">
                           <Link to={`/edit-user/${user.id}`}>
                             <button className="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600">
