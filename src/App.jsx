@@ -19,6 +19,7 @@ import EditSiswa from "./siswa/EditSiswa";
 import PageGuru from "./guru/PageGuru";
 import TambahGuru from "./guru/TambahGuru";
 import EditGuru from "./guru/EditGuru";
+import DetailGuru from "./guru/DetailGuru";
 
 // **Import Komponen Kategori/Kelas**
 import KategoriKelas from "./kelas/KategoriKelas";
@@ -97,6 +98,7 @@ function App() {
         <Route path="/guru" element={<PageGuru />} />
         <Route path="/tambah-guru" element={<TambahGuru />} />
         <Route path="/edit-guru/:id" element={<EditGuru />} />
+        <Route path="/detail-guru/:id" element={<DetailGuru />} />
 
         {/* Routes untuk Kategori/Kelas */}
         <Route path="/kategori-kelas" element={<KategoriKelas />} />

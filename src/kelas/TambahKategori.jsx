@@ -49,46 +49,36 @@ const TambahKategoriKelas = () => {
   };
 
   return (
-      <div className="flex-1 p-10 ml-5 mt-20">
-        <div className="max-w-lg mx-auto bg-white p-12 rounded-md shadow-md">
-          <form onSubmit={handleSubmit}>
-            <div className="space-y-6">
-              <div className="flex justify-between items-center mb-4">
-                <h1 className="text-xl font-semibold">Tambah Kategori Kelas</h1>
-              </div>
-
-              <div>
-                <label htmlFor="namaKelas" className="block text-base font-medium text-gray-700">
-                  Nama Kelas
-                </label>
-                <input
-                  type="text"
-                  id="namaKelas"
-                  name="namaKelas"
-                  value={namaKelas}
-                  onChange={(e) => setNamaKelas(e.target.value)}
-                  className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md
-                   shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
-                  placeholder="Masukkan nama kelas"
-                  required
-                />
-              </div>
-
-              <div className="pt-1">
-                <button
-                  type="submit"
-                  className="w-full inline-flex justify-center py-3 px-4
-                   border border-transparent rounded-md shadow-sm text-sm font-medium
-                    text-white bg-green-600 hover:bg-green-700 focus:outline-none
-                     focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-                >
-                  Simpan Kategori Kelas
-                </button>
-              </div>
+    <div className="flex justify-center items-center min-h-screen p-4">
+      <div className="w-full max-w-lg bg-white p-6 md:p-12 rounded-md shadow-md">
+        <form onSubmit={handleSubmit}>
+          <div className="space-y-6">
+            <h1 className="text-xl font-semibold text-center">Tambah Kategori Kelas</h1>
+            <div>
+              <label htmlFor="namaKelas" className="block text-base font-medium text-gray-700">
+                Nama Kelas
+              </label>
+              <input
+                type="text"
+                id="namaKelas"
+                name="namaKelas"
+                value={namaKelas}
+                onChange={(e) => setNamaKelas(e.target.value)}
+                className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
+                placeholder="Masukkan nama kelas"
+                required
+              />
             </div>
-          </form>
-        </div>
+            <button
+              type="submit"
+              className="w-full py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+            >
+              Simpan Kategori Kelas
+            </button>
+          </div>
+        </form>
       </div>
+    </div>
   );
 };
 

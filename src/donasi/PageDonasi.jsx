@@ -12,6 +12,7 @@ const PageDonasi = () => {
   const [pageDonasi, setPageDonasi] = useState([]);
 
   const idAdmin = localStorage.getItem("adminId");
+  
 
   useEffect(() => {
     if (!idAdmin) {
