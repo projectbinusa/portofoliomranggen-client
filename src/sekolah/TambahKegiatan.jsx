@@ -17,37 +17,44 @@ const TambahKegiatan = () => {
     hasil: "",
   });
 
+  const toCamelCase = (text) => {
+    return text
+      .toLowerCase()
+      .split(" ")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+  };
+
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setKegiatan((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+    setKegiatan({ ...kegiatan, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!idAdmin) {
       Swal.fire("Error", "ID Admin tidak ditemukan!", "error");
       return;
     }
-
     if (Object.values(kegiatan).some((value) => !value.trim())) {
       Swal.fire("Error", "Semua kolom harus diisi!", "error");
       return;
     }
 
+    const formattedData = Object.fromEntries(
+      Object.entries(kegiatan).map(([key, value]) => [
+        key,
+        toCamelCase(value),
+      ])
+    );
+
     try {
       const response = await fetch(`${API_KEGIATAN}/tambah`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(kegiatan),
+        body: JSON.stringify(formattedData),
       });
-
       const data = await response.json();
       if (!response.ok) throw new Error(data.message || "Gagal menambahkan kegiatan");
-
       Swal.fire("Sukses", "Data kegiatan berhasil ditambahkan!", "success");
       setTimeout(() => navigate("/kegiatan-sekolah"), 1000);
     } catch (error) {
@@ -64,7 +71,7 @@ const TambahKegiatan = () => {
           <form onSubmit={handleSubmit} className="space-y-4">
             {Object.keys(kegiatan).map((key) => (
               <div key={key} className="flex flex-col">
-                 <label className="w-1/3 text-gray-700 text-sm font-medium text-left capitalize">
+                <label className="w-1/3 text-gray-700 text-sm font-medium text-left capitalize">
                   {key.replace(/([A-Z])/g, " $1").trim()}
                 </label>
                 <input
