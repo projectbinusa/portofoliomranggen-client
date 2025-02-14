@@ -41,15 +41,16 @@ export default function Sidebar() {
   };
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen relative">
+      {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 h-screen transition-all duration-300 transform bg-gradient-to-b from-green-500 to-green-700 text-white shadow-lg ${
+        className={`fixed top-0 left-0 h-screen transition-all duration-300 transform bg-gradient-to-b from-green-500 to-green-700 text-white shadow-lg overflow-y-auto overflow-x-hidden ${
           isOpen ? "w-64" : "w-20"
         }`}
       >
-        <div className="relative flex items-center justify-center p-5 border-b border-green-400">
+        <div className="relative flex items-center justify-between p-6 border-b border-green-400">
           <h1
-            className={`text-2xl font-extrabold tracking-wider transition-opacity duration-300 ${
+            className={`text-xl font-bold tracking-wide transition-opacity duration-300 ${
               isOpen ? "opacity-100" : "opacity-0"
             }`}
           >
@@ -57,7 +58,7 @@ export default function Sidebar() {
           </h1>
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="absolute -right-4 top-5 bg-green-700 p-2 rounded-full shadow-md hover:bg-green-600 focus:outline-none"
+            className="bg-green-700 p-2 rounded-full shadow-md hover:bg-green-600 focus:outline-none"
           >
             {isOpen ? (
               <HiX className="w-5 h-5" />
@@ -66,7 +67,8 @@ export default function Sidebar() {
             )}
           </button>
         </div>
-        <ul className="mt-4 space-y-2">
+
+        <ul className="mt-4 space-y-2 px-4">
           <SidebarItem
             isOpen={isOpen}
             icon={<HiHome />}
@@ -79,39 +81,40 @@ export default function Sidebar() {
             text="Profil"
             to="/page-profil"
           />
-
           <DropdownItem
             isOpen={isOpen}
             icon={<HiClipboardList />}
-            text="Manajemen Guru"
-            menuKey="manajemenGuru"
+            text="Data Akademik"
+            menuKey="dataAkademik"
             dropdowns={dropdowns}
             toggleDropdown={toggleDropdown}
             items={[
               { text: "Guru", to: "/guru" },
               { text: "Siswa", to: "/siswa" },
               { text: "Staf", to: "/staff" },
+              { text: "Organisasi", to: "/organisasi" },
+              { text: "Kategori Kelas", to: "/kategori-kelas" },
+              { text: "Kegiatan Sekolah", to: "/kegiatan-sekolah" },
             ]}
           />
 
           <DropdownItem
             isOpen={isOpen}
             icon={<HiClipboardList />}
-            text="Manajemen Sekolah"
-            menuKey="manajemenSekolah"
+            text="Data Pendukung"
+            menuKey="dataPendukung"
             dropdowns={dropdowns}
             toggleDropdown={toggleDropdown}
             items={[
-              { text: "Kategori Kelas", to: "/kategori-kelas" },
-              { text: "Organisasi", to: "/organisasi" },
-              { text: "Kegiatan", to: "/kegiatan-sekolah" },
-              { text: "Kategori", to: "/page-kategori" },
               { text: "Produk", to: "/produk" },
               { text: "Buku", to: "/buku" },
               { text: "User", to: "/user" },
+              { text: "Kategori", to: "/page-kategori" },
+              { text: "Donasi", to: "/donasi" },
+              { text: "Pesanan", to: "/pesanan" },
+              { text: "Berita", to: "/berita" },
             ]}
           />
-
           <SidebarItem
             isOpen={isOpen}
             icon={<HiShoppingCart />}
@@ -121,7 +124,7 @@ export default function Sidebar() {
           <li>
             <button
               onClick={handleLogout}
-              className="flex items-center space-x-3 p-3 w-full text-left rounded-md hover:bg-green-600 transition"
+              className="flex items-center space-x-4 p-3 w-full text-left rounded-md hover:bg-green-600 transition"
             >
               <span className="text-xl">
                 <HiLogout />
@@ -131,9 +134,18 @@ export default function Sidebar() {
           </li>
         </ul>
       </aside>
-      <div className="flex-1 p-10">
-        {/* Konten halaman akan muncul di sini */}
-      </div>
+
+      {/* Tombol untuk membuka sidebar */}
+      {!isOpen && (
+        <button
+          onClick={() => setIsOpen(true)}
+          className="fixed top-5 left-5 bg-green-600 p-3 rounded-full shadow-lg text-white hover:bg-green-500"
+        >
+          <HiMenu className="w-6 h-6" />
+        </button>
+      )}
+
+      <div className="flex-1 p-10 overflow-y-auto overflow-x-hidden max-h-screen"></div>
     </div>
   );
 }
@@ -143,7 +155,7 @@ function SidebarItem({ icon, text, to, isOpen }) {
     <li>
       <Link
         to={to}
-        className="flex items-center space-x-3 p-3 rounded-md hover:bg-green-600 transition"
+        className="flex items-center space-x-4 p-3 rounded-md hover:bg-green-600 transition"
       >
         <span className="text-xl">{icon}</span>
         {isOpen && <span>{text}</span>}
@@ -167,7 +179,7 @@ function DropdownItem({
         onClick={() => toggleDropdown(menuKey)}
         className="flex items-center justify-between w-full p-3 rounded-md hover:bg-green-600 transition"
       >
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center space-x-4">
           <span className="text-xl">{icon}</span>
           {isOpen && <span>{text}</span>}
         </div>
