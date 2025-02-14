@@ -14,7 +14,7 @@ const Berita = () => {
 
   useEffect(() => {
     if (idAdmin) {
-      fetch(`${API_BERITA}/all/${idAdmin}`)
+      fetch(`${API_BERITA}/all`)
         .then((response) => response.json())
         .then((data) => setBeritaData(data))
         .catch((error) => console.error("Error fetching data:", error));
@@ -52,6 +52,15 @@ const Berita = () => {
           });
       }
     });
+  };
+
+  const toCamelCase = (text) => {
+    if (!text) return "";
+    return text
+      .toLowerCase()
+      .split(" ")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
   };
 
   const filteredBerita = beritaData.filter((berita) =>
@@ -101,27 +110,27 @@ const Berita = () => {
             </thead>
             <tbody className="bg-gray-100">
               {filteredBerita.map((berita, index) => {
-                const formattedDate = berita.tanggalTerbit?.split("T")[0] || "-"; // Hapus jam
+                const formattedDate = berita.tanggalTerbit?.split("T")[0] || "-";
 
                 return (
                   <tr key={berita.id} className="hover:bg-gray-100">
                     <td className="px-6 py-4 text-center">{index + 1}</td>
-                    <td className="px-6 py-4">{berita.nama}</td>
-                    <td className="px-6 py-4">{berita.penulis}</td>
-                    <td className="px-6 py-4">{berita.deskripsi}</td>
+                    <td className="px-6 py-4">{toCamelCase(berita.nama)}</td>
+                    <td className="px-6 py-4">{toCamelCase(berita.penulis)}</td>
+                    <td className="px-6 py-4">{toCamelCase(berita.deskripsi)}</td>
                     <td className="px-6 py-4 flex justify-center">{berita.fotoUrl}</td>
                     <td className="px-6 py-4 text-center">{formattedDate}</td>
                     <td className="px-6 py-4 flex justify-center gap-3">
                       <button
                         onClick={() => handleEdit(berita.id)}
-                        className="flex items-center gap-2 bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600 transition"
-                      >
+                        className="flex items-center gap-2 bg-blue-500 text-white px-3 py-1
+                         rounded-md hover:bg-blue-600 transition">
                         <Pencil size={18} />
                       </button>
                       <button
                         onClick={() => handleDelete(berita.id)}
-                        className="flex items-center gap-2 bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 transition"
-                      >
+                        className="flex items-center gap-2 bg-red-500 text-white px-3 py-1
+                         rounded-md hover:bg-red-600 transition">
                         <Trash2 size={18} />
                       </button>
                     </td>

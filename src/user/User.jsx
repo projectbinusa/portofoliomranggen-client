@@ -20,6 +20,7 @@ const User = () => {
     axios
       .get(`${API_USER}/all`)
       .then((response) => {
+        setUsers(response.data || []); // Pastikan selalu array
         setUsers(response.data);
       })
       .catch((error) => {
@@ -52,13 +53,21 @@ const User = () => {
     }
   };
 
+  const toCamelCase = (text) => {
+    if (!text) return "";
+    return text
+      .toLowerCase()
+      .split(" ")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+  };
+
   const filteredUsers = users.filter((user) =>
     user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
     user.email.toString().includes(searchTerm) ||
     user.password.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Hitung indeks user yang akan ditampilkan
   const indexOfLastUser = currentPage * usersPerPage;
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
   const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
@@ -114,6 +123,19 @@ const User = () => {
                   {currentUsers.length > 0 ? (
                     currentUsers.map((user, index) => (
                       <tr key={user.id} className="hover:bg-gray-100">
+                        <td className="px-6 py-3 text-center border border-gray-300">
+                          {indexOfFirstUser + index + 1}
+                        </td>
+                        <td className="px-6 py-3 text-center border border-gray-300">
+                          {toCamelCase(user.username)}
+                        </td>
+                        <td className="px-6 py-3 text-center border border-gray-300">
+                          {user.email}
+                        </td>
+                        <td className="px-6 py-3 text-center border border-gray-300">
+                          {toCamelCase(user.password)}
+                        </td>
+                        <td className="px-6 py-3 flex justify-center space-x-2 border border-gray-300">
                         <td className="px-6 py-3 text-center">{indexOfFirstUser + index + 1}</td>
                         <td className="px-6 py-3">{user.username}</td>
                         <td className="px-6 py-3">{user.email}</td>
@@ -143,7 +165,6 @@ const User = () => {
             </div>
           )}
 
-          {/* Pagination */}
           <div className="flex justify-between items-center mt-4">
             <button
               disabled={currentPage === 1}

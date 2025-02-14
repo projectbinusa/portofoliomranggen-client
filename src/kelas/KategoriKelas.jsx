@@ -6,6 +6,15 @@ import Sidebar from "../components/Sidebar";
 import Swal from "sweetalert2";
 import { API_KELAS } from "../utils/BaseUrl";
 
+const toTitleCase = (str) => {
+  if (!str) return "";
+  return str
+    .toLowerCase()
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+};
+
 const KategoriKelas = () => {
   const [kelasData, setKelasData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -35,7 +44,7 @@ const KategoriKelas = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          await fetch(`${API_KELAS}/delete/${id}`, { method: 'DELETE' });
+          await fetch(`${API_KELAS}/delete/${id}`, { method: "DELETE" });
           setKelasData((prevData) => prevData.filter((kelas) => kelas.id !== id));
           Swal.fire("Dihapus!", "Kategori kelas telah dihapus.", "success");
         } catch (error) {
@@ -88,15 +97,10 @@ const KategoriKelas = () => {
             <tbody className="bg-gray-100">
               {filteredData.length > 0 ? (
                 filteredData.map((kelas, index) => (
-                  <tr
-                    key={kelas.id}
-                    className="hover:bg-gray-100"
-                  >
-                    <td className="px-6 py-4 text-center">
-                      {index + 1}
-                    </td>
+                  <tr key={kelas.id} className="hover:bg-gray-100">
+                    <td className="px-6 py-4 text-center">{index + 1}</td>
                     <td className="px-6 py-4 font-medium text-center">
-                      {kelas.namaKelas}
+                      {toTitleCase(kelas.namaKelas)}
                     </td>
                     <td className="px-4 py-4 flex justify-center gap-3">
                       <button
