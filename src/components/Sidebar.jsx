@@ -20,22 +20,40 @@ export default function Sidebar() {
   const toggleDropdown = (menu) => {
     setDropdowns((prev) => ({ ...prev, [menu]: !prev[menu] }));
   };
-
   const handleLogout = () => {
     Swal.fire({
-      title: "Apakah Anda yakin?",
-      text: "Anda akan keluar dari akun!",
-      icon: "warning",
+      title: "Keluar dari Akun?",
+      text: "Anda yakin ingin keluar? Semua sesi akan diakhiri.",
+      icon: "question",
+      iconColor: "#ff6b6b",
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Ya, keluar!",
+      confirmButtonColor: "#38bdf8",
+      cancelButtonColor: "#94a3b8",
+      confirmButtonText: '<i class="fas fa-sign-out-alt"></i> Keluar',
       cancelButtonText: "Batal",
+      background: "#1e293b",
+      color: "#e2e8f0",
+      customClass: {
+        popup: "rounded-xl shadow-lg",
+        title: "text-lg font-semibold",
+        confirmButton: "px-5 py-2.5 rounded-lg",
+        cancelButton: "px-5 py-2.5 rounded-lg",
+      },
     }).then((result) => {
       if (result.isConfirmed) {
-        localStorage.removeItem("token");
-        window.dispatchEvent(new Event("authChange"));
-        navigate("/login", { replace: true });
+        Swal.fire({
+          title: "Berhasil Keluar",
+          text: "Anda akan dialihkan ke halaman login.",
+          icon: "success",
+          timer: 1500,
+          showConfirmButton: false,
+          background: "#1e293b",
+          color: "#e2e8f0",
+        }).then(() => {
+          localStorage.removeItem("token");
+          window.dispatchEvent(new Event("authChange"));
+          navigate("/login", { replace: true });
+        });
       }
     });
   };
