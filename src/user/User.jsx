@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import axios from "axios";
+import { FaPlus } from "react-icons/fa";
 import Sidebar from "../components/Sidebar";
 import { Pencil, Trash2, Search, X } from "lucide-react";
 
@@ -20,6 +21,7 @@ const User = () => {
       .get(`${API_USER}/all`)
       .then((response) => {
         setUsers(response.data || []); // Pastikan selalu array
+        setUsers(response.data);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
@@ -79,11 +81,11 @@ const User = () => {
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-2xl font-bold text-gray-700">Daftar User</h2>
             <button
-              className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
-              onClick={() => navigate("/tambah-user")}
-            >
-              Tambah User
-            </button>
+                         className="flex items-center gap-2 bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition"
+                         onClick={() => navigate("/tambah-user")}
+                       >
+                         <FaPlus size={16} />
+                       </button>
           </div>
 
           <div className="relative mb-4">
@@ -108,12 +110,12 @@ const User = () => {
           {isLoading ? (
             <p className="text-center py-4">Loading data...</p>
           ) : (
-            <div className="relative overflow-x-auto shadow-md border border-gray-300 rounded-lg">
-              <table className="w-full text-sm text-left text-gray-700 border-collapse">
+            <div className="relative overflow-x-auto shadow-md">
+              <table className="w-full text-sm text-left text-gray-700">
                 <thead className="text-xs uppercase bg-gray-200 text-gray-700">
                   <tr>
                     {["No", "Username", "Email", "Password", "Aksi"].map((header, index) => (
-                      <th key={index} className="px-6 py-3 text-center border border-gray-300">{header}</th>
+                      <th key={index} className="px-6 py-3 text-center">{header}</th>
                     ))}
                   </tr>
                 </thead>
@@ -134,6 +136,11 @@ const User = () => {
                           {toCamelCase(user.password)}
                         </td>
                         <td className="px-6 py-3 flex justify-center space-x-2 border border-gray-300">
+                        <td className="px-6 py-3 text-center">{indexOfFirstUser + index + 1}</td>
+                        <td className="px-6 py-3">{user.username}</td>
+                        <td className="px-6 py-3">{user.email}</td>
+                        <td className="px-6 py-3">{user.password}</td>
+                        <td className="px-6 py-3 flex justify-center space-x-2">
                           <Link to={`/edit-user/${user.id}`}>
                             <button className="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600">
                               <Pencil size={18} />
@@ -150,9 +157,7 @@ const User = () => {
                     ))
                   ) : (
                     <tr>
-                      <td colSpan="5" className="text-center py-4 text-gray-500 border border-gray-300">
-                        Tidak ada data user yang sesuai.
-                      </td>
+                      <td colSpan="5" className="text-center py-4 text-gray-500">Tidak ada data user yang sesuai.</td>
                     </tr>
                   )}
                 </tbody>
