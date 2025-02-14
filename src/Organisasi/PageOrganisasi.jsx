@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import { Pencil, Trash2, Search } from "lucide-react";
+import { FaPlus } from "react-icons/fa";
 import Swal from "sweetalert2";
 import axios from "axios";
 import { API_ORGANISASI } from "../utils/BaseUrl";
@@ -10,8 +11,10 @@ const PageOrganisasi = () => {
   const [organisasiList, setOrganisasiList] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
 
+  // Retrieve adminId from localStorage
   const idAdmin = JSON.parse(localStorage.getItem("adminId"));
 
+  // Fetch organizations on component mount
   useEffect(() => {
     const fetchOrganisasi = async () => {
       try {
@@ -39,6 +42,7 @@ const PageOrganisasi = () => {
     fetchOrganisasi();
   }, []);
 
+  // Handle delete organization
   const handleHapus = async (id) => {
     try {
       const response = await axios.delete(`${API_ORGANISASI}/delete/${id}`);
@@ -63,6 +67,7 @@ const PageOrganisasi = () => {
     }
   };
 
+  // Filter organisasi berdasarkan pencarian
   const filteredOrganisasi = organisasiList.filter((organisasi) =>
     organisasi.namaOrganisasi.toLowerCase().includes(searchTerm.toLowerCase()) ||
     organisasi.lokasi.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -79,17 +84,19 @@ const PageOrganisasi = () => {
             to="/tambah-organisasi"
             className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition"
           >
-            Tambah
+            
+              <FaPlus size={16} />
           </Link>
         </div>
 
+        {/* Input Search */}
         <div className="relative mb-4 w-1/3">
           <input
             type="text"
             placeholder="Cari organisasi..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full px-3 py-2 pl-10 pr-4 text-sm border-2 border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 pl-10 pr-4 text-sm rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <Search className="absolute left-3 top-3 text-gray-500" size={14} />
         </div>
@@ -109,12 +116,12 @@ const PageOrganisasi = () => {
             <tbody>
               {filteredOrganisasi.length > 0 ? (
                 filteredOrganisasi.map((organisasi, index) => (
-                  <tr key={organisasi.id} className="bg-white ">
+                  <tr key={organisasi.id} className="bg-white">
                     <td className="px-6 py-4 text-center">{index + 1}</td>
-                    <td className="px-6 py-4 text-center">{organisasi.namaOrganisasi}</td>
-                    <td className="px-6 py-4 text-center">{organisasi.lokasi}</td>
-                    <td className="px-6 py-4 text-center">{organisasi.email}</td>
-                    <td className="px-6 py-4 text-center">{organisasi.telepon}</td>
+                    <td className="px-6 py-4">{organisasi.namaOrganisasi}</td>
+                    <td className="px-6 py-4">{organisasi.lokasi}</td>
+                    <td className="px-6 py-4">{organisasi.email}</td>
+                    <td className="px-6 py-4">{organisasi.telepon}</td>
                     <td className="px-6 py-4 flex justify-center gap-2">
                       <Link
                         to={`/edit-organisasi/${organisasi.id}`}
