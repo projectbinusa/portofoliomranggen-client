@@ -19,20 +19,40 @@ const TambahOrganisasi = () => {
     email: "",
     telepon: "",
   });
-
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     setOrganisasi({ ...organisasi, [e.target.name]: e.target.value });
   };
 
+  const validateEmail = (email) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
+
+  const validatePhone = (phone) => {
+    return /^\d{10,15}$/.test(phone);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    
     if (Object.values(organisasi).some((val) => val.trim() === "")) {
       Swal.fire("Gagal!", "Semua field harus diisi.", "error");
       return;
     }
+    
+    if (!validateEmail(organisasi.email)) {
+      Swal.fire("Gagal!", "Format email tidak valid.", "error");
+      return;
+    }
+
+    if (!validatePhone(organisasi.telepon)) {
+      Swal.fire("Gagal!", "Nomor telepon harus berupa angka 10-15 digit.", "error");
+      return;
+    }
+    
+    setLoading(true);
 
     const formattedData = {
       ...organisasi,
@@ -50,15 +70,16 @@ const TambahOrganisasi = () => {
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Gagal menambahkan organisasi");
+        throw new Error("Gagal menambahkan organisasi. Silakan coba lagi.");
       }
 
       Swal.fire("Sukses!", "Organisasi berhasil ditambahkan.", "success").then(() => {
         navigate("/organisasi");
       });
     } catch (error) {
-      Swal.fire("Gagal!", `Terjadi kesalahan: ${error.message}`, "error");
+      Swal.fire("Gagal!", error.message, "error");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -79,7 +100,7 @@ const TambahOrganisasi = () => {
                       {field.replace(/([A-Z])/g, " $1").replace(/^./, (str) => str.toUpperCase())}
                     </label>
                     <input
-                      type={field === "email" ? "email" : "text"}
+                      type={field === "email" ? "email" : field === "telepon" ? "tel" : "text"}
                       name={field}
                       value={organisasi[field]}
                       onChange={handleChange}
@@ -94,14 +115,16 @@ const TambahOrganisasi = () => {
                   type="button"
                   className="px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400"
                   onClick={() => navigate("/organisasi")}
+                  disabled={loading}
                 >
                   Batal
                 </button>
                 <button
                   type="submit"
-                  className="px-6 py-2 bg-green-600 text-white rounded-lg shadow-sm font-medium hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                  className={`px-6 py-2 rounded-lg shadow-sm font-medium text-white ${loading ? "bg-gray-400" : "bg-green-600 hover:bg-green-700"} focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500`}
+                  disabled={loading}
                 >
-                  Simpan Perubahan
+                  {loading ? "Menyimpan..." : "Simpan"}
                 </button>
               </div>
             </div>
