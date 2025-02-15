@@ -95,11 +95,9 @@ const KegiatanSekolah = () => {
                 <tr>
                   <th className="px-6 py-3 border-r border-gray-800 text-center">No</th>
                   <th className="px-6 py-3 border-r border-gray-800 text-center">Nama Kegiatan</th>
-                  <th className="px-6 py-3 border-r border-gray-800 text-center">Deskripsi</th>
                   <th className="px-6 py-3 border-r border-gray-800 text-center">Tingkat</th>
                   <th className="px-6 py-3 border-r border-gray-800 text-center">Penyelenggara</th>
                   <th className="px-6 py-3 border-r border-gray-800 text-center">Penanggung Jawab</th>
-                  <th className="px-6 py-3 border-r border-gray-800 text-center">Hasil</th>
                   <th className="px-6 py-3 text-center">Aksi</th>
                 </tr>
               </thead>
@@ -112,11 +110,9 @@ const KegiatanSekolah = () => {
                     >
                       <td className="px-6 py-4 border-r border-gray-800">{index + 1}</td>
                       <td className="px-6 py-4 font-medium border-r border-gray-400">{kegiatan.nama}</td>
-                      <td className="px-6 py-4 border-r border-gray-800">{kegiatan.deskripsi}</td>
                       <td className="px-6 py-4 border-r border-gray-800">{kegiatan.tingkat}</td>
                       <td className="px-6 py-4 border-r border-gray-800">{kegiatan.penyelenggara}</td>
                       <td className="px-6 py-4 border-r border-gray-800">{kegiatan.penanggungJawab}</td>
-                      <td className="px-6 py-4 border-r border-gray-800">{kegiatan.hasil}</td>
                       <td className="px-6 py-4 flex justify-center gap-3">
                         <Link to={`/detail-sekolah/${kegiatan.id}`}>
                           <button className="flex items-center gap-2 bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-600 transition">
