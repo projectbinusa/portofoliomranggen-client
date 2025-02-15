@@ -9,7 +9,7 @@ const TambahProduk = () => {
     deskripsi: "",
     kondisi: "",
     harga: "",
-    foto: "",
+    fotoUrl: "",
   });
 
   const navigate = useNavigate();
@@ -21,7 +21,7 @@ const TambahProduk = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!produk.nama || !produk.deskripsi || !produk.kondisi || !produk.harga || !produk.foto) {
+    if (!produk.nama || !produk.deskripsi || !produk.kondisi || !produk.harga || !produk.fotoUrl) {
       Swal.fire({
         title: "Gagal!",
         text: "Semua field harus diisi.",
@@ -72,7 +72,7 @@ const TambahProduk = () => {
           { label: "Deskripsi", name: "deskripsi", type: "text" },
           { label: "Kondisi", name: "kondisi", type: "text" },
           { label: "Harga", name: "harga", type: "number" },
-          { label: "Foto Produk (URL)", name: "foto", type: "text" },
+          { label: "URL Foto Produk", name: "fotoUrl", type: "text" },
         ].map((field) => (
           <div key={field.name} className="flex items-center gap-4">
             <label className="w-40 text-gray-700 font-medium text-left">{field.label}</label>
