@@ -25,6 +25,15 @@ const DetailStaff = () => {
       });
   }, [id]);
 
+  const formatTanggal = (tanggal) => {
+    if (!tanggal) return "-";
+    const dateObj = new Date(tanggal);
+    const day = String(dateObj.getDate()).padStart(2, "0");
+    const month = String(dateObj.getMonth() + 1).padStart(2, "0");
+    const year = dateObj.getFullYear();
+    return `${day}-${month}-${year}`;
+  };
+
   if (loading) return <div className="text-center mt-20">Memuat data staff...</div>;
   if (!staff) return <div className="text-center mt-20 text-red-500">Data staff tidak ditemukan.</div>;
 
@@ -36,14 +45,14 @@ const DetailStaff = () => {
           <p><i className="fa fa-user mr-2"></i><strong>Nama:</strong> {staff.nama}</p>
           <p><i className="fa fa-map-marker mr-2"></i><strong>Alamat:</strong> {staff.alamat}</p>
           <p><i className="fa fa-phone mr-2"></i><strong>No Telepon:</strong> {staff.noTelepon}</p>
-          <p><i className="fa fa-briefcase mr-2"></i><strong>Awal Bekerja:</strong> {staff.awalBekerja}</p>
+          <p><i className="fa fa-briefcase mr-2"></i><strong>Awal Bekerja:</strong> {formatTanggal(staff.awalBekerja)}</p>
           <p><i className="fa fa-clock-o mr-2"></i><strong>Lama Kerja:</strong> {staff.lamaKerja}</p>
-          <p><i className="fa fa-calendar mr-2"></i><strong>Create Date:</strong> {staff.createDate}</p>
+          <p><i className="fa fa-calendar mr-2"></i><strong>Create Date:</strong> {formatTanggal(staff.createDate)}</p>
         </div>
         <button
           onClick={() => navigate(-1)}
-          className="flex items-center justify-center gap-2 bg-red-500 text-white px-5 py-2 rounded-lg hover:bg-red-600 transition duration-200"
-        >
+          className="flex items-center justify-center gap-2 bg-red-500 text-white px-5 py-2
+           rounded-lg hover:bg-red-600 transition duration-200">
           <ArrowLeft size={20} /> Kembali
         </button>
       </div>

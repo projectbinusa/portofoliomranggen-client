@@ -49,6 +49,15 @@ const DaftarBuku = () => {
     });
   };
 
+  const toCamelCase = (text) => {
+    if (!text) return "";
+    return text
+      .toLowerCase()
+      .split(" ")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+  };
+
   const filteredBuku = bukuData.filter((buku) =>
     `${buku.judulBuku} ${buku.penerbit} ${buku.pengarang}`
       .toLowerCase()
@@ -98,12 +107,12 @@ const DaftarBuku = () => {
               {filteredBuku.map((buku, index) => (
                 <tr key={buku.id} className="hover:bg-gray-100">
                   <td className="px-6 py-4 text-center">{index + 1}</td>
-                  <td className="px-6 py-4 font-medium">{buku.judulBuku}</td>
-                  <td className="px-6 py-4 text-center">{buku.penerbit}</td>
-                  <td className="px-6 py-4 text-center">{buku.pengarang}</td>
+                  <td className="px-6 py-4 font-medium">{toCamelCase(buku.judulBuku)}</td>
+                  <td className="px-6 py-4 text-center">{toCamelCase(buku.penerbit)}</td>
+                  <td className="px-6 py-4 text-center">{toCamelCase(buku.pengarang)}</td>
                   <td className="px-6 py-4 text-center">{buku.tahunTerbit}</td>
                   <td className="px-6 py-4 text-center">{buku.jumlahHalaman}</td>
-                  <td className="px-6 py-4 text-center">{buku.fotoUrl} </td>
+                  <td className="px-6 py-4 text-center">{toCamelCase(buku.fotoUrl)} </td>
                   <td className="px-6 py-4 text-center">{buku.idAdmin}</td>
                   <td className="px-6 py-4 flex justify-center gap-3">
                     <button

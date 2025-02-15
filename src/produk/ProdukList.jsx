@@ -71,6 +71,16 @@ const ProductList = () => {
     });
   };
 
+  const toCamelCase = (text) => {
+    if (!text) return "";
+    return text
+      .toLowerCase()
+      .split(" ")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+  };
+
+
   return (
     <div className="flex min-h-screen">
       <Sidebar />
@@ -115,16 +125,10 @@ const ProductList = () => {
                 filteredProducts.map((product, index) => (
                   <tr key={product.id} className="hover:bg-gray-100">
                     <td className="px-6 py-4 text-center">{index + 1}</td>
-                    <td className="px-6 py-4 text-center">
-                      {product.fotoUrl ? (
-                        <img src={product.fotoUrl} alt="Foto Produk" className="w-16 h-16 object-cover rounded-md" />
-                      ) : (
-                        "Tidak Ada Gambar"
-                      )}
-                    </td>
-                    <td className="px-6 py-4 font-medium">{product.nama}</td>
-                    <td className="px-6 py-4">{product.deskripsi}</td>
-                    <td className="px-6 py-4 text-center">{product.kondisi}</td>
+                    <td className="px-6 py-4 text-center">{toCamelCase(product.fotoUrl)}</td>
+                    <td className="px-6 py-4 font-medium">{toCamelCase(product.nama)}</td>
+                    <td className="px-6 py-4">{toCamelCase(product.deskripsi)}</td>
+                    <td className="px-6 py-4 text-center">{toCamelCase(product.kondisi)}</td>
                     <td className="px-6 py-4 text-center">
                       Rp {product.harga.toLocaleString()}
                     </td>

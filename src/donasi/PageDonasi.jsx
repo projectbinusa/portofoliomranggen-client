@@ -38,6 +38,15 @@ const PageDonasi = () => {
     });
   };
 
+  const toCamelCase = (text) => {
+    if (!text) return "";
+    return text
+      .toLowerCase()
+      .split(" ")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+  };
+
   const filteredDonasi = pageDonasi.filter(donasi =>
     [donasi.namaDonasi, donasi.namaDonatur, donasi.jumlahDonasi, donasi.deskripsi]
       .some(field => field.toString().toLowerCase().includes(searchTerm.toLowerCase()))
@@ -50,7 +59,9 @@ const PageDonasi = () => {
         <div className="container mx-auto p-4">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-bold">Daftar Donasi</h2>
-            <button className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600" onClick={() => navigate("/tambah-donasi")}>Tambah Donasi</button>
+            <button className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600" onClick={() => navigate("/tambah-donasi")}>
+              Tambah Donasi
+            </button>
           </div>
           <div className="relative w-1/3 mb-4">
             <input
@@ -72,7 +83,7 @@ const PageDonasi = () => {
             <table className="w-full text-sm text-left text-gray-700 border border-gray-400">
               <thead className="text-xs font-bold uppercase bg-gray-200 border-b border-gray-500">
                 <tr>
-                  {['No', 'Nama Donasi', 'Nama Donatur', 'Jumlah Donasi', 'Deskripsi', 'Aksi'].map(header => (
+                  {["No", "Nama Donasi", "Nama Donatur", "Jumlah Donasi", "Deskripsi", "Aksi"].map(header => (
                     <th key={header} className="px-6 py-3 border-r border-gray-400 text-center">{header}</th>
                   ))}
                 </tr>
@@ -84,7 +95,7 @@ const PageDonasi = () => {
                       <td className="px-6 py-4 border-r text-center">{index + 1}</td>
                       {[donasi.namaDonasi, donasi.namaDonatur, donasi.jumlahDonasi, donasi.deskripsi]
                         .map((field, i) => (
-                          <td key={i} className="px-6 py-4 border-r text-center">{field}</td>
+                          <td key={i} className="px-6 py-4 border-r text-center">{toCamelCase(field)}</td>
                         ))}
                       <td className="px-6 py-4 flex gap-2 justify-center">
                         <Link to={`/edit-donasi/${donasi.id}`}>
