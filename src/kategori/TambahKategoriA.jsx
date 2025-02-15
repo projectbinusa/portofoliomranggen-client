@@ -8,6 +8,12 @@ const TambahKategoriA = () => {
   const [namaKategori, setNamaKategori] = useState("");
   const navigate = useNavigate();
 
+  const toCamelCase = (str) => {
+    return str
+      .toLowerCase()
+      .replace(/\b\w/g, (char) => char.toUpperCase());
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -16,12 +22,14 @@ const TambahKategoriA = () => {
       return;
     }
 
+    const formattedKategori = toCamelCase(namaKategori);
+
     fetch("http://localhost:4321/api/kategori/tambah", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ id: 0, namaKategori }),
+      body: JSON.stringify({ id: 0, namaKategori: formattedKategori }),
     })
       .then((response) => {
         if (response.ok) {

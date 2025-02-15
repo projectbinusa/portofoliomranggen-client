@@ -13,7 +13,6 @@ const EditDonasi = () => {
     namaDonatur: "",
     jumlahDonasi: "",
     deskripsi: "",
-    fotoUrl: "",
   });
 
   useEffect(() => {
@@ -49,6 +48,7 @@ const EditDonasi = () => {
         body: JSON.stringify({
           ...formData,
           jumlahDonasi: parseInt(formData.jumlahDonasi, 10),
+          idAdmin, // Keep sending idAdmin but do not show it in the form
         }),
       });
       const data = await response.json();
@@ -68,7 +68,7 @@ const EditDonasi = () => {
         <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-lg border border-gray-300">
           <h2 className="text-xl font-bold mb-4 text-left">Edit Data Donasi</h2>
           <form onSubmit={handleSubmit} className="space-y-4">
-            {["namaDonasi", "namaDonatur", "jumlahDonasi", "deskripsi", "fotoUrl"].map((field) => (
+            {["namaDonasi", "namaDonatur", "jumlahDonasi", "deskripsi"].map((field) => (
               <div key={field} className="flex flex-col">
                 <label className="w-1/3 text-gray-700 text-sm font-medium text-left capitalize">
                   {field.replace(/([A-Z])/g, " $1").trim()}

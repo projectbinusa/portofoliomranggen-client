@@ -38,7 +38,7 @@ const PageGuru = () => {
   };
 
   const filteredGuru = pageguru.filter(guru =>
-    [guru.namaGuru, guru.nip, guru.alamat, guru.nomerHp, guru.tahunDiterima, guru.lamaKerja]
+    [guru.namaGuru,  guru.alamat,  guru.tahunDiterima, guru.lamaKerja]
       .some(field => field.toString().toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
@@ -71,7 +71,7 @@ const PageGuru = () => {
             <table className="w-full text-sm text-left text-gray-700 border border-gray-400">
               <thead className="text-xs font-bold uppercase bg-gray-200 border-b border-gray-500">
                 <tr>
-                  {['No', 'Nama', 'NIP', 'Alamat', 'Nomor HP', 'Tahun Diterima', 'Lama Kerja', 'Aksi'].map(header => (
+                  {['No', 'Nama', 'Alamat', 'Tahun Diterima', 'Lama Kerja', 'Aksi'].map(header => (
                     <th key={header} className="px-6 py-3 border-r border-gray-400 text-center">{header}</th>
                   ))}
                 </tr>
@@ -81,7 +81,7 @@ const PageGuru = () => {
                   filteredGuru.map((guru, index) => (
                     <tr key={guru.id} className="bg-white border-b border-gray-400 hover:bg-gray-100">
                       <td className="px-6 py-4 border-r text-center">{index + 1}</td>
-                      {[guru.namaGuru, guru.nip, guru.alamat, guru.nomerHp, guru.tahunDiterima, guru.lamaKerja]
+                      {[guru.namaGuru, guru.alamat, guru.tahunDiterima, guru.lamaKerja]
                         .map((field, i) => (
                           <td key={i} className="px-6 py-4 border-r text-center">{field}</td>
                         ))}
