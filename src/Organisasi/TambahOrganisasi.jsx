@@ -4,6 +4,14 @@ import Sidebar from "../components/Sidebar";
 import Swal from "sweetalert2";
 import { API_ORGANISASI } from "../utils/BaseUrl";
 
+const toCamelCase = (str) => {
+  return str
+    .toLowerCase()
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+};
+
 const TambahOrganisasi = () => {
   const [organisasi, setOrganisasi] = useState({
     namaOrganisasi: "",
@@ -26,13 +34,19 @@ const TambahOrganisasi = () => {
       return;
     }
 
+    const formattedData = {
+      ...organisasi,
+      namaOrganisasi: toCamelCase(organisasi.namaOrganisasi),
+      lokasi: toCamelCase(organisasi.lokasi),
+    };
+
     try {
       const response = await fetch(`${API_ORGANISASI}/tambah`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(organisasi),
+        body: JSON.stringify(formattedData),
       });
 
       if (!response.ok) {
@@ -76,19 +90,19 @@ const TambahOrganisasi = () => {
                 ))}
               </div>
               <div className="flex justify-between space-x-4 pt-4">
-              <button
-                type="button"
-                className="px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400"
-                onClick={() => navigate("/organisasi")}
-              >
-                Batal
-              </button>
-              <button
-                type="submit"
-                className="px-6 py-2 bg-green-600 text-white rounded-lg shadow-sm font-medium hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-              >
-                Simpan Perubahan
-              </button>
+                <button
+                  type="button"
+                  className="px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400"
+                  onClick={() => navigate("/organisasi")}
+                >
+                  Batal
+                </button>
+                <button
+                  type="submit"
+                  className="px-6 py-2 bg-green-600 text-white rounded-lg shadow-sm font-medium hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                >
+                  Simpan Perubahan
+                </button>
               </div>
             </div>
           </form>
