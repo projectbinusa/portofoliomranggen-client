@@ -63,16 +63,14 @@ import TambahUser from "./user/TambahUser";
 
 import PageProfil from "./profil/PageProfil";
 
-
-import PageDonasi from "./donasi/PageDonasi";
-import TambahDonasi from "./donasi/TambahDonasi";
-import EditDonasi from "./donasi/EditDonasi";
-
 // **Import Komponen Kategori**
 import PageKategori from "./kategori/PageKategori";
 import TambahKategoriA from "./kategori/TambahKategoriA";
 import EditKategoriA from "./kategori/EditKategoriA";
 
+import PageDonasi from "./donasi/PageDonasi";
+import TambahDonasi from "./donasi/TambahDonasi";
+import EditDonasi from "./donasi/EditDonasi";
 
 
 import "./App.css";

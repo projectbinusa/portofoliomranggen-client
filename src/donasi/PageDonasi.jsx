@@ -1,26 +1,34 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import Sidebar from "../components/Sidebar";
 import { Pencil, Trash2, Search, X } from "lucide-react";
 import axios from "axios";
-import { API_DONASI } from "../utils/BaseUrl";  // Define the API URL in utils/BaseUrl.js
+import { API_DONASI } from "../utils/BaseUrl";
 
 const PageDonasi = () => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [pageDonasi, setPageDonasi] = useState([]);
 
+  const idAdmin = localStorage.getItem("adminId");
+  
+
   useEffect(() => {
+    if (!idAdmin) {
+      console.error("ID Admin tidak ditemukan!");
+      return;
+    }
+
     axios
-      .get("http://localhost:4321/api/donasi/all")
+      .get(`${API_DONASI}/getAllByAdmin/${idAdmin}`)
       .then((response) => {
         setPageDonasi(response.data);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
-  }, []);
+  }, [idAdmin]);
 
   const handleDeletePageDonasi = (id) => {
     Swal.fire({
@@ -46,14 +54,10 @@ const PageDonasi = () => {
     });
   };
 
-  const filteredDonasi = pageDonasi.filter((donasi) => {
-    return (
-      donasi.namaDonasi.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      donasi.namaDonatur.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      donasi.jumlahDonasi.toString().includes(searchTerm.toLowerCase()) ||
-      donasi.deskripsi.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-  });
+  const filteredDonasi = pageDonasi.filter((donasi) =>
+    ["namaDonasi", "namaDonatur", "jumlahDonasi", "deskripsi"]
+      .some((key) => donasi[key]?.toString().toLowerCase().includes(searchTerm.toLowerCase()))
+  );
 
   return (
     <div className="flex h-screen">
@@ -67,7 +71,7 @@ const PageDonasi = () => {
               className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition"
               onClick={() => navigate("/tambah-donasi")}
             >
-              Tambah Donasi
+              +
             </button>
           </div>
 
@@ -81,7 +85,6 @@ const PageDonasi = () => {
               className="w-full px-10 py-2 border border-black rounded-md focus:ring-1 focus:ring-gray-400 focus:outline-none"
             />
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-black-400 w-5 h-5" />
-
             {searchTerm && (
               <button
                 onClick={() => setSearchTerm("")}
@@ -111,21 +114,21 @@ const PageDonasi = () => {
                 {filteredDonasi.length > 0 ? (
                   filteredDonasi.map((donasi, index) => (
                     <tr key={donasi.id} className="bg-white border-b border-gray-400 hover:bg-gray-100">
-                      <td className="px-6 py-4 border-r border-gray-400">{index + 1}</td>
+                      <td className="px-6 py-4 border-r border-gray-400 text-center">{index + 1}</td>
                       <td className="px-6 py-4 font-medium border-r border-gray-400">{donasi.namaDonasi}</td>
                       <td className="px-6 py-4 border-r border-gray-400">{donasi.namaDonatur}</td>
-                      <td className="px-6 py-4 border-r border-gray-400">{donasi.jumlahDonasi}</td>
+                      <td className="px-6 py-4 border-r border-gray-400 text-center">{donasi.jumlahDonasi}</td>
                       <td className="px-6 py-4 border-r border-gray-400">
                         <img src={donasi.fotoUrl} alt={donasi.namaDonasi} className="w-12 h-12 object-cover" />
                       </td>
                       <td className="px-6 py-4 border-r border-gray-400">{donasi.deskripsi}</td>
-                      <td className="px-6 py-4 flex gap-3">
-                      <button
-                        onClick={() => navigate(`/edit-donasi/${donasi.id}`)}
-                        className="flex items-center gap-2 bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600 transition"
-                      >
-                        <Pencil size={18} />
-                      </button>
+                      <td className="px-6 py-4 flex gap-3 justify-center">
+                        <button
+                          onClick={() => navigate(`/edit-donasi/${donasi.id}`)}
+                          className="flex items-center gap-2 bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600 transition"
+                        >
+                          <Pencil size={18} />
+                        </button>
                         <button
                           onClick={() => handleDeletePageDonasi(donasi.id)}
                           className="flex items-center gap-2 bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 transition"
