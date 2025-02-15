@@ -48,6 +48,7 @@ import EditPesanan from "./pesanan/EditPesanan";
 import KegiatanSekolah from "./sekolah/KegiatanSekolah";
 import TambahKegiatan from "./sekolah/TambahKegiatan";
 import EditKegiatan from "./sekolah/EditKegiatan";
+import DetailSekolah from "./sekolah/DetailSekolah";
 
 // **Import Komponen Produk**
 import ProdukList from "./produk/ProdukList";
@@ -129,6 +130,7 @@ function App() {
         <Route path="/kegiatan-sekolah" element={<KegiatanSekolah />} />
         <Route path="/tambah-kegiatan" element={<TambahKegiatan />} />
         <Route path="/edit-kegiatan/:id" element={<EditKegiatan />} />
+        <Route path="/detail-sekolah/:id" element={<DetailSekolah />} />
 
         {/* Routes untuk Produk */}
         <Route path="/produk" element={<ProdukList />} />
