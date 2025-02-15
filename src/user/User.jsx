@@ -20,7 +20,7 @@ const User = () => {
     axios
       .get(`${API_USER}/all`)
       .then((response) => {
-        setUsers(response.data || []);
+        setUsers(response.data);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
@@ -52,21 +52,13 @@ const User = () => {
     }
   };
 
-  const toCamelCase = (text) => {
-    if (!text) return "";
-    return text
-      .toLowerCase()
-      .split(" ")
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(" ");
-  };
-
   const filteredUsers = users.filter((user) =>
     user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
     user.email.toString().includes(searchTerm) ||
     user.password.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  // Hitung indeks user yang akan ditampilkan
   const indexOfLastUser = currentPage * usersPerPage;
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
   const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
@@ -80,11 +72,11 @@ const User = () => {
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-2xl font-bold text-gray-700">Daftar User</h2>
             <button
-              className="flex items-center gap-2 bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition"
-              onClick={() => navigate("/tambah-user")}
-            >
-              <FaPlus size={16} />
-            </button>
+                         className="flex items-center gap-2 bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition"
+                         onClick={() => navigate("/tambah-user")}
+                       >
+                         <FaPlus size={16} />
+                       </button>
           </div>
 
           <div className="relative mb-4">
@@ -122,11 +114,11 @@ const User = () => {
                   {currentUsers.length > 0 ? (
                     currentUsers.map((user, index) => (
                       <tr key={user.id} className="hover:bg-gray-100">
-                        <td className="px-6 py-3 text-center border border-gray-300">{indexOfFirstUser + index + 1}</td>
-                        <td className="px-6 py-3 text-center border border-gray-300">{toCamelCase(user.username)}</td>
-                        <td className="px-6 py-3 text-center border border-gray-300">{user.email}</td>
-                        <td className="px-6 py-3 text-center border border-gray-300">{toCamelCase(user.password)}</td>
-                        <td className="px-6 py-3 flex justify-center space-x-2 border border-gray-300">
+                        <td className="px-6 py-3 text-center">{indexOfFirstUser + index + 1}</td>
+                        <td className="px-6 py-3">{user.username}</td>
+                        <td className="px-6 py-3">{user.email}</td>
+                        <td className="px-6 py-3">{user.password}</td>
+                        <td className="px-6 py-3 flex justify-center space-x-2">
                           <Link to={`/edit-user/${user.id}`}>
                             <button className="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600">
                               <Pencil size={18} />
@@ -150,6 +142,29 @@ const User = () => {
               </table>
             </div>
           )}
+
+          {/* Pagination */}
+          <div className="flex justify-between items-center mt-4">
+            <button
+              disabled={currentPage === 1}
+              onClick={() => setCurrentPage(currentPage - 1)}
+              className={`px-4 py-2 rounded-md ${currentPage === 1 ? "bg-gray-300 cursor-not-allowed" : "bg-blue-500 text-white hover:bg-blue-600"}`}
+            >
+              Previous
+            </button>
+
+            <span className="text-gray-700">
+              Halaman {currentPage} dari {totalPages}
+            </span>
+
+            <button
+              disabled={currentPage === totalPages}
+              onClick={() => setCurrentPage(currentPage + 1)}
+              className={`px-4 py-2 rounded-md ${currentPage === totalPages ? "bg-gray-300 cursor-not-allowed" : "bg-blue-500 text-white hover:bg-blue-600"}`}
+            >
+              Next
+            </button>
+          </div>
         </div>
       </div>
     </div>
