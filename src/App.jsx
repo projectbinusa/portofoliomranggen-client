@@ -14,8 +14,6 @@ import NotFoundPage from "./page/NotFoundPage";
 import PageSiswa from "./siswa/PageSiswa";
 import TambahSiswa from "./siswa/TambahSiswa";
 import EditSiswa from "./siswa/EditSiswa";
-import DetailSiswa from "./siswa/DetailSiswa";
-
 
 // **Import Komponen Guru**
 import PageGuru from "./guru/PageGuru";
@@ -37,7 +35,6 @@ import EditOrganisasi from "./organisasi/EditOrganisasi";
 import DaftarStaff from "./staff/DaftarStaff";
 import TambahStaff from "./staff/TambahStaff";
 import EditStaff from "./staff/EditStaff";
-import DetailStaff from "./staff/DetailStaff";
 
 // **Import Komponen Pesanan**
 import PagePesanan from "./pesanan/PagePesanan";
@@ -48,7 +45,6 @@ import EditPesanan from "./pesanan/EditPesanan";
 import KegiatanSekolah from "./sekolah/KegiatanSekolah";
 import TambahKegiatan from "./sekolah/TambahKegiatan";
 import EditKegiatan from "./sekolah/EditKegiatan";
-import DetailSekolah from "./sekolah/DetailSekolah";
 
 // **Import Komponen Produk**
 import ProdukList from "./produk/ProdukList";
@@ -82,93 +78,99 @@ import Berita from "./berita/Berita";
 import TambahBerita from "./berita/TambahBerita";
 import EditBerita from "./berita/EditBerita";
 
+// import NotificationProvider from "./context/NotificationProvider";
+
+import { NotificationProvider } from "./context/NotificationContext"; 
+import Notifikasi from "./notif/Notifikasi";
+
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/sambutan" element={<Sambutan />} />
-        <Route path="/visimisi" element={<VisiMisi />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+    <NotificationProvider> {/* ✅ Tambahin Provider */}
+      <Router>
+        <Notifikasi /> {/* ✅ Notifikasi selalu tampil di semua halaman */}
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/sambutan" element={<Sambutan />} />
+          <Route path="/visimisi" element={<VisiMisi />} />
+          <Route path="/dashboard" element={<Dashboard />} />
 
-        {/* Routes untuk Siswa */}
-        <Route path="/siswa" element={<PageSiswa />} />
-        <Route path="/tambah-siswa" element={<TambahSiswa />} />
-        <Route path="/edit-siswa/:id" element={<EditSiswa />} />
-        <Route path="/detail-siswa/:id" element={<DetailSiswa />} />
+          {/* Routes untuk Siswa */}
+          <Route path="/siswa" element={<PageSiswa />} />
+          <Route path="/tambah-siswa" element={<TambahSiswa />} />
+          <Route path="/edit-siswa/:id" element={<EditSiswa />} />
 
-        {/* Routes untuk Guru */}
-        <Route path="/guru" element={<PageGuru />} />
-        <Route path="/tambah-guru" element={<TambahGuru />} />
-        <Route path="/edit-guru/:id" element={<EditGuru />} />
-        <Route path="/detail-guru/:id" element={<DetailGuru />} />
+          {/* Routes untuk Guru */}
+          <Route path="/guru" element={<PageGuru />} />
+          <Route path="/tambah-guru" element={<TambahGuru />} />
+          <Route path="/edit-guru/:id" element={<EditGuru />} />
+          <Route path="/detail-guru/:id" element={<DetailGuru />} />
 
-        {/* Routes untuk Kategori/Kelas */}
-        <Route path="/kategori-kelas" element={<KategoriKelas />} />
-        <Route path="/tambah-kategori-kelas" element={<TambahKategori />} />
-        <Route path="/edit-kategori-kelas/:id" element={<EditKategori />} />
+          {/* Routes untuk Kategori/Kelas */}
+          <Route path="/kategori-kelas" element={<KategoriKelas />} />
+          <Route path="/tambah-kategori-kelas" element={<TambahKategori />} />
+          <Route path="/edit-kategori-kelas/:id" element={<EditKategori />} />
 
-        {/* Routes untuk Organisasi */}
-        <Route path="/organisasi" element={<PageOrganisasi />} />
-        <Route path="/tambah-organisasi" element={<TambahOrganisasi />} />
-        <Route path="/edit-organisasi/:id" element={<EditOrganisasi />} />
+          {/* Routes untuk Organisasi */}
+          <Route path="/organisasi" element={<PageOrganisasi />} />
+          <Route path="/tambah-organisasi" element={<TambahOrganisasi />} />
+          <Route path="/edit-organisasi/:id" element={<EditOrganisasi />} />
 
-        {/* Routes untuk Staff */}
-        <Route path="/staff" element={<DaftarStaff />} />
-        <Route path="/tambah-staff" element={<TambahStaff />} />
-        <Route path="/edit-staff/:id" element={<EditStaff />} />
-        <Route path="/detail-staff/:id" element={<DetailStaff />} />
+          {/* Routes untuk Staff */}
+          <Route path="/staff" element={<DaftarStaff />} />
+          <Route path="/tambah-staff" element={<TambahStaff />} />
+          <Route path="/edit-staff/:id" element={<EditStaff />} />
 
-        {/* Routes untuk Pesanan */}
-        <Route path="/pesanan" element={<PagePesanan />} />
-        <Route path="/tambah-pesanan" element={<TambahPesanan />} />
-        <Route path="/edit-pesanan/:id" element={<EditPesanan />} />
+          {/* Routes untuk Pesanan */}
+          <Route path="/pesanan" element={<PagePesanan />} />
+          <Route path="/tambah-pesanan" element={<TambahPesanan />} />
+          <Route path="/edit-pesanan/:id" element={<EditPesanan />} />
 
-        {/* Routes untuk Sekolah */}
-        <Route path="/kegiatan-sekolah" element={<KegiatanSekolah />} />
-        <Route path="/tambah-kegiatan" element={<TambahKegiatan />} />
-        <Route path="/edit-kegiatan/:id" element={<EditKegiatan />} />
-        <Route path="/detail-sekolah/:id" element={<DetailSekolah />} />
+          {/* Routes untuk Sekolah */}
+          <Route path="/kegiatan-sekolah" element={<KegiatanSekolah />} />
+          <Route path="/tambah-kegiatan" element={<TambahKegiatan />} />
+          <Route path="/edit-kegiatan/:id" element={<EditKegiatan />} />
 
-        {/* Routes untuk Produk */}
-        <Route path="/produk" element={<ProdukList />} />
-        <Route path="/tambah-produk" element={<TambahProduk />} />
-        <Route path="/edit-produk/:id" element={<EditProduk />} />
+          {/* Routes untuk Produk */}
+          <Route path="/produk" element={<ProdukList />} />
+          <Route path="/tambah-produk" element={<TambahProduk />} />
+          <Route path="/edit-produk/:id" element={<EditProduk />} />
 
-        {/* Routes untuk Buku */}
-        <Route path="/buku" element={<DaftarBuku />} />
-        <Route path="/tambah-buku" element={<TambahBuku />} />
-        <Route path="/edit-buku/:id" element={<EditBuku />} />
+          {/* Routes untuk Buku */}
+          <Route path="/buku" element={<DaftarBuku />} />
+          <Route path="/tambah-buku" element={<TambahBuku />} />
+          <Route path="/edit-buku/:id" element={<EditBuku />} />
 
-        {/* Routes untuk User */}
-        <Route path="/user" element={<User />} />
-        <Route path="/tambah-user" element={<TambahUser />} />
-        <Route path="/edit-user/:id" element={<EditUser />} />
-        <Route path="/page-profil" element={<PageProfil />} />
-        
-        <Route path="/page-profil" element={<PageProfil />} /> 
+          {/* Routes untuk User */}
+          <Route path="/user" element={<User />} />
+          <Route path="/tambah-user" element={<TambahUser />} />
+          <Route path="/edit-user/:id" element={<EditUser />} />
+          <Route path="/page-profil" element={<PageProfil />} />
 
-        {/* Routes untuk Kategori */}
-        <Route path="/page-kategori" element={<PageKategori />} />
-        <Route path="/tambah-kategori-a" element={<TambahKategoriA />} />
-        <Route path="/edit-kategori-a/:id" element={<EditKategoriA />} />
+          {/* Routes untuk Kategori */}
+          <Route path="/page-kategori" element={<PageKategori />} />
+          <Route path="/tambah-kategori-a" element={<TambahKategoriA />} />
+          <Route path="/edit-kategori-a/:id" element={<EditKategoriA />} />
 
+          {/* Routes untuk Donasi */}
+          <Route path="/donasi" element={<PageDonasi />} />
+          <Route path="/tambah-donasi" element={<TambahDonasi />} />
+          <Route path="/edit-donasi/:id" element={<EditDonasi />} />
 
-        <Route path="/donasi" element={<PageDonasi />} />
-        <Route path="/tambah-donasi" element={<TambahDonasi />} />
-        <Route path="/edit-donasi/:id" element={<EditDonasi />} />
+          {/* Routes untuk Berita */}
+          <Route path="/berita" element={<Berita />} />
+          <Route path="/tambah-berita" element={<TambahBerita />} />
+          <Route path="/edit-berita/:id/:idAdmin" element={<EditBerita />} />
 
-        <Route path="*" element={<NotFoundPage />} />
+          {/* Route Notifikasi */}
+          <Route path="/notif" element={<Notifikasi />} />
 
-        {/* Routes untuk Berita */}
-        <Route path="/berita" element={<Berita />} />
-        <Route path="/tambah-berita" element={<TambahBerita />} />
-        <Route path="/edit-berita/:id/:idAdmin" element={<EditBerita />} />
-        
-      </Routes>
-    </Router>
+          {/* Halaman 404 */}
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </Router>
+    </NotificationProvider>
   );
 }
 
