@@ -14,6 +14,8 @@ import NotFoundPage from "./page/NotFoundPage";
 import PageSiswa from "./siswa/PageSiswa";
 import TambahSiswa from "./siswa/TambahSiswa";
 import EditSiswa from "./siswa/EditSiswa";
+import DetailSiswa from "./siswa/DetailSiswa";
+
 
 // **Import Komponen Guru**
 import PageGuru from "./guru/PageGuru";
@@ -35,6 +37,7 @@ import EditOrganisasi from "./organisasi/EditOrganisasi";
 import DaftarStaff from "./staff/DaftarStaff";
 import TambahStaff from "./staff/TambahStaff";
 import EditStaff from "./staff/EditStaff";
+import DetailStaff from "./staff/DetailStaff";
 
 // **Import Komponen Pesanan**
 import PagePesanan from "./pesanan/PagePesanan";
@@ -93,6 +96,7 @@ function App() {
         <Route path="/siswa" element={<PageSiswa />} />
         <Route path="/tambah-siswa" element={<TambahSiswa />} />
         <Route path="/edit-siswa/:id" element={<EditSiswa />} />
+        <Route path="/detail-siswa/:id" element={<DetailSiswa />} />
 
         {/* Routes untuk Guru */}
         <Route path="/guru" element={<PageGuru />} />
@@ -114,6 +118,7 @@ function App() {
         <Route path="/staff" element={<DaftarStaff />} />
         <Route path="/tambah-staff" element={<TambahStaff />} />
         <Route path="/edit-staff/:id" element={<EditStaff />} />
+        <Route path="/detail-staff/:id" element={<DetailStaff />} />
 
         {/* Routes untuk Pesanan */}
         <Route path="/pesanan" element={<PagePesanan />} />
