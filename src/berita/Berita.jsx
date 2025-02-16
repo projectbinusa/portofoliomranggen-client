@@ -14,7 +14,7 @@ const Berita = () => {
 
   useEffect(() => {
     if (idAdmin) {
-      fetch(`${API_BERITA}/all/${idAdmin}`)
+      fetch(`${API_BERITA}/all`)
         .then((response) => response.json())
         .then((data) => setBeritaData(data))
         .catch((error) => console.error("Error fetching data:", error));
@@ -37,7 +37,7 @@ const Berita = () => {
       cancelButtonText: "Batal",
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch(`${API_BERITA}/delete/${id}/${idAdmin}`, { method: "DELETE" })
+        fetch(`${API_BERITA}/delete/${id}`, { method: "DELETE" })
           .then((response) => {
             if (response.ok) {
               setBeritaData(beritaData.filter((berita) => berita.id !== id));
@@ -52,6 +52,30 @@ const Berita = () => {
           });
       }
     });
+  };
+
+  const toCamelCase = (text) => {
+    if (!text) return "";
+    return text
+      .toLowerCase()
+      .split(" ")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+  };
+
+  const formatDate = (dateString) => {
+    if (!dateString) return "-";
+    try {
+      const dateObj = new Date(dateString);
+      return new Intl.DateTimeFormat("id-ID", {
+        day: "2-digit",
+        month: "long",
+        year: "numeric",
+      }).format(dateObj);
+    } catch (error) {
+      console.error("Error formatting date:", error);
+      return "-";
+    }
   };
 
   const filteredBerita = beritaData.filter((berita) =>
@@ -100,34 +124,30 @@ const Berita = () => {
               </tr>
             </thead>
             <tbody className="bg-gray-100">
-              {filteredBerita.map((berita, index) => {
-                const formattedDate = berita.tanggalTerbit?.split("T")[0] || "-"; // Hapus jam
-
-                return (
-                  <tr key={berita.id} className="hover:bg-gray-100">
-                    <td className="px-6 py-4 text-center">{index + 1}</td>
-                    <td className="px-6 py-4">{berita.nama}</td>
-                    <td className="px-6 py-4">{berita.penulis}</td>
-                    <td className="px-6 py-4">{berita.deskripsi}</td>
-                    <td className="px-6 py-4 flex justify-center">{berita.fotoUrl}</td>
-                    <td className="px-6 py-4 text-center">{formattedDate}</td>
-                    <td className="px-6 py-4 flex justify-center gap-3">
-                      <button
-                        onClick={() => handleEdit(berita.id)}
-                        className="flex items-center gap-2 bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600 transition"
-                      >
-                        <Pencil size={18} />
-                      </button>
-                      <button
-                        onClick={() => handleDelete(berita.id)}
-                        className="flex items-center gap-2 bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 transition"
-                      >
-                        <Trash2 size={18} />
-                      </button>
-                    </td>
-                  </tr>
-                );
-              })}
+              {filteredBerita.map((berita, index) => (
+                <tr key={berita.id} className="hover:bg-gray-100">
+                  <td className="px-6 py-4 text-center">{index + 1}</td>
+                  <td className="px-6 py-4">{toCamelCase(berita.nama)}</td>
+                  <td className="px-6 py-4">{toCamelCase(berita.penulis)}</td>
+                  <td className="px-6 py-4">{toCamelCase(berita.deskripsi)}</td>
+                  <td className="px-6 py-4 flex justify-center">{toCamelCase(berita.fotoUrl)}</td>
+                  <td className="px-6 py-4 text-center">{formatDate(berita.tanggalTerbit)}</td>
+                  <td className="px-6 py-4 flex justify-center gap-3">
+                    <button
+                      onClick={() => handleEdit(berita.id)}
+                      className="flex items-center gap-2 bg-blue-500 text-white px-3 py-1
+                       rounded-md hover:bg-blue-600 transition">
+                      <Pencil size={18} />
+                    </button>
+                    <button
+                      onClick={() => handleDelete(berita.id)}
+                      className="flex items-center gap-2 bg-red-500 text-white px-3 py-1
+                       rounded-md hover:bg-red-600 transition">
+                      <Trash2 size={18} />
+                    </button>
+                  </td>
+                </tr>
+              ))}
               {filteredBerita.length === 0 && (
                 <tr>
                   <td colSpan="7" className="px-6 py-4 text-center">

@@ -3,15 +3,17 @@ import { useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 import axios from "axios";
 import Sidebar from "../components/Sidebar";
+import { Eye, EyeOff } from "lucide-react";
 
 const API_USER = "http://localhost:4321/api/user";
 
 const EditUser = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const [user, setUser] = useState({  username: "", email: "", password: "" });
+  const [user, setUser] = useState({ username: "", email: "", password: "" });
   const [originalUser, setOriginalUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -39,7 +41,7 @@ const EditUser = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!user.username || !user.email || !user.password ) {
+    if (!user.username || !user.email || !user.password) {
       Swal.fire("Gagal!", "Semua field harus diisi.", "error");
       return;
     }
@@ -73,14 +75,9 @@ const EditUser = () => {
             <p className="text-center">Loading...</p>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
-              {[
-               
-                { label: "Username", name: "username", type: "text" },
-                { label: "Email", name: "email", type: "email" },
-                { label: "Password", name: "password", type: "password" },
-              ].map(({ label, name, type }) => (
-                <div key={name} className="flex flex-col">
-                  <label className="text-gray-700 font-medium">{label}</label>
+              {[{ label: "Username", name: "username", type: "text" }, { label: "Email", name: "email", type: "email" }].map(({ label, name, type }) => (
+                <div key={name} className="flex flex-col items-start">
+                  <label className="text-sm text-gray-600 font-medium mb-1">{label}</label>
                   <input
                     type={type}
                     name={name}
@@ -90,6 +87,25 @@ const EditUser = () => {
                   />
                 </div>
               ))}
+              <div className="flex flex-col items-start relative">
+                <label className="text-sm text-gray-600 font-medium mb-1">Password</label>
+                <div className="relative w-full">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    name="password"
+                    value={user.password}
+                    onChange={handleChange}
+                    className="border rounded-md p-2 focus:ring-2 focus:ring-blue-500 w-full pr-10"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"
+                  >
+                    {showPassword ? <Eye size={20} /> : <EyeOff size={20} />}
+                  </button>
+                </div>
+              </div>
               <div className="flex justify-between mt-4">
                 <button
                   type="button"

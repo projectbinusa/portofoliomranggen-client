@@ -31,7 +31,7 @@ const EditBerita = () => {
 
     const fetchBerita = async () => {
       try {
-        const response = await axios.get(`${API_BERITA}/${id}/${idAdmin}`);
+        const response = await axios.get(`${API_BERITA}/getById/${id}`);
         if (response.status === 200) {
           const data = response.data;
           console.log("Data Berita diterima: ", data);

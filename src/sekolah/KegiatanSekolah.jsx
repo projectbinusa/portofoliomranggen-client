@@ -2,9 +2,9 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import Sidebar from "../components/Sidebar";
-import { Pencil, Trash2, Search, X } from "lucide-react";
+import { Pencil, Trash2, Search, X, Eye } from "lucide-react";
 import axios from "axios";
-import { API_KEGIATAN } from "../utils/BaseUrl";  // Import konstanta API_KEGIATAN dari api.js
+import { API_KEGIATAN } from "../utils/BaseUrl";
 
 const KegiatanSekolah = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -12,8 +12,7 @@ const KegiatanSekolah = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Fetch data kegiatan from the backend
-    axios.get(`${API_KEGIATAN}/all`)  // Menggunakan konstanta API_KEGIATAN
+    axios.get(`${API_KEGIATAN}/all`)
       .then((response) => {
         setKegiatanSekolah(response.data);
       })
@@ -32,11 +31,10 @@ const KegiatanSekolah = () => {
       cancelButtonText: "Batal",
     }).then((result) => {
       if (result.isConfirmed) {
-        // Send DELETE request to backend
-        axios.delete(`${API_KEGIATAN}/delete/${id}`)  // Menggunakan konstanta API_KEGIATAN
+        axios.delete(`${API_KEGIATAN}/delete/${id}`)
           .then(() => {
             Swal.fire("Dihapus!", "Data kegiatan telah dihapus.", "success");
-            setKegiatanSekolah(kegiatanSekolah.filter((kegiatan) => kegiatan.id !== id)); // Update the local list
+            setKegiatanSekolah(kegiatanSekolah.filter((kegiatan) => kegiatan.id !== id));
           })
           .catch(() => {
             Swal.fire("Error", "Gagal menghapus data kegiatan.", "error");
@@ -59,7 +57,6 @@ const KegiatanSekolah = () => {
   return (
     <div className="flex h-screen">
       <Sidebar />
-
       <div className="flex-1 p-6 ml-40">
         <div className="container mx-auto p-3">
           <div className="flex justify-between items-center mb-4">
@@ -72,7 +69,6 @@ const KegiatanSekolah = () => {
             </button>
           </div>
 
-          {/* Input Pencarian */}
           <div className="relative w-1/3 mb-4">
             <input
               type="text"
@@ -93,18 +89,15 @@ const KegiatanSekolah = () => {
             )}
           </div>
 
-          {/* Tabel Daftar Kegiatan */}
           <div className="relative overflow-x-auto shadow-md">
             <table className="w-full text-sm text-left text-gray-700 border border-black">
               <thead className="text-xs font-bold uppercase bg-gray-200 border-b border-gray-500">
                 <tr>
                   <th className="px-6 py-3 border-r border-gray-800 text-center">No</th>
                   <th className="px-6 py-3 border-r border-gray-800 text-center">Nama Kegiatan</th>
-                  <th className="px-6 py-3 border-r border-gray-800 text-center">Deskripsi</th>
                   <th className="px-6 py-3 border-r border-gray-800 text-center">Tingkat</th>
                   <th className="px-6 py-3 border-r border-gray-800 text-center">Penyelenggara</th>
                   <th className="px-6 py-3 border-r border-gray-800 text-center">Penanggung Jawab</th>
-                  <th className="px-6 py-3 border-r border-gray-800 text-center">Hasil</th>
                   <th className="px-6 py-3 text-center">Aksi</th>
                 </tr>
               </thead>
@@ -117,12 +110,15 @@ const KegiatanSekolah = () => {
                     >
                       <td className="px-6 py-4 border-r border-gray-800">{index + 1}</td>
                       <td className="px-6 py-4 font-medium border-r border-gray-400">{kegiatan.nama}</td>
-                      <td className="px-6 py-4 border-r border-gray-800">{kegiatan.deskripsi}</td>
                       <td className="px-6 py-4 border-r border-gray-800">{kegiatan.tingkat}</td>
                       <td className="px-6 py-4 border-r border-gray-800">{kegiatan.penyelenggara}</td>
                       <td className="px-6 py-4 border-r border-gray-800">{kegiatan.penanggungJawab}</td>
-                      <td className="px-6 py-4 border-r border-gray-800">{kegiatan.hasil}</td>
                       <td className="px-6 py-4 flex justify-center gap-3">
+                        <Link to={`/detail-sekolah/${kegiatan.id}`}>
+                          <button className="flex items-center gap-2 bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-600 transition">
+                            <Eye size={20} />
+                          </button>
+                        </Link>
                         <Link to={`/edit-kegiatan/${kegiatan.id}`}>
                           <button className="flex items-center gap-2 bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600 transition">
                             <Pencil size={20} />

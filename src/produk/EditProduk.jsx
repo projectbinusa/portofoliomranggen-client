@@ -77,7 +77,7 @@ const EditProduk = () => {
             <input
               type={field.type}
               name={field.name}
-              value={produk[field.name]}
+              value={produk[field.name] || ""}
               onChange={handleChange}
               className="flex-1 border rounded-md p-3 focus:ring-2 focus:ring-blue-500"
             />

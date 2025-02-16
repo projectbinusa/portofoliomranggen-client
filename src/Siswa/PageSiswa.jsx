@@ -4,12 +4,14 @@ import { FaPlus } from "react-icons/fa";
 import Swal from "sweetalert2";
 import axios from "axios";
 import Sidebar from "../components/Sidebar";
-import { Pencil, Trash2, Search, X } from "lucide-react";
+import { Pencil, Trash2, Search, X, Eye } from "lucide-react";
+import { useNotification } from "../context/NotificationContext";
 
 const API_SISWA = "http://localhost:4321/api/siswa";
 
 const PageSiswa = () => {
   const navigate = useNavigate();
+  const { addNotification } = useNotification();
   const [searchTerm, setSearchTerm] = useState("");
   const [students, setStudents] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -17,15 +19,9 @@ const PageSiswa = () => {
   useEffect(() => {
     axios
       .get(`${API_SISWA}/all`)
-      .then((response) => {
-        setStudents(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+      .then((response) => setStudents(response.data))
+      .catch((error) => console.error("Error fetching data:", error))
+      .finally(() => setIsLoading(false));
   }, []);
 
   const handleDeleteStudent = async (id) => {
@@ -42,6 +38,7 @@ const PageSiswa = () => {
       try {
         await axios.delete(`${API_SISWA}/delete/${id}`);
         setStudents(students.filter((student) => student.id !== id));
+        addNotification("Data siswa berhasil dihapus", "warning");
         Swal.fire("Dihapus!", "Data siswa telah dihapus.", "success");
       } catch (error) {
         console.error("Error deleting student:", error);
@@ -50,13 +47,11 @@ const PageSiswa = () => {
     }
   };
 
-  const filteredStudents = students.filter((student) => {
-    return (
-      student.nama.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      student.nisn.toString().includes(searchTerm) ||
-      student.alamat.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-  });
+  const filteredStudents = students.filter((student) =>
+    student.nama.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    student.nisn.toString().includes(searchTerm) ||
+    student.alamat.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="flex h-screen">
@@ -85,13 +80,15 @@ const PageSiswa = () => {
             </div>
             <button
               className="flex items-center gap-2 bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition"
-              onClick={() => navigate("/tambah-siswa")}
+              onClick={() => {
+                addNotification("Menambahkan data siswa baru", "success");
+                navigate("/tambah-siswa");
+              }}
             >
               <FaPlus size={16} />
             </button>
           </div>
 
-          {/* Tabel Data Siswa */}
           <div className="relative overflow-x-auto shadow-md">
             <table className="w-full text-sm text-left text-gray-700">
               <thead className="text-xs uppercase bg-gray-200 text-gray-700">
@@ -114,8 +111,16 @@ const PageSiswa = () => {
                       <td className="px-6 py-4 text-center">{student.nomerHp}</td>
                       <td className="px-6 py-4 text-center">{student.tanggalLahir}</td>
                       <td className="px-6 py-4 flex gap-3 justify-center">
+                        <Link to={`/detail-siswa/${student.id}`}>
+                          <button className="bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-600 transition">
+                            <Eye size={18} />
+                          </button>
+                        </Link>
                         <Link to={`/edit-siswa/${student.id}`}>
-                          <button className="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600 transition">
+                          <button
+                            className="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600 transition"
+                            onClick={() => addNotification("Mengedit data siswa", "info")}
+                          >
                             <Pencil size={18} />
                           </button>
                         </Link>

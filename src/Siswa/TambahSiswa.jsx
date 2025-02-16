@@ -16,6 +16,14 @@ const TambahSiswa = () => {
 
   const navigate = useNavigate();
 
+  const toCamelCase = (text) => {
+    return text
+      .toLowerCase()
+      .split(" ")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setSiswa((prev) => ({ ...prev, [name]: value }));
@@ -30,22 +38,22 @@ const TambahSiswa = () => {
   const validateForm = () => {
     for (const key in siswa) {
       if (!siswa[key]) {
-        Swal.fire("Gagal!", `Field "${key}" harus diisi.`, "error");
+        Swal.fire("Gagal!", `Field \"${key}\" harus diisi.`, "error");
         return false;
       }
     }
 
-    if (!/^\d+$/.test(siswa.nisn)) {
+    if (!/^[0-9]+$/.test(siswa.nisn)) {
       Swal.fire("Gagal!", "NISN hanya boleh berisi angka.", "error");
       return false;
     }
 
-    if (!/^\d+$/.test(siswa.nomerHp)) {
+    if (!/^[0-9]+$/.test(siswa.nomerHp)) {
       Swal.fire("Gagal!", "Nomor HP hanya boleh berisi angka.", "error");
       return false;
     }
 
-    if (!/^\d+$/.test(siswa.nomerHpOrangtua)) {
+    if (!/^[0-9]+$/.test(siswa.nomerHpOrangtua)) {
       Swal.fire("Gagal!", "Nomor HP Orangtua hanya boleh berisi angka.", "error");
       return false;
     }
@@ -60,10 +68,10 @@ const TambahSiswa = () => {
 
     const siswaDTO = {
       id: 0,
-      nama: siswa.nama,
+      nama: toCamelCase(siswa.nama),
       nisn: parseInt(siswa.nisn),
-      alamat: siswa.alamat,
-      namaOrangtua: siswa.namaOrangtua,
+      alamat: toCamelCase(siswa.alamat),
+      namaOrangtua: toCamelCase(siswa.namaOrangtua),
       nomerHpOrangtua: parseInt(siswa.nomerHpOrangtua),
       nomerHp: parseInt(siswa.nomerHp),
       tanggalLahir: formatDate(siswa.tanggalLahir),
