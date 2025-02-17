@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
+import Sidebar from "../components/Sidebar";
 import Swal from "sweetalert2";
 
 const TambahPesanan = () => {
@@ -63,6 +64,7 @@ const TambahPesanan = () => {
 
   return (
     <div className="flex min-h-screen">
+     <Sidebar />
       <div className="flex-1 flex items-center justify-center">
         <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md border-2 border-gray-600">
           <h2 className="text-xl font-bold mb-4 text-gray-700">Tambah Pesanan</h2>
@@ -87,7 +89,7 @@ const TambahPesanan = () => {
               <button
                 type="button"
                 className="submit-left bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 border-2 border-gray-500 flex items-center gap-2"
-                onClick={() => navigate("/page-pesanan")}
+                onClick={() => navigate("/pesanan")}
               >
                 <FontAwesomeIcon icon={faArrowLeft} className="text-lg" />
               </button>
