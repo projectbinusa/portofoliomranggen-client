@@ -87,7 +87,7 @@ const EditGuru = () => {
                 />
               </div>
             ))}
-            <div className="flex justify-end space-x-2 mt-4">
+            <div className="flex justify-between space-x-4 mt-6">
               <button
                 type="button"
                 onClick={() => navigate("/guru")}
