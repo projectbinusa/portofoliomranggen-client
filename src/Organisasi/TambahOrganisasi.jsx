@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
@@ -87,7 +88,7 @@ const TambahOrganisasi = () => {
     <div className="flex">
       <Sidebar />
       <div className="flex-1 p-6 ml-40 mt-20">
-        <div className="max-w-lg mx-auto bg-white p-12 rounded-md shadow-md">
+        <div className="max-w-lg mx-auto bg-white p-12 rounded-md shadow-md transition-transform transform hover:scale-105">
           <form onSubmit={handleSubmit}>
             <div className="space-y-6">
               <div className="flex justify-between items-center mb-4">
@@ -104,7 +105,7 @@ const TambahOrganisasi = () => {
                       name={field}
                       value={organisasi[field]}
                       onChange={handleChange}
-                      className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
+                      className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm transition-all duration-200 ease-in-out transform focus:scale-105"
                       required
                     />
                   </div>
@@ -113,7 +114,7 @@ const TambahOrganisasi = () => {
               <div className="flex justify-between space-x-4 pt-4">
                 <button
                   type="button"
-                  className="px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400"
+                  className="px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 transition-all duration-200 ease-in-out transform hover:scale-105"
                   onClick={() => navigate("/organisasi")}
                   disabled={loading}
                 >
@@ -121,10 +122,20 @@ const TambahOrganisasi = () => {
                 </button>
                 <button
                   type="submit"
-                  className={`px-6 py-2 rounded-lg shadow-sm font-medium text-white ${loading ? "bg-gray-400" : "bg-green-600 hover:bg-green-700"} focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500`}
+                  className={`px-6 py-2 rounded-lg shadow-sm font-medium text-white ${loading ? "bg-gray-400" : "bg-green-600 hover:bg-green-700"} focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-all duration-200 ease-in-out transform hover:scale-105`}
                   disabled={loading}
                 >
-                  {loading ? "Menyimpan..." : "Simpan"}
+                  {loading ? (
+                    <div className="flex items-center">
+                      <svg className="animate-spin h-5 w-5 mr-3 text-white" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      Menyimpan...
+                    </div>
+                  ) : (
+                    "Simpan"
+                  )}
                 </button>
               </div>
             </div>
