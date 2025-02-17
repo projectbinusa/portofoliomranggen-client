@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import {
@@ -10,51 +10,49 @@ import {
   HiMenu,
   HiX,
   HiChevronDown,
+  HiMoon,
+  HiSun,
 } from "react-icons/hi";
 import Notifikasi from "../notif/Notifikasi"; // Import Notifikasi
 
 export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(true);
   const [dropdowns, setDropdowns] = useState({});
+  const [isDarkMode, setIsDarkMode] = useState(
+    localStorage.getItem("theme") === "dark"
+  );
   const navigate = useNavigate();
+
+  // Apply dark mode class to the root element
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+      localStorage.setItem("theme", "light");
+    }
+  }, [isDarkMode]);
 
   const toggleDropdown = (menu) => {
     setDropdowns((prev) => ({ ...prev, [menu]: !prev[menu] }));
   };
+
   const handleLogout = () => {
     Swal.fire({
-      title: "Keluar dari Akun?",
-      text: "Anda yakin ingin keluar? Semua sesi akan diakhiri.",
-      icon: "question",
-      iconColor: "#ff6b6b",
+      title: "Apakah Anda yakin?",
+      text: "Anda akan keluar dari akun!",
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#38bdf8",
-      cancelButtonColor: "#94a3b8",
-      confirmButtonText: '<i class="fas fa-sign-out-alt"></i> Keluar',
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Ya, keluar!",
       cancelButtonText: "Batal",
-      background: "#1e293b",
-      color: "#e2e8f0",
-      customClass: {
-        popup: "rounded-xl shadow-lg",
-        title: "text-lg font-semibold",
-        confirmButton: "px-5 py-2.5 rounded-lg",
-        cancelButton: "px-5 py-2.5 rounded-lg",
-      },
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire({
-          title: "Berhasil Keluar",
-          text: "Anda akan dialihkan ke halaman login.",
-          icon: "success",
-          timer: 1500,
-          showConfirmButton: false,
-          background: "#1e293b",
-          color: "#e2e8f0",
-        }).then(() => {
-          localStorage.removeItem("token");
-          window.dispatchEvent(new Event("authChange"));
-          navigate("/login", { replace: true });
-        });
+        localStorage.removeItem("token");
+        window.dispatchEvent(new Event("authChange"));
+        navigate("/login", { replace: true });
       }
     });
   };
@@ -63,11 +61,11 @@ export default function Sidebar() {
     <div className="flex h-screen relative">
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 h-screen transition-all duration-300 transform bg-gradient-to-b from-green-500 to-green-700 text-white shadow-lg overflow-y-auto overflow-x-hidden ${
+        className={`fixed top-0 left-0 h-screen transition-all duration-300 transform bg-gradient-to-b from-green-500 to-green-700 text-white shadow-lg overflow-y-auto overflow-x-hidden dark:from-gray-800 dark:to-gray-900 ${
           isOpen ? "w-64" : "w-20"
         }`}
       >
-        <div className="relative flex items-center justify-between p-6 border-b border-green-400">
+        <div className="relative flex items-center justify-between p-6 border-b border-green-400 dark:border-gray-700">
           <h1
             className={`text-xl font-bold tracking-wide transition-opacity duration-300 ${
               isOpen ? "opacity-100" : "opacity-0"
@@ -81,7 +79,7 @@ export default function Sidebar() {
 
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="bg-green-700 p-2 rounded-full shadow-md hover:bg-green-600 focus:outline-none"
+            className="bg-green-700 p-2 rounded-full shadow-md hover:bg-green-600 focus:outline-none dark:bg-gray-700 dark:hover:bg-gray-600"
           >
             {isOpen ? (
               <HiX className="w-5 h-5" />
@@ -104,7 +102,6 @@ export default function Sidebar() {
             text="Profil"
             to="/page-profil"
           />
-
           <DropdownItem
             isOpen={isOpen}
             icon={<HiClipboardList />}
@@ -121,7 +118,6 @@ export default function Sidebar() {
               { text: "Kegiatan Sekolah", to: "/kegiatan-sekolah" },
             ]}
           />
-
           <DropdownItem
             isOpen={isOpen}
             icon={<HiClipboardList />}
@@ -135,11 +131,10 @@ export default function Sidebar() {
               { text: "User", to: "/user" },
               { text: "Kategori", to: "/page-kategori" },
               { text: "Donasi", to: "/donasi" },
-
+              { text: "Pesanan", to: "/pesanan" },
               { text: "Berita", to: "/berita" },
             ]}
           />
-
           <SidebarItem
             isOpen={isOpen}
             icon={<HiShoppingCart />}
@@ -149,7 +144,7 @@ export default function Sidebar() {
           <li>
             <button
               onClick={handleLogout}
-              className="flex items-center space-x-4 p-3 w-full text-left rounded-md hover:bg-green-600 transition"
+              className="flex items-center space-x-4 p-3 w-full text-left rounded-md hover:bg-green-600 transition dark:hover:bg-gray-600"
             >
               <span className="text-xl">
                 <HiLogout />
@@ -158,13 +153,26 @@ export default function Sidebar() {
             </button>
           </li>
         </ul>
+
+        {/* Dark Mode Toggle */}
+        <div className="p-4 border-t border-green-400 dark:border-gray-700">
+          <button
+            onClick={() => setIsDarkMode(!isDarkMode)}
+            className="flex items-center space-x-4 p-3 w-full text-left rounded-md hover:bg-green-600 transition dark:hover:bg-gray-600"
+          >
+            <span className="text-xl">
+              {isDarkMode ? <HiSun /> : <HiMoon />}
+            </span>
+            {isOpen && <span>{isDarkMode ? "Light Mode" : "Dark Mode"}</span>}
+          </button>
+        </div>
       </aside>
 
       {/* Tombol untuk membuka sidebar */}
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="fixed top-5 left-5 bg-green-600 p-3 rounded-full shadow-lg text-white hover:bg-green-500"
+          className="fixed top-5 left-5 bg-green-600 p-3 rounded-full shadow-lg text-white hover:bg-green-500 dark:bg-gray-700 dark:hover:bg-gray-600"
         >
           <HiMenu className="w-6 h-6" />
         </button>
@@ -181,7 +189,7 @@ function SidebarItem({ icon, text, to, isOpen }) {
     <li>
       <Link
         to={to}
-        className="flex items-center space-x-4 p-3 rounded-md hover:bg-green-600 transition"
+        className="flex items-center space-x-4 p-3 rounded-md hover:bg-green-600 transition dark:hover:bg-gray-600"
       >
         <span className="text-xl">{icon}</span>
         {isOpen && <span>{text}</span>}
@@ -204,7 +212,7 @@ function DropdownItem({
     <li>
       <button
         onClick={() => toggleDropdown(menuKey)}
-        className="flex items-center justify-between w-full p-3 rounded-md hover:bg-green-600 transition"
+        className="flex items-center justify-between w-full p-3 rounded-md hover:bg-green-600 transition dark:hover:bg-gray-600"
       >
         <div className="flex items-center space-x-4">
           <span className="text-xl">{icon}</span>
