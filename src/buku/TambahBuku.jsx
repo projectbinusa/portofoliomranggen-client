@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { API_BUKU } from "../utils/BaseUrl";
 import Swal from "sweetalert2";
 import UploadFoto from "../upload/UploadFoto";
+import Sidebar from "../components/Sidebar";
 
 const TambahBuku = () => {
   const [buku, setBuku] = useState({
@@ -12,7 +13,7 @@ const TambahBuku = () => {
     tahunTerbit: "",
     jumlahHalaman: "",
     idAdmin: "",
-    fotoUrl: "", // Akan diisi otomatis setelah upload
+    fotoUrl: "",
   });
 
   const [isUploading, setIsUploading] = useState(false); // Status untuk menunggu upload foto selesai
@@ -92,53 +93,58 @@ const TambahBuku = () => {
   };
 
   return (
-    <div className="flex-1 p-8 ml-4">
-      <h2 className="text-2xl font-semibold mb-6 text-gray-800">Tambah Buku</h2>
-      <form onSubmit={handleSubmit} className="space-y-4 mt-6">
-        {[{ label: "Judul Buku", name: "judulBuku", type: "text" },
-          { label: "Penerbit", name: "penerbit", type: "text" },
-          { label: "Pengarang", name: "pengarang", type: "text" },
-          { label: "Tahun Terbit", name: "tahunTerbit", type: "number" },
-          { label: "Jumlah Halaman", name: "jumlahHalaman", type: "number" },
-          { label: "ID Admin", name: "idAdmin", type: "number" },
-        ].map((field) => (
-          <div key={field.name} className="flex items-center">
-            <label className="w-40 text-gray-700 font-medium text-left">{field.label}</label>
-            <input
-              type={field.type}
-              name={field.name}
-              value={buku[field.name]}
-              onChange={handleChange}
-              className="flex-1 border rounded-md p-3 focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-        ))}
+    <div className="flex h-screen">
+      <Sidebar />
+      <div className="flex ml-64 w-full max-w">
+        <div className="p-6 rounded-lg">
+          <h2 className="text-2xl font-semibold mb-6 text-gray-800 text-center">Tambah Buku</h2>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            {[{ label: "Judul Buku", name: "judulBuku", type: "text" },
+              { label: "Penerbit", name: "penerbit", type: "text" },
+              { label: "Pengarang", name: "pengarang", type: "text" },
+              { label: "Tahun Terbit", name: "tahunTerbit", type: "number" },
+              { label: "Jumlah Halaman", name: "jumlahHalaman", type: "number" },
+              { label: "ID Admin", name: "idAdmin", type: "number" },
+              { label: "Foto Buku (URL)", name: "fotoUrl", type: "text" },
+            ].map((field) => (
+              <div key={field.name} className="flex items-center">
+                <label className="w-40 text-gray-700 font-medium text-left">{field.label}</label>
+                <input
+                  type={field.type}
+                  name={field.name}
+                  value={buku[field.name]}
+                  onChange={handleChange}
+                  className="flex-1 border rounded-md p-3 focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+            ))}
 
-        {/* Komponen Upload Foto */}
-        <div className="flex items-center">
-          <label className="w-40 text-gray-700 font-medium text-left">Upload Foto</label>
-          <UploadFoto
-            onUploadSuccess={handleUploadSuccess}
-            setIsUploading={setIsUploading} // Update status upload
-          />
-        </div>
+            {/* Komponen Upload Foto */}
+            <div className="flex items-center">
+              <label className="w-40 text-gray-700 font-medium text-left">Upload Foto</label>
+              <UploadFoto
+                onUploadSuccess={handleUploadSuccess}
+                setIsUploading={setIsUploading}
+              />
+            </div>
 
-        <div className="flex justify-end gap-4 mt-6">
-          <button
-            type="button"
-            className="text-black font-semibold hover:underline"
-            onClick={() => navigate("/buku")}
-          >
-            Batal
-          </button>
-          <button
-            type="submit"
-            className="bg-green-600 text-white font-semibold px-6 py-2 rounded-lg hover:bg-green-700 transition"
-          >
-            Simpan
-          </button>
+            <div className="flex justify-end gap-4 mt-6">
+              <button
+                type="button"
+                className="text-black font-semibold hover:underline"
+                onClick={() => navigate("/buku")}>
+                Batal
+              </button>
+              <button
+                type="submit"
+                className="bg-green-600 text-white font-semibold px-6 py-2
+                 rounded-lg hover:bg-green-700 transition">
+                Simpan
+              </button>
+            </div>
+          </form>
         </div>
-      </form>
+      </div>
     </div>
   );
 };
