@@ -7,7 +7,6 @@ import Sidebar from "../components/Sidebar";
 import { Pencil, Trash2, Search, X } from "lucide-react";
 import { useNotification } from "../context/NotificationContext";
 
-
 const API_USER = "http://localhost:4321/api/user";
 
 const User = () => {
@@ -76,14 +75,14 @@ const User = () => {
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-2xl font-bold text-gray-700">Daftar User</h2>
             <button
-             className="flex items-center gap-2 bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition"
-             onClick={() => {
-             addNotification("Menambahkan data user baru", "success");
-             navigate("/tambah-user");
-             }}
+              className="flex items-center gap-2 bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition"
+              onClick={() => {
+                addNotification("Menambahkan data user baru", "success");
+                navigate("/tambah-user");
+              }}
             >
-             <FaPlus size={16} />
-             </button>
+              <FaPlus size={16} />
+            </button>
           </div>
 
           <div className="relative mb-4">
@@ -118,7 +117,7 @@ const User = () => {
                   </tr>
                 </thead>
                 <tbody className="bg-gray-100">
-                  {currentUsers.length > 0 ? (
+                  {filteredUsers.length > 0 ? (
                     currentUsers.map((user, index) => (
                       <tr key={user.id} className="hover:bg-gray-100">
                         <td className="px-6 py-3 text-center">{indexOfFirstUser + index + 1}</td>
@@ -128,7 +127,7 @@ const User = () => {
                         <td className="px-6 py-3 flex justify-center space-x-2">
                           <Link to={`/edit-user/${user.id}`}>
                             <button className="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600"
-                            onClick={() => addNotification("Mengedit data user", "info")}
+                              onClick={() => addNotification("Mengedit data user", "info")}
                             >
                               <Pencil size={18} />
                             </button>
