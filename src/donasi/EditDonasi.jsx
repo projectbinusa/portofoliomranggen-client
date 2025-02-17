@@ -37,18 +37,33 @@ const EditDonasi = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (Object.values(formData).some((value) => String(value || "").trim() === "")) {
+
+    // Trim all fields before validation
+    const trimmedData = Object.fromEntries(
+      Object.entries(formData).map(([key, value]) => [
+        key,
+        typeof value === "string" ? value.trim() : value,
+      ])
+    );
+
+    if (Object.values(trimmedData).some((value) => value === "")) {
       Swal.fire("Error", "Semua kolom harus diisi!", "error");
       return;
     }
+
+    if (isNaN(trimmedData.jumlahDonasi) || parseInt(trimmedData.jumlahDonasi, 10) <= 0) {
+      Swal.fire("Error", "Jumlah Donasi harus berupa angka yang valid!", "error");
+      return;
+    }
+
     try {
       const response = await fetch(`${API_DONASI}/edit/${id}/${idAdmin}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          ...formData,
-          jumlahDonasi: parseInt(formData.jumlahDonasi, 10),
-          idAdmin, // Keep sending idAdmin but do not show it in the form
+          ...trimmedData,
+          jumlahDonasi: parseInt(trimmedData.jumlahDonasi, 10),
+          idAdmin,
         }),
       });
       const data = await response.json();
@@ -57,6 +72,7 @@ const EditDonasi = () => {
       Swal.fire("Sukses", "Donasi berhasil diperbarui!", "success");
       setTimeout(() => navigate("/donasi"), 1000);
     } catch (error) {
+      console.error("Error updating donation:", error);
       Swal.fire("Error", error.message, "error");
     }
   };
