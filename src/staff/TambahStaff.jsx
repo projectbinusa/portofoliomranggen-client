@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { API_STAFF } from "../utils/BaseUrl";
 import Swal from "sweetalert2";
+import Sidebar from "../components/Sidebar";
 
 const toCamelCase = (str) => {
   return str
@@ -30,97 +31,90 @@ const TambahStaff = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!staff.nama || !staff.alamat || !staff.noTelepon || !staff.awalBekerja || !staff.lamaKerja || !staff.createDate) {
-      Swal.fire({
-        title: "Gagal!",
-        text: "Semua field harus diisi.",
-        icon: "error",
-        confirmButtonText: "Ok",
-      });
+    if (Object.values(staff).some((value) => !value)) {
+      Swal.fire("Error", "Semua kolom harus diisi!", "error");
       return;
     }
 
-    const formattedCreateDate = staff.createDate.includes("T") ? staff.createDate : `${staff.createDate}T00:00:00`;
-    const formattedAwalBekerja = staff.awalBekerja.includes("T") ? staff.awalBekerja : `${staff.awalBekerja}T00:00:00`;
-
-    const staffDTO = {
+    const formattedData = {
+      ...staff,
       nama: toCamelCase(staff.nama),
       alamat: toCamelCase(staff.alamat),
-      noTelepon: staff.noTelepon,
-      awalBekerja: formattedAwalBekerja,
-      lamaKerja: staff.lamaKerja,
-      createDate: formattedCreateDate,
+      awalBekerja: staff.awalBekerja.includes("T")
+        ? staff.awalBekerja
+        : `${staff.awalBekerja}T00:00:00`,
+      createDate: staff.createDate.includes("T")
+        ? staff.createDate
+        : `${staff.createDate}T00:00:00`,
     };
-
-    console.log("Payload yang dikirim:", staffDTO);
 
     try {
       const response = await fetch(`${API_STAFF}/tambah`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(staffDTO),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formattedData),
       });
 
       if (!response.ok) {
         const errorData = await response.json();
-        console.error("Response error:", errorData);
-        throw new Error(`Error: ${errorData.message || "Gagal menambahkan staff"}`);
+        throw new Error(errorData.message || "Gagal menambahkan staff");
       }
 
-      const data = await response.json();
-      console.log("Data yang berhasil disimpan:", data);
-
-      Swal.fire({
-        title: "Sukses!",
-        text: "Data staf berhasil ditambahkan.",
-        icon: "success",
-        confirmButtonText: "Ok",
-      }).then(() => {
-        navigate("/staff");
-      });
+      Swal.fire("Sukses", "Data staf berhasil ditambahkan!", "success");
+      setTimeout(() => navigate("/staff"), 1000);
     } catch (error) {
-      console.error("Error:", error.message);
-      Swal.fire({
-        title: "Gagal!",
-        text: `Terjadi kesalahan: ${error.message}`,
-        icon: "error",
-        confirmButtonText: "Ok",
-      });
+      Swal.fire("Error", error.message, "error");
     }
   };
 
   return (
-    <div className="flex-1 p-8 ml-4">
-      <h2 className="text-2xl font-semibold mb-6 text-gray-800">Tambah Staff</h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        {[{ label: "Nama", name: "nama", type: "text" },
-          { label: "Alamat", name: "alamat", type: "text" },
-          { label: "Nomor Telepon", name: "noTelepon", type: "text" },
-          { label: "Awal Bekerja", name: "awalBekerja", type: "date" },
-          { label: "Lama Kerja (Tahun)", name: "lamaKerja", type: "text" },
-          { label: "Tanggal Dibuat", name: "createDate", type: "date" }].map((field) => (
-          <div key={field.name} className="flex items-center gap-4">
-            <label className="w-40 text-gray-700 font-medium text-left">{field.label}</label>
-            <input
-              type={field.type}
-              name={field.name}
-              value={staff[field.name]}
-              onChange={handleChange}
-              className="flex-1 border rounded-md p-3 focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-        ))}
-        <div className="flex justify-end gap-4 mt-6">
-          <button type="button" className="text-black font-semibold hover:underline" onClick={() => navigate("/staff")}>
-            Batal
-          </button>
-          <button type="submit" className="bg-green-600 text-white font-semibold px-6 py-2 rounded-lg hover:bg-green-700 transition">
-            Simpan
-          </button>
+    <div className="flex h-screen overflow-hidden">
+      <Sidebar />
+      <div className="flex-1 flex items-center justify-center p-4">
+        <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-lg border border-gray-300">
+          <h2 className="text-xl font-bold mb-4 text-left">Tambah Staff</h2>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {Object.keys(staff).map((key) => (
+              <div key={key} className="flex flex-col">
+                <label className="text-gray-700 text-sm font-medium text-left capitalize">
+                  {key.replace(/([A-Z])/g, " $1").trim()}
+                </label>
+                <input
+                  type={
+                    key === "lamaKerja"
+                      ? "number"
+                      : key.includes("Date")
+                      ? "date"
+                      : "text"
+                  }
+                  name={key}
+                  value={staff[key]}
+                  onChange={handleChange}
+                  placeholder={`Masukkan ${key
+                    .replace(/([A-Z])/g, " $1")
+                    .trim()}`}
+                  className="p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+            ))}
+            <div className="flex justify-end space-x-2 mt-4">
+              <button
+                type="button"
+                onClick={() => navigate("/staff")}
+                className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition"
+              >
+                Batal
+              </button>
+              <button
+                type="submit"
+                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
+              >
+                Simpan
+              </button>
+            </div>
+          </form>
         </div>
-      </form>
+      </div>
     </div>
   );
 };

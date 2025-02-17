@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import PropTypes from "prop-types"; 
-import { FaChalkboardTeacher, FaUserGraduate, FaLayerGroup, FaUsers, FaCalendarAlt, FaUserTie, FaShoppingCart } from "react-icons/fa";
+import { FaChalkboardTeacher, FaUserGraduate, FaLayerGroup, FaUsers, FaCalendarAlt, FaUserTie, FaShoppingCart, FaUser, FaHandHoldingHeart } from "react-icons/fa";
 import Sidebar from "../components/Sidebar";
 
 function DashboardCard({ icon, label, count, description, color, textColor, onClick }) {
@@ -15,7 +15,6 @@ function DashboardCard({ icon, label, count, description, color, textColor, onCl
     </div>
   );
 }
-
 
 DashboardCard.propTypes = {
   icon: PropTypes.node.isRequired,
@@ -38,12 +37,14 @@ export default function Dashboard() {
     kegiatan: 0,
     staff: 0,
     pesanan: 0,
+    user: 0,
+    donasi: 0,
   });
 
   useEffect(() => {
     const fetchDataCounts = async () => {
       try {
-        const [guruRes, siswaRes, kategoriKelasRes, organisasiRes, kegiatanRes, staffRes, pesananRes] = await Promise.all([
+        const [guruRes, siswaRes, kategoriKelasRes, organisasiRes, kegiatanRes, staffRes, pesananRes, userRes, donasiRes] = await Promise.all([
           axios.get("http://localhost:4321/api/admin/guru/all"),
           axios.get("http://localhost:4321/api/siswa/all"),
           axios.get("http://localhost:4321/api/kelas/all"),
@@ -51,6 +52,8 @@ export default function Dashboard() {
           axios.get("http://localhost:4321/api/kegiatan/all"),
           axios.get("http://localhost:4321/api/staff/all"),
           axios.get("http://localhost:4321/api/pesanan/all"),
+          axios.get("http://localhost:4321/api/user/all"),
+          axios.get("http://localhost:4321/api/donasi/all"),
         ]);
 
         setDataCounts({
@@ -61,6 +64,8 @@ export default function Dashboard() {
           kegiatan: kegiatanRes.data.length,
           staff: staffRes.data.length,
           pesanan: pesananRes.data.length,
+          user: userRes.data.length,
+          donasi: donasiRes.data.length,
         });
       } catch (error) {
         console.error("Error fetching data counts:", error);
@@ -81,6 +86,8 @@ export default function Dashboard() {
         <DashboardCard icon={<FaCalendarAlt />} label="Kegiatan Sekolah" count={dataCounts.kegiatan} description="Total kegiatan sekolah yang terdaftar." color="bg-[#3674B5]" textColor="text-white" onClick={() => navigate("/kegiatan-sekolah")} />
         <DashboardCard icon={<FaUserTie />} label="Staff" count={dataCounts.staff} description="Total jumlah staff yang bekerja di sekolah." color="bg-[#578FCA]" textColor="text-white" onClick={() => navigate("/staff")} />
         <DashboardCard icon={<FaShoppingCart />} label="Pesanan" count={dataCounts.pesanan} description="Total pesanan yang telah dibuat." color="bg-[#A1E3F9]" textColor="text-gray-900" onClick={() => navigate("/pesanan")} />
+        <DashboardCard icon={<FaUser />} label="User" count={dataCounts.user} description="Total pengguna yang terdaftar." color="bg-[#D1F8EF]" textColor="text-gray-900" onClick={() => navigate("/user")} />
+        <DashboardCard icon={<FaHandHoldingHeart />} label="Donasi" count={dataCounts.donasi} description="Total donasi yang telah terkumpul." color="bg-[#578FCA]" textColor="text-white" onClick={() => navigate("/donasi")} />
       </div>
     </div>
   );

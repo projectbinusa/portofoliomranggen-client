@@ -1,20 +1,20 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate  } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
-import { Pencil, Trash2, Search } from "lucide-react";
+import { Pencil, Trash2, Search, Eye } from "lucide-react";
 import { FaPlus } from "react-icons/fa";
 import Swal from "sweetalert2";
 import axios from "axios";
 import { API_ORGANISASI } from "../utils/BaseUrl";
+import { useNotification } from "../context/NotificationContext";
 
 const PageOrganisasi = () => {
+  const navigate = useNavigate();
   const [organisasiList, setOrganisasiList] = useState([]);
+  const { addNotification } = useNotification();
   const [searchTerm, setSearchTerm] = useState("");
-
-  // Retrieve adminId from localStorage
   const idAdmin = JSON.parse(localStorage.getItem("adminId"));
 
-  // Fetch organizations on component mount
   useEffect(() => {
     const fetchOrganisasi = async () => {
       try {
@@ -22,52 +22,30 @@ const PageOrganisasi = () => {
         if (response.status === 200) {
           setOrganisasiList(response.data);
         } else {
-          Swal.fire({
-            title: "Error",
-            text: "Gagal mengambil data organisasi.",
-            icon: "error",
-            confirmButtonText: "Ok",
-          });
+          Swal.fire({ title: "Error", text: "Gagal mengambil data organisasi.", icon: "error", confirmButtonText: "Ok" });
         }
       } catch (error) {
-        Swal.fire({
-          title: "Error",
-          text: "Terjadi kesalahan saat mengambil data organisasi.",
-          icon: "error",
-          confirmButtonText: "Ok",
-        });
+        Swal.fire({ title: "Error", text: "Terjadi kesalahan saat mengambil data organisasi.", icon: "error", confirmButtonText: "Ok" });
       }
     };
-
     fetchOrganisasi();
   }, []);
 
-  // Handle delete organization
   const handleHapus = async (id) => {
     try {
       const response = await axios.delete(`${API_ORGANISASI}/delete/${id}`);
       if (response.status === 204) {
-        Swal.fire({
-          title: "Sukses",
-          text: "Organisasi berhasil dihapus.",
-          icon: "success",
-          confirmButtonText: "Ok",
-        });
+        Swal.fire({ title: "Sukses", text: "Organisasi berhasil dihapus.", icon: "success", confirmButtonText: "Ok" });
+        addNotification("Data organisasi berhasil dihapus", "warning");
         setOrganisasiList(organisasiList.filter((org) => org.id !== id));
       } else {
         throw new Error("Gagal menghapus organisasi");
       }
     } catch (error) {
-      Swal.fire({
-        title: "Error",
-        text: "Terjadi kesalahan saat menghapus organisasi.",
-        icon: "error",
-        confirmButtonText: "Ok",
-      });
+      Swal.fire({ title: "Error", text: "Terjadi kesalahan saat menghapus organisasi.", icon: "error", confirmButtonText: "Ok" });
     }
   };
 
-  // Filter organisasi berdasarkan pencarian
   const filteredOrganisasi = organisasiList.filter((organisasi) =>
     organisasi.namaOrganisasi.toLowerCase().includes(searchTerm.toLowerCase()) ||
     organisasi.lokasi.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -80,24 +58,19 @@ const PageOrganisasi = () => {
       <div className="p-6 ml-40 w-full">
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-xl font-semibold">Daftar Organisasi</h1>
-          <Link
-            to="/tambah-organisasi"
-            className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition"
-          >
-            
+          <button
+              className="flex items-center gap-2 bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition"
+              onClick={() => {
+                addNotification("Menambahkan data organisasi baru", "success");
+                navigate("/tambah-organisasi");
+              }}
+            >
               <FaPlus size={16} />
-          </Link>
+            </button>
         </div>
 
-        {/* Input Search */}
         <div className="relative mb-4 w-1/3">
-          <input
-            type="text"
-            placeholder="Cari organisasi..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full px-3 py-2 pl-10 pr-4 text-sm rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
+          <input type="text" placeholder="Cari organisasi..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="w-full px-3 py-2 pl-10 pr-4 text-sm rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
           <Search className="absolute left-3 top-3 text-gray-500" size={14} />
         </div>
 
@@ -123,16 +96,18 @@ const PageOrganisasi = () => {
                     <td className="px-6 py-4">{organisasi.email}</td>
                     <td className="px-6 py-4">{organisasi.telepon}</td>
                     <td className="px-6 py-4 flex justify-center gap-2">
-                      <Link
-                        to={`/edit-organisasi/${organisasi.id}`}
-                        className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition"
-                      >
-                        <Pencil size={20} />
+                      <Link to={`/detail-organisasi/${organisasi.id}`} className="bg-yellow-500 text-white p-2 rounded-md hover:bg-yellow-600 transition">
+                        <Eye size={20} />
                       </Link>
+                      <Link to={`/edit-organisasi/${organisasi.id}`}>
                       <button
-                        onClick={() => handleHapus(organisasi.id)}
-                        className="bg-red-500 text-white p-2 rounded-md hover:bg-red-600 transition"
-                      >
+                            className="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600 transition"
+                            onClick={() => addNotification("Mengedit data organisasi", "info")}
+                          >
+                            <Pencil size={18} />
+                          </button>
+                      </Link>
+                      <button onClick={() => handleHapus(organisasi.id)} className="bg-red-500 text-white p-2 rounded-md hover:bg-red-600 transition">
                         <Trash2 size={20} />
                       </button>
                     </td>
@@ -140,9 +115,7 @@ const PageOrganisasi = () => {
                 ))
               ) : (
                 <tr>
-                  <td colSpan="6" className="px-6 py-4 text-center">
-                    Data organisasi tidak ditemukan
-                  </td>
+                  <td colSpan="6" className="px-6 py-4 text-center">Data organisasi tidak ditemukan</td>
                 </tr>
               )}
             </tbody>
