@@ -39,7 +39,7 @@ const PageDonasi = () => {
   };
 
   const toCamelCase = (text) => {
-    if (!text) return "";
+    if (typeof text !== "string") return text;
     return text
       .toLowerCase()
       .split(" ")
@@ -49,7 +49,7 @@ const PageDonasi = () => {
 
   const filteredDonasi = pageDonasi.filter(donasi =>
     [donasi.namaDonasi, donasi.namaDonatur, donasi.jumlahDonasi, donasi.deskripsi]
-      .some(field => field.toString().toLowerCase().includes(searchTerm.toLowerCase()))
+      .some(field => field && field.toString().toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
   return (
@@ -59,9 +59,7 @@ const PageDonasi = () => {
         <div className="container mx-auto p-4">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-bold">Daftar Donasi</h2>
-            <button className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600" onClick={() => navigate("/tambah-donasi")}>
-              Tambah Donasi
-            </button>
+            <button className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600" onClick={() => navigate("/tambah-donasi")}>Tambah Donasi</button>
           </div>
           <div className="relative w-1/3 mb-4">
             <input
@@ -78,7 +76,6 @@ const PageDonasi = () => {
               </button>
             )}
           </div>
-
           <div className="relative overflow-x-auto shadow-md ml-1">
             <table className="w-full text-sm text-left text-gray-700 border border-gray-400">
               <thead className="text-xs font-bold uppercase bg-gray-200 border-b border-gray-500">
