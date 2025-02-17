@@ -5,9 +5,13 @@ import Sidebar from "../components/Sidebar";
 import { Pencil, Trash2, Search, X, Eye } from "lucide-react";
 import axios from "axios";
 import { API_KEGIATAN } from "../utils/BaseUrl";
+import { useNotification } from "../context/NotificationContext";
+
+
 
 const KegiatanSekolah = () => {
   const [searchTerm, setSearchTerm] = useState("");
+  const { addNotification } = useNotification();
   const [kegiatanSekolah, setKegiatanSekolah] = useState([]);
   const navigate = useNavigate();
 
@@ -34,6 +38,7 @@ const KegiatanSekolah = () => {
         axios.delete(`${API_KEGIATAN}/delete/${id}`)
           .then(() => {
             Swal.fire("Dihapus!", "Data kegiatan telah dihapus.", "success");
+            addNotification("Data kegiatan berhasil dihapus", "warning");
             setKegiatanSekolah(kegiatanSekolah.filter((kegiatan) => kegiatan.id !== id));
           })
           .catch(() => {
@@ -63,7 +68,10 @@ const KegiatanSekolah = () => {
             <h2 className="text-xl font-bold">Daftar Kegiatan Sekolah</h2>
             <button
               className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition"
-              onClick={() => navigate("/tambah-kegiatan")}
+              onClick={() => {
+                addNotification("Menambahkan data kegiatan baru", "success");
+                navigate("/tambah-kegiatan");
+              }}
             >
               Tambah Kegiatan
             </button>
@@ -115,12 +123,15 @@ const KegiatanSekolah = () => {
                       <td className="px-6 py-4 border-r border-gray-800">{kegiatan.penanggungJawab}</td>
                       <td className="px-6 py-4 flex justify-center gap-3">
                         <Link to={`/detail-sekolah/${kegiatan.id}`}>
-                          <button className="flex items-center gap-2 bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-600 transition">
-                            <Eye size={20} />
+                          <button
+                           className="flex items-center gap-2 bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-600 transition"
+                           ><Eye size={20} />
                           </button>
                         </Link>
                         <Link to={`/edit-kegiatan/${kegiatan.id}`}>
-                          <button className="flex items-center gap-2 bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600 transition">
+                          <button className="flex items-center gap-2 bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600 transition"
+                           onClick={() => addNotification("Mengedit data kegiatan", "info")}
+                          >
                             <Pencil size={20} />
                           </button>
                         </Link>

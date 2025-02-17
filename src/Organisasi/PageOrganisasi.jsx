@@ -1,14 +1,17 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate  } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import { Pencil, Trash2, Search, Eye } from "lucide-react";
 import { FaPlus } from "react-icons/fa";
 import Swal from "sweetalert2";
 import axios from "axios";
 import { API_ORGANISASI } from "../utils/BaseUrl";
+import { useNotification } from "../context/NotificationContext";
 
 const PageOrganisasi = () => {
+  const navigate = useNavigate();
   const [organisasiList, setOrganisasiList] = useState([]);
+  const { addNotification } = useNotification();
   const [searchTerm, setSearchTerm] = useState("");
   const idAdmin = JSON.parse(localStorage.getItem("adminId"));
 
@@ -33,6 +36,7 @@ const PageOrganisasi = () => {
       const response = await axios.delete(`${API_ORGANISASI}/delete/${id}`);
       if (response.status === 204) {
         Swal.fire({ title: "Sukses", text: "Organisasi berhasil dihapus.", icon: "success", confirmButtonText: "Ok" });
+        addNotification("Data organisasi berhasil dihapus", "warning");
         setOrganisasiList(organisasiList.filter((org) => org.id !== id));
       } else {
         throw new Error("Gagal menghapus organisasi");
@@ -54,9 +58,15 @@ const PageOrganisasi = () => {
       <div className="p-6 ml-40 w-full">
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-xl font-semibold">Daftar Organisasi</h1>
-          <Link to="/tambah-organisasi" className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition">
-            <FaPlus size={16} />
-          </Link>
+          <button
+              className="flex items-center gap-2 bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition"
+              onClick={() => {
+                addNotification("Menambahkan data organisasi baru", "success");
+                navigate("/tambah-organisasi");
+              }}
+            >
+              <FaPlus size={16} />
+            </button>
         </div>
 
         <div className="relative mb-4 w-1/3">
@@ -89,8 +99,13 @@ const PageOrganisasi = () => {
                       <Link to={`/detail-organisasi/${organisasi.id}`} className="bg-yellow-500 text-white p-2 rounded-md hover:bg-yellow-600 transition">
                         <Eye size={20} />
                       </Link>
-                      <Link to={`/edit-organisasi/${organisasi.id}`} className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition">
-                        <Pencil size={20} />
+                      <Link to={`/edit-organisasi/${organisasi.id}`}>
+                      <button
+                            className="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600 transition"
+                            onClick={() => addNotification("Mengedit data organisasi", "info")}
+                          >
+                            <Pencil size={18} />
+                          </button>
                       </Link>
                       <button onClick={() => handleHapus(organisasi.id)} className="bg-red-500 text-white p-2 rounded-md hover:bg-red-600 transition">
                         <Trash2 size={20} />
