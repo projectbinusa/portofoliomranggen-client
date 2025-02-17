@@ -17,9 +17,7 @@ const DaftarKategori = () => {
       .catch((error) => console.error("Error fetching data:", error));
   }, []);
 
-  const handleEdit = (id) => {
-    navigate(`/edit-kategori-a/${id}`);
-  };
+  const handleEdit = (id) => navigate(`/edit-kategori-a/${id}`);
 
   const handleDelete = (id) => {
     Swal.fire({
@@ -60,11 +58,11 @@ const DaftarKategori = () => {
       <div className="flex-1 p-6 ml-64">
         <div className="flex justify-between items-center mb-4">
           <div className="relative w-1/3">
-            <FaSearch className="absolute ml-2 text-gray-500 top-3 left-2" size={20} />
+            <FaSearch className="absolute ml-2 text-gray-500 top-3 left-2" size={16} />
             <input
               type="text"
               placeholder="Cari Kategori..."
-              className="border-4 border-gray-800 p-2 pl-10 rounded-lg w-full"
+              className="border-2 border-gray-500 p-2 pl-10 rounded-md w-full"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
@@ -73,45 +71,37 @@ const DaftarKategori = () => {
             onClick={() => navigate("/tambah-kategori-a")}
             className="flex items-center gap-2 bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition"
           >
-            <FaPlus size={16} />
+            <FaPlus size={14} />
           </button>
         </div>
 
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-          <table className="w-full text-sm text-left text-gray-700 border-4 border-gray-800">
-            <thead className="text-xs uppercase bg-gray-200 border-b-4 border-gray-800">
+          <table className="w-full text-sm text-left text-gray-700 border-2 border-gray-500">
+            <thead className="text-xs uppercase bg-gray-200 border-b border-gray-500">
               <tr>
-                <th className="px-6 py-3 border-4 border-gray-800 text-center">No</th>
-                <th className="px-6 py-3 border-4 border-gray-800 text-center">Nama Kategori</th>
-                <th className="px-6 py-3 border-4 border-gray-800 text-center">Aksi</th>
+                <th className="px-6 py-3 border-r border-gray-500 text-center">No</th>
+                <th className="px-6 py-3 border-r border-gray-500 text-center">Nama Kategori</th>
+                <th className="px-6 py-3 text-center">Aksi</th>
               </tr>
             </thead>
             <tbody>
               {filteredKategori.map((kategori, index) => (
-                <tr key={kategori.id} className="bg-white border-b-4 border-gray-800 hover:bg-gray-100">
-                  <td className="px-6 py-4 border-4 border-gray-800 text-center">{index + 1}</td>
-                  <td className="px-6 py-4 border-4 border-gray-800">{kategori.namaKategori}</td>
+                <tr key={kategori.id} className="bg-white border-b border-gray-300 hover:bg-gray-100">
+                  <td className="px-6 py-4 border-r border-gray-500 text-center">{index + 1}</td>
+                  <td className="px-6 py-4 border-r border-gray-500">{kategori.namaKategori}</td>
                   <td className="px-6 py-4 flex justify-center gap-3">
-                    <button
-                      onClick={() => handleEdit(kategori.id)}
-                      className="flex items-center gap-2 bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600 transition"
-                    >
-                      <Pencil size={18} />
+                    <button onClick={() => handleEdit(kategori.id)} className="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600 transition">
+                      <Pencil size={16} />
                     </button>
-                    <button
-                      onClick={() => handleDelete(kategori.id)}
-                      className="flex items-center gap-2 bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 transition"
-                    >
-                      <Trash2 size={18} />
+                    <button onClick={() => handleDelete(kategori.id)} className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 transition">
+                      <Trash2 size={16} />
                     </button>
                   </td>
                 </tr>
               ))}
               {filteredKategori.length === 0 && (
                 <tr>
-                  <td colSpan="3" className="px-6 py-4 text-center border-4 border-gray-800">
-                    Tidak ada data kategori yang sesuai.
-                  </td>
+                  <td colSpan="3" className="px-6 py-4 text-center border-2 border-gray-500">Tidak ada data kategori yang sesuai.</td>
                 </tr>
               )}
             </tbody>
