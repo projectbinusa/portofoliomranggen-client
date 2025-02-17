@@ -40,14 +40,25 @@ export default function Sidebar() {
 
   const handleLogout = () => {
     Swal.fire({
-      title: "Apakah Anda yakin?",
-      text: "Anda akan keluar dari akun!",
-      icon: "warning",
+      title: "Apakah Anda yakin ingin keluar?",
+      text: "Anda akan keluar dari akun Anda.",
+      icon: "question",
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Ya, keluar!",
+      confirmButtonColor: "#ff5a5f", // Warna tombol konfirmasi
+      cancelButtonColor: "#aaa", // Warna tombol batal
+      confirmButtonText: "Ya, Keluar",
       cancelButtonText: "Batal",
+      background: "#fff", // Background putih untuk alert
+      backdrop: `rgba(0,0,0,0.4)`, // Semitransparan saat pop-up muncul
+      customClass: {
+        popup: "animated fadeInUp", // Tambahkan animasi fadeInUp saat muncul
+        title: "text-lg font-semibold", // Perbesar ukuran judul
+        content: "text-base", // Sesuaikan ukuran teks konten
+        confirmButton:
+          "px-6 py-2 text-white rounded-md shadow-md hover:bg-red-600 transition",
+        cancelButton:
+          "px-6 py-2 text-gray-600 rounded-md shadow-md hover:bg-gray-200 transition",
+      },
     }).then((result) => {
       if (result.isConfirmed) {
         localStorage.removeItem("token");
@@ -144,12 +155,12 @@ export default function Sidebar() {
           <li>
             <button
               onClick={handleLogout}
-              className="flex items-center space-x-4 p-3 w-full text-left rounded-md hover:bg-green-600 transition dark:hover:bg-gray-600"
+              className="flex items-center space-x-4 p-3 w-full text-left rounded-md hover:bg-red-600 transition duration-300 transform hover:scale-105 dark:hover:bg-gray-600"
             >
-              <span className="text-xl">
+              <span className="text-xl text-red-500">
                 <HiLogout />
               </span>
-              {isOpen && <span>Logout</span>}
+              {isOpen && <span className="text-red-500">Logout</span>}
             </button>
           </li>
         </ul>
