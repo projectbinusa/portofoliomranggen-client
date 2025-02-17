@@ -134,14 +134,14 @@ const TambahBuku = () => {
               <button
                 type="button"
                 onClick={() => navigate("/buku")}
-                className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition"
-              >
+                className="px-4 py-2 bg-gray-500
+                 text-white rounded-lg hover:bg-gray-600 transition">
                 Batal
               </button>
               <button
                 type="submit"
-                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
-              >
+                className="px-4 py-2 bg-green-600
+                 text-white rounded-lg hover:bg-green-700 transition">
                 Simpan
               </button>
             </div>
