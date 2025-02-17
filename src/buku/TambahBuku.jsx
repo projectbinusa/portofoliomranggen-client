@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { API_BUKU } from "../utils/BaseUrl";
 import Swal from "sweetalert2";
+import UploadFoto from "../upload/UploadFoto";
 
 const TambahBuku = () => {
   const [buku, setBuku] = useState({
@@ -11,17 +12,34 @@ const TambahBuku = () => {
     tahunTerbit: "",
     jumlahHalaman: "",
     idAdmin: "",
-    fotoUrl: "",
+    fotoUrl: "", // Akan diisi otomatis setelah upload
   });
 
+  const [isUploading, setIsUploading] = useState(false); // Status untuk menunggu upload foto selesai
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     setBuku({ ...buku, [e.target.name]: e.target.value });
   };
 
+  const handleUploadSuccess = (imageUrl) => {
+    setBuku({ ...buku, fotoUrl: imageUrl });
+    setIsUploading(false); // Menandakan bahwa upload selesai
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Pastikan foto sudah di-upload sebelum submit
+    if (isUploading) {
+      Swal.fire({
+        title: "Gagal!",
+        text: "Silakan tunggu hingga foto selesai di-upload.",
+        icon: "error",
+        confirmButtonText: "Ok",
+      });
+      return;
+    }
 
     if (
       !buku.judulBuku ||
@@ -77,14 +95,12 @@ const TambahBuku = () => {
     <div className="flex-1 p-8 ml-4">
       <h2 className="text-2xl font-semibold mb-6 text-gray-800">Tambah Buku</h2>
       <form onSubmit={handleSubmit} className="space-y-4 mt-6">
-        {[
-          { label: "Judul Buku", name: "judulBuku", type: "text" },
+        {[{ label: "Judul Buku", name: "judulBuku", type: "text" },
           { label: "Penerbit", name: "penerbit", type: "text" },
           { label: "Pengarang", name: "pengarang", type: "text" },
           { label: "Tahun Terbit", name: "tahunTerbit", type: "number" },
           { label: "Jumlah Halaman", name: "jumlahHalaman", type: "number" },
           { label: "ID Admin", name: "idAdmin", type: "number" },
-          { label: "Foto URL", name: "fotoUrl", type: "text" },
         ].map((field) => (
           <div key={field.name} className="flex items-center">
             <label className="w-40 text-gray-700 font-medium text-left">{field.label}</label>
@@ -97,6 +113,15 @@ const TambahBuku = () => {
             />
           </div>
         ))}
+
+        {/* Komponen Upload Foto */}
+        <div className="flex items-center">
+          <label className="w-40 text-gray-700 font-medium text-left">Upload Foto</label>
+          <UploadFoto
+            onUploadSuccess={handleUploadSuccess}
+            setIsUploading={setIsUploading} // Update status upload
+          />
+        </div>
 
         <div className="flex justify-end gap-4 mt-6">
           <button
