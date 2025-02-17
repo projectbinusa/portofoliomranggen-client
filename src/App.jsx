@@ -87,7 +87,6 @@ function App() {
   return (
     <NotificationProvider> {/* ✅ Tambahin Provider */}
       <Router>
-        <Notifikasi /> {/* ✅ Notifikasi selalu tampil di semua halaman */}
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
