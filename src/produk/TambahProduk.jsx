@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { API_PRODUK } from "../utils/BaseUrl";
+import UploadFoto from "../upload/UploadFoto";
 
 const TambahProduk = () => {
   const [produk, setProduk] = useState({
@@ -12,7 +13,13 @@ const TambahProduk = () => {
     fotoUrl: "",
   });
 
+  const [isUploading, setIsUploading] = useState(false); // Status untuk menunggu upload foto selesai
   const navigate = useNavigate();
+
+  const handleUploadSuccess = (imageUrl) => {
+    setProduk({ ...produk, fotoUrl: imageUrl });
+    setIsUploading(false); // Menandakan bahwa upload selesai
+  };
 
   const toCamelCase = (text) => {
     return text
@@ -29,6 +36,17 @@ const TambahProduk = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Pastikan foto sudah di-upload sebelum submit
+    if (isUploading) {
+      Swal.fire({
+        title: "Gagal!",
+        text: "Silakan tunggu hingga foto selesai di-upload.",
+        icon: "error",
+        confirmButtonText: "Ok",
+      });
+      return;
+    }
+
     if (!produk.nama || !produk.deskripsi || !produk.kondisi || !produk.harga || !produk.fotoUrl) {
       Swal.fire({
         title: "Gagal!",
@@ -44,7 +62,7 @@ const TambahProduk = () => {
       deskripsi: toCamelCase(produk.deskripsi),
       kondisi: toCamelCase(produk.kondisi),
       harga: parseFloat(produk.harga),
-      foto: produk.foto,
+      foto: produk.fotoUrl, // Menggunakan fotoUrl untuk upload foto
     };
 
     try {
@@ -83,12 +101,11 @@ const TambahProduk = () => {
     <div className="flex-1 p-8 ml-4 mt-10">
       <h2 className="text-2xl font-semibold mb-6 text-gray-800">Tambah Produk</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
-        {[
-          { label: "Nama Produk", name: "nama", type: "text" },
+        {[{ label: "Nama Produk", name: "nama", type: "text" },
           { label: "Deskripsi", name: "deskripsi", type: "text" },
           { label: "Kondisi", name: "kondisi", type: "text" },
           { label: "Harga", name: "harga", type: "number" },
-          { label: "URL Foto Produk", name: "fotoUrl", type: "text" },
+          { label: "Foto Produk (URL)", name: "fotoUrl", type: "text" },
         ].map((field) => (
           <div key={field.name} className="flex items-center gap-4">
             <label className="w-40 text-gray-700 font-medium text-left">{field.label}</label>
@@ -101,6 +118,15 @@ const TambahProduk = () => {
             />
           </div>
         ))}
+
+        {/* Komponen Upload Foto */}
+        <div className="flex items-center gap-4">
+          <label className="w-40 text-gray-700 font-medium text-left">Upload Foto</label>
+          <UploadFoto
+            onUploadSuccess={handleUploadSuccess}
+            setIsUploading={setIsUploading}
+          />
+        </div>
 
         <div className="flex justify-end gap-4 mt-6">
           <button
