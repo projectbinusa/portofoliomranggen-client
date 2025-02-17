@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
+import Sidebar from "../components/Sidebar";
 
 const TambahKategoriA = () => {
   const [namaKategori, setNamaKategori] = useState("");
@@ -50,8 +51,9 @@ const TambahKategoriA = () => {
   };
 
   return (
-    <div className="flex items-center justify-center h-screen">
-      <div className="bg-white p-6 shadow-md rounded-lg w-1/2 border-4 border-gray-700">
+    <div className="flex items-center justify-center h-screen overflow-hidden">
+      <Sidebar />
+      <div className="bg-white p-6 shadow-md rounded-lg w-1/2 border-2 border-gray-700">
         <form onSubmit={handleSubmit}>
           <div className="flex flex-col items-start mb-4">
             <label className="block text-gray-600">NAMA KATEGORI</label>
@@ -67,14 +69,14 @@ const TambahKategoriA = () => {
           <div className="flex justify-between">
             <button
               type="button"
-              className="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 border-4 border-gray-700 flex items-center gap-2"
+              className="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 border-2 border-gray-700 flex items-center gap-2"
               onClick={() => navigate("/page-kategori")}
             >
               <FontAwesomeIcon icon={faArrowLeft} className="text-lg" />
             </button>
             <button
               type="submit"
-              className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 border-4 border-gray-700 flex items-center gap-2"
+              className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 border-2 border-gray-700 flex items-center gap-2"
             >
               <FontAwesomeIcon icon={faFloppyDisk} className="text-lg" />
             </button>
