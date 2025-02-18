@@ -25,9 +25,6 @@ const Sambutan = () => {
           sukses selalu! ✨
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <button className="bg-gradient-to-r from-green-500 to-green-800 text-white font-bold px-6 sm:px-8 py-3 sm:py-4 rounded-full shadow-lg hover:opacity-90 transition">
-            Selengkapnya 🚀
-          </button>
           <button
             className="bg-gradient-to-r from-red-500 to-red-800 text-white font-bold px-6 sm:px-8 py-3 sm:py-4 rounded-full shadow-lg hover:opacity-90 transition"
             onClick={() => navigate(-1)}
