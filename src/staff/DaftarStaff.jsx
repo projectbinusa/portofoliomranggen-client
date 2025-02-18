@@ -5,9 +5,13 @@ import { Pencil, Trash2, Search, Eye } from "lucide-react";
 import Sidebar from "../components/Sidebar";
 import Swal from "sweetalert2";
 import { API_STAFF } from "../utils/BaseUrl";
+import { useNotification } from "../context/NotificationContext";
+
+
 
 const DaftarStaff = () => {
   const [staffData, setStaffData] = useState([]);
+  const { addNotification } = useNotification();
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
 
@@ -36,6 +40,7 @@ const DaftarStaff = () => {
           .then((response) => {
             if (response.ok) {
               setStaffData(staffData.filter((staff) => staff.id !== id));
+              addNotification("Data siswa berhasil dihapus", "warning");
               Swal.fire("Dihapus!", "Data staf telah dihapus.", "success");
             } else {
               Swal.fire("Gagal!", "Gagal menghapus data staf.", "error");

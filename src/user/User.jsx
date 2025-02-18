@@ -22,10 +22,17 @@ const User = () => {
     axios
       .get(`${API_USER}/all`)
       .then((response) => {
-        setUsers(response.data);
+        // Pastikan data yang diterima adalah array
+        if (Array.isArray(response.data)) {
+          setUsers(response.data);
+        } else {
+          console.error("Data yang diterima bukan array:", response.data);
+          setUsers([]); // Atau set default array kosong jika tidak valid
+        }
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
+        setUsers([]); // Set default array kosong jika ada error
       })
       .finally(() => {
         setIsLoading(false);
@@ -61,11 +68,11 @@ const User = () => {
     user.password.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Hitung indeks user yang akan ditampilkan
+  // Perbaikan pagination agar tetap muncul meskipun tidak ada data
+  const totalPages = Math.max(1, Math.ceil(filteredUsers.length / usersPerPage));
   const indexOfLastUser = currentPage * usersPerPage;
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
   const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
-  const totalPages = Math.ceil(filteredUsers.length / usersPerPage);
 
   return (
     <div className="flex h-screen">
@@ -166,9 +173,9 @@ const User = () => {
             </span>
 
             <button
-              disabled={currentPage === totalPages}
+              disabled={currentPage >= totalPages}
               onClick={() => setCurrentPage(currentPage + 1)}
-              className={`px-4 py-2 rounded-md ${currentPage === totalPages ? "bg-gray-300 cursor-not-allowed" : "bg-blue-500 text-white hover:bg-blue-600"}`}
+              className={`px-4 py-2 rounded-md ${currentPage >= totalPages ? "bg-gray-300 cursor-not-allowed" : "bg-blue-500 text-white hover:bg-blue-600"}`}
             >
               Next
             </button>
