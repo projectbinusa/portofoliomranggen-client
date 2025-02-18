@@ -74,7 +74,7 @@ const PagePesanan = () => {
   );
 
   return (
-    <div className="flex min-h-screen">
+    <div style={{ overflow: "hidden", minHeight: "100vh" }} className="flex min-h-screen">
       <Sidebar />
       <div className="flex-1 p-4 max-w-4xl ml-auto mr-10">
         <div className="flex mb-4 items-center gap-2">
@@ -149,4 +149,3 @@ const PagePesanan = () => {
 };
 
 export default PagePesanan;
- 
