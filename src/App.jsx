@@ -74,6 +74,7 @@ import TambahBerita from "./berita/TambahBerita";
 import EditBerita from "./berita/EditBerita";
 
 import Notifikasi from "./notif/Notifikasi";
+import Navbar from "./tampilan/Navbar";
 
 import "./App.css";
 
@@ -168,6 +169,9 @@ function App() {
 
             {/* Route Notifikasi */}
             <Route path="/notif" element={<Notifikasi />} />
+
+            {/* Route Navbar */}
+            <Route path="/navbar" element={<Navbar />} />
 
             {/* Halaman 404 */}
             <Route path="*" element={<NotFoundPage />} />
