@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import {
@@ -13,26 +13,14 @@ import {
   HiMoon,
   HiSun,
 } from "react-icons/hi";
-import Notifikasi from "../notif/Notifikasi"; // Import Notifikasi
+import { DarkModeContext } from "../contextt/DarkModeContext";
+import Notifikasi from "../notif/Notifikasi";
 
 export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(true);
   const [dropdowns, setDropdowns] = useState({});
-  const [isDarkMode, setIsDarkMode] = useState(
-    localStorage.getItem("theme") === "dark"
-  );
+  const { isDarkMode, setIsDarkMode } = useContext(DarkModeContext);
   const navigate = useNavigate();
-
-  // Apply dark mode class to the root element
-  useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("theme", "dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-      localStorage.setItem("theme", "light");
-    }
-  }, [isDarkMode]);
 
   const toggleDropdown = (menu) => {
     setDropdowns((prev) => ({ ...prev, [menu]: !prev[menu] }));
@@ -40,14 +28,16 @@ export default function Sidebar() {
 
   const handleLogout = () => {
     Swal.fire({
-      title: "Apakah Anda yakin?",
-      text: "Anda akan keluar dari akun!",
-      icon: "warning",
+      title: "Apakah Anda yakin ingin keluar?",
+      text: "Anda akan keluar dari akun Anda.",
+      icon: "question",
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Ya, keluar!",
+      confirmButtonColor: "#ff5a5f",
+      cancelButtonColor: "#aaa",
+      confirmButtonText: "Ya, Keluar",
       cancelButtonText: "Batal",
+      background: "#fff",
+      backdrop: `rgba(0,0,0,0.4)`,
     }).then((result) => {
       if (result.isConfirmed) {
         localStorage.removeItem("token");
@@ -59,9 +49,8 @@ export default function Sidebar() {
 
   return (
     <div className="flex h-screen relative">
-      {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 h-screen transition-all duration-300 transform bg-gradient-to-b from-green-500 to-green-700 text-white shadow-lg overflow-y-auto overflow-x-hidden dark:from-gray-800 dark:to-gray-900 ${
+        className={`fixed top-0 left-0 h-screen transition-all duration-300 transform bg-gradient-to-b from-green-500 to-green-700 text-white shadow-lg overflow-y-auto dark:from-gray-800 dark:to-gray-900 ${
           isOpen ? "w-64" : "w-20"
         }`}
       >
@@ -73,13 +62,10 @@ export default function Sidebar() {
           >
             Sidebar Menu
           </h1>
-
-          {/* Tambahkan Notifikasi */}
           <Notifikasi />
-
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="bg-green-700 p-2 rounded-full shadow-md hover:bg-green-600 focus:outline-none dark:bg-gray-700 dark:hover:bg-gray-600"
+            className="bg-green-700 p-2 rounded-full shadow-md hover:bg-green-600 dark:bg-gray-700 dark:hover:bg-gray-600"
           >
             {isOpen ? (
               <HiX className="w-5 h-5" />
@@ -88,7 +74,6 @@ export default function Sidebar() {
             )}
           </button>
         </div>
-
         <ul className="mt-4 space-y-2 px-4">
           <SidebarItem
             isOpen={isOpen}
@@ -117,7 +102,7 @@ export default function Sidebar() {
               { text: "Kategori Kelas", to: "/kategori-kelas" },
               { text: "Kegiatan Sekolah", to: "/kegiatan-sekolah" },
             ]}
-          />
+          />{" "}
           <DropdownItem
             isOpen={isOpen}
             icon={<HiClipboardList />}
@@ -144,21 +129,19 @@ export default function Sidebar() {
           <li>
             <button
               onClick={handleLogout}
-              className="flex items-center space-x-4 p-3 w-full text-left rounded-md hover:bg-green-600 transition dark:hover:bg-gray-600"
+              className="flex items-center space-x-4 p-3 w-full text-left rounded-md hover:bg-red-600 transition dark:hover:bg-gray-600"
             >
-              <span className="text-xl">
+              <span className="text-xl text-red-500">
                 <HiLogout />
               </span>
-              {isOpen && <span>Logout</span>}
+              {isOpen && <span className="text-red-500">Logout</span>}
             </button>
           </li>
         </ul>
-
-        {/* Dark Mode Toggle */}
         <div className="p-4 border-t border-green-400 dark:border-gray-700">
           <button
             onClick={() => setIsDarkMode(!isDarkMode)}
-            className="flex items-center space-x-4 p-3 w-full text-left rounded-md hover:bg-green-600 transition dark:hover:bg-gray-600"
+            className="flex items-center space-x-4 p-3 w-full text-left rounded-md hover:bg-green-600 dark:hover:bg-gray-600"
           >
             <span className="text-xl">
               {isDarkMode ? <HiSun /> : <HiMoon />}
@@ -167,8 +150,6 @@ export default function Sidebar() {
           </button>
         </div>
       </aside>
-
-      {/* Tombol untuk membuka sidebar */}
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
@@ -177,19 +158,17 @@ export default function Sidebar() {
           <HiMenu className="w-6 h-6" />
         </button>
       )}
-
       <div className="flex-1 p-10 overflow-y-auto overflow-x-hidden max-h-screen"></div>
     </div>
   );
 }
 
-// Komponen SidebarItem
 function SidebarItem({ icon, text, to, isOpen }) {
   return (
     <li>
       <Link
         to={to}
-        className="flex items-center space-x-4 p-3 rounded-md hover:bg-green-600 transition dark:hover:bg-gray-600"
+        className="flex items-center space-x-4 p-3 rounded-md hover:bg-green-600 dark:hover:bg-gray-600"
       >
         <span className="text-xl">{icon}</span>
         {isOpen && <span>{text}</span>}
@@ -198,7 +177,6 @@ function SidebarItem({ icon, text, to, isOpen }) {
   );
 }
 
-// Komponen DropdownItem
 function DropdownItem({
   icon,
   text,
@@ -212,7 +190,7 @@ function DropdownItem({
     <li>
       <button
         onClick={() => toggleDropdown(menuKey)}
-        className="flex items-center justify-between w-full p-3 rounded-md hover:bg-green-600 transition dark:hover:bg-gray-600"
+        className="flex items-center justify-between w-full p-3 rounded-md hover:bg-green-600 dark:hover:bg-gray-600"
       >
         <div className="flex items-center space-x-4">
           <span className="text-xl">{icon}</span>

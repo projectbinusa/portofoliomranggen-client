@@ -53,9 +53,9 @@ const DaftarKategori = () => {
   );
 
   return (
-    <div className="flex">
+    <div className="flex fixed inset-0 overflow-hidden">
       <Sidebar />
-      <div className="flex-1 p-6 ml-64">
+      <div className="flex-1 p-6 ml-56 overflow-hidden"> 
         <div className="flex justify-between items-center mb-4">
           <div className="relative w-1/3">
             <FaSearch className="absolute ml-2 text-gray-500 top-3 left-2" size={16} />
@@ -88,7 +88,7 @@ const DaftarKategori = () => {
               {filteredKategori.map((kategori, index) => (
                 <tr key={kategori.id} className="bg-white border-b border-gray-300 hover:bg-gray-100">
                   <td className="px-6 py-4 border-r border-gray-500 text-center">{index + 1}</td>
-                  <td className="px-6 py-4 border-r border-gray-500">{kategori.namaKategori}</td>
+                  <td className="px-6 py-4 border-r border-gray-500 text-center">{kategori.namaKategori}</td>
                   <td className="px-6 py-4 flex justify-center gap-3">
                     <button onClick={() => handleEdit(kategori.id)} className="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600 transition">
                       <Pencil size={16} />
