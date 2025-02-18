@@ -69,7 +69,7 @@ const EditProduk = () => {
     }
 
     try {
-      await axios.put(`${API_PRODUK}/edit/${id}`, produk);
+      await axios.put(`${API_PRODUK}/editById/${id}`, produk);
       Swal.fire("Sukses!", "Data produk berhasil diperbarui.", "success").then(() => {
         navigate("/produk");
       });

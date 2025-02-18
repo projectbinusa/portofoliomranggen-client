@@ -125,7 +125,15 @@ const ProductList = () => {
                 filteredProducts.map((product, index) => (
                   <tr key={product.id} className="hover:bg-gray-100">
                     <td className="px-6 py-4 text-center">{index + 1}</td>
-                    <td className="px-6 py-4 text-center">{toCamelCase(product.fotoUrl)}</td>
+                    <td className="px-6 py-4 text-center w-32 h-32">
+                    {product.fotoUrl && (
+                      <img
+                        src={product.fotoUrl}
+                        alt="Foto Buku"
+                        className="w-full h-full object-cover rounded-md mx-auto"
+                      />
+                    )}
+                  </td>
                     <td className="px-6 py-4 font-medium">{toCamelCase(product.nama)}</td>
                     <td className="px-6 py-4">{toCamelCase(product.deskripsi)}</td>
                     <td className="px-6 py-4 text-center">{toCamelCase(product.kondisi)}</td>

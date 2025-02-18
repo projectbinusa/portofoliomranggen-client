@@ -16,7 +16,7 @@ const TambahBuku = () => {
     fotoUrl: "",
   });
 
-  const [isUploading, setIsUploading] = useState(false); // Status untuk menunggu upload foto selesai
+  const [isUploading, setIsUploading] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -25,13 +25,12 @@ const TambahBuku = () => {
 
   const handleUploadSuccess = (imageUrl) => {
     setBuku({ ...buku, fotoUrl: imageUrl });
-    setIsUploading(false); // Menandakan bahwa upload selesai
+    setIsUploading(false);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Pastikan foto sudah di-upload sebelum submit
     if (isUploading) {
       Swal.fire({
         title: "Gagal!",
@@ -93,52 +92,56 @@ const TambahBuku = () => {
   };
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen overflow-hidden">
       <Sidebar />
-      <div className="flex ml-64 w-full max-w">
-        <div className="p-6 rounded-lg">
-          <h2 className="text-2xl font-semibold mb-6 text-gray-800 text-center">Tambah Buku</h2>
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {[{ label: "Judul Buku", name: "judulBuku", type: "text" },
-              { label: "Penerbit", name: "penerbit", type: "text" },
-              { label: "Pengarang", name: "pengarang", type: "text" },
-              { label: "Tahun Terbit", name: "tahunTerbit", type: "number" },
-              { label: "Jumlah Halaman", name: "jumlahHalaman", type: "number" },
-              { label: "ID Admin", name: "idAdmin", type: "number" },
-              { label: "Foto Buku (URL)", name: "fotoUrl", type: "text" },
-            ].map((field) => (
-              <div key={field.name} className="flex items-center">
-                <label className="w-40 text-gray-700 font-medium text-left">{field.label}</label>
-                <input
-                  type={field.type}
-                  name={field.name}
-                  value={buku[field.name]}
-                  onChange={handleChange}
-                  className="flex-1 border rounded-md p-3 focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-            ))}
+      <div className="flex-1 flex items-center justify-center pl-64 p-4">
+        <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-4xl border border-gray-300">
+          <h2 className="text-xl font-bold mb-4 text-left">Tambah Buku</h2>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {[{ label: "Judul Buku", name: "judulBuku", type: "text" },
+                { label: "Penerbit", name: "penerbit", type: "text" },
+                { label: "Pengarang", name: "pengarang", type: "text" },
+                { label: "Tahun Terbit", name: "tahunTerbit", type: "number" },
+                { label: "Jumlah Halaman", name: "jumlahHalaman", type: "number" },
+                { label: "ID Admin", name: "idAdmin", type: "number" },
+                { label: "Foto Buku (URL)", name: "fotoUrl", type: "text" },
+              ].map((field) => (
+                <div key={field.name} className="flex flex-col">
+                  <label className="text-gray-700 text-sm font-medium text-left capitalize">{field.label}</label>
+                  <input
+                    type={field.type}
+                    name={field.name}
+                    value={buku[field.name]}
+                    onChange={handleChange}
+                    placeholder={`Masukkan ${field.label}`}
+                    className="p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+              ))}
+            </div>
 
             {/* Komponen Upload Foto */}
-            <div className="flex items-center">
-              <label className="w-40 text-gray-700 font-medium text-left">Upload Foto</label>
+            <div className="flex flex-col">
+              <label className="text-gray-700 text-sm font-medium text-left">Upload Foto</label>
               <UploadFoto
                 onUploadSuccess={handleUploadSuccess}
                 setIsUploading={setIsUploading}
               />
             </div>
 
-            <div className="flex justify-end gap-4 mt-6">
+            <div className="flex justify-between space-x-4 mt-6">
               <button
                 type="button"
-                className="text-black font-semibold hover:underline"
-                onClick={() => navigate("/buku")}>
+                onClick={() => navigate("/buku")}
+                className="px-4 py-2 bg-gray-500
+                 text-white rounded-lg hover:bg-gray-600 transition">
                 Batal
               </button>
               <button
                 type="submit"
-                className="bg-green-600 text-white font-semibold px-6 py-2
-                 rounded-lg hover:bg-green-700 transition">
+                className="px-4 py-2 bg-green-600
+                 text-white rounded-lg hover:bg-green-700 transition">
                 Simpan
               </button>
             </div>
