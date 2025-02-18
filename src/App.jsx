@@ -87,6 +87,10 @@ import EditBerita from "./berita/EditBerita";
 import { NotificationProvider } from "./context/NotificationContext"; 
 import Notifikasi from "./notif/Notifikasi";
 
+import Uang from "./keuangan/Uang";
+import TambahUang from "./keuangan/TambahUang";
+import EditUang from "./keuangan/EditUang";
+
 function App() {
   return (
     <NotificationProvider> {/* ✅ Tambahin Provider */}
@@ -176,6 +180,11 @@ function App() {
 
           {/* Halaman 404 */}
           <Route path="*" element={<NotFoundPage />} />
+
+          {/* Routes untuk Keuangan */}
+          <Route path="/uang" element={<Uang />} />
+          <Route path="/tambah-uang" element={<TambahUang />} />
+          <Route path="/edit-uang/:id" element={<EditUang />} />
         </Routes>
       </Router>
     </NotificationProvider>
