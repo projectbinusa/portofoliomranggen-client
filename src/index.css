@@ -1,3 +1,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Mode Gelap */
+.dark {
+  background-color: #1a202c;
+  color: white;
+}
+
+/* Warna sidebar di mode dark */
+.dark .sidebar {
+  background-color: #2d3748;
+}
