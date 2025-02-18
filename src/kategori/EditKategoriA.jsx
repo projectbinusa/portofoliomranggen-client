@@ -32,11 +32,11 @@ const EditKategoriA = () => {
   };
 
   return (
-    <div className="flex items-center justify-center h-screen">
+    <div className="flex items-center justify-center h-screen overflow-hidden fixed inset-0">
       <Sidebar />
       <div className="bg-white p-6 shadow-md rounded-lg w-1/2 border-2 border-gray-700">
-        <form onSubmit={handleSubmit}>
-          <label className="block text-gray-600 mb-2">NAMA KATEGORI</label>
+        <form onSubmit={handleSubmit} className="overflow-hidden">
+          <label className="block text-gray-600 mb-2 text-left">NAMA KATEGORI</label>
           <input
             type="text"
             value={namaKategori}
