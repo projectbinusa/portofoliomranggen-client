@@ -108,7 +108,7 @@ export default function Dashboard() {
         
         {/* Tambahkan margin-top agar card tidak tertutup navbar */}
         <div
-          className={`p-6 mt-20 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 transition-all duration-300 ${
+          className={`p-6 mt-20 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3xl:grid-cols-4 gap-4 transition-all duration-300 ${
             isSidebarOpen ? "ml-56" : "ml-5"
           }`}
         >
@@ -126,3 +126,4 @@ export default function Dashboard() {
     </div>
   );
 }
+
