@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import Sidebar from "../components/Sidebar";
 import { FaPlus, FaEdit, FaTrash, FaSearch } from "react-icons/fa";
+import Navbar from "../tampilan/Navbar";
 
 const PagePesanan = () => {
   const [pesanan, setPesanan] = useState([]);
@@ -76,8 +77,9 @@ const PagePesanan = () => {
   return (
     <div style={{ overflow: "hidden", minHeight: "100vh" }} className="flex min-h-screen">
       <Sidebar />
+      <Navbar />
       <div className="flex-1 p-4 max-w-4xl ml-auto mr-10">
-        <div className="flex mb-4 items-center gap-2">
+        <div className="flex mb-4 items-center gap-2  mt-8">
           <div className="relative w-1/3">
             <input
               type="text"

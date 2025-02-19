@@ -5,6 +5,7 @@ import Sidebar from "../components/Sidebar";
 import { Pencil, Trash2, Search, X, Eye } from "lucide-react";
 import axios from "axios";
 import { API_GURU } from "../utils/BaseUrl";
+import Navbar from "../tampilan/Navbar";
 
 const PageGuru = () => {
   const navigate = useNavigate();
@@ -45,6 +46,7 @@ const PageGuru = () => {
   return (
     <div className="flex h-screen">
       <Sidebar />
+      <Navbar />
       <div className="flex-1 p-6 ml-40">
         <div className="container mx-auto p-4">
           <div className="flex justify-between items-center mb-4">

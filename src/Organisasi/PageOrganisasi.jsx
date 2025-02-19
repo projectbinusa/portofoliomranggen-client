@@ -7,6 +7,7 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import { API_ORGANISASI } from "../utils/BaseUrl";
 import { useNotification } from "../context/NotificationContext";
+import Navbar from "../tampilan/Navbar";
 
 const PageOrganisasi = () => {
   const navigate = useNavigate();
@@ -55,9 +56,10 @@ const PageOrganisasi = () => {
   return (
     <div className="flex">
       <Sidebar />
+      <Navbar />
       <div className="p-6 ml-40 w-full">
         <div className="flex justify-between items-center mb-4">
-          <h1 className="text-xl font-semibold">Daftar Organisasi</h1>
+          <h1 className="text-xl font-semibold  mt-6">Daftar Organisasi</h1>
           <button
               className="flex items-center gap-2 bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition"
               onClick={() => {

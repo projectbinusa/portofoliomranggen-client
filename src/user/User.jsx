@@ -6,6 +6,7 @@ import { FaPlus } from "react-icons/fa";
 import Sidebar from "../components/Sidebar";
 import { Pencil, Trash2, Search, X } from "lucide-react";
 import { useNotification } from "../context/NotificationContext";
+import Navbar from "../tampilan/Navbar";
 
 const API_USER = "http://localhost:4321/api/user";
 
@@ -77,9 +78,10 @@ const User = () => {
   return (
     <div className="flex h-screen">
       <Sidebar />
+      <Navbar />
       <div className="flex-1 p-6 ml-40">
         <div className="container mx-auto">
-          <div className="flex justify-between items-center mb-4">
+          <div className="flex justify-between items-center mb-4  mt-6">
             <h2 className="text-2xl font-bold text-gray-700">Daftar User</h2>
             <button
               className="flex items-center gap-2 bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition"
