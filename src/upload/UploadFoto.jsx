@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 
-const UploadFoto = ({ onUploadSuccess }) => {
+const UploadFoto = ({ onUploadSuccess, setIsUploading }) => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState("");
   const [imageUrl, setImageUrl] = useState("");
@@ -15,6 +15,9 @@ const UploadFoto = ({ onUploadSuccess }) => {
   const handleUpload = async () => {
     if (!selectedFile) return;
 
+    // Menandai proses upload sedang berlangsung
+    setIsUploading(true);
+
     const formData = new FormData();
     formData.append("file", selectedFile);
 
@@ -24,11 +27,18 @@ const UploadFoto = ({ onUploadSuccess }) => {
       });
 
       const uploadedImageUrl = response.data.imageUrl;
-      setImageUrl(uploadedImageUrl);
-      setPreviewUrl("");
+      setImageUrl(uploadedImageUrl); // Menyimpan URL foto
+      setPreviewUrl(""); // Menghapus preview setelah upload selesai
+
+      // Mengirimkan URL foto ke parent component
       onUploadSuccess(uploadedImageUrl);
+
+      // Menandai bahwa upload selesai
+      setIsUploading(false);
+
     } catch (error) {
       console.error("Error uploading file:", error);
+      setIsUploading(false);
     }
   };
 
