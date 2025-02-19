@@ -6,7 +6,7 @@ import { API_ORGANISASI } from "../utils/BaseUrl";
 import { useParams, useNavigate } from "react-router-dom";
 
 const EditOrganisasi = () => {
-  const { id } = useParams(); // Get organization ID from URL
+  const { id } = useParams();
   const navigate = useNavigate();
   const [organisasi, setOrganisasi] = useState({
     namaOrganisasi: "",
@@ -22,26 +22,22 @@ const EditOrganisasi = () => {
         if (response.status === 200) {
           setOrganisasi(response.data);
         } else {
-          Swal.fire({
-            title: "Not Found",
-            text: "Organisasi dengan ID tersebut tidak ditemukan.",
-            icon: "error",
-            confirmButtonText: "Ok",
-          });
+          Swal.fire(
+            "Not Found",
+            "Organisasi dengan ID tersebut tidak ditemukan.",
+            "error"
+          );
         }
       } catch (error) {
-        Swal.fire({
-          title: "Error",
-          text: "Terjadi kesalahan saat mengambil data organisasi.",
-          icon: "error",
-          confirmButtonText: "Ok",
-        });
+        Swal.fire(
+          "Error",
+          "Terjadi kesalahan saat mengambil data organisasi.",
+          "error"
+        );
       }
     };
 
-    if (id) {
-      fetchOrganisasi();
-    }
+    if (id) fetchOrganisasi();
   }, [id]);
 
   const handleChange = (e) => {
@@ -50,72 +46,74 @@ const EditOrganisasi = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
-      const response = await axios.put(`${API_ORGANISASI}/editById/${id}`, organisasi);
+      const response = await axios.put(
+        `${API_ORGANISASI}/editById/${id}`,
+        organisasi
+      );
       if (response.status === 200) {
-        Swal.fire({
-          title: "Sukses!",
-          text: "Data organisasi berhasil diperbarui.",
-          icon: "success",
-          confirmButtonText: "Ok",
-        }).then(() => {
-          navigate("/organisasi");
-        });
+        Swal.fire(
+          "Sukses!",
+          "Data organisasi berhasil diperbarui.",
+          "success"
+        ).then(() => navigate("/organisasi"));
       } else {
         throw new Error("Gagal mengedit organisasi");
       }
     } catch (error) {
-      Swal.fire({
-        title: "Gagal!",
-        text: "Terjadi kesalahan saat mengedit data organisasi.",
-        icon: "error",
-        confirmButtonText: "Ok",
-      });
+      Swal.fire(
+        "Gagal!",
+        "Terjadi kesalahan saat mengedit data organisasi.",
+        "error"
+      );
     }
   };
 
   return (
-    <div className="flex">
+    <div className="flex h-screen overflow-hidden">
       <Sidebar />
-      <div className="flex-1 p-10 ml-55 ">
-        <div className="max-w-2xl mx-auto bg-white p-12 rounded-lg shadow-lg border border-gray-200">
-          <h1 className="text-2xl font-semibold text-gray-800 mb-6 text-center">Edit Organisasi</h1>
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {[ 
-              { label: "Nama Organisasi", name: "namaOrganisasi", type: "text" },
+      <div className="flex-1 flex items-center justify-center p-4">
+        <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-lg border border-gray-300">
+          <h2 className="text-xl font-bold mb-4 text-left">Edit Organisasi</h2>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {[
+              {
+                label: "Nama Organisasi",
+                name: "namaOrganisasi",
+                type: "text",
+              },
               { label: "Lokasi", name: "lokasi", type: "text" },
               { label: "Email", name: "email", type: "email" },
               { label: "Telepon", name: "telepon", type: "tel" },
             ].map((field) => (
-              <div key={field.name}>
-                <label htmlFor={field.name} className="block text-base font-medium text-gray-700">
+              <div key={field.name} className="flex flex-col">
+                <label className="text-gray-700 text-sm font-medium text-left">
                   {field.label}
                 </label>
                 <input
                   type={field.type}
-                  id={field.name}
                   name={field.name}
                   value={organisasi[field.name]}
                   onChange={handleChange}
-                  className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
+                  placeholder={`Masukkan ${field.label}`}
+                  className="p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   required
                 />
               </div>
             ))}
-            <div className="flex justify-between space-x-4 pt-4">
+            <div className="flex justify-between space-x-4 mt-6">
               <button
                 type="button"
-                className="px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400"
                 onClick={() => navigate("/organisasi")}
+                className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition"
               >
                 Batal
               </button>
               <button
                 type="submit"
-                className="px-6 py-2 bg-green-600 text-white rounded-lg shadow-sm font-medium hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
               >
-                Simpan Perubahan
+                Simpan
               </button>
             </div>
           </form>

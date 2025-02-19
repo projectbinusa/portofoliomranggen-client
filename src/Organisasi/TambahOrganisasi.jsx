@@ -13,14 +13,13 @@ const toCamelCase = (str) => {
 };
 
 const TambahOrganisasi = () => {
+  const navigate = useNavigate();
   const [organisasi, setOrganisasi] = useState({
     namaOrganisasi: "",
     lokasi: "",
     email: "",
     telepon: "",
   });
-  const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setOrganisasi({ ...organisasi, [e.target.name]: e.target.value });
@@ -36,23 +35,24 @@ const TambahOrganisasi = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
     if (Object.values(organisasi).some((val) => val.trim() === "")) {
       Swal.fire("Gagal!", "Semua field harus diisi.", "error");
       return;
     }
-    
+
     if (!validateEmail(organisasi.email)) {
       Swal.fire("Gagal!", "Format email tidak valid.", "error");
       return;
     }
 
     if (!validatePhone(organisasi.telepon)) {
-      Swal.fire("Gagal!", "Nomor telepon harus berupa angka 10-15 digit.", "error");
+      Swal.fire(
+        "Gagal!",
+        "Nomor telepon harus berupa angka 10-15 digit.",
+        "error"
+      );
       return;
     }
-    
-    setLoading(true);
 
     const formattedData = {
       ...organisasi,
@@ -73,60 +73,62 @@ const TambahOrganisasi = () => {
         throw new Error("Gagal menambahkan organisasi. Silakan coba lagi.");
       }
 
-      Swal.fire("Sukses!", "Organisasi berhasil ditambahkan.", "success").then(() => {
-        navigate("/organisasi");
-      });
+      Swal.fire("Sukses!", "Organisasi berhasil ditambahkan.", "success").then(
+        () => {
+          navigate("/organisasi");
+        }
+      );
     } catch (error) {
       Swal.fire("Gagal!", error.message, "error");
-    } finally {
-      setLoading(false);
     }
   };
 
   return (
-    <div className="flex">
+    <div className="flex h-screen overflow-hidden">
       <Sidebar />
-      <div className="flex-1 p-6 ml-40 mt-20">
-        <div className="max-w-lg mx-auto bg-white p-12 rounded-md shadow-md">
-          <form onSubmit={handleSubmit}>
-            <div className="space-y-6">
-              <div className="flex justify-between items-center mb-4">
-                <h1 className="text-xl font-semibold">Tambah Organisasi</h1>
+      <div className="flex-1 flex items-center justify-center p-4">
+        <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-lg border border-gray-300">
+          <h2 className="text-xl font-bold mb-4 text-left">
+            Tambah Organisasi
+          </h2>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {Object.keys(organisasi).map((key) => (
+              <div key={key} className="flex flex-col">
+                <label className="text-gray-700 text-sm font-medium text-left capitalize">
+                  {key.replace(/([A-Z])/g, " $1").trim()}
+                </label>
+                <input
+                  type={
+                    key === "email"
+                      ? "email"
+                      : key === "telepon"
+                      ? "tel"
+                      : "text"
+                  }
+                  name={key}
+                  value={organisasi[key]}
+                  onChange={handleChange}
+                  placeholder={`Masukkan ${key
+                    .replace(/([A-Z])/g, " $1")
+                    .trim()}`}
+                  className="p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                />
               </div>
-              <div className="grid grid-cols-1 gap-4">
-                {Object.keys(organisasi).map((field) => (
-                  <div key={field} className="text-left">
-                    <label className="block text-base font-medium text-gray-700">
-                      {field.replace(/([A-Z])/g, " $1").replace(/^./, (str) => str.toUpperCase())}
-                    </label>
-                    <input
-                      type={field === "email" ? "email" : field === "telepon" ? "tel" : "text"}
-                      name={field}
-                      value={organisasi[field]}
-                      onChange={handleChange}
-                      className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
-                      required
-                    />
-                  </div>
-                ))}
-              </div>
-              <div className="flex justify-between space-x-4 pt-4">
-                <button
-                  type="button"
-                  className="px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400"
-                  onClick={() => navigate("/organisasi")}
-                  disabled={loading}
-                >
-                  Batal
-                </button>
-                <button
-                  type="submit"
-                  className={`px-6 py-2 rounded-lg shadow-sm font-medium text-white ${loading ? "bg-gray-400" : "bg-green-600 hover:bg-green-700"} focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500`}
-                  disabled={loading}
-                >
-                  {loading ? "Menyimpan..." : "Simpan"}
-                </button>
-              </div>
+            ))}
+            <div className="flex justify-between space-x-4 mt-6">
+              <button
+                type="button"
+                onClick={() => navigate("/organisasi")}
+                className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition"
+              >
+                Batal
+              </button>
+              <button
+                type="submit"
+                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
+              >
+                Simpan
+              </button>
             </div>
           </form>
         </div>
