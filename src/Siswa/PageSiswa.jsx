@@ -65,15 +65,13 @@ const PageSiswa = () => {
 
       <div className="flex-1 p-6 ml-40">
         <div className="container mx-auto p-4">
-          <h2 className="text-xl font-bold mb-4 mt-6 text-left">Daftar Siswa</h2>
-
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-bold">Daftar Siswa</h2>
             <button
               className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
               onClick={() => navigate("/tambah-siswa")}
             >
-             <FaPlus size={16} />
+              <FaPlus size={16} />
             </button>
           </div>
 
@@ -100,16 +98,21 @@ const PageSiswa = () => {
             <table className="w-full text-sm text-left text-gray-700 border border-gray-400">
               <thead className="text-xs font-bold uppercase bg-gray-200 border-b border-gray-500">
                 <tr>
-                  {["No", "Nama", "Alamat", "NISN", "Tanggal Lahir", "Aksi"].map(
-                    (header) => (
-                      <th
-                        key={header}
-                        className="px-6 py-3 border-r border-gray-400 text-center"
-                      >
-                        {header}
-                      </th>
-                    )
-                  )}
+                  {[
+                    "No",
+                    "Nama",
+                    "Alamat",
+                    "NISN",
+                    "Tanggal Lahir",
+                    "Aksi",
+                  ].map((header) => (
+                    <th
+                      key={header}
+                      className="px-6 py-3 border-r border-gray-400 text-center"
+                    >
+                      {header}
+                    </th>
+                  ))}
                 </tr>
               </thead>
               <tbody>
@@ -122,13 +125,16 @@ const PageSiswa = () => {
                       <td className="px-6 py-4 border-r text-center">
                         {index + 1}
                       </td>
-                      {[student.nama, student.alamat, student.nisn, student.tanggalLahir].map(
-                        (field, i) => (
-                          <td key={i} className="px-6 py-4 border-r text-center">
-                            {field}
-                          </td>
-                        )
-                      )}
+                      {[
+                        student.nama,
+                        student.alamat,
+                        student.nisn,
+                        student.tanggalLahir,
+                      ].map((field, i) => (
+                        <td key={i} className="px-6 py-4 border-r text-center">
+                          {field}
+                        </td>
+                      ))}
                       <td className="px-6 py-4 flex gap-2 justify-center">
                         <Link to={`/detail-siswa/${student.id}`}>
                           <button className="flex items-center gap-2 bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-600">
