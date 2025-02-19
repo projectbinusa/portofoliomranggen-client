@@ -79,14 +79,23 @@ const PageSiswa = () => {
           />
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-black-400 w-5 h-5" />
           {searchTerm && (
+      <div className="flex-1 p-6 ml-40">
+        <div className="container mx-auto p-4">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-xl font-bold">Daftar Siswa</h2>
             <button
               onClick={() => setSearchTerm("")}
               className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
             >
+
               <X className="w-5 h-5" />
+
+              <FaPlus size={16} />
+
             </button>
           )}
         </div>
+
 
         <div className="relative overflow-x-auto shadow-md ml-1">
           <table className="w-full text-sm text-left text-gray-700 border border-gray-400">
@@ -126,6 +135,60 @@ const PageSiswa = () => {
                         </button>
                       </Link>
                       <Link to={`/edit-siswa/${student.id}`}>
+
+          <div className="relative overflow-x-auto shadow-md ml-1">
+            <table className="w-full text-sm text-left text-gray-700 border border-gray-400">
+              <thead className="text-xs font-bold uppercase bg-gray-200 border-b border-gray-500">
+                <tr>
+                  {[
+                    "No",
+                    "Nama",
+                    "Alamat",
+                    "NISN",
+                    "Tanggal Lahir",
+                    "Aksi",
+                  ].map((header) => (
+                    <th
+                      key={header}
+                      className="px-6 py-3 border-r border-gray-400 text-center"
+                    >
+                      {header}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {filteredStudents.length ? (
+                  filteredStudents.map((student, index) => (
+                    <tr
+                      key={student.id}
+                      className="bg-white border-b border-gray-400 hover:bg-gray-100"
+                    >
+                      <td className="px-6 py-4 border-r text-center">
+                        {index + 1}
+                      </td>
+                      {[
+                        student.nama,
+                        student.alamat,
+                        student.nisn,
+                        student.tanggalLahir,
+                      ].map((field, i) => (
+                        <td key={i} className="px-6 py-4 border-r text-center">
+                          {field}
+                        </td>
+                      ))}
+                      <td className="px-6 py-4 flex gap-2 justify-center">
+                        <Link to={`/detail-siswa/${student.id}`}>
+                          <button className="flex items-center gap-2 bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-600">
+                            <Eye size={18} />
+                          </button>
+                        </Link>
+                        <Link to={`/edit-siswa/${student.id}`}>
+                          <button className="flex items-center gap-2 bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600">
+                            <Pencil size={18} />
+                          </button>
+                        </Link>
+
                         <button
                           onClick={() => addNotification("Mengedit data siswa", "info")}
                           className="flex items-center gap-2 bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600"
