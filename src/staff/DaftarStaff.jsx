@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { FaPlus } from "react-icons/fa";
 import { Pencil, Trash2, Search, Eye, X } from "lucide-react";
 import Sidebar from "../components/Sidebar";
 import Swal from "sweetalert2";
@@ -75,14 +74,8 @@ const DaftarStaff = () => {
   return (
     <div className="flex h-screen">
       <Sidebar />
-
-      <Navbar />
-      <div className="flex-1 p-6 ml-48 pl-4">
-        <div className="flex justify-between items-center mb-4  mt-6">
-          <div className="relative w-1/3">
-            <Search className="absolute ml-3 text-gray-500 top-3 left-3" size={20} />
-
-      <div className="flex-1 p-6 ml-40">
+      <div className="flex-1 p-6 ml-48">
+        <Navbar />
         <div className="container mx-auto p-4">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-bold">Daftar Staff</h2>
@@ -94,7 +87,6 @@ const DaftarStaff = () => {
             </button>
           </div>
           <div className="relative w-1/3 mb-4">
-
             <input
               type="text"
               placeholder="Cari staff..."
@@ -113,7 +105,7 @@ const DaftarStaff = () => {
             )}
           </div>
 
-          <div className="relative overflow-x-auto shadow-md ml-1">
+          <div className="relative overflow-x-auto shadow-md">
             <table className="w-full text-sm text-left text-gray-700 border border-gray-400">
               <thead className="text-xs font-bold uppercase bg-gray-200 border-b border-gray-500">
                 <tr>
