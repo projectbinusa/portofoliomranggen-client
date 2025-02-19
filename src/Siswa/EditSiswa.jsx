@@ -26,113 +26,101 @@ const EditSiswa = () => {
           const data = response.data;
           setStudent({
             ...data,
-            tanggalLahir: data.tanggalLahir ? data.tanggalLahir.split("T")[0] : "",
+            tanggalLahir: data.tanggalLahir
+              ? data.tanggalLahir.split("T")[0]
+              : "",
           });
         } else {
-          Swal.fire({
-            title: "Not Found",
-            text: "Siswa dengan ID tersebut tidak ditemukan.",
-            icon: "error",
-            confirmButtonText: "Ok",
-          });
+          Swal.fire(
+            "Not Found",
+            "Siswa dengan ID tersebut tidak ditemukan.",
+            "error"
+          );
         }
       } catch (error) {
-        console.error("Error fetching student data:", error);
-        Swal.fire({
-          title: "Error",
-          text: "Terjadi kesalahan saat mengambil data siswa.",
-          icon: "error",
-          confirmButtonText: "Ok",
-        });
+        Swal.fire(
+          "Error",
+          "Terjadi kesalahan saat mengambil data siswa.",
+          "error"
+        );
       }
     };
 
-    if (id) {
-      fetchStudent();
-    }
+    if (id) fetchStudent();
   }, [id]);
 
-  const handleChange = (e) => {
+  const handleChange = (e) =>
     setStudent({ ...student, [e.target.name]: e.target.value });
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
       const response = await axios.put(`${API_SISWA}/editById/${id}`, student);
       if (response.status === 200) {
-        Swal.fire({
-          title: "Sukses!",
-          text: "Data siswa berhasil diperbarui.",
-          icon: "success",
-          confirmButtonText: "Ok",
-        }).then(() => {
-          navigate("/siswa");
-        });
+        Swal.fire("Sukses!", "Data siswa berhasil diperbarui.", "success").then(
+          () => navigate("/siswa")
+        );
       } else {
         throw new Error("Gagal mengedit siswa");
       }
     } catch (error) {
-      console.error("Error:", error);
-      Swal.fire({
-        title: "Gagal!",
-        text: "Terjadi kesalahan saat mengedit data siswa.",
-        icon: "error",
-        confirmButtonText: "Ok",
-      });
+      Swal.fire(
+        "Gagal!",
+        "Terjadi kesalahan saat mengedit data siswa.",
+        "error"
+      );
     }
   };
 
   return (
-    <div className="flex">
-      {/* Sidebar */}
-      <div className="w-64">
-        <Sidebar />
-      </div>
-
-      {/* Form */}
-      <div className="flex-1 p-8 ml-4">
-        <h2 className="text-2xl font-semibold mb-6 text-gray-800">Edit Siswa</h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {[
-            { label: "Nama", name: "nama", type: "text" },
-            { label: "NISN", name: "nisn", type: "text" },
-            { label: "Alamat", name: "alamat", type: "text" },
-            { label: "Nama Orangtua", name: "namaOrangtua", type: "text" },
-            { label: "Nomor HP Orangtua", name: "nomerHpOrangtua", type: "tel" },
-            { label: "Nomor HP", name: "nomerHp", type: "tel" },
-            { label: "Tanggal Lahir", name: "tanggalLahir", type: "date" },
-          ].map((field) => (
-            <div key={field.name} className="flex items-center gap-4">
-              <label className="w-1/5 text-gray-700 font-medium text-left">
-                {field.label}
-              </label>
-              <input
-                type={field.type}
-                name={field.name}
-                value={student[field.name] || ""}
-                onChange={handleChange}
-                className="w-4/5 border rounded-md p-3 focus:ring-2 focus:ring-blue-500"
-              />
+    <div className="flex h-screen overflow-hidden">
+      <Sidebar />
+      <div className="flex-1 flex items-center justify-center p-4">
+        <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-lg border border-gray-300">
+          <h2 className="text-xl font-bold mb-4 text-left">Edit Siswa</h2>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {[
+              "nama",
+              "nisn",
+              "alamat",
+              "namaOrangtua",
+              "nomerHpOrangtua",
+              "nomerHp",
+              "tanggalLahir",
+            ].map((field) => (
+              <div key={field} className="flex flex-col">
+                <label className="text-gray-700 text-sm font-medium text-left capitalize">
+                  {field.replace(/([A-Z])/g, " $1").trim()}
+                </label>
+                <input
+                  type={field === "tanggalLahir" ? "date" : "text"}
+                  name={field}
+                  value={student[field] || ""}
+                  onChange={handleChange}
+                  placeholder={`Masukkan ${field
+                    .replace(/([A-Z])/g, " $1")
+                    .trim()}`}
+                  className="p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+            ))}
+            <div className="flex justify-between space-x-4 mt-6">
+              <button
+                type="button"
+                onClick={() => navigate("/siswa")}
+                className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition"
+              >
+                Batal
+              </button>
+              <button
+                type="submit"
+                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
+              >
+                Simpan
+              </button>
             </div>
-          ))}
-          <div className="flex justify-end gap-4 mt-6">
-            <button
-              type="button"
-              className="bg-gray-400 text-white font-semibold px-6 py-2 rounded-lg hover:bg-gray-500 transition"
-              onClick={() => navigate("/siswa")}
-            >
-              Batal
-            </button>
-            <button
-              type="submit"
-              className="bg-green-600 text-white font-semibold px-6 py-2 rounded-lg hover:bg-green-700 transition"
-            >
-              Simpan
-            </button>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
     </div>
   );

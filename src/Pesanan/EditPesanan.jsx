@@ -16,6 +16,17 @@ const EditPesanan = () => {
 
   const navigate = useNavigate();
 
+  // Mencegah scrolling pada halaman ini
+  useEffect(() => {
+    document.documentElement.classList.add("overflow-hidden");
+    document.body.classList.add("overflow-hidden");
+
+    return () => {
+      document.documentElement.classList.remove("overflow-hidden");
+      document.body.classList.remove("overflow-hidden");
+    };
+  }, []);
+
   useEffect(() => {
     // Fetch data pesanan berdasarkan ID menggunakan GET
     const fetchPesananById = async () => {
@@ -97,7 +108,7 @@ const EditPesanan = () => {
 
   return (
     <div className="flex min-h-screen">
-     <Sidebar />
+      <Sidebar />
       <div className="flex-1 flex items-center justify-center">
         <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md border-2 border-gray-600">
           <h2 className="text-xl font-bold mb-4 text-gray-700">Edit Pesanan</h2>

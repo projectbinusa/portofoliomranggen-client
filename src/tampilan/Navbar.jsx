@@ -1,52 +1,110 @@
-import { useState } from "react";
-import { FaBell, FaUserCircle } from "react-icons/fa";
+import { useState, useEffect } from "react";
+import { FaUserCircle } from "react-icons/fa";
+import { Bell, X } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useNotification } from "../context/NotificationContext";
 
 export default function ProfileNavbar() {
-  const [notifications, setNotifications] = useState(3);
+  const { notifications, removeNotification } = useNotification();
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
 
-  // Fungsi untuk menangani toggle dropdown notifikasi
-  const toggleNotifications = () => {
-    setShowNotifications(!showNotifications);
-  };
-
-  // Fungsi untuk menangani toggle menu profil
-  const toggleProfileMenu = () => {
-    setShowProfileMenu(!showProfileMenu);
-  };
+  useEffect(() => {
+    // Cek apakah ada dark mode yang diaktifkan di sistem/browser
+    const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    setDarkMode(isDark);
+  }, []);
 
   return (
-    <nav className="fixed top-0 left-[260px] w-[calc(100%-250px)] bg-white shadow-md p-3 flex justify-between items-center">
+    <nav
+      className={`fixed top-0 left-[260px] w-[calc(100%-260px)] p-3 flex justify-between items-center z-50 
+      ${darkMode ? "bg-gray-900 text-white shadow-lg" : "bg-white text-black shadow-md"}`}
+    >
       <div className="text-xl font-bold">MyApp</div>
       <div className="flex items-center gap-4">
-        {/* Notifikasi */}
+        
+        {/* 🔔 Notifikasi di Navbar */}
         <div className="relative">
-          <div className="cursor-pointer" onClick={toggleNotifications}>
-            <FaBell size={24} />
-            {notifications > 0 && (
-              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">
-                {notifications}
+          <button
+            onClick={() => setShowNotifications(!showNotifications)}
+            className={`relative flex items-center justify-center w-10 h-10 rounded-full shadow-md
+            ${darkMode ? "bg-gray-700 hover:bg-gray-600" : "bg-gray-200 hover:bg-gray-300"}`}
+          >
+            <Bell className={`w-6 h-6 ${darkMode ? "text-white" : "text-gray-600"}`} />
+            {notifications.length > 0 && (
+              <span className="absolute top-0 right-0 w-5 h-5 text-xs font-bold text-white bg-red-500 rounded-full flex items-center justify-center">
+                {notifications.length}
               </span>
             )}
-          </div>
+          </button>
+
+          {/* 🔥 Modal Notifikasi */}
           {showNotifications && (
-            <div className="absolute right-0 mt-2 w-48 bg-white border rounded shadow-md p-2">
-              <p className="text-sm">Anda memiliki {notifications} notifikasi</p>
-              <button className="text-blue-500 mt-2" onClick={() => setNotifications(0)}>Tandai sudah dibaca</button>
+            <div
+              className={`absolute right-4 top-12 w-64 max-h-60 rounded-xl z-50 overflow-y-auto border 
+              ${darkMode ? "bg-gray-800 text-white border-gray-700 shadow-lg" : "bg-white text-black border-gray-200 shadow-xl"}`}
+            >
+              {/* Header Notifikasi */}
+              <div className={`flex justify-between items-center p-3 border-b 
+              ${darkMode ? "bg-gray-700 text-gray-300" : "bg-gray-100 text-gray-700"}`}>
+                <h3 className="text-sm font-semibold">Notifikasi</h3>
+                <button
+                  onClick={() => setShowNotifications(false)}
+                  className={`hover:text-red-500 ${darkMode ? "text-gray-400" : "text-gray-500"}`}
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+
+              {/* Daftar Notifikasi */}
+              <ul>
+                {notifications.length > 0 ? (
+                  notifications.map((notif) => (
+                    <li
+                      key={notif.id}
+                      className={`flex justify-between items-center p-3 border-b 
+                      ${notif.type === "success" ? "bg-green-50 text-green-700" : ""}
+                      ${notif.type === "warning" ? "bg-yellow-50 text-yellow-700" : ""}
+                      ${darkMode ? "bg-gray-700 text-gray-300" : "bg-gray-50 text-gray-800"}`}
+                    >
+                      <span className="text-xs">{notif.message}</span>
+                      <button
+                        onClick={() => removeNotification(notif.id)}
+                        className="text-red-500 hover:text-red-700"
+                      >
+                        <X className="w-3 h-3" />
+                      </button>
+                    </li>
+                  ))
+                ) : (
+                  <div className="p-3 text-center text-xs text-gray-500">Tidak ada notifikasi baru</div>
+                )}
+              </ul>
             </div>
           )}
         </div>
 
-        {/* Profil */}
+        {/* 👤 Profil */}
         <div className="relative">
-          <div className="cursor-pointer" onClick={toggleProfileMenu}>
-            <FaUserCircle size={28} />
+          <div
+            className="cursor-pointer"
+            onClick={() => setShowProfileMenu(!showProfileMenu)}
+          >
+            <FaUserCircle size={28} className={darkMode ? "text-white" : "text-gray-800"} />
           </div>
           {showProfileMenu && (
-            <div className="absolute right-0 mt-2 w-40 bg-white border rounded shadow-md p-2">
-              <Link to="/page-profil" className="text-sm cursor-pointer hover:bg-gray-100 p-2">Profil</Link>
+            <div
+              className={`absolute right-0 top-12 w-40 border rounded shadow-md p-2 
+              ${darkMode ? "bg-gray-800 text-white border-gray-700" : "bg-white text-black border-gray-200"}`}
+            >
+              <Link
+                to="/page-profil"
+                className={`text-sm cursor-pointer hover:bg-gray-100 p-2 block 
+                ${darkMode ? "hover:bg-gray-700" : ""}`}
+              >
+                Profil
+              </Link>
             </div>
           )}
         </div>

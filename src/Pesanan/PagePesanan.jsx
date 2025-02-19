@@ -11,6 +11,16 @@ const PagePesanan = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    document.documentElement.classList.add("overflow-hidden");
+    document.body.classList.add("overflow-hidden");
+    
+    return () => {
+      document.documentElement.classList.remove("overflow-hidden");
+      document.body.classList.remove("overflow-hidden");
+    };
+  }, []);
+
+  useEffect(() => {
     const fetchPesanan = async () => {
       try {
         const response = await fetch("http://localhost:4321/api/pesanan/all");
@@ -75,16 +85,18 @@ const PagePesanan = () => {
   );
 
   return (
-    <div style={{ overflow: "hidden", minHeight: "100vh" }} className="flex min-h-screen">
+    <div className="h-screen w-screen flex">
       <Sidebar />
       <Navbar />
-      <div className="flex-1 p-4 max-w-4xl ml-auto mr-10">
-        <div className="flex mb-4 items-center gap-2  mt-8">
+
+      <div className="flex-1 p-6 max-w-6xl mx-auto overflow-hidden">
+        {/* Bagian Pencarian dan Tambah Pesanan */}
+        <div className="flex mb-4 items-center gap-2">
           <div className="relative w-1/3">
             <input
               type="text"
               placeholder="Cari Pesanan..."
-              className="border-2 border-gray-800 p-2 pl-10 rounded-lg w-full"
+              className="border-2 border-gray-400 p-2 pl-10 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
@@ -97,48 +109,51 @@ const PagePesanan = () => {
             <FaPlus className="mr-5 ml-5" />
           </button>
         </div>
-        <div className="overflow-x-auto">
-          <table className="min-w-full border-collapse border-2 border-gray-800 text-sm">
-            <thead>
-              <tr className="bg-gray-200">
-                <th className="border-2 border-gray-800 p-2">No</th>
-                <th className="border-2 border-gray-800 p-2">Nama Pesanan</th>
-                <th className="border-2 border-gray-800 p-2">Jumlah</th>
-                <th className="border-2 border-gray-800 p-2">Harga</th>
-                <th className="border-2 border-gray-800 p-2">Kondisi</th>
-                <th className="border-2 border-gray-800 p-2">Aksi</th>
+
+        {/* Tabel Pesanan */}
+        <div className="overflow-x-auto bg-white shadow-md rounded-lg p-4 w-full">
+          <table className="w-full text-xs text-gray-700 border-collapse border border-gray-400">
+            <thead className="bg-gray-100">
+              <tr className="text-center">
+                <th className="p-2 border border-gray-400">No</th>
+                <th className="p-2 border border-gray-400">Nama Pesanan</th>
+                <th className="p-2 border border-gray-400">Jumlah</th>
+                <th className="p-2 border border-gray-400">Harga</th>
+                <th className="p-2 border border-gray-400">Kondisi</th>
+                <th className="p-2 border border-gray-400">Aksi</th>
               </tr>
             </thead>
             <tbody>
-              {filteredPesanan.map((item, index) => (
-                <tr key={item.id} className="text-center">
-                  <td className="border-2 border-gray-800 p-2">{index + 1}</td>
-                  <td className="border-2 border-gray-800 p-2">{item.namaPesanan}</td>
-                  <td className="border-2 border-gray-800 p-2">{item.jumlah}</td>
-                  <td className="border-2 border-gray-800 p-2">{item.harga}</td>
-                  <td className="border-2 border-gray-800 p-2">{item.kondisi}</td>
-                  <td className="border-2 border-gray-800 p-2">
-                    <div className="flex justify-center gap-2">
-                      <button
-                        className="bg-yellow-500 text-white px-2 py-1 rounded-lg hover:bg-yellow-600 flex items-center"
-                        onClick={() => navigate(`/edit-pesanan/${item.id}`)}
-                      >
-                        <FaEdit />
-                      </button>
-                      <button
-                        className="bg-red-500 text-white px-2 py-1 rounded-lg hover:bg-red-600 flex items-center"
-                        onClick={() => handleDelete(item.id)}
-                      >
-                        <FaTrash />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-              {filteredPesanan.length === 0 && (
+              {filteredPesanan.length > 0 ? (
+                filteredPesanan.map((item, index) => (
+                  <tr key={item.id} className="border-b border-gray-400 hover:bg-gray-50 text-center">
+                    <td className="p-2 border border-gray-400">{index + 1}</td>
+                    <td className="p-2 border border-gray-400">{item.namaPesanan}</td>
+                    <td className="p-2 border border-gray-400">{item.jumlah}</td>
+                    <td className="p-2 border border-gray-400">{item.harga}</td>
+                    <td className="p-2 border border-gray-400">{item.kondisi}</td>
+                    <td className="p-2 border border-gray-400">
+                      <div className="flex justify-center gap-2">
+                        <button
+                          className="bg-yellow-500 text-white px-2 py-1 rounded-lg hover:bg-yellow-600 flex items-center"
+                          onClick={() => navigate(`/edit-pesanan/${item.id}`)}
+                        >
+                          <FaEdit className="mr-1 ml-1" />
+                        </button>
+                        <button
+                          className="bg-red-500 text-white px-2 py-1 rounded-lg hover:bg-red-600 flex items-center"
+                          onClick={() => handleDelete(item.id)}
+                        >
+                          <FaTrash className="mr-1 ml-1" />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              ) : (
                 <tr>
-                  <td colSpan="6" className="border-2 border-gray-800 p-2 text-center text-gray-500">
-                    Tidak ada data pesanan yang sesuai.
+                  <td colSpan="6" className="text-center p-4 text-gray-500">
+                    Tidak ada data pesanan.
                   </td>
                 </tr>
               )}
