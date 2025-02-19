@@ -94,7 +94,7 @@ const VisiMisi = () => {
         <div className="mt-12 flex justify-between">
           {/* Tombol Kembali */}
           <button
-            className="flex items-center justify-center gap-2 bg-gradient-to-r from-gray-500 to-gray-700 text-white font-bold px-6 py-3 rounded-full shadow-lg hover:opacity-90 transition"
+            className="flex items-center justify-center gap-2 bg-gradient-to-r from-orange-500 to-red-700 text-white font-bold px-6 py-3 rounded-full shadow-lg hover:opacity-90 transition"
             onClick={() => navigate(-1)}
           >
             <FaArrowLeft className="text-lg" /> Kembali
@@ -107,7 +107,7 @@ const VisiMisi = () => {
                 className="flex items-center justify-center gap-2 bg-gradient-to-r from-red-500 to-red-700 text-white font-bold px-6 py-3 rounded-full shadow-lg hover:opacity-90 transition"
                 onClick={() => handleDelete(visiMisi.id)}
               >
-                <FaTrash className="text-lg" /> Hapus
+                <FaTrash className="text-lg" /> 
               </button>
             )}
 
@@ -116,7 +116,7 @@ const VisiMisi = () => {
               className="flex items-center justify-center gap-2 bg-gradient-to-r from-green-500 to-green-700 text-white font-bold px-6 py-3 rounded-full shadow-lg hover:opacity-90 transition"
               onClick={() => navigate("/addvisi-misi")}
             >
-              <FaPlus className="text-lg" /> Tambah Visi & Misi
+              <FaPlus className="text-lg" /> 
             </button>
           </div>
         </div>

@@ -20,54 +20,53 @@ const TambahVisiMisi = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const data = { 
-        visi, 
-        misi,
-        adminId: 0 // Pastikan adminId dikirim sesuai kebutuhan backend
+    const data = {
+      visi,
+      misi,
+      adminId: 0, // Pastikan adminId sesuai kebutuhan
     };
 
+    console.log("Data yang dikirim:", data); // Menampilkan data sebelum dikirim
+
     try {
-        const response = await fetch(`${API_VISIMISI}/tambah`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(data),
-        });
+      const response = await fetch(`${API_VISIMISI}/tambah`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
 
-        let result;
-        try {
-            result = await response.json(); // Coba parse JSON
-        } catch (jsonError) {
-            console.error("Response bukan JSON. Periksa backend.");
-            throw new Error("Response bukan JSON. Cek log backend.");
-        }
+      if (!response.ok) {
+        const errorText = await response.text(); // Ambil text jika gagal
+        console.error("Backend Error:", errorText);
+        throw new Error(`Gagal menambahkan visi dan misi. Status: ${response.status}. Pesan: ${errorText}`);
+      }
 
-        if (response.ok) {
-            Swal.fire({
-                title: "Visi dan Misi Ditambahkan!",
-                text: "Visi dan misi berhasil ditambahkan.",
-                icon: "success",
-                confirmButtonText: "OK",
-            }).then(() => {
-                navigate("/visi-misi"); // Navigasi ulang ke halaman Visi Misi
-                window.location.reload(); // Paksa refresh halaman untuk update data
-            });
-            console.log("Visi dan Misi Ditambahkan:", result);
-        } else {
-            throw new Error(`Gagal menambahkan visi dan misi. Status: ${response.status} - ${result.error || "Unknown Error"}`);
-        }
+      // Jika response sukses, coba parse sebagai JSON
+      const result = await response.json();
+
+      Swal.fire({
+        title: "Visi dan Misi Ditambahkan!",
+        text: "Visi dan misi berhasil ditambahkan.",
+        icon: "success",
+        confirmButtonText: "OK",
+      }).then(() => {
+        navigate("/visi-misi");
+        // Hapus halaman dari cache atau lakukan tindakan lain setelah redirect
+        window.location.reload();
+      });
+
+      console.log("Visi dan Misi Ditambahkan:", result);
+
     } catch (error) {
-        console.error("Error:", error);
-        Swal.fire({
-            title: "Error",
-            text: error.message,
-            icon: "error",
-            confirmButtonText: "OK",
-        });
+      console.error("Error:", error);
+      Swal.fire({
+        title: "Error",
+        text: error.message,
+        icon: "error",
+        confirmButtonText: "OK",
+      });
     }
-};
-
-
-
+  };
 
   return (
     <div className="fixed inset-0 flex justify-center items-center p-10 bg-white">
