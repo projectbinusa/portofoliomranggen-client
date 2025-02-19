@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
@@ -14,6 +14,16 @@ const TambahPesanan = () => {
   });
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    document.documentElement.classList.add("overflow-hidden");
+    document.body.classList.add("overflow-hidden");
+
+    return () => {
+      document.documentElement.classList.remove("overflow-hidden");
+      document.body.classList.remove("overflow-hidden");
+    };
+  }, []);
 
   const toCamelCase = (str) => {
     return str.replace(/(^|\s)\S/g, (match) => match.toUpperCase());
@@ -31,7 +41,7 @@ const TambahPesanan = () => {
         namaPesanan: toCamelCase(formData.namaPesanan),
         jumlah: parseInt(formData.jumlah),
         harga: parseInt(formData.harga),
-        kondisi: toCamelCase(formData.kondisi),
+        kondisi: formData.kondisi,
       };
 
       const response = await fetch("http://localhost:4321/api/pesanan/tambah", {
@@ -44,9 +54,6 @@ const TambahPesanan = () => {
       });
 
       if (response.ok) {
-        const result = await response.json();
-        console.log("Pesanan berhasil ditambahkan:", result);
-
         Swal.fire({
           title: "Berhasil!",
           text: "Pesanan berhasil ditambahkan",
@@ -55,21 +62,34 @@ const TambahPesanan = () => {
           navigate("/pesanan");
         });
       } else {
-        console.error("Gagal menambahkan pesanan");
+        Swal.fire({
+          title: "Gagal!",
+          text: "Terjadi kesalahan saat menambahkan pesanan.",
+          icon: "error",
+        });
       }
     } catch (error) {
       console.error("Terjadi kesalahan:", error);
+      Swal.fire({
+        title: "Error",
+        text: "Terjadi kesalahan saat menghubungi server.",
+        icon: "error",
+      });
     }
   };
 
   return (
-    <div className="flex min-h-screen">
-     <Sidebar />
+    <div className="h-screen w-screen flex overflow-hidden">
+      <Sidebar />
       <div className="flex-1 flex items-center justify-center">
         <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md border-2 border-gray-600">
           <h2 className="text-xl font-bold mb-4 text-gray-700">Tambah Pesanan</h2>
           <form onSubmit={handleSubmit} className="space-y-6">
-            {["namaPesanan", "jumlah", "harga", "kondisi"].map((field, index) => (
+            {[
+              "namaPesanan",
+              "jumlah",
+              "harga",
+            ].map((field, index) => (
               <div key={index} className="flex flex-col items-start">
                 <label className="block text-gray-600">
                   {field.replace(/([A-Z])/g, " $1").replace(/^./, (str) => str.toUpperCase())}
@@ -85,17 +105,33 @@ const TambahPesanan = () => {
                 />
               </div>
             ))}
+
+            <div className="flex flex-col items-start">
+              <label className="block text-gray-600">Kondisi Pesanan</label>
+              <select
+                name="kondisi"
+                value={formData.kondisi}
+                onChange={handleChange}
+                className="w-full p-2 border-2 border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                required
+              >
+                <option value="">Pilih kondisi</option>
+                <option value="Baru">Baru</option>
+                <option value="Bekas">Bekas</option>
+              </select>
+            </div>
+
             <div className="flex justify-between">
               <button
                 type="button"
-                className="submit-left bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 border-2 border-gray-500 flex items-center gap-2"
+                className="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 border-2 border-gray-500 flex items-center gap-2"
                 onClick={() => navigate("/pesanan")}
               >
                 <FontAwesomeIcon icon={faArrowLeft} className="text-lg" />
               </button>
               <button
                 type="submit"
-                className="submit-button bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 border-2 border-gray-500 flex items-center gap-2"
+                className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 border-2 border-gray-500 flex items-center gap-2"
               >
                 <FontAwesomeIcon icon={faFloppyDisk} className="text-lg" />
                 Tambah
