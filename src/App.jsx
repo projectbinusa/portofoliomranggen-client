@@ -73,7 +73,6 @@ import Berita from "./berita/Berita";
 import TambahBerita from "./berita/TambahBerita";
 import EditBerita from "./berita/EditBerita";
 
-import Notifikasi from "./notif/Notifikasi";
 import Navbar from "./tampilan/Navbar";
 
 import "./App.css";
@@ -166,9 +165,6 @@ function App() {
             <Route path="/berita" element={<Berita />} />
             <Route path="/tambah-berita" element={<TambahBerita />} />
             <Route path="/edit-berita/:id/:idAdmin" element={<EditBerita />} />
-
-            {/* Route Notifikasi */}
-            <Route path="/notif" element={<Notifikasi />} />
 
             {/* Route Navbar */}
             <Route path="/navbar" element={<Navbar />} />
