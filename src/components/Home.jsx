@@ -39,7 +39,7 @@ const Home = () => {
           <motion.button
             className="bg-gradient-to-r from-[#ff6347] to-[#ff4500] hover:from-[#ff4500] hover:to-[#ff6347] text-white font-semibold py-2 px-4 md:py-3 md:px-6 rounded-lg shadow-lg transition-all duration-300"
             whileHover={{ scale: 1.05 }}
-            onClick={() => navigate("/visimisi")}
+            onClick={() => navigate("/visi-misi")}
           >
             Visi & Misi
           </motion.button>
