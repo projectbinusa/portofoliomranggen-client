@@ -32,26 +32,48 @@ const TambahSiswa = () => {
   const formatDate = (dateString) => {
     if (!dateString) return "";
     const date = new Date(dateString);
-    return date.toISOString().split("T")[0];
+    if (isNaN(date.getTime())) return ""; // Jika bukan tanggal valid, return string kosong
+    return date.toISOString().split("T")[0]; // Format YYYY-MM-DD
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Validasi semua field harus diisi
     if (Object.values(siswa).some((value) => !value)) {
       Swal.fire("Error", "Semua kolom harus diisi!", "error");
+      return;
+    }
+
+    // Validasi NISN (harus angka dan 10 digit)
+    if (isNaN(Number(siswa.nisn)) || siswa.nisn.length !== 10) {
+      Swal.fire("Error", "NISN harus berupa angka 10 digit!", "error");
+      return;
+    }
+
+    // Validasi Nomor HP (minimal 10 digit)
+    if (isNaN(Number(siswa.nomerHp)) || siswa.nomerHp.length < 10) {
+      Swal.fire("Error", "Nomor HP harus minimal 10 digit!", "error");
+      return;
+    }
+
+    if (isNaN(Number(siswa.nomerHpOrangtua)) || siswa.nomerHpOrangtua.length < 10) {
+      Swal.fire("Error", "Nomor HP Orangtua harus minimal 10 digit!", "error");
       return;
     }
 
     const siswaDTO = {
       id: 0,
       nama: toCamelCase(siswa.nama),
-      nisn: parseInt(siswa.nisn),
+      nisn: siswa.nisn, // Biarkan sebagai string untuk mencegah kehilangan digit
       alamat: toCamelCase(siswa.alamat),
       namaOrangtua: toCamelCase(siswa.namaOrangtua),
-      nomerHpOrangtua: parseInt(siswa.nomerHpOrangtua),
-      nomerHp: parseInt(siswa.nomerHp),
+      nomerHpOrangtua: siswa.nomerHpOrangtua, // Biarkan sebagai string
+      nomerHp: siswa.nomerHp, // Biarkan sebagai string
       tanggalLahir: formatDate(siswa.tanggalLahir),
     };
+
+    console.log("Data yang dikirim ke backend:", siswaDTO); // Debugging
 
     try {
       const response = await fetch(`${API_SISWA}/tambah`, {
@@ -61,12 +83,16 @@ const TambahSiswa = () => {
         },
         body: JSON.stringify(siswaDTO),
       });
+
       const data = await response.json();
-      if (!response.ok)
-        throw new Error(data.message || "Gagal menambahkan siswa");
+      console.log("Response API:", data); // Debugging
+
+      if (!response.ok) throw new Error(data.message || "Gagal menambahkan siswa");
+
       Swal.fire("Sukses", "Data siswa berhasil ditambahkan!", "success");
       setTimeout(() => navigate("/siswa"), 1000);
     } catch (error) {
+      console.error("Error saat menambahkan siswa:", error); // Debugging
       Swal.fire("Error", error.message, "error");
     }
   };
@@ -88,9 +114,7 @@ const TambahSiswa = () => {
                   name={key}
                   value={siswa[key]}
                   onChange={handleChange}
-                  placeholder={`Masukkan ${key
-                    .replace(/([A-Z])/g, " $1")
-                    .trim()}`}
+                  placeholder={`Masukkan ${key.replace(/([A-Z])/g, " $1").trim()}`}
                   className="p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
