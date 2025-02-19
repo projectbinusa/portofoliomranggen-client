@@ -11,16 +11,6 @@ const PagePesanan = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    document.documentElement.classList.add("overflow-hidden");
-    document.body.classList.add("overflow-hidden");
-    
-    return () => {
-      document.documentElement.classList.remove("overflow-hidden");
-      document.body.classList.remove("overflow-hidden");
-    };
-  }, []);
-
-  useEffect(() => {
     const fetchPesanan = async () => {
       try {
         const response = await fetch("http://localhost:4321/api/pesanan/all");
@@ -58,24 +48,12 @@ const PagePesanan = () => {
 
         if (response.ok || response.status === 204) {
           setPesanan(pesanan.filter((item) => item.id !== id));
-          Swal.fire({
-            title: "Dihapus!",
-            text: "Pesanan berhasil dihapus.",
-            icon: "success",
-          });
+          Swal.fire({ title: "Dihapus!", text: "Pesanan berhasil dihapus.", icon: "success" });
         } else {
-          Swal.fire({
-            title: "Gagal!",
-            text: "Terjadi kesalahan saat menghapus pesanan.",
-            icon: "error",
-          });
+          Swal.fire({ title: "Gagal!", text: "Terjadi kesalahan saat menghapus pesanan.", icon: "error" });
         }
       } catch (error) {
-        Swal.fire({
-          title: "Error",
-          text: "Terjadi kesalahan saat menghubungi server.",
-          icon: "error",
-        });
+        Swal.fire({ title: "Error", text: "Terjadi kesalahan saat menghubungi server.", icon: "error" });
       }
     }
   };
@@ -85,14 +63,13 @@ const PagePesanan = () => {
   );
 
   return (
-    <div className="h-screen w-screen flex">
+    <div className="h-screen w-full flex overflow-hidden">
       <Sidebar />
       <Navbar />
 
-      <div className="flex-1 p-6 max-w-6xl mx-auto overflow-hidden">
-        {/* Bagian Pencarian dan Tambah Pesanan */}
+      <div className="flex-1 p-6 max-w-full mx-auto overflow-hidden">
         <div className="flex mb-4 items-center gap-2">
-          <div className="relative w-1/3">
+          <div className="relative w-1/3 ml-60"> {/* Geser pencarian ke kanan */}
             <input
               type="text"
               placeholder="Cari Pesanan..."
@@ -106,42 +83,41 @@ const PagePesanan = () => {
             className="bg-green-500 text-white p-2 rounded-lg hover:bg-green-600 ml-auto flex items-center"
             onClick={() => navigate("/tambah-pesanan")}
           >
-            <FaPlus className="mr-5 ml-5" />
+            <FaPlus className="mr-6 ml-5" />
           </button>
         </div>
 
-        {/* Tabel Pesanan */}
-        <div className="overflow-x-auto bg-white shadow-md rounded-lg p-4 w-full">
-          <table className="w-full text-xs text-gray-700 border-collapse border border-gray-400">
+        <div className="overflow-x-auto bg-white shadow-md rounded-lg p-4 max-w-full ml-60"> {/* Geser tabel ke kanan */}
+          <table className="w-full text-[10px] text-gray-700 border-collapse border border-gray-400">
             <thead className="bg-gray-100">
               <tr className="text-center">
-                <th className="p-2 border border-gray-400">No</th>
-                <th className="p-2 border border-gray-400">Nama Pesanan</th>
-                <th className="p-2 border border-gray-400">Jumlah</th>
-                <th className="p-2 border border-gray-400">Harga</th>
-                <th className="p-2 border border-gray-400">Kondisi</th>
-                <th className="p-2 border border-gray-400">Aksi</th>
+                <th className="p-1.5 border border-gray-400">No</th>
+                <th className="p-1.5 border border-gray-400">Nama Pesanan</th>
+                <th className="p-1.5 border border-gray-400">Jumlah</th>
+                <th className="p-1.5 border border-gray-400">Harga</th>
+                <th className="p-1.5 border border-gray-400">Kondisi</th>
+                <th className="p-1.5 border border-gray-400">Aksi</th>
               </tr>
             </thead>
             <tbody>
               {filteredPesanan.length > 0 ? (
                 filteredPesanan.map((item, index) => (
                   <tr key={item.id} className="border-b border-gray-400 hover:bg-gray-50 text-center">
-                    <td className="p-2 border border-gray-400">{index + 1}</td>
-                    <td className="p-2 border border-gray-400">{item.namaPesanan}</td>
-                    <td className="p-2 border border-gray-400">{item.jumlah}</td>
-                    <td className="p-2 border border-gray-400">{item.harga}</td>
-                    <td className="p-2 border border-gray-400">{item.kondisi}</td>
-                    <td className="p-2 border border-gray-400">
-                      <div className="flex justify-center gap-2">
+                    <td className="p-1.5 border border-gray-400">{index + 1}</td>
+                    <td className="p-1.5 border border-gray-400">{item.namaPesanan}</td>
+                    <td className="p-1.5 border border-gray-400">{item.jumlah}</td>
+                    <td className="p-1.5 border border-gray-400">{item.harga}</td>
+                    <td className="p-1.5 border border-gray-400">{item.kondisi}</td>
+                    <td className="p-1.5 border border-gray-400">
+                      <div className="flex justify-center gap-1">
                         <button
-                          className="bg-yellow-500 text-white px-2 py-1 rounded-lg hover:bg-yellow-600 flex items-center"
+                          className="bg-yellow-500 text-white px-1.5 py-1 rounded-lg hover:bg-yellow-600 flex items-center"
                           onClick={() => navigate(`/edit-pesanan/${item.id}`)}
                         >
                           <FaEdit className="mr-1 ml-1" />
                         </button>
                         <button
-                          className="bg-red-500 text-white px-2 py-1 rounded-lg hover:bg-red-600 flex items-center"
+                          className="bg-red-500 text-white px-1.5 py-1 rounded-lg hover:bg-red-600 flex items-center"
                           onClick={() => handleDelete(item.id)}
                         >
                           <FaTrash className="mr-1 ml-1" />
