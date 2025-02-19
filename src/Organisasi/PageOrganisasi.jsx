@@ -36,7 +36,7 @@ const PageOrganisasi = () => {
           .delete(`${API_ORGANISASI}/delete/${id}`)
           .then(() => {
             setOrganisasiList(organisasiList.filter((org) => org.id !== id));
-            addNotification("Data organisasi berhasil dihapus", "warning");
+            addNotification("Data organisasi berhasil dihapus", "warning"); // 🔔 Notifikasi Hapus
             Swal.fire("Dihapus!", "Data organisasi telah dihapus.", "success");
           })
           .catch(() =>
@@ -56,12 +56,15 @@ const PageOrganisasi = () => {
     <div className="flex h-screen">
       <Sidebar />
       <Navbar />
-      <div className="p-6 ml-40 w-full">
+      <div className="p-6 ml-40 pt-20 w-full">
         <div className="flex justify-between items-center mb-4">
-          <h1 className="text-xl font-semibold mt-6">Daftar Organisasi</h1>
+          <h1 className="text-xl font-semibold">Daftar Organisasi</h1>
           <button
             className="flex items-center gap-2 bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition"
-            onClick={() => navigate("/tambah-organisasi")}
+            onClick={() => {
+              navigate("/tambah-organisasi");
+              addNotification("Menambahkan organisasi baru", "success"); // 🔔 Notifikasi Tambah
+            }}
           >
            <FaPlus size={16} />
           </button>
@@ -116,7 +119,10 @@ const PageOrganisasi = () => {
                         </button>
                       </Link>
                       <Link to={`/edit-organisasi/${organisasi.id}`}>
-                        <button className="flex items-center gap-2 bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600">
+                        <button
+                          onClick={() => addNotification("Mengedit organisasi", "info")} // 🔔 Notifikasi Edit
+                          className="flex items-center gap-2 bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600"
+                        >
                           <Pencil size={18} />
                         </button>
                       </Link>
