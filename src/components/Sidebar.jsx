@@ -14,7 +14,6 @@ import {
   HiSun,
 } from "react-icons/hi";
 import { DarkModeContext } from "../contextt/DarkModeContext";
-import Notifikasi from "../notif/Notifikasi";
 
 export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(true);
@@ -62,7 +61,6 @@ export default function Sidebar() {
           >
             Sidebar Menu
           </h1>
-          <Notifikasi />
           <button
             onClick={() => setIsOpen(!isOpen)}
             className="bg-green-700 p-2 rounded-full shadow-md hover:bg-green-600 dark:bg-gray-700 dark:hover:bg-gray-600"
@@ -102,7 +100,7 @@ export default function Sidebar() {
               { text: "Kategori Kelas", to: "/kategori-kelas" },
               { text: "Kegiatan Sekolah", to: "/kegiatan-sekolah" },
             ]}
-          />{" "}
+          />
           <DropdownItem
             isOpen={isOpen}
             icon={<HiClipboardList />}
