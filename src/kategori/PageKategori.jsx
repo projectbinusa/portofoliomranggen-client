@@ -4,6 +4,7 @@ import { Pencil, Trash2 } from "lucide-react";
 import { FaPlus, FaSearch } from "react-icons/fa";
 import Sidebar from "../components/Sidebar";
 import Swal from "sweetalert2";
+import Navbar from "../tampilan/Navbar";
 
 const DaftarKategori = () => {
   const [kategoriData, setKategoriData] = useState([]);
@@ -55,8 +56,9 @@ const DaftarKategori = () => {
   return (
     <div className="flex fixed inset-0 overflow-hidden">
       <Sidebar />
+      <Navbar />
       <div className="flex-1 p-6 ml-56 overflow-hidden"> 
-        <div className="flex justify-between items-center mb-4">
+        <div className="flex justify-between items-center mb-4  mt-14">
           <div className="relative w-1/3">
             <FaSearch className="absolute ml-2 text-gray-500 top-3 left-2" size={16} />
             <input

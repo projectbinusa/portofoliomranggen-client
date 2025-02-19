@@ -6,6 +6,7 @@ import Sidebar from "../components/Sidebar";
 import Swal from "sweetalert2";
 import { API_STAFF } from "../utils/BaseUrl";
 import { useNotification } from "../context/NotificationContext";
+import Navbar from "../tampilan/Navbar";
 
 const DaftarStaff = () => {
   const [staffData, setStaffData] = useState([]);
@@ -74,6 +75,13 @@ const DaftarStaff = () => {
   return (
     <div className="flex h-screen">
       <Sidebar />
+
+      <Navbar />
+      <div className="flex-1 p-6 ml-48 pl-4">
+        <div className="flex justify-between items-center mb-4  mt-6">
+          <div className="relative w-1/3">
+            <Search className="absolute ml-3 text-gray-500 top-3 left-3" size={20} />
+
       <div className="flex-1 p-6 ml-40">
         <div className="container mx-auto p-4">
           <div className="flex justify-between items-center mb-4">
@@ -86,6 +94,7 @@ const DaftarStaff = () => {
             </button>
           </div>
           <div className="relative w-1/3 mb-4">
+
             <input
               type="text"
               placeholder="Cari staff..."

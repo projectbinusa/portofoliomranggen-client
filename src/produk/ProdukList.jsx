@@ -6,6 +6,7 @@ import Sidebar from "../components/Sidebar";
 import Swal from "sweetalert2";
 import axios from "axios";
 import { API_PRODUK } from "../utils/BaseUrl";
+import Navbar from "../tampilan/Navbar";
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
@@ -84,9 +85,10 @@ const ProductList = () => {
   return (
     <div className="flex min-h-screen">
       <Sidebar />
+      <Navbar />
 
       <div className="flex-1 p-6 ml-48 pl-4">
-        <div className="flex justify-between items-center mb-4">
+        <div className="flex justify-between items-center mb-4  mt-6">
           <div className="relative flex-1 max-w-md">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" size={18} />
             <input

@@ -6,6 +6,7 @@ import axios from "axios";
 import Sidebar from "../components/Sidebar";
 import { Pencil, Trash2, Search, X, Eye } from "lucide-react";
 import { useNotification } from "../context/NotificationContext";
+import Navbar from "../tampilan/Navbar";
 
 const API_SISWA = "http://localhost:4321/api/siswa";
 
@@ -60,8 +61,16 @@ const PageSiswa = () => {
   return (
     <div className="flex h-screen">
       <Sidebar />
+
+      <Navbar />
+    
+      <div className="flex-1 p-4 ml-40">
+        <div className="container mx-auto">
+          <h2 className="text-xl font-bold mb-4  mt-6 text-left">Daftar Siswa</h2>
+
       <div className="flex-1 p-6 ml-40">
         <div className="container mx-auto p-4">
+
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-bold">Daftar Siswa</h2>
             <button

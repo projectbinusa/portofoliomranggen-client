@@ -5,6 +5,7 @@ import { FaPlus, FaSearch } from "react-icons/fa";
 import Sidebar from "../components/Sidebar";
 import Swal from "sweetalert2";
 import { API_KELAS } from "../utils/BaseUrl";
+import Navbar from "../tampilan/Navbar";
 
 const toTitleCase = (str) => {
   if (!str) return "";
@@ -62,9 +63,10 @@ const KategoriKelas = () => {
   return (
     <div className="flex">
       <Sidebar />
+      <Navbar />
 
       <div className="flex-1 p-6 ml-48 pl-4">
-        <div className="flex justify-between items-center mb-4">
+        <div className="flex justify-between items-center mb-4  mt-6">
           <div className="relative w-1/3">
             <input
               type="text"

@@ -5,6 +5,7 @@ import { Pencil, Trash2, Search } from "lucide-react";
 import Swal from "sweetalert2";
 import { API_BUKU } from "../utils/BaseUrl";
 import Sidebar from "../components/Sidebar";
+import Navbar from "../tampilan/Navbar";
 
 const DaftarBuku = () => {
   const [bukuList, setBukuList] = useState([]);
@@ -75,8 +76,9 @@ const DaftarBuku = () => {
   return (
     <div className="flex">
       <Sidebar/>
+      <Navbar/>
       <div className="flex-1 p-6 ml-48 pl-4">
-        <div className="flex justify-between items-center mb-4">
+        <div className="flex justify-between items-center mb-4  mt-6">
           <div className="relative w-1/3">
             <Search className="absolute ml-3 text-gray-500 top-3 left-3" size={20} />
             <input

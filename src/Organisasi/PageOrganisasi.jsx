@@ -6,6 +6,7 @@ import axios from "axios";
 import Sidebar from "../components/Sidebar";
 import { Pencil, Trash2, Search, X, Eye } from "lucide-react";
 import { useNotification } from "../context/NotificationContext";
+import Navbar from "../tampilan/Navbar";
 import { API_ORGANISASI } from "../utils/BaseUrl";
 
 const PageOrganisasi = () => {
@@ -59,6 +60,16 @@ const PageOrganisasi = () => {
   return (
     <div className="flex h-screen">
       <Sidebar />
+      <Navbar />
+      <div className="p-6 ml-40 w-full">
+        <div className="flex justify-between items-center mb-4">
+          <h1 className="text-xl font-semibold  mt-6">Daftar Organisasi</h1>
+          <button
+              className="flex items-center gap-2 bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition"
+              onClick={() => {
+                addNotification("Menambahkan data organisasi baru", "success");
+                navigate("/tambah-organisasi");
+              }}
       <div className="flex-1 p-6 ml-40">
         <div className="container mx-auto p-4">
           <div className="flex justify-between items-center mb-4">

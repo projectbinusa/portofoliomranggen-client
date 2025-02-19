@@ -6,6 +6,7 @@ import { Pencil, Trash2, Search, X, Eye } from "lucide-react";
 import axios from "axios";
 import { API_KEGIATAN } from "../utils/BaseUrl";
 import { useNotification } from "../context/NotificationContext";
+import Navbar from "../tampilan/Navbar";
 
 
 
@@ -62,6 +63,7 @@ const KegiatanSekolah = () => {
   return (
     <div className="flex h-screen">
       <Sidebar />
+      <Navbar />
       <div className="flex-1 p-6 ml-40">
         <div className="container mx-auto p-3">
           <div className="flex justify-between items-center mb-4">

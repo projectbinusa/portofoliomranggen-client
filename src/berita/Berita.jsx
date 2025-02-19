@@ -5,6 +5,7 @@ import { FaPlus } from "react-icons/fa";
 import Sidebar from "../components/Sidebar";
 import Swal from "sweetalert2";
 import { API_BERITA } from "../utils/BaseUrl";
+import Navbar from "../tampilan/Navbar";
 
 const Berita = () => {
   const [beritaData, setBeritaData] = useState([]);
@@ -87,8 +88,9 @@ const Berita = () => {
   return (
     <div className="flex">
       <Sidebar />
+      <Navbar />
       <div className="flex-1 p-6 ml-48 pl-4">
-        <div className="flex justify-between items-center mb-4">
+        <div className="flex justify-between items-center mb-4  mt-6">
           <div className="relative w-1/3">
             <Search className="absolute ml-3 text-gray-500 top-3 left-3" size={20} />
             <input

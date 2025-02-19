@@ -5,6 +5,7 @@ import Sidebar from "../components/Sidebar";
 import { Pencil, Trash2, Search, X } from "lucide-react";
 import axios from "axios";
 import { API_DONASI } from "../utils/BaseUrl";
+import Navbar from "../tampilan/Navbar";
 
 const PageDonasi = () => {
   const navigate = useNavigate();
@@ -59,6 +60,7 @@ const PageDonasi = () => {
   return (
     <div className="flex h-screen">
       <Sidebar />
+      <Navbar />
       <div className="flex-1 p-6 ml-40">
         <div className="container mx-auto p-4">
           <div className="flex justify-between items-center mb-4">
