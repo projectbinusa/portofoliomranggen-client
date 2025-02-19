@@ -51,83 +51,73 @@ const PageSiswa = () => {
     });
   };
 
+  // Filter data siswa berdasarkan pencarian
+  const filteredStudents = students.filter((student) =>
+    Object.values(student).some((val) =>
+      String(val).toLowerCase().includes(searchTerm.toLowerCase())
+    )
+  );
+
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen bg-gray-100 dark:bg-gray-900">
       <Sidebar />
       <Navbar />
       <div className="flex-1 p-6 ml-40 pt-10">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-bold">Daftar Siswa</h2>
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white">Daftar Siswa</h2>
           <button
             className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
             onClick={() => {
               navigate("/tambah-siswa");
-              addNotification("Menambahkan data siswa baru", "success"); // Notifikasi tambah siswa
+              addNotification("Menambahkan data siswa baru", "success");
             }}
           >
             <FaPlus size={16} />
           </button>
         </div>
 
+        {/* 🔍 Input Pencarian */}
         <div className="relative w-1/3 mb-4">
           <input
             type="text"
             placeholder="Cari berdasarkan semua data..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full px-10 py-2 border border-black rounded-md focus:ring-1 focus:ring-gray-400"
+            className="w-full px-10 py-2 border border-gray-400 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-1 focus:ring-gray-400"
           />
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-black-400 w-5 h-5" />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600 dark:text-gray-300 w-5 h-5" />
           {searchTerm && (
-      <div className="flex-1 p-6 ml-40">
-        <div className="container mx-auto p-4">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-bold">Daftar Siswa</h2>
             <button
               onClick={() => setSearchTerm("")}
               className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
             >
-
               <X className="w-5 h-5" />
-
-              <FaPlus size={16} />
-
             </button>
           )}
         </div>
 
-
-        <div className="relative overflow-x-auto shadow-md ml-1">
-          <table className="w-full text-sm text-left text-gray-700 border border-gray-400">
-            <thead className="text-xs font-bold uppercase bg-gray-200 border-b border-gray-500">
+        {/* 📌 Tabel Siswa */}
+        <div className="relative overflow-x-auto shadow-md rounded-lg bg-white dark:bg-gray-800">
+          <table className="w-full text-sm text-gray-700 dark:text-gray-300 border border-gray-400 dark:border-gray-600">
+            <thead className="text-xs font-bold uppercase bg-gray-200 dark:bg-gray-700 border-b border-gray-500">
               <tr>
-                {["No", "Nama", "Alamat", "NISN", "Tanggal Lahir", "Aksi"].map(
-                  (header) => (
-                    <th
-                      key={header}
-                      className="px-6 py-3 border-r border-gray-400 text-center"
-                    >
-                      {header}
-                    </th>
-                  )
-                )}
+                {["No", "Nama", "Alamat", "NISN", "Tanggal Lahir", "Aksi"].map((header) => (
+                  <th key={header} className="px-6 py-3 border-r border-gray-400 dark:border-gray-600 text-center">
+                    {header}
+                  </th>
+                ))}
               </tr>
             </thead>
             <tbody>
-              {students.length ? (
-                students.map((student, index) => (
-                  <tr
-                    key={student.id}
-                    className="bg-white border-b border-gray-400 hover:bg-gray-100"
-                  >
+              {filteredStudents.length ? (
+                filteredStudents.map((student, index) => (
+                  <tr key={student.id} className="bg-white dark:bg-gray-900 border-b border-gray-400 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800">
                     <td className="px-6 py-4 border-r text-center">{index + 1}</td>
-                    {[student.nama, student.alamat, student.nisn, student.tanggalLahir].map(
-                      (field, i) => (
-                        <td key={i} className="px-6 py-4 border-r text-center">
-                          {field}
-                        </td>
-                      )
-                    )}
+                    {[student.nama, student.alamat, student.nisn, student.tanggalLahir].map((field, i) => (
+                      <td key={i} className="px-6 py-4 border-r text-center">
+                        {field}
+                      </td>
+                    ))}
                     <td className="px-6 py-4 flex gap-2 justify-center">
                       <Link to={`/detail-siswa/${student.id}`}>
                         <button className="flex items-center gap-2 bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-600">
@@ -135,64 +125,7 @@ const PageSiswa = () => {
                         </button>
                       </Link>
                       <Link to={`/edit-siswa/${student.id}`}>
-
-          <div className="relative overflow-x-auto shadow-md ml-1">
-            <table className="w-full text-sm text-left text-gray-700 border border-gray-400">
-              <thead className="text-xs font-bold uppercase bg-gray-200 border-b border-gray-500">
-                <tr>
-                  {[
-                    "No",
-                    "Nama",
-                    "Alamat",
-                    "NISN",
-                    "Tanggal Lahir",
-                    "Aksi",
-                  ].map((header) => (
-                    <th
-                      key={header}
-                      className="px-6 py-3 border-r border-gray-400 text-center"
-                    >
-                      {header}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {filteredStudents.length ? (
-                  filteredStudents.map((student, index) => (
-                    <tr
-                      key={student.id}
-                      className="bg-white border-b border-gray-400 hover:bg-gray-100"
-                    >
-                      <td className="px-6 py-4 border-r text-center">
-                        {index + 1}
-                      </td>
-                      {[
-                        student.nama,
-                        student.alamat,
-                        student.nisn,
-                        student.tanggalLahir,
-                      ].map((field, i) => (
-                        <td key={i} className="px-6 py-4 border-r text-center">
-                          {field}
-                        </td>
-                      ))}
-                      <td className="px-6 py-4 flex gap-2 justify-center">
-                        <Link to={`/detail-siswa/${student.id}`}>
-                          <button className="flex items-center gap-2 bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-600">
-                            <Eye size={18} />
-                          </button>
-                        </Link>
-                        <Link to={`/edit-siswa/${student.id}`}>
-                          <button className="flex items-center gap-2 bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600">
-                            <Pencil size={18} />
-                          </button>
-                        </Link>
-
-                        <button
-                          onClick={() => addNotification("Mengedit data siswa", "info")}
-                          className="flex items-center gap-2 bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600"
-                        >
+                        <button className="flex items-center gap-2 bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600">
                           <Pencil size={18} />
                         </button>
                       </Link>
