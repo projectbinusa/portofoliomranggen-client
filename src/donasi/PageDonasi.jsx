@@ -94,7 +94,7 @@ const PageDonasi = () => {
             <table className="w-full text-sm text-left text-gray-700 border border-gray-400">
               <thead className="text-xs font-bold uppercase bg-gray-200 border-b border-gray-500">
                 <tr>
-                  {["No", "Nama Donasi", "Nama Donatur", "Jumlah Donasi", "Deskripsi", "Aksi"].map(
+                  {["No","Foto" ,"Nama Donasi", "Nama Donatur", "Jumlah Donasi", "Deskripsi", "Aksi"].map(
                     (header) => (
                       <th key={header} className="px-6 py-3 border-r border-gray-400 text-center">
                         {header}
@@ -108,6 +108,15 @@ const PageDonasi = () => {
                   filteredDonasi.map((donasi, index) => (
                     <tr key={donasi.id} className="bg-white border-b border-gray-400 hover:bg-gray-100">
                       <td className="px-6 py-4 border-r text-center">{index + 1}</td>
+                      <td className="px-6 py-4 text-center w-32 h-32">
+                          {donasi.fotoUrl && (
+                            <img
+                              src={donasi.fotoUrl}
+                              alt="Foto Donasi"
+                              className="w-full h-full object-cover rounded-md mx-auto"
+                            />
+                          )}
+                      </td>
                       <td className="px-6 py-4 border-r text-center">{toCamelCase(donasi.namaDonasi ?? "")}</td>
                       <td className="px-6 py-4 border-r text-center">{toCamelCase(donasi.namaDonatur ?? "")}</td>
                       <td className="px-6 py-4 border-r text-center">{donasi.jumlahDonasi ?? "-"}</td>
