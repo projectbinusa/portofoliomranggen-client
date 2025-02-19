@@ -7,8 +7,10 @@ import { NotificationProvider } from "./context/NotificationContext";
 import Home from "./components/Home";
 import Login from "./page/Login";
 import Register from "./page/Register";
-import Sambutan from "./page/Sambutan";
-import VisiMisi from "./page/VisiMisi"; // ✅ Pastikan konsisten dengan nama file
+import Sambutan from "./sambutan/Sambutan";
+import AddSambutan from "./sambutan/AddSambutan";
+import VisiMisi from "./visimisi/VisiMisi"; // ✅ Pastikan konsisten dengan nama file
+import AddVisiMisi from "./visimisi/AddVisiMisi"; // ✅ Pastikan konsisten dengan nama file
 import NotFoundPage from "./page/NotFoundPage";
 
 // **Import Komponen Dashboard**
@@ -90,7 +92,9 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/sambutan" element={<Sambutan />} />
-            <Route path="/visimisi" element={<VisiMisi />} />
+            <Route path="/addsambutan" element={<AddSambutan />} />
+            <Route path="/visi-misi" element={<VisiMisi />} />
+            <Route path="/addvisi-misi" element={<AddVisiMisi />} />
             <Route path="/dashboard" element={<Dashboard />} />
 
             {/* Routes untuk Siswa */}

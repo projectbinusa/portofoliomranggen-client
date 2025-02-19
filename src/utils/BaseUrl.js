@@ -18,4 +18,6 @@ export const API_KELAS = `${url}/kelas`;
 export const API_ADMIN = `${url}/admin`;
 export const API_DONASI = `${url}/donasi`;
 export const API_BERITA = `${url}/berita`;
+export const API_VISIMISI = `${url}/visi-misi`;
+export const API_SAMBUTAN = `${url}/sambutan`;
 
