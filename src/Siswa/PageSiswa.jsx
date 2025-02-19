@@ -12,7 +12,7 @@ const API_SISWA = "http://localhost:4321/api/siswa";
 
 const PageSiswa = () => {
   const navigate = useNavigate();
-  const { addNotification } = useNotification();
+  const { sendNotification } = useNotification();  // ✅ Ganti addNotification dengan sendNotification
   const [searchTerm, setSearchTerm] = useState("");
   const [students, setStudents] = useState([]);
 
@@ -41,7 +41,7 @@ const PageSiswa = () => {
           .delete(`${API_SISWA}/delete/${id}`)
           .then(() => {
             fetchStudents();
-            addNotification("Data siswa berhasil dihapus", "warning");
+            sendNotification("Data siswa berhasil dihapus", "warning"); // ✅ Gunakan sendNotification
             Swal.fire("Dihapus!", "Data siswa telah dihapus.", "success");
           })
           .catch(() =>
@@ -69,7 +69,7 @@ const PageSiswa = () => {
             className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
             onClick={() => {
               navigate("/tambah-siswa");
-              addNotification("Menambahkan data siswa baru", "success");
+              sendNotification("Menambahkan data siswa baru", "success"); // ✅ Gunakan sendNotification
             }}
           >
             <FaPlus size={16} />

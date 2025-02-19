@@ -11,7 +11,6 @@ export default function ProfileNavbar() {
   const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
-    // Cek apakah ada dark mode yang diaktifkan di sistem/browser
     const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
     setDarkMode(isDark);
   }, []);
