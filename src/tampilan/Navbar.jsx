@@ -10,6 +10,12 @@ export default function ProfileNavbar() {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
 
+  // 🔥 Tambahin useEffect buat debug notifikasi
+  useEffect(() => {
+    console.log("📢 Notifikasi terbaru:", notifications);
+  }, [notifications]);
+
+  // 🔥 Pastikan dark mode ngikutin sistem
   useEffect(() => {
     const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
     setDarkMode(isDark);
@@ -41,7 +47,7 @@ export default function ProfileNavbar() {
           {/* 🔥 Modal Notifikasi */}
           {showNotifications && (
             <div
-              className={`absolute right-0 top-12 w-72 max-h-60 rounded-xl z-50 overflow-y-auto border 
+              className={`absolute right-0 top-12 w-80 max-h-60 rounded-xl z-50 overflow-y-auto border 
               ${darkMode ? "bg-gray-800 text-white border-gray-700 shadow-lg" : "bg-white text-black border-gray-200 shadow-xl"}`}
             >
               {/* Header Notifikasi */}
@@ -57,7 +63,7 @@ export default function ProfileNavbar() {
               </div>
 
               {/* Daftar Notifikasi */}
-              <ul className="overflow-auto max-h-40">
+              <ul className="overflow-auto max-h-48">
                 {notifications.length > 0 ? (
                   notifications.map((notif) => (
                     <li
@@ -68,9 +74,11 @@ export default function ProfileNavbar() {
                       ${darkMode ? "bg-gray-700 text-gray-300" : "bg-gray-50 text-gray-800"}`}
                     >
                       <div>
-                        <strong>{notif.type}</strong>: {notif.message}
+                        <strong className="capitalize">{notif.type}</strong>: {notif.message}
                         <br />
-                        <small className="text-gray-500">{new Date(notif.timestamp).toLocaleString()}</small>
+                        <small className="text-gray-500">
+                          {notif.timestamp ? new Date(notif.timestamp).toLocaleString() : "Baru saja"}
+                        </small>
                       </div>
                       <button
                         onClick={() => removeNotification(notif.id)}
