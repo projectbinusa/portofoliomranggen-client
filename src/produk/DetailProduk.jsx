@@ -28,8 +28,12 @@ const DetailProduk = () => {
   if (loading) return <div className="text-center mt-20">Memuat data produk...</div>;
   if (!produk) return <div className="text-center mt-20 text-red-500">Data produk tidak ditemukan.</div>;
 
-  // Gunakan URL foto langsung jika tersedia, jika tidak gunakan gambar default
-  const fotoProduk = produk.fotoUrl?.trim() ? produk.fotoUrl : "/images/no-image.png";
+  // Pastikan URL foto valid
+  const fotoProduk = produk.fotoUrl?.trim()
+    ? decodeURIComponent(produk.fotoUrl)
+    : "/images/no-image.png";
+
+  console.log("Foto Produk URL:", fotoProduk); // Debugging
 
   return (
     <div className="p-10 flex justify-center items-start h-screen overflow-hidden fixed inset-0 bg-gray-100">
