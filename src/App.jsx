@@ -168,7 +168,7 @@ function App() {
             {/* Routes untuk Berita */}
             <Route path="/berita" element={<Berita />} />
             <Route path="/tambah-berita" element={<TambahBerita />} />
-            <Route path="/edit-berita/:id/:idAdmin" element={<EditBerita />} />
+            <Route path="/edit-berita/:id" element={<EditBerita />} />
 
             {/* Route Navbar */}
             <Route path="/navbar" element={<Navbar />} />

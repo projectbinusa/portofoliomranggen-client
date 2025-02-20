@@ -6,7 +6,7 @@ import { API_BERITA } from "../utils/BaseUrl";
 import UploadFoto from "../upload/UploadFoto";
 
 const EditBerita = () => {
-  const { id } = useParams(); // ID Berita dari URL
+  const { id } = useParams();
   const navigate = useNavigate();
 
   const [berita, setBerita] = useState({
@@ -15,6 +15,7 @@ const EditBerita = () => {
     deskripsi: "",
     fotoUrl: "",
     tanggalTerbit: "",
+    idAdmin: "", // Tambahkan idAdmin agar sesuai dengan data dari API
   });
 
   const [isUploading, setIsUploading] = useState(false);
@@ -22,17 +23,33 @@ const EditBerita = () => {
   useEffect(() => {
     const fetchBerita = async () => {
       try {
-        const response = await axios.get(`${API_BERITA}/getById/${id}         `);
+        const response = await axios.get(`${API_BERITA}/getById/${id}`);
         if (response.status === 200) {
           const data = response.data;
+
+          if (!data || !data.tanggalTerbit) {
+            Swal.fire("Error", "Data berita tidak valid atau tidak ditemukan.", "error");
+            return;
+          }
+
+          // Format tanggal dari array [YYYY, MM, DD] ke format "YYYY-MM-DD"
+          const formattedTanggal = Array.isArray(data.tanggalTerbit)
+            ? `${data.tanggalTerbit[0]}-${String(data.tanggalTerbit[1]).padStart(2, "0")}-${String(data.tanggalTerbit[2]).padStart(2, "0")}`
+            : data.tanggalTerbit.split("T")[0];
+
           setBerita({
-            ...data,
-            tanggalTerbit: data.tanggalTerbit.split("T")[0], // Format tanggal
+            nama: data.nama || "",
+            penulis: data.penulis || "",
+            deskripsi: data.deskripsi || "",
+            fotoUrl: data.fotoUrl || "",
+            tanggalTerbit: formattedTanggal,
+            idAdmin: data.idAdmin || "",
           });
         } else {
           Swal.fire("Not Found", "Berita dengan ID tersebut tidak ditemukan.", "error");
         }
       } catch (error) {
+        console.error("Fetch error:", error);
         Swal.fire("Error", "Terjadi kesalahan saat mengambil data berita.", "error");
       }
     };
@@ -56,7 +73,7 @@ const EditBerita = () => {
       return;
     }
 
-    if (!berita.nama || !berita.penulis || !berita.deskripsi || !berita.fotoUrl || !berita.tanggalTerbit) {
+    if (!berita.nama || !berita.penulis || !berita.deskripsi || !berita.fotoUrl || !berita.tanggalTerbit || !berita.idAdmin) {
       Swal.fire("Gagal!", "Semua field harus diisi.", "error");
       return;
     }
@@ -67,6 +84,7 @@ const EditBerita = () => {
         navigate("/berita");
       });
     } catch (error) {
+      console.error("Update error:", error);
       Swal.fire("Gagal!", "Terjadi kesalahan saat mengedit data berita.", "error");
     }
   };
