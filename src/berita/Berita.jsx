@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaPlus } from "react-icons/fa";
-import { Pencil, Trash2, Search } from "lucide-react";
+import { Pencil, Trash2, Search, Eye } from "lucide-react";
 import Swal from "sweetalert2";
 import { API_BERITA } from "../utils/BaseUrl";
 import Sidebar from "../components/Sidebar";
@@ -144,28 +144,18 @@ const Berita = () => {
                   <td className="px-6 py-4">{toCamelCase(berita.deskripsi)}</td>
                   <td className="px-6 py-4 text-center">{formatDate(berita.tanggalTerbit)}</td>
                   <td className="px-6 py-4 flex justify-center gap-3">
-                    <button
-                      onClick={() => navigate(`/edit-berita/${berita.id}`)}
-                      className="flex items-center gap-2 bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600 transition"
-                    >
+                    <button onClick={() => navigate(`/detail-berita/${berita.id}`)} className="bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-600">
+                      <Eye size={18} />
+                    </button>
+                    <button onClick={() => navigate(`/edit-berita/${berita.id}`)} className="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600">
                       <Pencil size={18} />
                     </button>
-                    <button
-                      onClick={() => handleDelete(berita.id)}
-                      className="flex items-center gap-2 bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 transition"
-                    >
+                    <button onClick={() => handleDelete(berita.id)} className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600">
                       <Trash2 size={18} />
                     </button>
                   </td>
                 </tr>
               ))}
-              {filteredBerita.length === 0 && (
-                <tr>
-                  <td colSpan="7" className="px-6 py-4 text-center">
-                    Tidak ada berita yang sesuai.
-                  </td>
-                </tr>
-              )}
             </tbody>
           </table>
         </div>

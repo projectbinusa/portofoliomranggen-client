@@ -118,12 +118,6 @@ export default function Sidebar() {
               { text: "Berita", to: "/berita" },
             ]}
           />
-          <SidebarItem
-            isOpen={isOpen}
-            icon={<HiShoppingCart />}
-            text="Pesanan"
-            to="/pesanan"
-          />
           <li>
             <button
               onClick={handleLogout}
