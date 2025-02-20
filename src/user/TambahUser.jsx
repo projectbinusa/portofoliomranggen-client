@@ -4,11 +4,13 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import "font-awesome/css/font-awesome.min.css"; // Import FontAwesome
 import Sidebar from "../components/Sidebar";
+import { useNotification } from "../context/NotificationContext"; // ✅ Import Notifikasi
 
-const API_USER = "http://localhost:4321/api/user";
+const API_USER = "http://localhost:4321/api/user"; // Pastikan backend berjalan
 
 const TambahUser = () => {
   const navigate = useNavigate();
+  const { sendNotification } = useNotification(); // ✅ Ambil fungsi notifikasi
   const [user, setUser] = useState({
     adminId: "",
     username: "",
@@ -17,12 +19,18 @@ const TambahUser = () => {
   });
   const [showPassword, setShowPassword] = useState(false);
 
+  // Handle input change
   const handleChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
 
+  // Handle submit
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    console.log("🚀 Data yang dikirim:", user); // Debugging
+
+    // Validasi input
     if (!user.adminId || !user.username || !user.email || !user.password) {
       Swal.fire("Gagal!", "Semua field harus diisi.", "error");
       return;
@@ -30,13 +38,18 @@ const TambahUser = () => {
 
     try {
       const response = await axios.post(`${API_USER}/tambah`, user);
+      console.log("✅ Response API:", response); // Debugging
 
       if (response.status === 200 || response.status === 201) {
+        // ✅ Kirim notifikasi setelah berhasil menambahkan user
+        sendNotification(`User ${user.username} berhasil ditambahkan`, "success");
+
         Swal.fire("Sukses!", "User berhasil ditambahkan.", "success").then(() => {
           navigate("/user");
         });
       }
     } catch (error) {
+      console.error("❌ Error API:", error.response); // Debugging
       Swal.fire("Gagal!", error.response?.data?.message || "Terjadi kesalahan di server.", "error");
     }
   };
@@ -48,11 +61,9 @@ const TambahUser = () => {
         <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-md">
           <h2 className="text-xl font-semibold mb-6 text-gray-800 text-center">Tambah User</h2>
           <form onSubmit={handleSubmit} className="space-y-4">
-            {[
-              { label: "Admin ID", name: "adminId", type: "number" },
+            {[{ label: "Admin ID", name: "adminId", type: "number" },
               { label: "Username", name: "username", type: "text" },
-              { label: "Email", name: "email", type: "email" },
-            ].map(({ label, name, type }) => (
+              { label: "Email", name: "email", type: "email" }].map(({ label, name, type }) => (
               <div key={name} className="flex flex-col items-start">
                 <label className="text-sm text-gray-600 font-medium mb-1">{label}</label>
                 <input

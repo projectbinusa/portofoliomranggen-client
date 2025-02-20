@@ -4,16 +4,15 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import { FaPlus } from "react-icons/fa";
 import Sidebar from "../components/Sidebar";
-import { Pencil, Trash2, Search, X } from "lucide-react";
-import { useNotification } from "../context/NotificationContext";
+import { Pencil, Trash2 } from "lucide-react";
+import { useNotification } from "../context/NotificationContext"; // ✅ Import Context
 import Navbar from "../tampilan/Navbar";
 
 const API_USER = "http://localhost:4321/api/user";
 
 const User = () => {
   const navigate = useNavigate();
-  const [searchTerm, setSearchTerm] = useState("");
-  const { addNotification } = useNotification();
+  const { sendNotification } = useNotification(); // ✅ Ambil fungsi sendNotification
   const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
@@ -23,21 +22,10 @@ const User = () => {
     axios
       .get(`${API_USER}/all`)
       .then((response) => {
-        // Pastikan data yang diterima adalah array
-        if (Array.isArray(response.data)) {
-          setUsers(response.data);
-        } else {
-          console.error("Data yang diterima bukan array:", response.data);
-          setUsers([]); // Atau set default array kosong jika tidak valid
-        }
+        setUsers(response.data);
       })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-        setUsers([]); // Set default array kosong jika ada error
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+      .catch((error) => console.error("Error fetching data:", error))
+      .finally(() => setIsLoading(false));
   }, []);
 
   const handleDeleteUser = async (id) => {
@@ -53,8 +41,11 @@ const User = () => {
     if (result.isConfirmed) {
       try {
         await axios.delete(`${API_USER}/delete/${id}`);
-        addNotification("Data user telah dihapus", "warning");
         setUsers(users.filter((user) => user.id !== id));
+
+        // ✅ Kirim notifikasi ke semua pengguna
+        sendNotification("Data user telah dihapus", "warning");
+
         Swal.fire("Dihapus!", "Data user telah dihapus.", "success");
       } catch (error) {
         console.error("Error deleting user:", error);
@@ -63,17 +54,11 @@ const User = () => {
     }
   };
 
-  const filteredUsers = users.filter((user) =>
-    user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    user.email.toString().includes(searchTerm) ||
-    user.password.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  // Perbaikan pagination agar tetap muncul meskipun tidak ada data
-  const totalPages = Math.max(1, Math.ceil(filteredUsers.length / usersPerPage));
+  // ✅ Hitung total halaman
+  const totalPages = Math.ceil(users.length / usersPerPage);
   const indexOfLastUser = currentPage * usersPerPage;
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
-  const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
+  const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
 
   return (
     <div className="flex h-screen">
@@ -81,38 +66,18 @@ const User = () => {
       <Navbar />
       <div className="flex-1 p-6 ml-40">
         <div className="container mx-auto">
-          <div className="flex justify-between items-center mb-4  mt-6">
+          <div className="flex justify-between items-center mb-4 mt-6">
             <h2 className="text-2xl font-bold text-gray-700">Daftar User</h2>
             <button
-              className="flex items-center gap-2 bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition"
+              className="p-3 bg-green-500 text-white rounded-md hover:bg-green-600 flex items-center gap-2 transition"
               onClick={() => {
-                addNotification("Menambahkan data user baru", "success");
+                sendNotification("Navigasi ke halaman tambah user", "info");
                 navigate("/tambah-user");
               }}
             >
               <FaPlus size={16} />
             </button>
           </div>
-
-          <div className="relative mb-4">
-            <input
-              type="text"
-              placeholder="Cari user..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full px-10 py-2 border rounded-md"
-            />
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-            {searchTerm && (
-              <button
-                onClick={() => setSearchTerm("")}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            )}
-          </div>
-
           {isLoading ? (
             <p className="text-center py-4">Loading data...</p>
           ) : (
@@ -120,23 +85,32 @@ const User = () => {
               <table className="w-full text-sm text-left text-gray-700">
                 <thead className="text-xs uppercase bg-gray-200 text-gray-700">
                   <tr>
-                    {["No", "Username", "Email", "Password", "Aksi"].map((header, index) => (
-                      <th key={index} className="px-6 py-3 text-center">{header}</th>
-                    ))}
+                    {["No", "Username", "Email", "Password", "Aksi"].map(
+                      (header, index) => (
+                        <th key={index} className="px-6 py-3 text-center">
+                          {header}
+                        </th>
+                      )
+                    )}
                   </tr>
                 </thead>
                 <tbody className="bg-gray-100">
-                  {filteredUsers.length > 0 ? (
+                  {currentUsers.length > 0 ? (
                     currentUsers.map((user, index) => (
                       <tr key={user.id} className="hover:bg-gray-100">
-                        <td className="px-6 py-3 text-center">{indexOfFirstUser + index + 1}</td>
-                        <td className="px-6 py-3">{user.username}</td>
-                        <td className="px-6 py-3">{user.email}</td>
-                        <td className="px-6 py-3">{user.password}</td>
+                        <td className="px-6 py-3 text-center">
+                          {indexOfFirstUser + index + 1}
+                        </td>
+                        <td className="px-6 py-3 text-center">{user.username}</td>
+                        <td className="px-6 py-3 text-center">{user.email}</td>
+                        <td className="px-6 py-3 text-center">{user.password}</td>
                         <td className="px-6 py-3 flex justify-center space-x-2">
                           <Link to={`/edit-user/${user.id}`}>
-                            <button className="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600"
-                              onClick={() => addNotification("Mengedit data user", "info")}
+                            <button
+                              className="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600"
+                              onClick={() =>
+                                sendNotification(`Mengedit user: ${user.username}`, "info")
+                              }
                             >
                               <Pencil size={18} />
                             </button>
@@ -152,7 +126,9 @@ const User = () => {
                     ))
                   ) : (
                     <tr>
-                      <td colSpan="5" className="text-center py-4 text-gray-500">Tidak ada data user yang sesuai.</td>
+                      <td colSpan="5" className="text-center py-4 text-gray-500">
+                        Tidak ada data user yang sesuai.
+                      </td>
                     </tr>
                   )}
                 </tbody>
@@ -160,28 +136,42 @@ const User = () => {
             </div>
           )}
 
-          {/* Pagination */}
-          <div className="flex justify-between items-center mt-4">
-            <button
-              disabled={currentPage === 1}
-              onClick={() => setCurrentPage(currentPage - 1)}
-              className={`px-4 py-2 rounded-md ${currentPage === 1 ? "bg-gray-300 cursor-not-allowed" : "bg-blue-500 text-white hover:bg-blue-600"}`}
-            >
-              Previous
-            </button>
-
-            <span className="text-gray-700">
-              Halaman {currentPage} dari {totalPages}
-            </span>
-
-            <button
-              disabled={currentPage >= totalPages}
-              onClick={() => setCurrentPage(currentPage + 1)}
-              className={`px-4 py-2 rounded-md ${currentPage >= totalPages ? "bg-gray-300 cursor-not-allowed" : "bg-blue-500 text-white hover:bg-blue-600"}`}
-            >
-              Next
-            </button>
-          </div>
+          {/* ✅ Pagination */}
+          {users.length > usersPerPage && (
+            <div className="flex justify-center items-center mt-4 space-x-2">
+              <button
+                onClick={() => {
+                  setCurrentPage(currentPage - 1);
+                  sendNotification(`Berpindah ke halaman ${currentPage - 1}`, "info");
+                }}
+                disabled={currentPage === 1}
+                className={`px-4 py-2 text-sm rounded-md ${
+                  currentPage === 1
+                    ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                    : "bg-blue-500 text-white hover:bg-blue-600"
+                }`}
+              >
+                Prev
+              </button>
+              <span className="text-gray-700">
+                Halaman {currentPage} dari {totalPages}
+              </span>
+              <button
+                onClick={() => {
+                  setCurrentPage(currentPage + 1);
+                  sendNotification(`Berpindah ke halaman ${currentPage + 1}`, "info");
+                }}
+                disabled={currentPage === totalPages}
+                className={`px-4 py-2 text-sm rounded-md ${
+                  currentPage === totalPages
+                    ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                    : "bg-blue-500 text-white hover:bg-blue-600"
+                }`}
+              >
+                Next
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>

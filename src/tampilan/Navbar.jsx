@@ -10,6 +10,12 @@ export default function ProfileNavbar() {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
 
+  // 🔥 Tambahin useEffect buat debug notifikasi
+  useEffect(() => {
+    console.log("📢 Notifikasi terbaru:", notifications);
+  }, [notifications]);
+
+  // 🔥 Pastikan dark mode ngikutin sistem
   useEffect(() => {
     const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
     setDarkMode(isDark);
@@ -41,7 +47,7 @@ export default function ProfileNavbar() {
           {/* 🔥 Modal Notifikasi */}
           {showNotifications && (
             <div
-              className={`absolute right-4 top-12 w-64 max-h-60 rounded-xl z-50 overflow-y-auto border 
+              className={`absolute right-0 top-12 w-80 max-h-60 rounded-xl z-50 overflow-y-auto border 
               ${darkMode ? "bg-gray-800 text-white border-gray-700 shadow-lg" : "bg-white text-black border-gray-200 shadow-xl"}`}
             >
               {/* Header Notifikasi */}
@@ -57,17 +63,23 @@ export default function ProfileNavbar() {
               </div>
 
               {/* Daftar Notifikasi */}
-              <ul>
+              <ul className="overflow-auto max-h-48">
                 {notifications.length > 0 ? (
                   notifications.map((notif) => (
                     <li
                       key={notif.id}
-                      className={`flex justify-between items-center p-3 border-b 
+                      className={`flex justify-between items-center p-3 border-b text-sm
                       ${notif.type === "success" ? "bg-green-50 text-green-700" : ""}
                       ${notif.type === "warning" ? "bg-yellow-50 text-yellow-700" : ""}
                       ${darkMode ? "bg-gray-700 text-gray-300" : "bg-gray-50 text-gray-800"}`}
                     >
-                      <span className="text-xs">{notif.message}</span>
+                      <div>
+                        <strong className="capitalize">{notif.type}</strong>: {notif.message}
+                        <br />
+                        <small className="text-gray-500">
+                          {notif.timestamp ? new Date(notif.timestamp).toLocaleString() : "Baru saja"}
+                        </small>
+                      </div>
                       <button
                         onClick={() => removeNotification(notif.id)}
                         className="text-red-500 hover:text-red-700"
@@ -93,15 +105,9 @@ export default function ProfileNavbar() {
             <FaUserCircle size={28} className={darkMode ? "text-white" : "text-gray-800"} />
           </div>
           {showProfileMenu && (
-            <div
-              className={`absolute right-0 top-12 w-40 border rounded shadow-md p-2 
-              ${darkMode ? "bg-gray-800 text-white border-gray-700" : "bg-white text-black border-gray-200"}`}
-            >
-              <Link
-                to="/page-profil"
-                className={`text-sm cursor-pointer hover:bg-gray-100 p-2 block 
-                ${darkMode ? "hover:bg-gray-700" : ""}`}
-              >
+            <div className={`absolute right-0 top-12 w-40 border rounded shadow-md p-2 
+              ${darkMode ? "bg-gray-800 text-white border-gray-700" : "bg-white text-black border-gray-200"}`}>
+              <Link to="/page-profil" className="text-sm cursor-pointer hover:bg-gray-100 p-2 block">
                 Profil
               </Link>
             </div>
