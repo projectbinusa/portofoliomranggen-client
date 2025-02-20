@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import SockJS from "sockjs-client/dist/sockjs";
+import SockJS from "sockjs-client";
 import { Client } from "@stomp/stompjs";
 
 const NotificationContext = createContext();
@@ -7,10 +7,10 @@ const NotificationContext = createContext();
 export const NotificationProvider = ({ children }) => {
   const [notifications, setNotifications] = useState([]);
   const [stompClient, setStompClient] = useState(null);
-  const [isConnected, setIsConnected] = useState(false); // ✅ Tambah state buat cek koneksi
+  const [isConnected, setIsConnected] = useState(false);
 
   useEffect(() => {
-    const socket = new SockJS("http://localhost:4321/ws"); // ✅ Pastikan URL WebSocket benar
+    const socket = new SockJS("http://localhost:4321/ws"); // Sesuaikan URL WebSocket
     const client = new Client({
       webSocketFactory: () => socket,
       reconnectDelay: 5000,
@@ -21,13 +21,12 @@ export const NotificationProvider = ({ children }) => {
 
         client.subscribe("/topic/notifications", (message) => {
           if (message.body) {
-            console.log("📩 Notifikasi Diterima:", message.body); // ✅ Debug data notifikasi
-
+            console.log("📩 Notifikasi Diterima:", message.body);
             try {
               const newNotification = JSON.parse(message.body);
               setNotifications((prev) => [
-                { id: newNotification.id || Date.now(), ...newNotification }, // ✅ Gunakan ID dari server jika ada
-                ...prev
+                { id: newNotification.id || Date.now(), ...newNotification },
+                ...prev,
               ]);
             } catch (error) {
               console.error("❌ Gagal parse notifikasi:", error);
@@ -56,10 +55,13 @@ export const NotificationProvider = ({ children }) => {
     };
   }, []);
 
-  // ✅ Fungsi untuk mengirim notifikasi
   const sendNotification = (message, type = "info") => {
-    if (stompClient && isConnected) { // ✅ Cek apakah STOMP sudah connect sebelum kirim notif
-      const notification = { message, type, timestamp: new Date().toISOString() };
+    if (stompClient && isConnected) {
+      const notification = {
+        message,
+        type,
+        timestamp: new Date().toISOString(),
+      };
       stompClient.publish({
         destination: "/app/notify",
         body: JSON.stringify(notification),
@@ -69,13 +71,14 @@ export const NotificationProvider = ({ children }) => {
     }
   };
 
-  // ✅ Fungsi untuk menghapus notifikasi
   const removeNotification = (id) => {
     setNotifications((prev) => prev.filter((notif) => notif.id !== id));
   };
 
   return (
-    <NotificationContext.Provider value={{ notifications, sendNotification, removeNotification }}>
+    <NotificationContext.Provider
+      value={{ notifications, sendNotification, removeNotification }}
+    >
       {children}
 
       {/* 🔥 TAMPILAN NOTIFIKASI */}
@@ -105,4 +108,6 @@ export const NotificationProvider = ({ children }) => {
   );
 };
 
+// ✅ Tambahkan ekspor NotificationContext agar bisa digunakan di file lain
 export const useNotification = () => useContext(NotificationContext);
+export { NotificationContext };
