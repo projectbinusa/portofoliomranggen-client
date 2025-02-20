@@ -11,7 +11,7 @@ import { API_ORGANISASI } from "../utils/BaseUrl";
 
 const PageOrganisasi = () => {
   const navigate = useNavigate();
-  const { addNotification } = useNotification();
+  const { sendNotification } = useNotification(); // ✅ Ganti dari addNotification ke sendNotification
   const [searchTerm, setSearchTerm] = useState("");
   const [organisasiList, setOrganisasiList] = useState([]);
 
@@ -22,10 +22,10 @@ const PageOrganisasi = () => {
       .catch((error) => console.error("Error fetching data:", error));
   }, []);
 
-  const handleHapus = (id) => {
+  const handleHapus = (id, namaOrganisasi) => { // ✅ Tambahin nama organisasi di parameter
     Swal.fire({
       title: "Apakah Anda yakin?",
-      text: "Data organisasi ini akan dihapus!",
+      text: `Data organisasi "${namaOrganisasi}" akan dihapus!`, // ✅ Biar lebih spesifik
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Ya, hapus!",
@@ -36,8 +36,8 @@ const PageOrganisasi = () => {
           .delete(`${API_ORGANISASI}/delete/${id}`)
           .then(() => {
             setOrganisasiList(organisasiList.filter((org) => org.id !== id));
-            addNotification("Data organisasi berhasil dihapus", "warning"); // 🔔 Notifikasi Hapus
-            Swal.fire("Dihapus!", "Data organisasi telah dihapus.", "success");
+            sendNotification(`Organisasi "${namaOrganisasi}" berhasil dihapus`, "warning"); // ✅ Pakai sendNotification
+            Swal.fire("Dihapus!", `Organisasi "${namaOrganisasi}" telah dihapus.`, "success");
           })
           .catch(() =>
             Swal.fire("Gagal!", "Terjadi kesalahan saat menghapus data.", "error")
@@ -63,10 +63,10 @@ const PageOrganisasi = () => {
             className="flex items-center gap-2 bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition"
             onClick={() => {
               navigate("/tambah-organisasi");
-              addNotification("Menambahkan organisasi baru", "success"); // 🔔 Notifikasi Tambah
+              sendNotification("Menambahkan organisasi baru", "success"); // ✅ Pakai sendNotification
             }}
           >
-           <FaPlus size={16} />
+            <FaPlus size={16} />
           </button>
         </div>
 
@@ -120,14 +120,14 @@ const PageOrganisasi = () => {
                       </Link>
                       <Link to={`/edit-organisasi/${organisasi.id}`}>
                         <button
-                          onClick={() => addNotification("Mengedit organisasi", "info")} // 🔔 Notifikasi Edit
+                          onClick={() => sendNotification(`Mengedit organisasi "${organisasi.namaOrganisasi}"`, "info")} // ✅ Pakai sendNotification
                           className="flex items-center gap-2 bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600"
                         >
                           <Pencil size={18} />
                         </button>
                       </Link>
                       <button
-                        onClick={() => handleHapus(organisasi.id)}
+                        onClick={() => handleHapus(organisasi.id, organisasi.namaOrganisasi)} // ✅ Tambah nama organisasi
                         className="flex items-center gap-2 bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600"
                       >
                         <Trash2 size={18} />

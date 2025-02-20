@@ -84,8 +84,9 @@ function App() {
     <DarkModeProvider>
       {" "}
       {/* ✅ Pindahkan agar mencakup semua halaman */}
-      <NotificationProvider>
+      
         <Router>
+        <NotificationProvider>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
@@ -176,8 +177,9 @@ function App() {
             {/* Halaman 404 */}
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
+          </NotificationProvider>
         </Router>
-      </NotificationProvider>
+      
     </DarkModeProvider>
   );
 }
