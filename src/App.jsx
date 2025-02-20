@@ -53,6 +53,7 @@ import DetailSekolah from "./sekolah/DetailSekolah";
 import ProdukList from "./produk/ProdukList";
 import TambahProduk from "./produk/TambahProduk";
 import EditProduk from "./produk/EditProduk";
+import DetailProduk from "./produk/DetailProduk";
 
 import DaftarBuku from "./buku/DaftarBuku";
 import TambahBuku from "./buku/TambahBuku";
@@ -74,6 +75,7 @@ import EditDonasi from "./donasi/EditDonasi";
 import Berita from "./berita/Berita";
 import TambahBerita from "./berita/TambahBerita";
 import EditBerita from "./berita/EditBerita";
+import DetailBerita from "./berita/DetailBerita";
 
 import Navbar from "./tampilan/Navbar";
 
@@ -144,6 +146,7 @@ function App() {
             <Route path="/produk" element={<ProdukList />} />
             <Route path="/tambah-produk" element={<TambahProduk />} />
             <Route path="/edit-produk/:id" element={<EditProduk />} />
+            <Route path="/detail-produk/:id" element={<DetailProduk />} />
 
             {/* Routes untuk Buku */}
             <Route path="/buku" element={<DaftarBuku />} />
@@ -169,7 +172,8 @@ function App() {
             {/* Routes untuk Berita */}
             <Route path="/berita" element={<Berita />} />
             <Route path="/tambah-berita" element={<TambahBerita />} />
-            <Route path="/edit-berita/:id/:idAdmin" element={<EditBerita />} />
+            <Route path="/edit-berita/:id" element={<EditBerita />} />
+            <Route path="/detail-berita/:id" element={<DetailBerita />} />
 
             {/* Route Navbar */}
             <Route path="/navbar" element={<Navbar />} />

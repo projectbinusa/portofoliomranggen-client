@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Pencil, Trash2, Search } from "lucide-react";
+import { Pencil, Trash2, Search, Eye } from "lucide-react";
 import { FaPlus } from "react-icons/fa";
 import Sidebar from "../components/Sidebar";
 import Swal from "sweetalert2";
@@ -35,18 +35,12 @@ const ProductList = () => {
     fetchProducts();
   }, []);
 
-  const filteredProducts = products.filter((product) => {
-    const searchLower = searchTerm.toLowerCase();
-    return (
-      (product.nama && product.nama.toLowerCase().includes(searchLower)) ||
-      (product.deskripsi && product.deskripsi.toLowerCase().includes(searchLower)) ||
-      (product.kondisi && product.kondisi.toLowerCase().includes(searchLower)) ||
-      product.harga.toString().includes(searchLower)
-    );
-  });
-
   const handleEdit = (id) => {
     navigate(`/edit-produk/${id}`);
+  };
+
+  const handleDetail = (id) => {
+    navigate(`/detail-produk/${id}`);
   };
 
   const handleDelete = async (id) => {
@@ -72,30 +66,19 @@ const ProductList = () => {
     });
   };
 
-  const toCamelCase = (text) => {
-    if (!text) return "";
-    return text
-      .toLowerCase()
-      .split(" ")
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(" ");
-  };
-
-
   return (
     <div className="flex min-h-screen">
       <Sidebar />
       <Navbar />
 
       <div className="flex-1 p-6 ml-48 pl-4">
-        <div className="flex justify-between items-center mb-4  mt-6">
+        <div className="flex justify-between items-center mb-4 mt-6">
           <div className="relative flex-1 max-w-md">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" size={18} />
             <input
               type="text"
               placeholder="Cari produk..."
-              className="w-full px-3 py-2 pl-10 pr-4 text-sm border-2 border-gray-600 rounded-md 
-               focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 pl-10 pr-4 text-sm border-2 border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -103,8 +86,7 @@ const ProductList = () => {
 
           <button
             onClick={() => navigate("/tambah-produk")}
-            className="flex items-center gap-2 bg-green-500 text-white px-4 py-2
-             rounded-md hover:bg-green-600 transition">
+            className="flex items-center gap-2 bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition">
             <FaPlus size={16} />
           </button>
         </div>
@@ -123,36 +105,33 @@ const ProductList = () => {
               </tr>
             </thead>
             <tbody className="bg-gray-100">
-              {filteredProducts.length > 0 ? (
-                filteredProducts.map((product, index) => (
+              {products.length > 0 ? (
+                products.map((product, index) => (
                   <tr key={product.id} className="hover:bg-gray-100">
                     <td className="px-6 py-4 text-center">{index + 1}</td>
                     <td className="px-6 py-4 text-center w-32 h-32">
-                    {product.fotoUrl && (
-                      <img
-                        src={product.fotoUrl}
-                        alt="Foto Buku"
-                        className="w-full h-full object-cover rounded-md mx-auto"
-                      />
-                    )}
-                  </td>
-                    <td className="px-6 py-4 font-medium">{toCamelCase(product.nama)}</td>
-                    <td className="px-6 py-4">{toCamelCase(product.deskripsi)}</td>
-                    <td className="px-6 py-4 text-center">{toCamelCase(product.kondisi)}</td>
-                    <td className="px-6 py-4 text-center">
-                      Rp {product.harga.toLocaleString()}
+                      {product.fotoUrl && (
+                        <img src={product.fotoUrl} alt="Foto Produk" className="w-full h-full object-cover rounded-md mx-auto" />
+                      )}
                     </td>
+                    <td className="px-6 py-4 font-medium">{product.nama}</td>
+                    <td className="px-6 py-4">{product.deskripsi}</td>
+                    <td className="px-6 py-4 text-center">{product.kondisi}</td>
+                    <td className="px-6 py-4 text-center">Rp {product.harga.toLocaleString()}</td>
                     <td className="px-6 py-4 flex gap-3 justify-center">
                       <button
+                        onClick={() => handleDetail(product.id)}
+                        className="flex items-center gap-2 bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-600 transition">
+                        <Eye size={18} />
+                      </button>
+                      <button
                         onClick={() => handleEdit(product.id)}
-                        className="flex items-center gap-2 bg-blue-500
-                       text-white px-3 py-1 rounded-md hover:bg-blue-600 transition">
+                        className="flex items-center gap-2 bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600 transition">
                         <Pencil size={18} />
                       </button>
                       <button
                         onClick={() => handleDelete(product.id)}
-                        className="flex items-center gap-2 bg-red-500 text-white px-3 py-1
-                         rounded-md hover:bg-red-600 transition">
+                        className="flex items-center gap-2 bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 transition">
                         <Trash2 size={18} />
                       </button>
                     </td>
@@ -160,9 +139,7 @@ const ProductList = () => {
                 ))
               ) : (
                 <tr>
-                  <td colSpan="7" className="px-6 py-4 text-center">
-                    Produk tidak ditemukan.
-                  </td>
+                  <td colSpan="7" className="px-6 py-4 text-center">Produk tidak ditemukan.</td>
                 </tr>
               )}
             </tbody>
