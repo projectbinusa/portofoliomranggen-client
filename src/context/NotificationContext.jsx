@@ -5,9 +5,24 @@ import { Client } from "@stomp/stompjs";
 const NotificationContext = createContext();
 
 export const NotificationProvider = ({ children }) => {
-  const [notifications, setNotifications] = useState([]);
+  const [notifications, setNotifications] = useState(() => {
+    // 🔥 Load dari localStorage saat pertama kali dijalankan
+    const savedNotifications = localStorage.getItem("notifications");
+    return savedNotifications ? JSON.parse(savedNotifications) : [];
+  });
+
   const [stompClient, setStompClient] = useState(null);
   const [isConnected, setIsConnected] = useState(false);
+
+  useEffect(() => {
+    console.log("📡 Status WebSocket:", isConnected);
+  }, [isConnected]);
+
+  useEffect(() => {
+    console.log("📢 Notifikasi terbaru di state:", notifications);
+    // 🔥 Simpan ke localStorage setiap ada perubahan notifikasi
+    localStorage.setItem("notifications", JSON.stringify(notifications));
+  }, [notifications]);
 
   useEffect(() => {
     const socket = new SockJS("http://localhost:4321/ws"); // Sesuaikan URL WebSocket
@@ -20,17 +35,15 @@ export const NotificationProvider = ({ children }) => {
         setIsConnected(true);
 
         client.subscribe("/topic/notifications", (message) => {
-          if (message.body) {
-            console.log("📩 Notifikasi Diterima:", message.body);
-            try {
-              const newNotification = JSON.parse(message.body);
-              setNotifications((prev) => [
-                { id: newNotification.id || Date.now(), ...newNotification },
-                ...prev,
-              ]);
-            } catch (error) {
-              console.error("❌ Gagal parse notifikasi:", error);
-            }
+          console.log("📩 Notifikasi diterima dari server:", message.body);
+          try {
+            const newNotification = JSON.parse(message.body);
+            setNotifications((prev) => [
+              { id: newNotification.id || Date.now(), ...newNotification },
+              ...prev,
+            ]);
+          } catch (error) {
+            console.error("❌ Gagal parse notifikasi:", error);
           }
         });
       },
@@ -55,6 +68,18 @@ export const NotificationProvider = ({ children }) => {
     };
   }, []);
 
+  // ✅ Fungsi untuk menambah notifikasi ke state
+  const addNotification = (message, type = "info") => {
+    const newNotification = {
+      id: Date.now(),
+      message,
+      type,
+      timestamp: new Date().toISOString(),
+    };
+    setNotifications((prev) => [newNotification, ...prev]);
+  };
+
+  // ✅ Fungsi untuk mengirim notifikasi ke backend
   const sendNotification = (message, type = "info") => {
     if (stompClient && isConnected) {
       const notification = {
@@ -71,17 +96,18 @@ export const NotificationProvider = ({ children }) => {
     }
   };
 
+  // ✅ Fungsi untuk menghapus notifikasi dari UI
   const removeNotification = (id) => {
     setNotifications((prev) => prev.filter((notif) => notif.id !== id));
   };
 
   return (
     <NotificationContext.Provider
-      value={{ notifications, sendNotification, removeNotification }}
+      value={{ notifications, addNotification, sendNotification, removeNotification }}
     >
       {children}
 
-      {/* 🔥 TAMPILAN NOTIFIKASI */}
+      {/* 🔥 UI Notifikasi */}
       <div className="fixed top-4 right-4 z-50 space-y-2">
         {notifications.map((notif) => (
           <div
@@ -89,6 +115,8 @@ export const NotificationProvider = ({ children }) => {
             className={`p-3 rounded-md shadow-md text-white ${
               notif.type === "info"
                 ? "bg-blue-500"
+                : notif.type === "success"
+                ? "bg-green-500"
                 : notif.type === "warning"
                 ? "bg-yellow-500"
                 : "bg-red-500"
@@ -108,6 +136,6 @@ export const NotificationProvider = ({ children }) => {
   );
 };
 
-// ✅ Tambahkan ekspor NotificationContext agar bisa digunakan di file lain
+// ✅ Hook untuk menggunakan context di komponen lain
 export const useNotification = () => useContext(NotificationContext);
 export { NotificationContext };

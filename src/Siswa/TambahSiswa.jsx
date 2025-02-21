@@ -3,11 +3,11 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import Sidebar from "../components/Sidebar";
 import { API_SISWA } from "../utils/BaseUrl";
-import { NotificationContext } from "../context/NotificationContext"; // 🔥 Import NotificationContext
+import { NotificationContext } from "../context/NotificationContext"; // 🔥 Import context
 
 const TambahSiswa = () => {
   const navigate = useNavigate();
-  const { addNotification } = useContext(NotificationContext); // 🔥 Gunakan context
+  const { sendNotification } = useContext(NotificationContext); // 🔥 Gunakan sendNotification
   const [loading, setLoading] = useState(false);
   const [siswa, setSiswa] = useState({
     nama: "",
@@ -19,7 +19,7 @@ const TambahSiswa = () => {
     tanggalLahir: "",
   });
 
-  const userLogin = sessionStorage.getItem("username") || "Admin"; // 🔥 Ambil user yang login
+  const userLogin = sessionStorage.getItem("username") || "Admin"; // 🔥 Ambil user login
 
   const toCamelCase = (text) => {
     return text.trim().toLowerCase()
@@ -50,14 +50,14 @@ const TambahSiswa = () => {
       return;
     }
 
-    if (!/^\d{10}$/.test(siswa.nisn)) {
+    if (!/^\d+$/.test(siswa.nisn)) {
       Swal.fire("Error", "NISN harus berupa angka 10 digit!", "error");
       setLoading(false);
       return;
     }
 
-    if (!/^\d{10,}$/.test(siswa.nomerHp) || !/^\d{10,}$/.test(siswa.nomerHpOrangtua)) {
-      Swal.fire("Error", "Nomor HP harus minimal 10 digit dan hanya angka!", "error");
+    if (!/^\d+$/.test(siswa.nomerHp) || !/^\d+$/.test(siswa.nomerHpOrangtua)) {
+      Swal.fire("Error", "Nomor HP hanya boleh berupa angka!", "error");
       setLoading(false);
       return;
     }
@@ -96,12 +96,8 @@ const TambahSiswa = () => {
 
       if (!response.ok) throw new Error(data.message || "Gagal menambahkan siswa");
 
-      // 🔥 Kirim Notifikasi ke NotificationContext
-      addNotification({
-        message: `${userLogin} menambahkan siswa baru: ${siswaDTO.nama}`,
-        type: "siswa", // Bisa diganti sesuai kebutuhan
-        timestamp: new Date().toISOString(),
-      });
+      // 🔥 Kirim notifikasi ke backend
+      sendNotification(`${userLogin} menambahkan siswa baru: ${siswaDTO.nama}`, "success");
 
       Swal.fire("Sukses", "Data siswa berhasil ditambahkan!", "success");
       setTimeout(() => navigate("/siswa"), 1000);
