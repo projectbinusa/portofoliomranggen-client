@@ -58,6 +58,7 @@ import DetailProduk from "./produk/DetailProduk";
 import DaftarBuku from "./buku/DaftarBuku";
 import TambahBuku from "./buku/TambahBuku";
 import EditBuku from "./buku/EditBuku";
+import DetailBuku from "./buku/DetailBuku";
 
 import User from "./user/User";
 import EditUser from "./user/EditUser";
@@ -151,6 +152,7 @@ function App() {
             <Route path="/buku" element={<DaftarBuku />} />
             <Route path="/tambah-buku" element={<TambahBuku />} />
             <Route path="/edit-buku/:id" element={<EditBuku />} />
+            <Route path="/detail-buku/:id" element={<DetailBuku />} />
 
             {/* Routes untuk User */}
             <Route path="/user" element={<User />} />

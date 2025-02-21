@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaPlus } from "react-icons/fa";
-import { Pencil, Trash2, Search } from "lucide-react";
+import { Pencil, Trash2, Search, Eye } from "lucide-react";
 import Swal from "sweetalert2";
 import { API_BUKU } from "../utils/BaseUrl";
 import Sidebar from "../components/Sidebar";
@@ -75,10 +75,10 @@ const DaftarBuku = () => {
 
   return (
     <div className="flex">
-      <Sidebar/>
-      <Navbar/>
+      <Sidebar />
+      <Navbar />
       <div className="flex-1 p-6 ml-48 pl-4">
-        <div className="flex justify-between items-center mb-4  mt-6">
+        <div className="flex justify-between items-center mb-4 mt-6">
           <div className="relative w-1/3">
             <Search className="absolute ml-3 text-gray-500 top-3 left-3" size={20} />
             <input
@@ -132,6 +132,11 @@ const DaftarBuku = () => {
                   <td className="px-6 py-4">{buku.jumlahHalaman}</td>
                   <td className="px-6 py-4 flex justify-center gap-3">
                     <button
+                      onClick={() => navigate(`/detail-buku/${buku.id}`)}
+                      className="flex items-center gap-2 bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-600 transition">
+                      <Eye size={18} />
+                    </button>
+                    <button
                       onClick={() => navigate(`/edit-buku/${buku.id}`)}
                       className="flex items-center gap-2 bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600 transition">
                       <Pencil size={18} />
@@ -144,11 +149,6 @@ const DaftarBuku = () => {
                   </td>
                 </tr>
               ))}
-              {filteredBuku.length === 0 && (
-                <tr>
-                  <td colSpan="8" className="px-6 py-4 text-center">Tidak ada data buku yang sesuai.</td>
-                </tr>
-              )}
             </tbody>
           </table>
         </div>
