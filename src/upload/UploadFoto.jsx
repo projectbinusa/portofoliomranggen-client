@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 const UploadFoto = ({ onUploadSuccess, setIsUploading }) => {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -15,8 +16,17 @@ const UploadFoto = ({ onUploadSuccess, setIsUploading }) => {
   const handleUpload = async () => {
     if (!selectedFile) return;
 
-    // Menandai proses upload sedang berlangsung
     setIsUploading(true);
+
+    // Menampilkan notifikasi proses upload
+    Swal.fire({
+      title: "Mengunggah...",
+      text: "Harap tunggu, foto sedang diunggah.",
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
 
     const formData = new FormData();
     formData.append("file", selectedFile);
@@ -27,18 +37,31 @@ const UploadFoto = ({ onUploadSuccess, setIsUploading }) => {
       });
 
       const uploadedImageUrl = response.data.imageUrl;
-      setImageUrl(uploadedImageUrl); // Menyimpan URL foto
-      setPreviewUrl(""); // Menghapus preview setelah upload selesai
+      setImageUrl(uploadedImageUrl);
+      setPreviewUrl("");
 
-      // Mengirimkan URL foto ke parent component
       onUploadSuccess(uploadedImageUrl);
-
-      // Menandai bahwa upload selesai
       setIsUploading(false);
+
+      // Menampilkan notifikasi sukses
+      Swal.fire({
+        icon: "success",
+        title: "Sukses!",
+        text: "Foto berhasil diunggah.",
+        confirmButtonColor: "#6C5DD3",
+      });
 
     } catch (error) {
       console.error("Error uploading file:", error);
       setIsUploading(false);
+
+      // Menampilkan notifikasi error
+      Swal.fire({
+        icon: "error",
+        title: "Gagal!",
+        text: "Terjadi kesalahan saat mengunggah foto.",
+        confirmButtonColor: "#d33",
+      });
     }
   };
 
