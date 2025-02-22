@@ -6,9 +6,11 @@ import Swal from "sweetalert2";
 import { API_BERITA } from "../utils/BaseUrl";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../tampilan/Navbar";
+import { useNotification } from "../context/NotificationContext";
 
 const Berita = () => {
   const [beritaList, setBeritaList] = useState([]);
+  const { sendNotification } = useNotification();
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
 
@@ -53,6 +55,7 @@ const Berita = () => {
         }
 
         Swal.fire("Terhapus!", "Berita berhasil dihapus.", "success");
+        sendNotification("data berita dihapus", "warning"); // 🔔 Kirim notifikasi
         fetchBerita();
       } catch (error) {
         Swal.fire("Gagal!", error.message, "error");
@@ -106,7 +109,10 @@ const Berita = () => {
           </div>
 
           <button
-            onClick={() => navigate("/tambah-berita")}
+            onClick={() => {
+              sendNotification("Menambah berita baru", "info"); // 🔔 Kirim notifikasi
+              navigate("/tambah-berita");
+            }}
             className="flex items-center gap-2 bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition"
           >
             <FaPlus size={16} />
@@ -144,13 +150,26 @@ const Berita = () => {
                   <td className="px-6 py-4">{toCamelCase(berita.deskripsi)}</td>
                   <td className="px-6 py-4 text-center">{formatDate(berita.tanggalTerbit)}</td>
                   <td className="px-6 py-4 flex justify-center gap-3">
-                    <button onClick={() => navigate(`/detail-berita/${berita.id}`)} className="bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-600">
+                    <button
+                      onClick={() => navigate(`/detail-berita/${berita.id}`)}
+                      className="bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-600"
+                    >
                       <Eye size={18} />
                     </button>
-                    <button onClick={() => navigate(`/edit-berita/${berita.id}`)} className="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600">
+                    <button
+                      onClick={() => {
+                        sendNotification("Mengedit data berita", "info"); // 🔔 Kirim notifikasi
+                        navigate(`/edit-berita/${berita.id}`);
+                      }}
+                      className="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600"
+                    >
                       <Pencil size={18} />
                     </button>
-                    <button onClick={() => handleDelete(berita.id)} className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600">
+                    
+                    <button
+                      onClick={() => handleDelete(berita.id)}
+                      className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600"
+                    >
                       <Trash2 size={18} />
                     </button>
                   </td>

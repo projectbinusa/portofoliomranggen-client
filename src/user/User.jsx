@@ -44,8 +44,7 @@ const User = () => {
         setUsers(users.filter((user) => user.id !== id));
 
         // ✅ Kirim notifikasi ke semua pengguna
-        sendNotification("Data user telah dihapus", "warning");
-
+        sendNotification("Data user berhasil dihapus", "warning");
         Swal.fire("Dihapus!", "Data user telah dihapus.", "success");
       } catch (error) {
         console.error("Error deleting user:", error);
@@ -69,13 +68,15 @@ const User = () => {
           <div className="flex justify-between items-center mb-4 mt-6">
             <h2 className="text-2xl font-bold text-gray-700">Daftar User</h2>
             <button
-              className="p-3 bg-green-500 text-white rounded-md hover:bg-green-600 flex items-center gap-2 transition"
-              onClick={() => {
-                sendNotification("Navigasi ke halaman tambah user", "info");
+              className="p-3 bg-green-500 text-white rounded-md hover:bg-green-600 flex items-center gap-2 transition tombol-tambah"
+              onClick={(e) => {
+                e.preventDefault();
+                console.log("Tombol tambah user diklik!"); // ✅ Debug
                 navigate("/tambah-user");
               }}
             >
               <FaPlus size={16} />
+              
             </button>
           </div>
           {isLoading ? (
@@ -140,10 +141,7 @@ const User = () => {
           {users.length > usersPerPage && (
             <div className="flex justify-center items-center mt-4 space-x-2">
               <button
-                onClick={() => {
-                  setCurrentPage(currentPage - 1);
-                  sendNotification(`Berpindah ke halaman ${currentPage - 1}`, "info");
-                }}
+                onClick={() => setCurrentPage(currentPage - 1)}
                 disabled={currentPage === 1}
                 className={`px-4 py-2 text-sm rounded-md ${
                   currentPage === 1
@@ -157,10 +155,7 @@ const User = () => {
                 Halaman {currentPage} dari {totalPages}
               </span>
               <button
-                onClick={() => {
-                  setCurrentPage(currentPage + 1);
-                  sendNotification(`Berpindah ke halaman ${currentPage + 1}`, "info");
-                }}
+                onClick={() => setCurrentPage(currentPage + 1)}
                 disabled={currentPage === totalPages}
                 className={`px-4 py-2 text-sm rounded-md ${
                   currentPage === totalPages

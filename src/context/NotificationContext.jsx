@@ -6,7 +6,7 @@ const NotificationContext = createContext();
 
 export const NotificationProvider = ({ children }) => {
   const [notifications, setNotifications] = useState(() => {
-    // 🔥 Load dari localStorage saat pertama kali dijalankan
+    // 🔥 Load notifikasi dari localStorage saat pertama kali dijalankan
     const savedNotifications = localStorage.getItem("notifications");
     return savedNotifications ? JSON.parse(savedNotifications) : [];
   });
@@ -14,28 +14,32 @@ export const NotificationProvider = ({ children }) => {
   const [stompClient, setStompClient] = useState(null);
   const [isConnected, setIsConnected] = useState(false);
 
+  // 🔥 Debug status koneksi WebSocket
   useEffect(() => {
     console.log("📡 Status WebSocket:", isConnected);
   }, [isConnected]);
 
+  // 🔥 Debug daftar notifikasi terbaru
   useEffect(() => {
     console.log("📢 Notifikasi terbaru di state:", notifications);
-    // 🔥 Simpan ke localStorage setiap ada perubahan notifikasi
+    // Simpan ke localStorage setiap ada perubahan notifikasi
     localStorage.setItem("notifications", JSON.stringify(notifications));
   }, [notifications]);
 
   useEffect(() => {
-    const socket = new SockJS("http://localhost:4321/ws"); // Sesuaikan URL WebSocket
+    const socket = new SockJS("http://localhost:4321/ws"); // Sesuaikan URL backend WebSocket
     const client = new Client({
       webSocketFactory: () => socket,
-      reconnectDelay: 5000,
+      reconnectDelay: 5000, // Reconnect otomatis jika koneksi putus
       debug: (msg) => console.log("🔧 STOMP Debug:", msg),
+
       onConnect: () => {
-        console.log("📡 WebSocket Connected!");
+        console.log("✅ WebSocket Connected!");
         setIsConnected(true);
 
+        // Subscribe ke topik notifikasi dari server
         client.subscribe("/topic/notifications", (message) => {
-          console.log("📩 Notifikasi diterima dari server:", message.body);
+          console.log("📩 Notifikasi diterima:", message.body);
           try {
             const newNotification = JSON.parse(message.body);
             setNotifications((prev) => [
@@ -47,13 +51,16 @@ export const NotificationProvider = ({ children }) => {
           }
         });
       },
+
       onDisconnect: () => {
         console.warn("⚠️ WebSocket Disconnected!");
         setIsConnected(false);
       },
+
       onStompError: (frame) => {
         console.error("❌ STOMP Error:", frame);
       },
+
       onWebSocketError: (event) => {
         console.error("🚨 WebSocket Connection Error:", event);
       },
@@ -79,7 +86,7 @@ export const NotificationProvider = ({ children }) => {
     setNotifications((prev) => [newNotification, ...prev]);
   };
 
-  // ✅ Fungsi untuk mengirim notifikasi ke backend
+  // ✅ Fungsi untuk mengirim notifikasi ke backend via STOMP
   const sendNotification = (message, type = "info") => {
     if (stompClient && isConnected) {
       const notification = {
@@ -88,11 +95,11 @@ export const NotificationProvider = ({ children }) => {
         timestamp: new Date().toISOString(),
       };
       stompClient.publish({
-        destination: "/app/notify",
+        destination: "/app/notify", // Pastikan sesuai dengan backend
         body: JSON.stringify(notification),
       });
     } else {
-      console.warn("⚠️ STOMP client not connected. Cannot send notification.");
+      console.warn("⚠️ STOMP client not connected. Tidak bisa mengirim notifikasi.");
     }
   };
 
@@ -107,7 +114,7 @@ export const NotificationProvider = ({ children }) => {
     >
       {children}
 
-      {/* 🔥 UI Notifikasi */}
+      {/* 🔥 UI Notifikasi di sudut kanan atas */}
       <div className="fixed top-4 right-4 z-50 space-y-2">
         {notifications.map((notif) => (
           <div
