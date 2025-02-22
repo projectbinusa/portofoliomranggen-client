@@ -1,14 +1,17 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import { FaPlus } from "react-icons/fa";
 import Sidebar from "../components/Sidebar";
 import { Pencil, Trash2, Search, X, Eye } from "lucide-react";
 import axios from "axios";
 import { API_GURU } from "../utils/BaseUrl";
 import Navbar from "../tampilan/Navbar";
+import { useNotification } from "../context/NotificationContext";
 
 const PageGuru = () => {
   const navigate = useNavigate();
+  const { sendNotification } = useNotification();
   const [searchTerm, setSearchTerm] = useState("");
   const [pageguru, setPageGuru] = useState([]);
 
@@ -30,6 +33,7 @@ const PageGuru = () => {
       if (result.isConfirmed) {
         axios.delete(`${API_GURU}/delete/${id}`)
           .then(() => {
+            sendNotification("data guru dihapus", "warning"); 
             setPageGuru(pageguru.filter(guru => guru.id !== id));
             Swal.fire("Dihapus!", "Data guru telah dihapus.", "success");
           })
@@ -51,7 +55,15 @@ const PageGuru = () => {
         <div className="container mx-auto p-4">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-bold">Daftar Guru</h2>
-            <button className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600" onClick={() => navigate("/tambah-guru")}>Tambah Guru</button>
+            <button 
+             onClick={() => {
+             navigate("/tambah-guru");
+             sendNotification("Menambah berita baru", "info");
+             }}
+             className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
+             >
+               <FaPlus size={16} />
+             </button>
           </div>
           <div className="relative w-1/3 mb-4">
             <input
@@ -93,11 +105,15 @@ const PageGuru = () => {
                             <Eye size={18} />
                           </button>
                         </Link>
-                        <Link to={`/edit-guru/${guru.id}`}>
-                          <button className="flex items-center gap-2 bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600">
-                            <Pencil size={18} />
-                          </button>
-                        </Link>
+                        <button
+                      onClick={() => {
+                        sendNotification("Mengedit data guru", "info"); // 🔔 Kirim notifikasi
+                        navigate(`/edit-guru/${guru.id}`);
+                      }}
+                      className="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600"
+                    >
+                      <Pencil size={18} />
+                    </button>
                         <button onClick={() => handleDeletePageGuru(guru.id)} className="flex items-center gap-2 bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600">
                           <Trash2 size={18} />
                         </button>

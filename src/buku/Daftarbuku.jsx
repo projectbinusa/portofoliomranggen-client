@@ -6,9 +6,11 @@ import Swal from "sweetalert2";
 import { API_BUKU } from "../utils/BaseUrl";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../tampilan/Navbar";
+import { useNotification } from "../context/NotificationContext";
 
 const DaftarBuku = () => {
   const [bukuList, setBukuList] = useState([]);
+  const { sendNotification } = useNotification();
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
 
@@ -54,6 +56,10 @@ const DaftarBuku = () => {
 
         Swal.fire("Terhapus!", "Buku berhasil dihapus.", "success");
         fetchBuku();
+
+        // Kirim notifikasi ke semua pengguna setelah buku dihapus
+        sendNotification(`📚 Buku telah dihapus`, `Sebuah buku telah dihapus dari daftar.`);
+
       } catch (error) {
         Swal.fire("Gagal!", error.message, "error");
       }
@@ -77,6 +83,7 @@ const DaftarBuku = () => {
     <div className="flex">
       <Sidebar />
       <Navbar />
+      
       <div className="flex-1 p-6 ml-48 pl-4">
         <div className="flex justify-between items-center mb-4 mt-6">
           <div className="relative w-1/3">
@@ -91,7 +98,10 @@ const DaftarBuku = () => {
           </div>
 
           <button
-            onClick={() => navigate("/tambah-buku")}
+            onClick={() => {
+              sendNotification("Menambah buku baru", "info"); // 🔔 Kirim notifikasi
+              navigate("/tambah-buku");
+            }}
             className="flex items-center gap-2 bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition"
           >
             <FaPlus size={16} />
@@ -137,7 +147,10 @@ const DaftarBuku = () => {
                       <Eye size={18} />
                     </button>
                     <button
-                      onClick={() => navigate(`/edit-buku/${buku.id}`)}
+                      onClick={() => {
+                        sendNotification("Mengedit buku", "info");
+                        navigate(`/edit-buku/${buku.id}`);
+                      }}
                       className="flex items-center gap-2 bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600 transition">
                       <Pencil size={18} />
                     </button>

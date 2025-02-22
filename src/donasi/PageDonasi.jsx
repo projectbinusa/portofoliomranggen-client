@@ -1,15 +1,18 @@
-import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import { FaPlus } from "react-icons/fa";
 import Sidebar from "../components/Sidebar";
 import { Pencil, Trash2, Search, X } from "lucide-react";
 import axios from "axios";
 import { API_DONASI } from "../utils/BaseUrl";
 import Navbar from "../tampilan/Navbar";
+import { useNotification } from "../context/NotificationContext";
 
 const PageDonasi = () => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
+  const { sendNotification } = useNotification();
   const [pageDonasi, setPageDonasi] = useState([]);
   const idAdmin = localStorage.getItem("adminId") || "";
 
@@ -35,6 +38,7 @@ const PageDonasi = () => {
           .then(() => {
             setPageDonasi(pageDonasi.filter((donasi) => donasi.id !== id));
             Swal.fire("Dihapus!", "Data donasi telah dihapus.", "success");
+            sendNotification("Data Donasi dihapus", "warning"); 
           })
           .catch(() =>
             Swal.fire("Gagal!", "Terjadi kesalahan saat menghapus data.", "error")
@@ -67,9 +71,12 @@ const PageDonasi = () => {
             <h2 className="text-xl font-bold">Daftar Donasi</h2>
             <button
               className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
-              onClick={() => navigate("/tambah-donasi")}
+              onClick={() => {
+                navigate("/tambah-donasi");
+                sendNotification("Menambahkan data donasi baru", "success");
+              }}
             >
-              Tambah Donasi
+               <FaPlus size={16} />
             </button>
           </div>
           <div className="relative w-1/3 mb-4">
@@ -113,11 +120,15 @@ const PageDonasi = () => {
                       <td className="px-6 py-4 border-r text-center">{donasi.jumlahDonasi ?? "-"}</td>
                       <td className="px-6 py-4 border-r text-center">{toCamelCase(donasi.deskripsi ?? "")}</td>
                       <td className="px-6 py-4 flex gap-2 justify-center">
-                        <Link to={`/edit-donasi/${donasi.id}`}>
-                          <button className="flex items-center gap-2 bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600">
-                            <Pencil size={18} />
-                          </button>
-                        </Link>
+                      <button
+                      onClick={() => {
+                        sendNotification("Mengedit data donasi", "info"); // 🔔 Kirim notifikasi
+                        navigate(`/edit-donasi/${donasi.id}`);
+                      }}
+                      className="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600"
+                    >
+                      <Pencil size={18} />
+                    </button>
                         <button
                           onClick={() => handleDeletePageDonasi(donasi.id)}
                           className="flex items-center gap-2 bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600"

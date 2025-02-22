@@ -1,13 +1,13 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import Sidebar from "../components/Sidebar";
 import { API_SISWA } from "../utils/BaseUrl";
-import { NotificationContext } from "../context/NotificationContext"; // 🔥 Import context
+import { useNotification } from "../context/NotificationContext"; // ✅ Import yang benar
 
 const TambahSiswa = () => {
   const navigate = useNavigate();
-  const { sendNotification } = useContext(NotificationContext); // 🔥 Gunakan sendNotification
+  const { addNotification } = useNotification(); // ✅ Gunakan useNotification
   const [loading, setLoading] = useState(false);
   const [siswa, setSiswa] = useState({
     nama: "",
@@ -22,7 +22,9 @@ const TambahSiswa = () => {
   const userLogin = sessionStorage.getItem("username") || "Admin"; // 🔥 Ambil user login
 
   const toCamelCase = (text) => {
-    return text.trim().toLowerCase()
+    return text
+      .trim()
+      .toLowerCase()
       .split(" ")
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(" ");
@@ -43,32 +45,33 @@ const TambahSiswa = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-
+  
+    // 🚨 Validasi input (hapus validasi 10 digit NISN)
     if (Object.values(siswa).some((value) => !value)) {
       Swal.fire("Error", "Semua kolom harus diisi!", "error");
       setLoading(false);
       return;
     }
-
+  
     if (!/^\d+$/.test(siswa.nisn)) {
-      Swal.fire("Error", "NISN harus berupa angka 10 digit!", "error");
+      Swal.fire("Error", "NISN hanya boleh berisi angka!", "error");
       setLoading(false);
       return;
     }
-
+  
     if (!/^\d+$/.test(siswa.nomerHp) || !/^\d+$/.test(siswa.nomerHpOrangtua)) {
       Swal.fire("Error", "Nomor HP hanya boleh berupa angka!", "error");
       setLoading(false);
       return;
     }
-
+  
     const today = new Date().toISOString().split("T")[0];
     if (siswa.tanggalLahir > today) {
       Swal.fire("Error", "Tanggal lahir tidak boleh di masa depan!", "error");
       setLoading(false);
       return;
     }
-
+  
     const siswaDTO = {
       id: 0,
       nama: toCamelCase(siswa.nama),
@@ -79,9 +82,9 @@ const TambahSiswa = () => {
       nomerHp: siswa.nomerHp,
       tanggalLahir: formatDate(siswa.tanggalLahir),
     };
-
+  
     console.log("📢 Data yang dikirim ke backend:", siswaDTO);
-
+  
     try {
       const response = await fetch(`${API_SISWA}/tambah`, {
         method: "POST",
@@ -90,17 +93,20 @@ const TambahSiswa = () => {
         },
         body: JSON.stringify(siswaDTO),
       });
-
+  
       const data = await response.json();
       console.log("✅ Response API:", data);
-
+  
       if (!response.ok) throw new Error(data.message || "Gagal menambahkan siswa");
-
+  
       // 🔥 Kirim notifikasi ke backend
-      sendNotification(`${userLogin} menambahkan siswa baru: ${siswaDTO.nama}`, "success");
-
-      Swal.fire("Sukses", "Data siswa berhasil ditambahkan!", "success");
-      setTimeout(() => navigate("/siswa"), 1000);
+      if (addNotification) {
+        addNotification(`${userLogin} menambahkan siswa baru: ${siswaDTO.nama}`, "success");
+      }
+  
+      Swal.fire("Sukses", "Data siswa berhasil ditambahkan!", "success").then(() => {
+        navigate("/siswa");
+      });
     } catch (error) {
       console.error("❌ Error saat menambahkan siswa:", error);
       Swal.fire("Error", error.message, "error");
@@ -108,7 +114,7 @@ const TambahSiswa = () => {
       setLoading(false);
     }
   };
-
+  
   return (
     <div className="flex h-screen overflow-hidden">
       <Sidebar />

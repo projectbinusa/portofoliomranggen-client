@@ -10,9 +10,9 @@ const API_USER = "http://localhost:4321/api/user"; // Pastikan backend berjalan
 
 const TambahUser = () => {
   const navigate = useNavigate();
-  const { sendNotification } = useNotification(); // ✅ Ambil fungsi notifikasi
+  const { sendNotification } = useNotification(); // ✅ Ganti dari sendNotification ke addNotification
   const [user, setUser] = useState({
-    adminId: "",
+    adminId: "", // Bisa diisi otomatis dari session jika perlu
     username: "",
     email: "",
     password: "",
@@ -49,7 +49,7 @@ const TambahUser = () => {
         });
       }
     } catch (error) {
-      console.error("❌ Error API:", error.response); // Debugging
+      console.error("❌ Error API:", error.response?.data || error.message || error); // Debugging
       Swal.fire("Gagal!", error.response?.data?.message || "Terjadi kesalahan di server.", "error");
     }
   };

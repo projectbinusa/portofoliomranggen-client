@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { API_STAFF } from "../utils/BaseUrl";
+import { API_STAFF, API_NOTIFICATION } from "../utils/BaseUrl"; // Pastikan API_NOTIFICATION sudah didefinisikan
 import Swal from "sweetalert2";
 import Sidebar from "../components/Sidebar";
+import { useNotification } from "../context/NotificationContext"; // Pastikan ini tersedia
 
+// Fungsi untuk mengubah teks menjadi format Camel Case
 const toCamelCase = (str) => {
   return str
     .toLowerCase()
@@ -23,19 +25,24 @@ const TambahStaff = () => {
   });
 
   const navigate = useNavigate();
+  const { sendNotification, isConnected } = useNotification(); // Gunakan notifikasi WebSocket
 
+  // Handle perubahan input
   const handleChange = (e) => {
     setStaff({ ...staff, [e.target.name]: e.target.value });
   };
 
+  // Handle submit form
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Validasi input tidak boleh kosong
     if (Object.values(staff).some((value) => !value)) {
       Swal.fire("Error", "Semua kolom harus diisi!", "error");
       return;
     }
 
+    // Format data sebelum dikirim
     const formattedData = {
       ...staff,
       nama: toCamelCase(staff.nama),
@@ -49,6 +56,7 @@ const TambahStaff = () => {
     };
 
     try {
+      // Kirim data staff ke backend
       const response = await fetch(`${API_STAFF}/tambah`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -58,6 +66,21 @@ const TambahStaff = () => {
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.message || "Gagal menambahkan staff");
+      }
+
+      // Jika WebSocket tersambung, kirim notifikasi langsung
+      if (isConnected) {
+        sendNotification(`Staff ${formattedData.nama} berhasil ditambahkan!`, "success");
+      } else {
+        // Jika WebSocket gagal, fallback ke request HTTP
+        await fetch(`${API_NOTIFICATION}/add`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            message: `Staff ${formattedData.nama} telah ditambahkan!`,
+            type: "success",
+          }),
+        });
       }
 
       Swal.fire("Sukses", "Data staf berhasil ditambahkan!", "success");
@@ -83,16 +106,14 @@ const TambahStaff = () => {
                   type={
                     key === "lamaKerja"
                       ? "number"
-                      : key.includes("Date")
+                      : key.includes("Date") || key.includes("awalBekerja")
                       ? "date"
                       : "text"
                   }
                   name={key}
                   value={staff[key]}
                   onChange={handleChange}
-                  placeholder={`Masukkan ${key
-                    .replace(/([A-Z])/g, " $1")
-                    .trim()}`}
+                  placeholder={`Masukkan ${key.replace(/([A-Z])/g, " $1").trim()}`}
                   className="p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
