@@ -3,9 +3,11 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import Sidebar from "../components/Sidebar";
 import { API_DONASI } from "../utils/BaseUrl";
+import { useNotification } from "../context/NotificationContext"; // ✅ Import notifikasi
 
 const TambahDonasi = () => {
   const navigate = useNavigate();
+  const { addNotification } = useNotification(); // ✅ Tambahkan sendNotification
   const idAdmin = localStorage.getItem("adminId") || "";
 
   const [formData, setFormData] = useState({
@@ -38,6 +40,9 @@ const TambahDonasi = () => {
       });
       const data = await response.json();
       if (!response.ok) throw new Error(data.message || "Gagal menambahkan donasi");
+
+      addNotification("Data donasi berhasil ditambahkan", "success"); // ✅ Kirim notifikasi sukses
+
       Swal.fire("Sukses", "Data donasi berhasil ditambahkan!", "success");
       setTimeout(() => navigate("/donasi"), 1000);
     } catch (error) {
@@ -49,12 +54,12 @@ const TambahDonasi = () => {
     <div className="flex h-screen overflow-hidden">
       <Sidebar />
       <div className="flex-1 flex items-center justify-center p-4">
-        <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-lg border border-gray-300">
+        <div className="bg-white shadow-md p-6 w-full max-w-lg border border-gray-300">
           <h2 className="text-xl font-bold mb-4 text-left">Tambah Donasi</h2>
           <form onSubmit={handleSubmit} className="space-y-4">
             {Object.keys(formData).map((key) => (
               <div key={key} className="flex flex-col">
-                <label className="w-1/3 text-gray-700 text-sm font-medium text-left capitalize">
+                <label className="text-gray-700 text-sm font-medium text-left capitalize">
                   {key.replace(/([A-Z])/g, " $1").trim()}
                 </label>
                 <input
@@ -63,7 +68,7 @@ const TambahDonasi = () => {
                   value={formData[key]}
                   onChange={handleChange}
                   placeholder={`Masukkan ${key.replace(/([A-Z])/g, " $1").trim()}`}
-                  className="p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="p-2 border focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
             ))}
@@ -71,13 +76,13 @@ const TambahDonasi = () => {
               <button
                 type="button"
                 onClick={() => navigate("/donasi")}
-                className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition"
+                className="px-4 py-2 bg-gray-500 text-white hover:bg-gray-600 transition"
               >
                 Batal
               </button>
               <button
                 type="submit"
-                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
+                className="px-4 py-2 bg-green-600 text-white hover:bg-green-700 transition"
               >
                 Simpan
               </button>

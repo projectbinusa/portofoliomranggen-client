@@ -6,7 +6,6 @@ const NotificationContext = createContext();
 
 export const NotificationProvider = ({ children }) => {
   const [notifications, setNotifications] = useState(() => {
-    // 🔥 Load notifikasi dari localStorage saat pertama kali dijalankan
     const savedNotifications = localStorage.getItem("notifications");
     return savedNotifications ? JSON.parse(savedNotifications) : [];
   });
@@ -14,30 +13,26 @@ export const NotificationProvider = ({ children }) => {
   const [stompClient, setStompClient] = useState(null);
   const [isConnected, setIsConnected] = useState(false);
 
-  // 🔥 Debug status koneksi WebSocket
   useEffect(() => {
     console.log("📡 Status WebSocket:", isConnected);
   }, [isConnected]);
 
-  // 🔥 Debug daftar notifikasi terbaru
   useEffect(() => {
-    console.log("📢 Notifikasi terbaru di state:", notifications);
-    // Simpan ke localStorage setiap ada perubahan notifikasi
+    console.log("📢 Notifikasi terbaru:", notifications);
     localStorage.setItem("notifications", JSON.stringify(notifications));
   }, [notifications]);
 
   useEffect(() => {
-    const socket = new SockJS("http://localhost:4321/ws"); // Sesuaikan URL backend WebSocket
+    const socket = new SockJS("http://localhost:4321/ws");
     const client = new Client({
       webSocketFactory: () => socket,
-      reconnectDelay: 5000, // Reconnect otomatis jika koneksi putus
+      reconnectDelay: 5000,
       debug: (msg) => console.log("🔧 STOMP Debug:", msg),
 
       onConnect: () => {
         console.log("✅ WebSocket Connected!");
         setIsConnected(true);
 
-        // Subscribe ke topik notifikasi dari server
         client.subscribe("/topic/notifications", (message) => {
           console.log("📩 Notifikasi diterima:", message.body);
           try {
@@ -75,7 +70,6 @@ export const NotificationProvider = ({ children }) => {
     };
   }, []);
 
-  // ✅ Fungsi untuk menambah notifikasi ke state
   const addNotification = (message, type = "info") => {
     const newNotification = {
       id: Date.now(),
@@ -86,16 +80,11 @@ export const NotificationProvider = ({ children }) => {
     setNotifications((prev) => [newNotification, ...prev]);
   };
 
-  // ✅ Fungsi untuk mengirim notifikasi ke backend via STOMP
   const sendNotification = (message, type = "info") => {
     if (stompClient && isConnected) {
-      const notification = {
-        message,
-        type,
-        timestamp: new Date().toISOString(),
-      };
+      const notification = { message, type, timestamp: new Date().toISOString() };
       stompClient.publish({
-        destination: "/app/notify", // Pastikan sesuai dengan backend
+        destination: "/app/notify",
         body: JSON.stringify(notification),
       });
     } else {
@@ -103,46 +92,15 @@ export const NotificationProvider = ({ children }) => {
     }
   };
 
-  // ✅ Fungsi untuk menghapus notifikasi dari UI
   const removeNotification = (id) => {
     setNotifications((prev) => prev.filter((notif) => notif.id !== id));
   };
 
   return (
-    <NotificationContext.Provider
-      value={{ notifications, addNotification, sendNotification, removeNotification }}
-    >
+    <NotificationContext.Provider value={{ notifications, addNotification, sendNotification, removeNotification }}>
       {children}
-
-      {/* 🔥 UI Notifikasi di sudut kanan atas */}
-      <div className="fixed top-4 right-4 z-50 space-y-2">
-        {notifications.map((notif) => (
-          <div
-            key={notif.id}
-            className={`p-3 rounded-md shadow-md text-white ${
-              notif.type === "info"
-                ? "bg-blue-500"
-                : notif.type === "success"
-                ? "bg-green-500"
-                : notif.type === "warning"
-                ? "bg-yellow-500"
-                : "bg-red-500"
-            }`}
-          >
-            {notif.message}
-            <button
-              className="ml-2 text-sm text-gray-200 hover:text-white"
-              onClick={() => removeNotification(notif.id)}
-            >
-              ✖
-            </button>
-          </div>
-        ))}
-      </div>
     </NotificationContext.Provider>
   );
 };
 
-// ✅ Hook untuk menggunakan context di komponen lain
 export const useNotification = () => useContext(NotificationContext);
-export { NotificationContext };

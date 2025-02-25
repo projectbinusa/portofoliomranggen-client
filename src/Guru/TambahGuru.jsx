@@ -3,9 +3,11 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import Sidebar from "../components/Sidebar";
 import { API_GURU } from "../utils/BaseUrl";
+import { useNotification } from "../context/NotificationContext"; // ✅ Import notifikasi
 
 const TambahGuru = () => {
   const navigate = useNavigate();
+  const { addNotification } = useNotification(); // ✅ Tambahkan sendNotification
   const idAdmin = localStorage.getItem("adminId") || "";
 
   const [formData, setFormData] = useState({
@@ -55,6 +57,9 @@ const TambahGuru = () => {
       });
       const data = await response.json();
       if (!response.ok) throw new Error(data.message || "Gagal menambahkan data guru");
+
+      addNotification("Data guru berhasil ditambahkan", "success"); // ✅ Kirim notifikasi sukses
+
       Swal.fire("Sukses", "Data guru berhasil ditambahkan!", "success");
       setTimeout(() => navigate("/guru"), 1000);
     } catch (error) {

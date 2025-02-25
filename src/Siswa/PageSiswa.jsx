@@ -12,7 +12,7 @@ const API_SISWA = "http://localhost:4321/api/siswa";
 
 const PageSiswa = () => {
   const navigate = useNavigate();
-  const { sendNotification } = useNotification();  // ✅ Ganti addNotification dengan sendNotification
+  const { sendNotification } = useNotification();
   const [searchTerm, setSearchTerm] = useState("");
   const [students, setStudents] = useState([]);
 
@@ -41,7 +41,7 @@ const PageSiswa = () => {
           .delete(`${API_SISWA}/delete/${id}`)
           .then(() => {
             fetchStudents();
-            sendNotification("Data siswa berhasil dihapus", "warning"); // ✅ Gunakan sendNotification
+            sendNotification("Data siswa berhasil dihapus", "warning");
             Swal.fire("Dihapus!", "Data siswa telah dihapus.", "success");
           })
           .catch(() =>
@@ -51,7 +51,6 @@ const PageSiswa = () => {
     });
   };
 
-  // Filter data siswa berdasarkan pencarian
   const filteredStudents = students.filter((student) =>
     Object.values(student).some((val) =>
       String(val).toLowerCase().includes(searchTerm.toLowerCase())
@@ -66,10 +65,10 @@ const PageSiswa = () => {
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-bold text-gray-900 dark:text-white">Daftar Siswa</h2>
           <button
-            className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
+            className="bg-green-500 text-white px-4 py-2 hover:bg-green-600"
             onClick={() => {
               navigate("/tambah-siswa");
-              sendNotification("Menambahkan data siswa baru", "success"); // ✅ Gunakan sendNotification
+              sendNotification("Menambahkan data siswa baru", "success");
             }}
           >
             <FaPlus size={16} />
@@ -83,7 +82,7 @@ const PageSiswa = () => {
             placeholder="Cari berdasarkan semua data..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full px-10 py-2 border border-gray-400 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-1 focus:ring-gray-400"
+            className="w-full px-10 py-2 border border-gray-400 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-1 focus:ring-gray-400"
           />
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600 dark:text-gray-300 w-5 h-5" />
           {searchTerm && (
@@ -97,7 +96,7 @@ const PageSiswa = () => {
         </div>
 
         {/* 📌 Tabel Siswa */}
-        <div className="relative overflow-x-auto shadow-md rounded-lg bg-white dark:bg-gray-800">
+        <div className="relative overflow-x-auto shadow-md bg-white dark:bg-gray-800">
           <table className="w-full text-sm text-gray-700 dark:text-gray-300 border border-gray-400 dark:border-gray-600">
             <thead className="text-xs font-bold uppercase bg-gray-200 dark:bg-gray-700 border-b border-gray-500">
               <tr>
@@ -120,18 +119,18 @@ const PageSiswa = () => {
                     ))}
                     <td className="px-6 py-4 flex gap-2 justify-center">
                       <Link to={`/detail-siswa/${student.id}`}>
-                        <button className="flex items-center gap-2 bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-600">
+                        <button className="flex items-center gap-2 bg-yellow-500 text-white px-3 py-1 hover:bg-yellow-600">
                           <Eye size={18} />
                         </button>
                       </Link>
                       <Link to={`/edit-siswa/${student.id}`}>
-                        <button className="flex items-center gap-2 bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600">
+                        <button className="flex items-center gap-2 bg-blue-500 text-white px-3 py-1 hover:bg-blue-600">
                           <Pencil size={18} />
                         </button>
                       </Link>
                       <button
                         onClick={() => handleDeleteStudent(student.id)}
-                        className="flex items-center gap-2 bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600"
+                        className="flex items-center gap-2 bg-red-500 text-white px-3 py-1 hover:bg-red-600"
                       >
                         <Trash2 size={18} />
                       </button>

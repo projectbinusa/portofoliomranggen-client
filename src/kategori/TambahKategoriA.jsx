@@ -4,10 +4,12 @@ import Swal from "sweetalert2";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
 import Sidebar from "../components/Sidebar";
+import { useNotification } from "../context/NotificationContext"; // 🔔 Import Notifikasi
 
 const TambahKategoriA = () => {
   const [namaKategori, setNamaKategori] = useState("");
   const navigate = useNavigate();
+  const { addNotification } = useNotification(); // 🔔 Inisialisasi Notifikasi
 
   const toCamelCase = (str) => str.toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase());
 
@@ -24,9 +26,20 @@ const TambahKategoriA = () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ id: 0, namaKategori: formattedKategori }),
     })
-      .then((response) => response.ok ? response.json() : Promise.reject("Gagal menambahkan kategori"))
-      .then(() => Swal.fire("Sukses", "Kategori berhasil ditambahkan", "success").then(() => navigate("/page-kategori")))
-      .catch(() => Swal.fire("Error", "Terjadi kesalahan saat menambahkan kategori", "error"));
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          return Promise.reject("Gagal menambahkan kategori");
+        }
+      })
+      .then(() => {
+        addNotification("Kategori baru ditambahkan", "success"); // 🔔 Kirim Notifikasi
+        Swal.fire("Sukses", "Kategori berhasil ditambahkan", "success").then(() => navigate("/page-kategori"));
+      })
+      .catch(() => {
+        Swal.fire("Error", "Terjadi kesalahan saat menambahkan kategori", "error");
+      });
   };
 
   return (
@@ -46,10 +59,17 @@ const TambahKategoriA = () => {
             />
           </div>
           <div className="flex justify-between">
-            <button type="button" className="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 border-2 border-gray-700 flex items-center gap-2" onClick={() => navigate("/page-kategori")}>
+            <button
+              type="button"
+              className="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 border-2 border-gray-700 flex items-center gap-2"
+              onClick={() => navigate("/page-kategori")}
+            >
               <FontAwesomeIcon icon={faArrowLeft} className="text-lg" />
             </button>
-            <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 border-2 border-gray-700 flex items-center gap-2">
+            <button
+              type="submit"
+              className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 border-2 border-gray-700 flex items-center gap-2"
+            >
               <FontAwesomeIcon icon={faFloppyDisk} className="text-lg" />
             </button>
           </div>
