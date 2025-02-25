@@ -4,10 +4,13 @@ import axios from "axios";
 import Sidebar from "../components/Sidebar";
 import { API_ORGANISASI } from "../utils/BaseUrl";
 import { useParams, useNavigate } from "react-router-dom";
+import { useNotification } from "../context/NotificationContext"; // 🔔 Import Notifikasi
 
 const EditOrganisasi = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { addNotification } = useNotification(); // 🔔 Inisialisasi Notifikasi
+
   const [organisasi, setOrganisasi] = useState({
     namaOrganisasi: "",
     lokasi: "",
@@ -52,6 +55,8 @@ const EditOrganisasi = () => {
         organisasi
       );
       if (response.status === 200) {
+        addNotification("Data organisasi berhasil diperbarui", "info"); // 🔔 Kirim Notifikasi
+
         Swal.fire(
           "Sukses!",
           "Data organisasi berhasil diperbarui.",

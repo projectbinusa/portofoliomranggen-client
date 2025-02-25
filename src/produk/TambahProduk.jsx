@@ -4,6 +4,7 @@ import Swal from "sweetalert2";
 import { API_PRODUK } from "../utils/BaseUrl";
 import UploadFoto from "../upload/UploadFoto";
 import Sidebar from "../components/Sidebar";
+import { useNotification } from "../context/NotificationContext"; // 🔔 Import Notifikasi
 
 const TambahProduk = () => {
   const [produk, setProduk] = useState({
@@ -16,6 +17,7 @@ const TambahProduk = () => {
 
   const [isUploading, setIsUploading] = useState(false);
   const navigate = useNavigate();
+  const { addNotification } = useNotification(); // 🔔 Inisialisasi Notifikasi
 
   const handleChange = (e) => {
     setProduk({ ...produk, [e.target.name]: e.target.value });
@@ -69,6 +71,7 @@ const TambahProduk = () => {
         icon: "success",
         confirmButtonText: "Ok",
       }).then(() => {
+        addNotification(`Produk "${produk.nama}" telah ditambahkan.`, "success"); // 🔔 Kirim Notifikasi
         navigate("/produk");
       });
     } catch (error) {

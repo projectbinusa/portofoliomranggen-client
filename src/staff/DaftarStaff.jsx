@@ -9,7 +9,7 @@ import Navbar from "../tampilan/Navbar";
 
 const DaftarStaff = () => {
   const [staffData, setStaffData] = useState([]);
-  const { addNotification } = useNotification();
+  const { sendNotification } = useNotification(); // 🔔 Pakai notifikasi
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
 
@@ -38,7 +38,7 @@ const DaftarStaff = () => {
           .then((response) => {
             if (response.ok) {
               setStaffData(staffData.filter((staff) => staff.id !== id));
-              addNotification("Data staf berhasil dihapus", "warning");
+              sendNotification("Data staf berhasil dihapus", "warning"); // 🔔 Notifikasi hapus
               Swal.fire("Dihapus!", "Data staf telah dihapus.", "success");
             } else {
               Swal.fire("Gagal!", "Gagal menghapus data staf.", "error");
@@ -81,7 +81,10 @@ const DaftarStaff = () => {
             <h2 className="text-xl font-bold">Daftar Staff</h2>
             <button
               className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
-              onClick={() => navigate("/tambah-staff")}
+              onClick={() => {
+                navigate("/tambah-staff");
+                senNotification("Form tambah staf dibuka", "info"); // 🔔 Notifikasi buka form
+              }}
             >
               Tambah Staff
             </button>

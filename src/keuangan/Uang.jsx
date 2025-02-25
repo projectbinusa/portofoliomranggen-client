@@ -6,6 +6,7 @@ import Sidebar from "../components/Sidebar";
 import Swal from "sweetalert2";
 import { API_KEUANGAN } from "../utils/BaseUrl";
 import Navbar from "../tampilan/Navbar";
+import { useNotification } from "../context/NotificationContext"; // 🔔 Import Notifikasi
 
 const toTitleCase = (str) => {
   if (!str) return "";
@@ -24,6 +25,7 @@ const Uang = () => {
   const [keuanganData, setKeuanganData] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
+  const { sendNotification } = useNotification(); // 🔔 Inisialisasi Notifikasi
 
   useEffect(() => {
     fetch(`${API_KEUANGAN}/all`)
@@ -46,21 +48,19 @@ const Uang = () => {
       cancelButtonColor: "#3085d6",
       confirmButtonText: "Hapus",
       cancelButtonText: "Batal",
-    }).then((result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
-        fetch(`${API_KEUANGAN}/delete/${id}`, { method: "DELETE" })
-          .then((response) => {
-            if (response.ok) {
-              setKeuanganData((prevData) => prevData.filter((item) => item.id !== id));
-              Swal.fire("Dihapus!", "Data keuangan telah dihapus.", "success");
-            } else {
-              Swal.fire("Gagal!", "Gagal menghapus data keuangan.", "error");
-            }
-          })
-          .catch((error) => {
-            console.error("Error deleting data:", error);
-            Swal.fire("Gagal!", "Terjadi kesalahan saat menghapus data.", "error");
-          });
+        try {
+          await fetch(`${API_KEUANGAN}/delete/${id}`, { method: "DELETE" });
+          setKeuanganData((prevData) => prevData.filter((item) => item.id !== id));
+          
+          sendNotification("Data keuangan berhasil dihapus", "error"); // 🔔 Kirim Notifikasi
+          
+          Swal.fire("Dihapus!", "Data keuangan telah dihapus.", "success");
+        } catch (error) {
+          console.error("Error deleting data:", error);
+          Swal.fire("Gagal!", "Terjadi kesalahan saat menghapus data.", "error");
+        }
       }
     });
   };
@@ -76,7 +76,7 @@ const Uang = () => {
       <Sidebar />
       <Navbar />
       <div className="flex-1 p-6 ml-64">
-        <div className="flex justify-between items-center mb-4  mt-6">
+        <div className="flex justify-between items-center mb-4 mt-6">
           <div className="relative flex-1 max-w-md">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" size={18} />
             <input

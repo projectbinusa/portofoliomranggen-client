@@ -1,115 +1,134 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import axios from "axios";
-import "font-awesome/css/font-awesome.min.css"; // Import FontAwesome
 import Sidebar from "../components/Sidebar";
-import { useNotification } from "../context/NotificationContext"; // ✅ Import Notifikasi
-
-const API_USER = "http://localhost:4321/api/user"; // Pastikan backend berjalan
+import { API_USER } from "../utils/BaseUrl";
+import { useNotification } from "../context/NotificationContext"; // ✅ Import yang benar
 
 const TambahUser = () => {
   const navigate = useNavigate();
-  const { sendNotification } = useNotification(); // ✅ Ganti dari sendNotification ke addNotification
+  const { addNotification } = useNotification(); // ✅ Gunakan useNotification
+  const [loading, setLoading] = useState(false);
   const [user, setUser] = useState({
-    adminId: "", // Bisa diisi otomatis dari session jika perlu
+    adminId: "",
     username: "",
     email: "",
     password: "",
   });
-  const [showPassword, setShowPassword] = useState(false);
 
-  // Handle input change
+  const userLogin = sessionStorage.getItem("username") || "Admin"; // 🔥 Ambil user login
+
   const handleChange = (e) => {
-    setUser({ ...user, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setUser((prev) => ({ ...prev, [name]: value.trim() }));
   };
 
-  // Handle submit
+  const isValidEmail = (email) => /\S+@\S+\.\S+/.test(email);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
-    console.log("🚀 Data yang dikirim:", user); // Debugging
+    // 🚨 Validasi input
+    if (Object.values(user).some((value) => !value)) {
+      Swal.fire("Error", "Semua kolom harus diisi!", "error");
+      setLoading(false);
+      return;
+    }
 
-    // Validasi input
-    if (!user.adminId || !user.username || !user.email || !user.password) {
-      Swal.fire("Gagal!", "Semua field harus diisi.", "error");
+    if (!isValidEmail(user.email)) {
+      Swal.fire("Error", "Format email tidak valid!", "error");
+      setLoading(false);
+      return;
+    }
+
+    if (user.password.length < 6) {
+      Swal.fire("Error", "Password minimal 6 karakter!", "error");
+      setLoading(false);
       return;
     }
 
     try {
-      const response = await axios.post(`${API_USER}/tambah`, user);
-      console.log("✅ Response API:", response); // Debugging
+      const response = await fetch(`${API_USER}/tambah`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(user),
+      });
 
-      if (response.status === 200 || response.status === 201) {
-        // ✅ Kirim notifikasi setelah berhasil menambahkan user
-        sendNotification(`User ${user.username} berhasil ditambahkan`, "success");
+      const data = await response.json();
+      console.log("✅ Response API:", data);
 
-        Swal.fire("Sukses!", "User berhasil ditambahkan.", "success").then(() => {
-          navigate("/user");
-        });
+      if (!response.ok) throw new Error(data.message || "Gagal menambahkan user");
+
+      // 🔥 Kirim notifikasi ke backend
+      if (addNotification) {
+        addNotification(`${userLogin} menambahkan user baru: ${user.username}`, "success");
       }
+
+      Swal.fire("Sukses", "User berhasil ditambahkan!", "success").then(() => {
+        navigate("/user");
+      });
     } catch (error) {
-      console.error("❌ Error API:", error.response?.data || error.message || error); // Debugging
-      Swal.fire("Gagal!", error.response?.data?.message || "Terjadi kesalahan di server.", "error");
+      console.error("❌ Error saat menambahkan user:", error);
+      Swal.fire("Error", error.message, "error");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div className="flex h-screen overflow-hidden">
       <Sidebar />
-      <div className="flex-1 flex flex-col justify-center items-center p-6">
-        <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-md">
-          <h2 className="text-xl font-semibold mb-6 text-gray-800 text-center">Tambah User</h2>
+      <div className="flex-1 flex items-center justify-center p-4">
+        <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-lg border border-gray-300">
+          <h2 className="text-xl font-bold mb-4 text-left">Tambah User</h2>
           <form onSubmit={handleSubmit} className="space-y-4">
-            {[{ label: "Admin ID", name: "adminId", type: "number" },
+            {[
+              { label: "Admin ID", name: "adminId", type: "number" },
               { label: "Username", name: "username", type: "text" },
-              { label: "Email", name: "email", type: "email" }].map(({ label, name, type }) => (
-              <div key={name} className="flex flex-col items-start">
-                <label className="text-sm text-gray-600 font-medium mb-1">{label}</label>
+              { label: "Email", name: "email", type: "email" },
+            ].map(({ label, name, type }) => (
+              <div key={name} className="flex flex-col">
+                <label className="text-gray-700 text-sm font-medium text-left">{label}</label>
                 <input
                   type={type}
                   name={name}
                   value={user[name]}
                   onChange={handleChange}
-                  className="border rounded-md p-2 focus:ring-2 focus:ring-blue-500 w-full"
+                  className="p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
             ))}
 
-            {/* Input Password dengan Icon Mata */}
-            <div className="flex flex-col items-start relative">
-              <label className="text-sm text-gray-600 font-medium mb-1">Password</label>
-              <div className="relative w-full">
-                <input
-                  type={showPassword ? "text" : "password"}
-                  name="password"
-                  value={user.password}
-                  onChange={handleChange}
-                  className="border rounded-md p-2 focus:ring-2 focus:ring-blue-500 w-full pr-10"
-                />
-                <button
-                  type="button"
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-600"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  <i className={`fa ${showPassword ? "fa-eye" : "fa-eye-slash"}`} />
-                </button>
-              </div>
+            {/* Input Password */}
+            <div className="flex flex-col">
+              <label className="text-gray-700 text-sm font-medium text-left">Password</label>
+              <input
+                type="password"
+                name="password"
+                value={user.password}
+                onChange={handleChange}
+                className="p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
             </div>
 
-            <div className="flex justify-between mt-4">
+            <div className="flex justify-between space-x-4 mt-6">
               <button
                 type="button"
-                className="bg-gray-400 text-white px-4 py-2 rounded-md hover:bg-gray-500"
                 onClick={() => navigate("/user")}
+                className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition"
+                disabled={loading}
               >
                 Batal
               </button>
               <button
                 type="submit"
-                className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
+                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
+                disabled={loading}
               >
-                Simpan
+                {loading ? "Menyimpan..." : "Simpan"}
               </button>
             </div>
           </form>

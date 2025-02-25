@@ -6,6 +6,7 @@ import Sidebar from "../components/Sidebar";
 import Swal from "sweetalert2";
 import { API_KELAS } from "../utils/BaseUrl";
 import Navbar from "../tampilan/Navbar";
+import { useNotification } from "../context/NotificationContext"; // 🔔 Import Notifikasi
 
 const toTitleCase = (str) => {
   if (!str) return "";
@@ -20,6 +21,7 @@ const KategoriKelas = () => {
   const [kelasData, setKelasData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
+  const { sendNotification } = useNotification(); // 🔔 Inisialisasi Notifikasi
 
   useEffect(() => {
     fetch(`${API_KELAS}/all`)
@@ -47,6 +49,9 @@ const KategoriKelas = () => {
         try {
           await fetch(`${API_KELAS}/delete/${id}`, { method: "DELETE" });
           setKelasData((prevData) => prevData.filter((kelas) => kelas.id !== id));
+          
+          sendNotification("Kategori kelas berhasil dihapus", "error"); // 🔔 Kirim Notifikasi
+          
           Swal.fire("Dihapus!", "Kategori kelas telah dihapus.", "success");
         } catch (error) {
           console.error("Error deleting kelas:", error);
@@ -66,7 +71,7 @@ const KategoriKelas = () => {
       <Navbar />
 
       <div className="flex-1 p-6 ml-48 pl-4">
-        <div className="flex justify-between items-center mb-4  mt-6">
+        <div className="flex justify-between items-center mb-4 mt-6">
           <div className="relative w-1/3">
             <input
               type="text"

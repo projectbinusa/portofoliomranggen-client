@@ -5,10 +5,12 @@ import axios from "axios";
 import { API_PRODUK } from "../utils/BaseUrl";
 import UploadFoto from "../upload/UploadFoto";
 import Sidebar from "../components/Sidebar";
+import { useNotification } from "../context/NotificationContext"; // 🔔 Import Notifikasi
 
 const EditProduk = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { addNotification } = useNotification(); // 🔔 Inisialisasi Notifikasi
 
   const [produk, setProduk] = useState({
     nama: "",
@@ -72,6 +74,7 @@ const EditProduk = () => {
     try {
       await axios.put(`${API_PRODUK}/editById/${id}`, produk);
       Swal.fire("Sukses!", "Data produk berhasil diperbarui.", "success").then(() => {
+        addNotification(`Produk "${produk.nama}" telah diperbarui.`, "info"); // 🔔 Kirim Notifikasi
         navigate("/produk");
       });
     } catch (error) {
@@ -81,9 +84,9 @@ const EditProduk = () => {
   };
 
   return (
-   <div className="flex h-screen overflow-hidden">
-         <Sidebar />
-         <div className="flex-1 flex items-center justify-center pl-64 p-4">
+    <div className="flex h-screen overflow-hidden">
+      <Sidebar />
+      <div className="flex-1 flex items-center justify-center pl-64 p-4">
         <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-4xl border border-gray-300">
           <h2 className="text-xl font-bold mb-4 text-left">Edit Produk</h2>
           <form onSubmit={handleSubmit} className="space-y-4">

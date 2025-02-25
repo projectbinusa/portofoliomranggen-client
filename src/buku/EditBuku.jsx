@@ -5,10 +5,12 @@ import axios from "axios";
 import Sidebar from "../components/Sidebar";
 import { API_BUKU } from "../utils/BaseUrl";
 import UploadFoto from "../upload/UploadFoto";
+import { useNotification } from "../context/NotificationContext"; // ✅ Import notifikasi
 
 const EditBuku = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { addNotification } = useNotification(); // ✅ Tambahkan sendNotification
 
   const [buku, setBuku] = useState({
     judulBuku: "",
@@ -21,6 +23,7 @@ const EditBuku = () => {
   });
 
   const [isUploading, setIsUploading] = useState(false); // Status upload foto
+
   useEffect(() => {
     const fetchBuku = async () => {
       try {
@@ -75,6 +78,9 @@ const EditBuku = () => {
 
     try {
       await axios.put(`${API_BUKU}/editByid/${id}`, buku);
+
+      addNotification("Data buku berhasil diperbarui", "success"); // ✅ Kirim notifikasi sukses
+
       Swal.fire({
         title: "Sukses!",
         text: "Data buku berhasil diperbarui.",
@@ -97,11 +103,12 @@ const EditBuku = () => {
     <div className="flex h-screen overflow-hidden">
       <Sidebar />
       <div className="flex-1 flex items-center justify-center pl-64 p-4">
-        <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-4xl border border-gray-300">
+        <div className="bg-white shadow-md p-6 w-full max-w-4xl border border-gray-300">
           <h2 className="text-xl font-bold mb-4 text-left">Edit Buku</h2>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {[{ label: "Judul Buku", name: "judulBuku", type: "text" },
+              {[
+                { label: "Judul Buku", name: "judulBuku", type: "text" },
                 { label: "Penerbit", name: "penerbit", type: "text" },
                 { label: "Pengarang", name: "pengarang", type: "text" },
                 { label: "Tahun Terbit", name: "tahunTerbit", type: "number" },
@@ -110,14 +117,16 @@ const EditBuku = () => {
                 { label: "Foto Buku (URL)", name: "fotoUrl", type: "text" },
               ].map((field) => (
                 <div key={field.name} className="flex flex-col">
-                  <label className="text-gray-700 text-sm font-medium text-left capitalize">{field.label}</label>
+                  <label className="text-gray-700 text-sm font-medium text-left capitalize">
+                    {field.label}
+                  </label>
                   <input
                     type={field.type}
                     name={field.name}
                     value={buku[field.name]}
                     onChange={handleChange}
                     placeholder={`Masukkan ${field.label}`}
-                    className="p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="p-2 border focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
               ))}
@@ -136,14 +145,14 @@ const EditBuku = () => {
               <button
                 type="button"
                 onClick={() => navigate("/buku")}
-                className="px-4 py-2 bg-gray-500
-                 text-white rounded-lg hover:bg-gray-600 transition">
+                className="px-4 py-2 bg-gray-500 text-white hover:bg-gray-600 transition"
+              >
                 Batal
               </button>
               <button
                 type="submit"
-                className="px-4 py-2 bg-green-600
-                 text-white rounded-lg hover:bg-green-700 transition">
+                className="px-4 py-2 bg-green-600 text-white hover:bg-green-700 transition"
+              >
                 Simpan
               </button>
             </div>
