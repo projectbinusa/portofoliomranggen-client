@@ -4,8 +4,10 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import Sidebar from "../components/Sidebar";
 import { Eye, EyeOff } from "lucide-react";
+import { useNotification } from "../context/NotificationContext"; // Import WebSocket Notifikasi
 
 const API_USER = "http://localhost:4321/api/user";
+const API_NOTIFICATION = "http://localhost:4321/api/notification"; // Endpoint notifikasi
 
 const EditUser = () => {
   const navigate = useNavigate();
@@ -14,6 +16,8 @@ const EditUser = () => {
   const [originalUser, setOriginalUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
+  
+  const { addNotification, isConnected } = useNotification(); // Gunakan WebSocket untuk notifikasi
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -39,10 +43,25 @@ const EditUser = () => {
     return JSON.stringify(user) !== JSON.stringify(originalUser);
   };
 
+  const isValidEmail = (email) => {
+    return /\S+@\S+\.\S+/.test(email);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!user.username || !user.email || !user.password) {
-      Swal.fire("Gagal!", "Semua field harus diisi.", "error");
+
+    if (!user.username.trim() || !user.email.trim() || !user.password.trim()) {
+      Swal.fire("Peringatan", "Semua field harus diisi!", "warning");
+      return;
+    }
+
+    if (!isValidEmail(user.email)) {
+      Swal.fire("Peringatan", "Format email tidak valid!", "warning");
+      return;
+    }
+
+    if (user.password.length < 6) {
+      Swal.fire("Peringatan", "Password minimal 6 karakter!", "warning");
       return;
     }
 
@@ -55,6 +74,17 @@ const EditUser = () => {
       const response = await axios.put(`${API_USER}/edit/${id}`, user);
 
       if (response.status === 200) {
+        // Kirim notifikasi jika WebSocket terhubung
+        if (isConnected) {
+          addNotification(`User ${user.username} berhasil diperbarui!`, "success");
+        } else {
+          // Jika WebSocket gagal, fallback ke HTTP request
+          await axios.post(`${API_NOTIFICATION}/add`, {
+            message: `User ${user.username} telah diperbarui!`,
+            type: "success",
+          });
+        }
+
         Swal.fire("Sukses!", "Data user berhasil diperbarui.", "success").then(() => {
           navigate("/user");
         });
@@ -72,22 +102,27 @@ const EditUser = () => {
         <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-md">
           <h2 className="text-2xl font-semibold mb-6 text-center">Edit User</h2>
           {isLoading ? (
-            <p className="text-center">Loading...</p>
+            <p className="text-center text-gray-600">Loading data user...</p>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
-              {[{ label: "Username", name: "username", type: "text" }, { label: "Email", name: "email", type: "email" }].map(({ label, name, type }) => (
-                <div key={name} className="flex flex-col items-start">
+              {/* Input Username & Email */}
+              {[
+                { label: "Username", name: "username", type: "text" },
+                { label: "Email", name: "email", type: "email" },
+              ].map(({ label, name, type }) => (
+                <div key={name} className="flex flex-col">
                   <label className="text-sm text-gray-600 font-medium mb-1">{label}</label>
                   <input
                     type={type}
                     name={name}
                     value={user[name]}
                     onChange={handleChange}
-                    className="mt-1 border rounded-md p-2 w-full"
+                    className="border rounded-md p-2 w-full focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
               ))}
-              <div className="flex flex-col items-start relative">
+              {/* Input Password */}
+              <div className="flex flex-col relative">
                 <label className="text-sm text-gray-600 font-medium mb-1">Password</label>
                 <div className="relative w-full">
                   <input
@@ -95,7 +130,7 @@ const EditUser = () => {
                     name="password"
                     value={user.password}
                     onChange={handleChange}
-                    className="border rounded-md p-2 focus:ring-2 focus:ring-blue-500 w-full pr-10"
+                    className="border rounded-md p-2 w-full pr-10 focus:ring-2 focus:ring-blue-500"
                   />
                   <button
                     type="button"
@@ -106,17 +141,18 @@ const EditUser = () => {
                   </button>
                 </div>
               </div>
+              {/* Tombol Simpan & Batal */}
               <div className="flex justify-between mt-4">
                 <button
                   type="button"
-                  className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600"
+                  className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition"
                   onClick={() => navigate("/user")}
                 >
                   Batal
                 </button>
                 <button
                   type="submit"
-                  className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+                  className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition"
                 >
                   Simpan
                 </button>

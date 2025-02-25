@@ -1,20 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { API_STAFF, API_NOTIFICATION } from "../utils/BaseUrl"; // Pastikan API_NOTIFICATION sudah didefinisikan
 import Swal from "sweetalert2";
 import Sidebar from "../components/Sidebar";
-import { useNotification } from "../context/NotificationContext"; // Pastikan ini tersedia
-
-// Fungsi untuk mengubah teks menjadi format Camel Case
-const toCamelCase = (str) => {
-  return str
-    .toLowerCase()
-    .split(" ")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
-};
+import { API_STAFF, API_NOTIFICATION } from "../utils/BaseUrl";
+import { useNotification } from "../context/NotificationContext"; // ✅ Disamakan
 
 const TambahStaff = () => {
+  const navigate = useNavigate();
+  const { addNotification } = useNotification(); // ✅ Gunakan notifikasi WebSocket
   const [staff, setStaff] = useState({
     nama: "",
     alamat: "",
@@ -24,39 +17,37 @@ const TambahStaff = () => {
     createDate: "",
   });
 
-  const navigate = useNavigate();
-  const { sendNotification, isConnected } = useNotification(); // Gunakan notifikasi WebSocket
+  const userLogin = sessionStorage.getItem("username") || "Admin"; // ✅ Sama seperti TambahSiswa.js
 
-  // Handle perubahan input
   const handleChange = (e) => {
     setStaff({ ...staff, [e.target.name]: e.target.value });
   };
 
-  // Handle submit form
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validasi input tidak boleh kosong
-    if (Object.values(staff).some((value) => !value)) {
-      Swal.fire("Error", "Semua kolom harus diisi!", "error");
+    if (!staff.nama.trim() || !staff.alamat.trim() || !staff.noTelepon.trim()) {
+      Swal.fire("Peringatan", "Nama, Alamat, dan No Telepon wajib diisi!", "warning");
       return;
     }
 
-    // Format data sebelum dikirim
+    if (!/^\d+$/.test(staff.noTelepon)) {
+      Swal.fire("Peringatan", "No Telepon harus berupa angka!", "warning");
+      return;
+    }
+
+    if (staff.lamaKerja && (isNaN(staff.lamaKerja) || staff.lamaKerja < 0)) {
+      Swal.fire("Peringatan", "Lama kerja harus berupa angka positif!", "warning");
+      return;
+    }
+
     const formattedData = {
       ...staff,
-      nama: toCamelCase(staff.nama),
-      alamat: toCamelCase(staff.alamat),
-      awalBekerja: staff.awalBekerja.includes("T")
-        ? staff.awalBekerja
-        : `${staff.awalBekerja}T00:00:00`,
-      createDate: staff.createDate.includes("T")
-        ? staff.createDate
-        : `${staff.createDate}T00:00:00`,
+      awalBekerja: staff.awalBekerja ? `${staff.awalBekerja}T00:00:00` : new Date().toISOString(),
+      createDate: staff.createDate ? `${staff.createDate}T00:00:00` : new Date().toISOString(),
     };
 
     try {
-      // Kirim data staff ke backend
       const response = await fetch(`${API_STAFF}/tambah`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -68,17 +59,16 @@ const TambahStaff = () => {
         throw new Error(errorData.message || "Gagal menambahkan staff");
       }
 
-      // Jika WebSocket tersambung, kirim notifikasi langsung
-      if (isConnected) {
-        sendNotification(`Staff ${formattedData.nama} berhasil ditambahkan!`, "success");
+      // 🔥 Notifikasi real-time (Disamakan dengan TambahSiswa.js)
+      if (addNotification) {
+        addNotification(`${userLogin} menambahkan staff baru: ${formattedData.nama}`, "success");
       } else {
-        // Jika WebSocket gagal, fallback ke request HTTP
         await fetch(`${API_NOTIFICATION}/add`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            message: `Staff ${formattedData.nama} telah ditambahkan!`,
-            type: "success",
+          body: JSON.stringify({ 
+            message: `${userLogin} menambahkan staff baru: ${formattedData.nama}`, 
+            type: "success" 
           }),
         });
       }

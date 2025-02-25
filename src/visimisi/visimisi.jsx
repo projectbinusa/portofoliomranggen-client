@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaArrowLeft, FaTrash, FaPlus } from "react-icons/fa";
 import Swal from "sweetalert2";
-import {API_VISIMISI} from "../utils/BaseUrl";
-
+import { API_VISIMISI, API_NOTIFICATION } from "../utils/BaseUrl"; // ✅ Tambah API Notifikasi
+import { useNotification } from "../context/NotificationContext"; // ✅ Import Context Notifikasi
 
 const VisiMisi = () => {
   const navigate = useNavigate();
   const [visiMisi, setVisiMisi] = useState(null);
+  const { sendNotification, isConnected } = useNotification(); // ✅ Ambil fungsi WebSocket
 
   useEffect(() => {
     fetch(`${API_VISIMISI}/all`)
@@ -22,7 +23,7 @@ const VisiMisi = () => {
           setVisiMisi(data[0]); // Ambil data pertama jika ada
         }
       })
-      .catch((error) => console.error("Error fetching visi & misi:", error));
+      .catch((error) => console.error("❌ Error fetching visi & misi:", error));
   }, []);
 
   const handleDelete = (id) => {
@@ -45,10 +46,26 @@ const VisiMisi = () => {
               throw new Error("Gagal menghapus data.");
             }
             setVisiMisi(null); // Hapus dari state setelah sukses
+
+            // ✅ Kirim Notifikasi ke WebSocket
+            if (isConnected) {
+              sendNotification("Visi & Misi telah dihapus!", "error");
+            } else {
+              // ✅ Fallback ke API kalau WebSocket gagal
+              fetch(`${API_NOTIFICATION}/add`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  message: "Visi & Misi telah dihapus!",
+                  type: "error",
+                }),
+              });
+            }
+
             Swal.fire("Dihapus!", "Visi & Misi telah dihapus.", "success");
           })
           .catch((error) => {
-            console.error("Error deleting visi & misi:", error);
+            console.error("❌ Error deleting visi & misi:", error);
             Swal.fire("Error", "Terjadi kesalahan saat menghapus.", "error");
           });
       }

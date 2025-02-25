@@ -1,13 +1,15 @@
 import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
-import axios from "axios";
 import Sidebar from "../components/Sidebar";
 import { API_SISWA } from "../utils/BaseUrl";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNotification } from "../context/NotificationContext"; // ✅ Gunakan useNotification
 
 const EditSiswa = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { addNotification } = useNotification(); // ✅ Pakai useNotification
+  const [loading, setLoading] = useState(false);
   const [student, setStudent] = useState({
     nama: "",
     nisn: "",
@@ -18,57 +20,112 @@ const EditSiswa = () => {
     tanggalLahir: "",
   });
 
+  const userLogin = sessionStorage.getItem("username") || "Admin"; // 🔥 Ambil user login
+
   useEffect(() => {
     const fetchStudent = async () => {
       try {
-        const response = await axios.get(`${API_SISWA}/getById/${id}`);
-        if (response.status === 200) {
-          const data = response.data;
-          setStudent({
-            ...data,
-            tanggalLahir: data.tanggalLahir
-              ? data.tanggalLahir.split("T")[0]
-              : "",
-          });
-        } else {
-          Swal.fire(
-            "Not Found",
-            "Siswa dengan ID tersebut tidak ditemukan.",
-            "error"
-          );
-        }
+        const response = await fetch(`${API_SISWA}/getById/${id}`);
+        if (!response.ok) throw new Error("Data tidak ditemukan");
+
+        const data = await response.json();
+        setStudent({
+          ...data,
+          tanggalLahir: data.tanggalLahir
+            ? data.tanggalLahir.split("T")[0]
+            : "",
+        });
       } catch (error) {
-        Swal.fire(
-          "Error",
-          "Terjadi kesalahan saat mengambil data siswa.",
-          "error"
-        );
+        Swal.fire("Error", "Terjadi kesalahan saat mengambil data siswa.", "error");
       }
     };
 
     if (id) fetchStudent();
   }, [id]);
 
-  const handleChange = (e) =>
-    setStudent({ ...student, [e.target.name]: e.target.value });
+  const toCamelCase = (text) => {
+    return text
+      .trim()
+      .toLowerCase()
+      .split(" ")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+  };
+
+  const formatDate = (dateString) => {
+    if (!dateString) return "";
+    const date = new Date(dateString);
+    return isNaN(date.getTime()) ? "" : date.toISOString().split("T")[0];
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setStudent((prev) => ({ ...prev, [name]: value.trim() }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+
+    // 🚨 Validasi input
+    if (Object.values(student).some((value) => !value)) {
+      Swal.fire("Error", "Semua kolom harus diisi!", "error");
+      setLoading(false);
+      return;
+    }
+
+    if (!/^\d+$/.test(student.nisn)) {
+      Swal.fire("Error", "NISN hanya boleh berisi angka!", "error");
+      setLoading(false);
+      return;
+    }
+
+    if (!/^\d+$/.test(student.nomerHp) || !/^\d+$/.test(student.nomerHpOrangtua)) {
+      Swal.fire("Error", "Nomor HP hanya boleh berupa angka!", "error");
+      setLoading(false);
+      return;
+    }
+
+    const today = new Date().toISOString().split("T")[0];
+    if (student.tanggalLahir > today) {
+      Swal.fire("Error", "Tanggal lahir tidak boleh di masa depan!", "error");
+      setLoading(false);
+      return;
+    }
+
+    const updatedStudent = {
+      nama: toCamelCase(student.nama),
+      nisn: student.nisn,
+      alamat: toCamelCase(student.alamat),
+      namaOrangtua: toCamelCase(student.namaOrangtua),
+      nomerHpOrangtua: student.nomerHpOrangtua,
+      nomerHp: student.nomerHp,
+      tanggalLahir: formatDate(student.tanggalLahir),
+    };
+
     try {
-      const response = await axios.put(`${API_SISWA}/editById/${id}`, student);
-      if (response.status === 200) {
-        Swal.fire("Sukses!", "Data siswa berhasil diperbarui.", "success").then(
-          () => navigate("/siswa")
-        );
-      } else {
-        throw new Error("Gagal mengedit siswa");
+      const response = await fetch(`${API_SISWA}/editById/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedStudent),
+      });
+
+      if (!response.ok) throw new Error("Gagal mengedit siswa");
+
+      // 🔥 Kirim Notifikasi
+      if (addNotification) {
+        addNotification(`${userLogin} mengedit data siswa: ${updatedStudent.nama}`, "info");
       }
+
+      Swal.fire("Sukses!", "Data siswa berhasil diperbarui.", "success").then(() => {
+        navigate("/siswa");
+      });
     } catch (error) {
-      Swal.fire(
-        "Gagal!",
-        "Terjadi kesalahan saat mengedit data siswa.",
-        "error"
-      );
+      Swal.fire("Gagal!", "Terjadi kesalahan saat mengedit data siswa.", "error");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -79,27 +136,17 @@ const EditSiswa = () => {
         <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-lg border border-gray-300">
           <h2 className="text-xl font-bold mb-4 text-left">Edit Siswa</h2>
           <form onSubmit={handleSubmit} className="space-y-4">
-            {[
-              "nama",
-              "nisn",
-              "alamat",
-              "namaOrangtua",
-              "nomerHpOrangtua",
-              "nomerHp",
-              "tanggalLahir",
-            ].map((field) => (
-              <div key={field} className="flex flex-col">
+            {Object.keys(student).map((key) => (
+              <div key={key} className="flex flex-col">
                 <label className="text-gray-700 text-sm font-medium text-left capitalize">
-                  {field.replace(/([A-Z])/g, " $1").trim()}
+                  {key.replace(/([A-Z])/g, " $1").trim()}
                 </label>
                 <input
-                  type={field === "tanggalLahir" ? "date" : "text"}
-                  name={field}
-                  value={student[field] || ""}
+                  type={key === "tanggalLahir" ? "date" : "text"}
+                  name={key}
+                  value={student[key] || ""}
                   onChange={handleChange}
-                  placeholder={`Masukkan ${field
-                    .replace(/([A-Z])/g, " $1")
-                    .trim()}`}
+                  placeholder={`Masukkan ${key.replace(/([A-Z])/g, " $1").trim()}`}
                   className="p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
@@ -109,14 +156,16 @@ const EditSiswa = () => {
                 type="button"
                 onClick={() => navigate("/siswa")}
                 className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition"
+                disabled={loading}
               >
                 Batal
               </button>
               <button
                 type="submit"
                 className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
+                disabled={loading}
               >
-                Simpan
+                {loading ? "Menyimpan..." : "Simpan"}
               </button>
             </div>
           </form>

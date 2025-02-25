@@ -7,11 +7,13 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import { API_PRODUK } from "../utils/BaseUrl";
 import Navbar from "../tampilan/Navbar";
+import { useNotification } from "../context/NotificationContext"; // ✅ Tambahkan notifikasi
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
+  const { sendNotification } = useNotification(); // ✅ Gunakan sendNotification
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -28,25 +30,27 @@ const ProductList = () => {
         setProducts(mappedProducts);
       } catch (error) {
         console.error("Terjadi kesalahan saat mengambil data produk:", error);
-        Swal.fire("Gagal!", "Tidak dapat mengambil data produk.", "error");
+        sendNotification("Gagal mengambil data produk.", "error");
       }
     };
 
     fetchProducts();
   }, []);
 
-  const handleEdit = (id) => {
+  const handleEdit = (id, namaProduk) => {
     navigate(`/edit-produk/${id}`);
+    sendNotification(`Mengedit produk "${namaProduk}"`, "info"); // ✅ Tambahkan notifikasi edit
   };
 
-  const handleDetail = (id) => {
+  const handleDetail = (id, namaProduk) => {
     navigate(`/detail-produk/${id}`);
+    sendNotification(`Melihat detail produk "${namaProduk}"`, "info"); // ✅ Notifikasi detail
   };
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (id, namaProduk) => {
     Swal.fire({
       title: "Yakin ingin menghapus produk ini?",
-      text: "Data produk yang dihapus tidak dapat dikembalikan.",
+      text: `Produk "${namaProduk}" akan dihapus!`,
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Hapus",
@@ -57,9 +61,11 @@ const ProductList = () => {
       if (result.isConfirmed) {
         try {
           await axios.delete(`${API_PRODUK}/delete/${id}`);
-          Swal.fire("Dihapus!", "Produk telah dihapus.", "success");
+          Swal.fire("Dihapus!", `Produk "${namaProduk}" telah dihapus.`, "success");
+          sendNotification(`Produk "${namaProduk}" telah dihapus`, "warning"); // ✅ Notifikasi hapus
           setProducts(products.filter((product) => product.id !== id));
         } catch (error) {
+          sendNotification("Gagal menghapus produk.", "error");
           Swal.fire("Gagal!", "Tidak dapat menghapus produk.", "error");
         }
       }
@@ -85,7 +91,10 @@ const ProductList = () => {
           </div>
 
           <button
-            onClick={() => navigate("/tambah-produk")}
+            onClick={() => {
+              navigate("/tambah-produk");
+              sendNotification("Menambahkan produk baru", "success"); // ✅ Notifikasi tambah produk
+            }}
             className="flex items-center gap-2 bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition">
             <FaPlus size={16} />
           </button>
@@ -120,17 +129,17 @@ const ProductList = () => {
                     <td className="px-6 py-4 text-center">Rp {product.harga.toLocaleString()}</td>
                     <td className="px-6 py-4 flex gap-3 justify-center">
                       <button
-                        onClick={() => handleDetail(product.id)}
+                        onClick={() => handleDetail(product.id, product.nama)}
                         className="flex items-center gap-2 bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-600 transition">
                         <Eye size={18} />
                       </button>
                       <button
-                        onClick={() => handleEdit(product.id)}
+                        onClick={() => handleEdit(product.id, product.nama)}
                         className="flex items-center gap-2 bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600 transition">
                         <Pencil size={18} />
                       </button>
                       <button
-                        onClick={() => handleDelete(product.id)}
+                        onClick={() => handleDelete(product.id, product.nama)}
                         className="flex items-center gap-2 bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 transition">
                         <Trash2 size={18} />
                       </button>

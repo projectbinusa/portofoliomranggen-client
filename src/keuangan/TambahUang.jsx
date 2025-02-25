@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import Swal from "sweetalert2";
 import { API_KEUANGAN } from "../utils/BaseUrl";
+import { useNotification } from "../context/NotificationContext"; // 🔔 Import Notifikasi
 
 const TambahUang = () => {
   const [formData, setFormData] = useState({
@@ -14,6 +15,7 @@ const TambahUang = () => {
   });
 
   const navigate = useNavigate();
+  const { sendNotification } = useNotification(); // 🔔 Inisialisasi Notifikasi
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -45,6 +47,8 @@ const TambahUang = () => {
     })
       .then((response) => response.json())
       .then(() => {
+        sendNotification("Data keuangan berhasil ditambahkan", "success"); // 🔔 Kirim Notifikasi
+
         Swal.fire({
           title: "Berhasil!",
           text: "Data keuangan berhasil ditambahkan.",

@@ -3,10 +3,12 @@ import { useParams, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import Sidebar from "../components/Sidebar";
 import { API_DONASI } from "../utils/BaseUrl";
+import { useNotification } from "../context/NotificationContext"; // ✅ Import notifikasi
 
 const EditDonasi = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { addNotification } = useNotification(); // ✅ Tambahkan sendNotification
   const idAdmin = localStorage.getItem("adminId") || "";
   const [formData, setFormData] = useState({
     namaDonasi: "",
@@ -69,6 +71,8 @@ const EditDonasi = () => {
       const data = await response.json();
       if (!response.ok) throw new Error(data.message || "Gagal memperbarui data donasi");
 
+      addNotification("Donasi berhasil diperbarui", "success"); // ✅ Kirim notifikasi sukses
+
       Swal.fire("Sukses", "Donasi berhasil diperbarui!", "success");
       setTimeout(() => navigate("/donasi"), 1000);
     } catch (error) {
@@ -86,7 +90,7 @@ const EditDonasi = () => {
           <form onSubmit={handleSubmit} className="space-y-4">
             {["namaDonasi", "namaDonatur", "jumlahDonasi", "deskripsi"].map((field) => (
               <div key={field} className="flex flex-col">
-                <label className="w-1/3 text-gray-700 text-sm font-medium text-left capitalize">
+                <label className="text-gray-700 text-sm font-medium text-left capitalize">
                   {field.replace(/([A-Z])/g, " $1").trim()}
                 </label>
                 <input

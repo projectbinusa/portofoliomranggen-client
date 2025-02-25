@@ -5,12 +5,14 @@ import { FaPlus, FaSearch, FaArrowUp, FaArrowDown } from "react-icons/fa";
 import Sidebar from "../components/Sidebar";
 import Swal from "sweetalert2";
 import Navbar from "../tampilan/Navbar";
+import { useNotification } from "../context/NotificationContext"; // 🔔 Import Notifikasi
 
 const DaftarKategori = () => {
   const [kategoriData, setKategoriData] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [showScrollButtons, setShowScrollButtons] = useState(false);
   const navigate = useNavigate();
+  const { sendNotification } = useNotification(); // 🔔 Inisialisasi Notifikasi
 
   useEffect(() => {
     fetch("http://localhost:4321/api/kategori/all")
@@ -26,7 +28,10 @@ const DaftarKategori = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const handleEdit = (id) => navigate(`/edit-kategori-a/${id}`);
+  const handleEdit = (id) => {
+    sendNotification("Mengedit data kategori", "info"); // 🔔 Kirim Notifikasi
+    navigate(`/edit-kategori-a/${id}`);
+  };
 
   const handleDelete = (id) => {
     Swal.fire({
@@ -44,6 +49,7 @@ const DaftarKategori = () => {
           .then((response) => {
             if (response.ok) {
               setKategoriData(kategoriData.filter((kategori) => kategori.id !== id));
+              sendNotification("Kategori berhasil dihapus", "warning"); // 🔔 Notifikasi Hapus
               Swal.fire("Dihapus!", "Data kategori telah dihapus.", "success");
             } else {
               Swal.fire("Gagal!", "Gagal menghapus data kategori.", "error");
@@ -82,7 +88,10 @@ const DaftarKategori = () => {
               />
             </div>
             <button
-              onClick={() => navigate("/tambah-kategori-a")}
+              onClick={() => {
+                sendNotification("Menambah kategori baru", "info"); // 🔔 Notifikasi Tambah
+                navigate("/tambah-kategori-a");
+              }}
               className="flex items-center gap-2 bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition"
             >
               <FaPlus size={14} />

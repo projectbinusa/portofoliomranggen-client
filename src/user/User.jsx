@@ -5,14 +5,15 @@ import axios from "axios";
 import { FaPlus } from "react-icons/fa";
 import Sidebar from "../components/Sidebar";
 import { Pencil, Trash2 } from "lucide-react";
-import { useNotification } from "../context/NotificationContext"; // ✅ Import Context
+import { useNotification } from "../context/NotificationContext"; // ✅ Import Notifikasi
 import Navbar from "../tampilan/Navbar";
 
 const API_USER = "http://localhost:4321/api/user";
+const API_NOTIFICATION = "http://localhost:4321/api/notification"; // ✅ API Fallback Notifikasi
 
 const User = () => {
   const navigate = useNavigate();
-  const { sendNotification } = useNotification(); // ✅ Ambil fungsi sendNotification
+  const { sendNotification, isConnected } = useNotification(); // ✅ Cek koneksi WebSocket
   const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
@@ -24,14 +25,14 @@ const User = () => {
       .then((response) => {
         setUsers(response.data);
       })
-      .catch((error) => console.error("Error fetching data:", error))
+      .catch((error) => console.error("❌ Error fetching data:", error))
       .finally(() => setIsLoading(false));
   }, []);
 
-  const handleDeleteUser = async (id) => {
+  const handleDeleteUser = async (id, username) => {
     const result = await Swal.fire({
       title: "Apakah Anda yakin?",
-      text: "Data user ini akan dihapus!",
+      text: `User "${username}" akan dihapus!`,
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Ya, hapus!",
@@ -43,11 +44,20 @@ const User = () => {
         await axios.delete(`${API_USER}/delete/${id}`);
         setUsers(users.filter((user) => user.id !== id));
 
-        // ✅ Kirim notifikasi ke semua pengguna
-        sendNotification("Data user berhasil dihapus", "warning");
-        Swal.fire("Dihapus!", "Data user telah dihapus.", "success");
+        // ✅ Kirim Notifikasi WebSocket
+        if (isConnected) {
+          sendNotification(`User "${username}" berhasil dihapus`, "warning");
+        } else {
+          // ✅ Fallback ke API kalau WebSocket gagal
+          await axios.post(`${API_NOTIFICATION}/add`, {
+            message: `User "${username}" telah dihapus!`,
+            type: "warning",
+          });
+        }
+
+        Swal.fire("Dihapus!", `User "${username}" telah dihapus.`, "success");
       } catch (error) {
-        console.error("Error deleting user:", error);
+        console.error("❌ Error deleting user:", error);
         Swal.fire("Error", "Gagal menghapus data.", "error");
       }
     }
@@ -69,14 +79,9 @@ const User = () => {
             <h2 className="text-2xl font-bold text-gray-700">Daftar User</h2>
             <button
               className="p-3 bg-green-500 text-white rounded-md hover:bg-green-600 flex items-center gap-2 transition tombol-tambah"
-              onClick={(e) => {
-                e.preventDefault();
-                console.log("Tombol tambah user diklik!"); // ✅ Debug
-                navigate("/tambah-user");
-              }}
+              onClick={() => navigate("/tambah-user")}
             >
               <FaPlus size={16} />
-              
             </button>
           </div>
           {isLoading ? (
@@ -118,7 +123,7 @@ const User = () => {
                           </Link>
                           <button
                             className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600"
-                            onClick={() => handleDeleteUser(user.id)}
+                            onClick={() => handleDeleteUser(user.id, user.username)}
                           >
                             <Trash2 className="w-4 h-4" />
                           </button>

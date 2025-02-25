@@ -2,10 +2,12 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { API_KELAS } from "../utils/BaseUrl";
+import { useNotification } from "../context/NotificationContext"; // 🔔 Import Notifikasi
 
 const TambahKategoriKelas = () => {
   const [namaKelas, setNamaKelas] = useState("");
   const navigate = useNavigate();
+  const { addNotification } = useNotification(); // 🔔 Inisialisasi Notifikasi
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -15,23 +17,21 @@ const TambahKategoriKelas = () => {
     try {
       const response = await fetch(`${API_KELAS}/tambah`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
 
       if (response.ok) {
         const result = await response.json();
 
+        addNotification(`Kategori kelas "${result.namaKelas}" berhasil ditambahkan`, "success"); // 🔔 Kirim Notifikasi
+        
         Swal.fire({
           title: "Kategori Kelas Ditambahkan!",
           text: `Kategori kelas "${result.namaKelas}" berhasil ditambahkan.`,
           icon: "success",
           confirmButtonText: "OK",
-        }).then(() => {
-          navigate("/kategori-kelas");
-        });
+        }).then(() => navigate("/kategori-kelas"));
 
         console.log("Kategori Kelas Ditambahkan:", result);
       } else {

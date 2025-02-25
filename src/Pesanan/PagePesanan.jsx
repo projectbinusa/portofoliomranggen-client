@@ -4,11 +4,13 @@ import Swal from "sweetalert2";
 import Sidebar from "../components/Sidebar";
 import { FaPlus, FaEdit, FaTrash, FaSearch } from "react-icons/fa";
 import Navbar from "../tampilan/Navbar";
+import { useNotification } from "../context/NotificationContext"; // 🔔 Import Notifikasi
 
 const PagePesanan = () => {
   const [pesanan, setPesanan] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
+  const { sendNotification } = useNotification(); // 🔔 Inisialisasi Notifikasi
 
   useEffect(() => {
     const fetchPesanan = async () => {
@@ -43,16 +45,23 @@ const PagePesanan = () => {
       try {
         const response = await fetch(`http://localhost:4321/api/pesanan/delete/${id}`, {
           method: "DELETE",
-          headers: { "Accept": "*/*" },
+          headers: { Accept: "*/*" },
         });
 
         if (response.ok || response.status === 204) {
           setPesanan(pesanan.filter((item) => item.id !== id));
+
+          sendNotification("Pesanan berhasil dihapus.", "success"); // 🔔 Kirim Notifikasi saat sukses
+
           Swal.fire({ title: "Dihapus!", text: "Pesanan berhasil dihapus.", icon: "success" });
         } else {
+          sendNotification("Terjadi kesalahan saat menghapus pesanan.", "error"); // 🔔 Kirim Notifikasi saat gagal
+
           Swal.fire({ title: "Gagal!", text: "Terjadi kesalahan saat menghapus pesanan.", icon: "error" });
         }
       } catch (error) {
+        sendNotification("Terjadi kesalahan saat menghubungi server.", "error"); // 🔔 Kirim Notifikasi saat error
+
         Swal.fire({ title: "Error", text: "Terjadi kesalahan saat menghubungi server.", icon: "error" });
       }
     }

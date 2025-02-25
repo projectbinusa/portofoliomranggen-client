@@ -3,11 +3,14 @@ import { useParams, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import Sidebar from "../components/Sidebar";
 import { API_GURU } from "../utils/BaseUrl";
+import { useNotification } from "../context/NotificationContext"; // ✅ Import notifikasi
 
 const EditGuru = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { addNotification } = useNotification(); // ✅ Tambahkan sendNotification
   const idAdmin = localStorage.getItem("adminId") || "";
+
   const [formData, setFormData] = useState({
     namaGuru: "",
     nip: "",
@@ -57,6 +60,8 @@ const EditGuru = () => {
       });
       const data = await response.json();
       if (!response.ok) throw new Error(data.message || "Gagal memperbarui data guru");
+
+      addNotification("Data guru berhasil diperbarui", "success"); // ✅ Kirim notifikasi sukses
 
       Swal.fire("Sukses", "Guru berhasil diperbarui!", "success");
       setTimeout(() => navigate("/guru"), 1000);
