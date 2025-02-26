@@ -79,6 +79,7 @@ import EditBerita from "./berita/EditBerita";
 import DetailBerita from "./berita/DetailBerita";
 
 import Navbar from "./tampilan/Navbar";
+import Kontak from "./components/Kontak";
 
 import "./App.css";
 
@@ -98,6 +99,7 @@ function App() {
             <Route path="/visi-misi" element={<VisiMisi />} />
             <Route path="/addvisi-misi" element={<AddVisiMisi />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/kontak" element={<Kontak />} />
 
             {/* Routes untuk Siswa */}
             <Route path="/siswa" element={<PageSiswa />} />
@@ -183,7 +185,7 @@ function App() {
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </Router>
-        </NotificationProvider>
+      </NotificationProvider>
     </DarkModeProvider>
   );
 }

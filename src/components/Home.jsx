@@ -90,17 +90,20 @@ const Home = () => {
 
             {/* Navigation Links */}
             <div className="hidden md:flex items-center gap-6 text-sm font-medium">
-              {["BERANDA", "PROGRAM", "FASILITAS", "PRESTASI", "KONTAK"].map(
-                (item, index) => (
-                  <a
-                    key={index}
-                    href="#"
-                    className="text-gray-800 hover:text-emerald-500 transition-all duration-300"
-                  >
-                    {item}
-                  </a>
-                )
-              )}
+              {[
+                { name: "BERANDA", link: "/" },
+                { name: "VISI MISI", link: "/visi-misi" },
+                { name: "SAMBUTAN", link: "/sambutan" },
+                { name: "KONTAK", link: "/kontak" },
+              ].map((item, index) => (
+                <a
+                  key={index}
+                  href={item.link}
+                  className="text-gray-800 hover:text-emerald-500 transition-all duration-300"
+                >
+                  {item.name}
+                </a>
+              ))}
             </div>
 
             {/* Login Button */}
@@ -163,7 +166,7 @@ const Home = () => {
       <section className="py-20 bg-slate-50">
         <div className="container mx-auto px-6">
           <div className="text-center max-w-2xl mx-auto mb-16">
-            <h2 className="text-3xl font-bold mb-4">Why Choose Cendekia</h2>
+            <h2 className="text-3xl font-bold mb-4">Why Choose Binusa</h2>
             <p className="text-gray-600">
               Kami berkomitmen untuk memberikan pendidikan terbaik dengan
               fasilitas modern dan pengajar berkualitas
