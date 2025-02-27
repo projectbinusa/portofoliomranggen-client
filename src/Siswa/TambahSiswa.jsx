@@ -19,7 +19,7 @@ const TambahSiswa = () => {
     tanggalLahir: "",
   });
 
-  const userLogin = sessionStorage.getItem("username") || "Admin"; // 🔥 Ambil user login
+  // const userLogin = sessionStorage.getItem("username") || "Admin"; // 🔥 Ambil user login
 
   const toCamelCase = (text) => {
     return text
@@ -101,7 +101,7 @@ const TambahSiswa = () => {
   
       // 🔥 Kirim notifikasi ke backend
       if (addNotification) {
-        addNotification(`${userLogin} menambahkan siswa baru: ${siswaDTO.nama}`, "success");
+        addNotification(`Admin telah menambahkan siswa baru: ${siswaDTO.nama}`, "success");
       }
   
       Swal.fire("Sukses", "Data siswa berhasil ditambahkan!", "success").then(() => {

@@ -3,11 +3,9 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import Sidebar from "../components/Sidebar";
 import { API_USER } from "../utils/BaseUrl";
-import { useNotification } from "../context/NotificationContext"; // ✅ Import yang benar
 
 const TambahUser = () => {
   const navigate = useNavigate();
-  const { addNotification } = useNotification(); // ✅ Gunakan useNotification
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState({
     adminId: "",
@@ -15,8 +13,6 @@ const TambahUser = () => {
     email: "",
     password: "",
   });
-
-  const userLogin = sessionStorage.getItem("username") || "Admin"; // 🔥 Ambil user login
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -29,7 +25,7 @@ const TambahUser = () => {
     e.preventDefault();
     setLoading(true);
 
-    // 🚨 Validasi input
+    // Validasi input
     if (Object.values(user).some((value) => !value)) {
       Swal.fire("Error", "Semua kolom harus diisi!", "error");
       setLoading(false);
@@ -61,11 +57,6 @@ const TambahUser = () => {
       console.log("✅ Response API:", data);
 
       if (!response.ok) throw new Error(data.message || "Gagal menambahkan user");
-
-      // 🔥 Kirim notifikasi ke backend
-      if (addNotification) {
-        addNotification(`${userLogin} menambahkan user baru: ${user.username}`, "success");
-      }
 
       Swal.fire("Sukses", "User berhasil ditambahkan!", "success").then(() => {
         navigate("/user");

@@ -8,8 +8,6 @@ import { API_KEGIATAN } from "../utils/BaseUrl";
 import { useNotification } from "../context/NotificationContext";
 import Navbar from "../tampilan/Navbar";
 
-
-
 const KegiatanSekolah = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const { addNotification } = useNotification();
@@ -27,6 +25,8 @@ const KegiatanSekolah = () => {
   }, []);
 
   const handleDeleteKegiatan = (id) => {
+    const kegiatan = kegiatanSekolah.find((k) => k.id === id); // ✅ Ambil kegiatan berdasarkan ID
+
     Swal.fire({
       title: "Apakah Anda yakin?",
       text: "Data kegiatan ini akan dihapus!",
@@ -39,8 +39,8 @@ const KegiatanSekolah = () => {
         axios.delete(`${API_KEGIATAN}/delete/${id}`)
           .then(() => {
             Swal.fire("Dihapus!", "Data kegiatan telah dihapus.", "success");
-            addNotification("Data kegiatan berhasil dihapus", "warning");
-            setKegiatanSekolah(kegiatanSekolah.filter((kegiatan) => kegiatan.id !== id));
+            addNotification(`Admin menghapus data kegiatan sekolah: ${kegiatan ? kegiatan.nama : "Tidak Diketahui"}`, "info"); // ✅ Gunakan nama kegiatan yang benar
+            setKegiatanSekolah(kegiatanSekolah.filter((k) => k.id !== id));
           })
           .catch(() => {
             Swal.fire("Error", "Gagal menghapus data kegiatan.", "error");
@@ -71,7 +71,7 @@ const KegiatanSekolah = () => {
             <button
               className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition"
               onClick={() => {
-                addNotification("Menambahkan data kegiatan baru", "success");
+                addNotification("Admin menambahkan data kegiatan sekolah", "info"); // ✅ Perbaiki agar tidak menampilkan undefined
                 navigate("/tambah-kegiatan");
               }}
             >
@@ -125,14 +125,14 @@ const KegiatanSekolah = () => {
                       <td className="px-6 py-4 border-r border-gray-800">{kegiatan.penanggungJawab}</td>
                       <td className="px-6 py-4 flex justify-center gap-3">
                         <Link to={`/detail-sekolah/${kegiatan.id}`}>
-                          <button
-                           className="flex items-center gap-2 bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-600 transition"
-                           ><Eye size={20} />
+                          <button className="flex items-center gap-2 bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-600 transition">
+                            <Eye size={20} />
                           </button>
                         </Link>
                         <Link to={`/edit-kegiatan/${kegiatan.id}`}>
-                          <button className="flex items-center gap-2 bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600 transition"
-                           onClick={() => addNotification("Mengedit data kegiatan", "info")}
+                          <button
+                            className="flex items-center gap-2 bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600 transition"
+                            onClick={() => addNotification(`Admin memperbarui data kegiatan sekolah: ${kegiatan.nama}`, "info")} // ✅ Gunakan `kegiatan.nama`
                           >
                             <Pencil size={20} />
                           </button>
