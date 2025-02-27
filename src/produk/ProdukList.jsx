@@ -7,13 +7,20 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import { API_PRODUK } from "../utils/BaseUrl";
 import Navbar from "../tampilan/Navbar";
-import { useNotification } from "../context/NotificationContext"; // ✅ Tambahkan notifikasi
+import { useNotification } from "../context/NotificationContext";
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
-  const { sendNotification } = useNotification(); // ✅ Gunakan sendNotification
+  const { sendNotification } = useNotification();
+
+  const toCamelCase = (str) => {
+    return str
+      .split(" ")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(" ");
+  };
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -21,11 +28,11 @@ const ProductList = () => {
         const response = await axios.get(`${API_PRODUK}/all`);
         const mappedProducts = response.data.map((product) => ({
           id: product.id,
-          nama: product.nama,
+          nama: toCamelCase(product.nama),
           harga: product.harga || 0,
-          deskripsi: product.deskripsi,
+          deskripsi: toCamelCase(product.deskripsi),
           fotoUrl: product.fotoUrl,
-          kondisi: product.kondisi,
+          kondisi: toCamelCase(product.kondisi),
         }));
         setProducts(mappedProducts);
       } catch (error) {
@@ -39,18 +46,18 @@ const ProductList = () => {
 
   const handleEdit = (id, namaProduk) => {
     navigate(`/edit-produk/${id}`);
-    sendNotification(`Mengedit produk "${namaProduk}"`, "info"); // ✅ Tambahkan notifikasi edit
+    sendNotification(`Mengedit produk \"${namaProduk}\"`, "info");
   };
 
   const handleDetail = (id, namaProduk) => {
     navigate(`/detail-produk/${id}`);
-    sendNotification(`Melihat detail produk "${namaProduk}"`, "info"); // ✅ Notifikasi detail
+    sendNotification(`Melihat detail produk \"${namaProduk}\"`, "info");
   };
 
   const handleDelete = async (id, namaProduk) => {
     Swal.fire({
       title: "Yakin ingin menghapus produk ini?",
-      text: `Produk "${namaProduk}" akan dihapus!`,
+      text: `Produk \"${namaProduk}\" akan dihapus!`,
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Hapus",
@@ -61,8 +68,8 @@ const ProductList = () => {
       if (result.isConfirmed) {
         try {
           await axios.delete(`${API_PRODUK}/delete/${id}`);
-          Swal.fire("Dihapus!", `Produk "${namaProduk}" telah dihapus.`, "success");
-          sendNotification(`Produk "${namaProduk}" telah dihapus`, "warning"); // ✅ Notifikasi hapus
+          Swal.fire("Dihapus!", `Produk \"${namaProduk}\" telah dihapus.`, "success");
+          sendNotification(`Produk \"${namaProduk}\" telah dihapus`, "warning");
           setProducts(products.filter((product) => product.id !== id));
         } catch (error) {
           sendNotification("Gagal menghapus produk.", "error");
@@ -93,7 +100,7 @@ const ProductList = () => {
           <button
             onClick={() => {
               navigate("/tambah-produk");
-              sendNotification("Menambahkan produk baru", "success"); // ✅ Notifikasi tambah produk
+              sendNotification("Menambahkan produk baru", "success");
             }}
             className="flex items-center gap-2 bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition">
             <FaPlus size={16} />
@@ -128,19 +135,13 @@ const ProductList = () => {
                     <td className="px-6 py-4 text-center">{product.kondisi}</td>
                     <td className="px-6 py-4 text-center">Rp {product.harga.toLocaleString()}</td>
                     <td className="px-6 py-4 flex gap-3 justify-center">
-                      <button
-                        onClick={() => handleDetail(product.id, product.nama)}
-                        className="flex items-center gap-2 bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-600 transition">
+                      <button onClick={() => handleDetail(product.id, product.nama)} className="flex items-center gap-2 bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-600 transition">
                         <Eye size={18} />
                       </button>
-                      <button
-                        onClick={() => handleEdit(product.id, product.nama)}
-                        className="flex items-center gap-2 bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600 transition">
+                      <button onClick={() => handleEdit(product.id, product.nama)} className="flex items-center gap-2 bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600 transition">
                         <Pencil size={18} />
                       </button>
-                      <button
-                        onClick={() => handleDelete(product.id, product.nama)}
-                        className="flex items-center gap-2 bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 transition">
+                      <button onClick={() => handleDelete(product.id, product.nama)} className="flex items-center gap-2 bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 transition">
                         <Trash2 size={18} />
                       </button>
                     </td>
