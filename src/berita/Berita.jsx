@@ -11,6 +11,7 @@ import { useNotification } from "../context/NotificationContext";
 const Berita = () => {
   const [beritaList, setBeritaList] = useState([]);
   const { sendNotification } = useNotification();
+  const { addNotification } = useNotification();
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
 
@@ -55,7 +56,7 @@ const Berita = () => {
         }
 
         Swal.fire("Terhapus!", "Berita berhasil dihapus.", "success");
-        sendNotification("data berita dihapus", "warning"); // 🔔 Kirim notifikasi
+        addNotification("data berita dihapus", "warning"); // 🔔 Kirim notifikasi
         fetchBerita();
       } catch (error) {
         Swal.fire("Gagal!", error.message, "error");

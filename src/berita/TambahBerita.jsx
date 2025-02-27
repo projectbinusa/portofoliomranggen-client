@@ -4,6 +4,7 @@ import { API_BERITA } from "../utils/BaseUrl";
 import Swal from "sweetalert2";
 import UploadFoto from "../upload/UploadFoto";
 import Sidebar from "../components/Sidebar";
+import { useNotification } from "../context/NotificationContext"; // 🔔 Import notifikasi
 
 const TambahBerita = () => {
   const [berita, setBerita] = useState({
@@ -12,10 +13,12 @@ const TambahBerita = () => {
     deskripsi: "",
     fotoUrl: "",
     tanggalTerbit: "",
+    idAdmin: "",
   });
 
   const [isUploading, setIsUploading] = useState(false);
   const navigate = useNavigate();
+  const { addNotification } = useNotification(); // 🔔 Gunakan notifikasi
 
   const handleChange = (e) => {
     setBerita({ ...berita, [e.target.name]: e.target.value });
@@ -24,28 +27,19 @@ const TambahBerita = () => {
   const handleUploadSuccess = (imageUrl) => {
     setBerita({ ...berita, fotoUrl: imageUrl });
     setIsUploading(false);
+   
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (isUploading) {
-      Swal.fire({
-        title: "Gagal!",
-        text: "Silakan tunggu hingga foto selesai di-upload.",
-        icon: "error",
-        confirmButtonText: "Ok",
-      });
+      Swal.fire("Gagal!", "Silakan tunggu hingga foto selesai di-upload.", "error");
       return;
     }
 
-    if (!berita.nama || !berita.penulis || !berita.deskripsi || !berita.fotoUrl || !berita.tanggalTerbit) {
-      Swal.fire({
-        title: "Gagal!",
-        text: "Semua field harus diisi.",
-        icon: "error",
-        confirmButtonText: "Ok",
-      });
+    if (!berita.nama || !berita.penulis || !berita.deskripsi || !berita.fotoUrl || !berita.tanggalTerbit || !berita.idAdmin) {
+      Swal.fire("Gagal!", "Semua field harus diisi.", "error");
       return;
     }
 
@@ -60,19 +54,12 @@ const TambahBerita = () => {
         throw new Error("Gagal menambahkan berita");
       }
 
-      Swal.fire({
-        title: "Sukses!",
-        text: "Data berita berhasil ditambahkan.",
-        icon: "success",
-        confirmButtonText: "Ok",
-      }).then(() => navigate("/berita"));
-    } catch (error) {
-      Swal.fire({
-        title: "Gagal!",
-        text: `Terjadi kesalahan: ${error.message}`,
-        icon: "error",
-        confirmButtonText: "Ok",
+      Swal.fire("Sukses!", "Data berita berhasil ditambahkan.", "success").then(() => {
+        addNotification(`Berita ${berita.nama} telah ditambahkan`, "success"); // 🔔 Notifikasi tambah berita sukses
+        navigate("/berita");
       });
+    } catch (error) {
+      Swal.fire("Gagal!", `Terjadi kesalahan: ${error.message}`, "error");
     }
   };
 
@@ -96,7 +83,7 @@ const TambahBerita = () => {
                   <input
                     type={field.type}
                     name={field.name}
-                    value={berita[field.name]}
+                    value={berita[field.name] || ""}
                     onChange={handleChange}
                     placeholder={`Masukkan ${field.label}`}
                     className="p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -113,7 +100,10 @@ const TambahBerita = () => {
             <div className="flex justify-between space-x-4 mt-6">
               <button
                 type="button"
-                onClick={() => navigate("/berita")}
+                onClick={() => {
+                  navigate("/berita");
+                 
+                }}
                 className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition"
               >
                 Batal

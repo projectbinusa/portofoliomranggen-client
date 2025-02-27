@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import  { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
@@ -77,7 +77,7 @@ const EditPesanan = () => {
       });
 
       if (response.ok) {
-        addNotification("Pesanan berhasil diperbarui.", "success"); // 🔔 Kirim Notifikasi saat sukses
+        addNotification(`Admin memperbarui data persanan baru: ${formData.namaPesanan}`, "success");// 🔔 Kirim Notifikasi saat sukses
 
         Swal.fire({
           title: "Berhasil!",

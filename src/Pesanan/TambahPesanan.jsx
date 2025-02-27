@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import  { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
@@ -56,7 +56,7 @@ const TambahPesanan = () => {
       });
 
       if (response.ok) {
-        addNotification("Pesanan berhasil ditambahkan.", "success"); // 🔔 Kirim Notifikasi saat sukses
+        addNotification(`Admin telah menambahkan pesanan baru: ${formData.namaPesanan}`, "success"); // 🔔 Kirim Notifikasi saat sukses
 
         Swal.fire({
           title: "Berhasil!",
@@ -66,7 +66,7 @@ const TambahPesanan = () => {
           navigate("/pesanan");
         });
       } else {
-        sendNotification("Terjadi kesalahan saat menambahkan pesanan.", "error"); // 🔔 Kirim Notifikasi saat gagal
+        
 
         Swal.fire({
           title: "Gagal!",
@@ -75,8 +75,7 @@ const TambahPesanan = () => {
         });
       }
     } catch (error) {
-      addNotification("Terjadi kesalahan saat menghubungi server.", "error"); // 🔔 Kirim Notifikasi saat error
-
+      
       Swal.fire({
         title: "Error",
         text: "Terjadi kesalahan saat menghubungi server.",

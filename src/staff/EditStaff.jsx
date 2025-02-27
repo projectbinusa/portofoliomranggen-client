@@ -66,7 +66,7 @@ const EditStaff = () => {
       const response = await axios.put(`${API_STAFF}/editById/${id}`, staff);
       if (response.status === 200) {
         Swal.fire("Sukses", "Data staf berhasil diperbarui!", "success");
-        addNotification(`Data staf ${staff.nama} diperbarui`, "info"); // 🔔 Notifikasi update staf
+        addNotification(`Admin memperbarui data staf ${staff.nama}`, "info"); // 🔔 Notifikasi update staf
         setTimeout(() => navigate("/staff"), 1000);
       }
     } catch (error) {
