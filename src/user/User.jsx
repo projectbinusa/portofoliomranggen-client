@@ -1,26 +1,23 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { Pencil, Trash2, Search } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
+import axios from "axios";
 import { FaPlus } from "react-icons/fa";
 import Sidebar from "../components/Sidebar";
 import { Pencil, Trash2 } from "lucide-react";
-import { useNotification } from "../context/NotificationContext"; // ✅ Import Notifikasi
+import { useNotification } from "../context/NotificationContext";
 import Navbar from "../tampilan/Navbar";
 
 const API_USER = "http://localhost:4321/api/user";
-const API_NOTIFICATION = "http://localhost:4321/api/notification"; // ✅ API Fallback Notifikasi
 
 const User = () => {
   const navigate = useNavigate();
-  const { sendNotification, isConnected } = useNotification(); // ✅ Cek koneksi WebSocket
-  const [users, setUsers] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const navigate = useNavigate();
   const { sendNotification } = useNotification();
-
-  const toCamelCase = (str) => {
-    return str.replace(/\b\w/g, (char) => char.toUpperCase());
-  };
+  const { addNotification } = useNotification();
+  const [users, setUsers] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const usersPerPage = 5;
 
   useEffect(() => {
     axios
@@ -32,48 +29,37 @@ const User = () => {
       .finally(() => setIsLoading(false));
   }, []);
 
-  const handleDeleteUser = async (id, username) => {
-    const result = await Swal.fire({
+  const handleDeleteUser = (id, username) => {
+    Swal.fire({
       title: "Apakah Anda yakin?",
       text: `User "${username}" akan dihapus!`,
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Ya, hapus!",
       cancelButtonText: "Batal",
-    });
-
-    if (result.isConfirmed) {
-      try {
-        await axios.delete(`${API_USER}/delete/${id}`);
-        setUsers(users.filter((user) => user.id !== id));
-
-        // ✅ Kirim Notifikasi WebSocket
-        if (isConnected) {
-          sendNotification(`User "${username}" berhasil dihapus`, "warning");
-        } else {
-          // ✅ Fallback ke API kalau WebSocket gagal
-          await axios.post(`${API_NOTIFICATION}/add`, {
-            message: `User "${username}" telah dihapus!`,
-            type: "warning",
-          });
-        }
-
-        Swal.fire("Dihapus!", `User "${username}" telah dihapus.`, "success");
-      } catch (error) {
-        console.error("❌ Error deleting user:", error);
-        Swal.fire("Error", "Gagal menghapus data.", "error");
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .delete(`${API_USER}/delete/${id}`)
+          .then(() => {
+            setUsers(users.filter((user) => user.id !== id));
+            addNotification(` Admin telah menghapus data User "${username}"`, "warning");
+            Swal.fire("Dihapus!", `User "${username}" telah dihapus.`, "success");
+          })
+          .catch(() =>
+            Swal.fire("Gagal!", "Terjadi kesalahan saat menghapus data.", "error")
+          );
       }
-    }
+    });
   };
 
-  // ✅ Hitung total halaman
   const totalPages = Math.ceil(users.length / usersPerPage);
   const indexOfLastUser = currentPage * usersPerPage;
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
   const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex h-screen">
       <Sidebar />
       <Navbar />
       <div className="flex-1 p-6 ml-40">
@@ -82,7 +68,10 @@ const User = () => {
             <h2 className="text-2xl font-bold text-gray-700">Daftar User</h2>
             <button
               className="p-3 bg-green-500 text-white rounded-md hover:bg-green-600 flex items-center gap-2 transition tombol-tambah"
-              onClick={() => navigate("/tambah-user")}
+              onClick={() => {
+                navigate("/tambah-user");
+                sendNotification("Menambahkan user baru", "success");
+              }}
             >
               <FaPlus size={16} />
             </button>
@@ -145,7 +134,6 @@ const User = () => {
             </div>
           )}
 
-          {/* ✅ Pagination */}
           {users.length > usersPerPage && (
             <div className="flex justify-center items-center mt-4 space-x-2">
               <button
@@ -181,4 +169,4 @@ const User = () => {
   );
 };
 
-export default UserList;
+export default User;
