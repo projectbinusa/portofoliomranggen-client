@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -11,7 +11,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-  const { sendNotification } = useNotification(); // 🔔 Inisialisasi Notifikasi
+  const { addNotification } = useNotification(); // 🔔 Inisialisasi Notifikasi
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -28,13 +28,13 @@ const Login = () => {
         localStorage.setItem("adminRole", response.data.data.role);
         window.dispatchEvent(new Event("authChange"));
 
-        sendNotification("Login berhasil! Selamat datang kembali. 🎉", "success"); // 🔔 Kirim Notifikasi
+        addNotification("Login berhasil! Selamat datang kembali.", "success"); // 🔔 Kirim Notifikasi
 
         Swal.fire("Success!", "Login berhasil.", "success");
         navigate("/dashboard");
       }
     } catch (error) {
-      sendNotification("Login gagal. Periksa kembali email & password.", "error"); // 🔔 Kirim Notifikasi saat gagal
+      addNotification("Login gagal. Periksa kembali email & password.", "error"); // 🔔 Kirim Notifikasi saat gagal
       
       Swal.fire(
         "Error",
