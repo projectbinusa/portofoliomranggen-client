@@ -1,4 +1,4 @@
-import  { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
@@ -36,7 +36,11 @@ const DetailBerita = () => {
       <div className="bg-white shadow-2xl rounded-2xl p-8 w-full max-w-lg border-4 border-gray-500 space-y-4 mt-10">
         <h2 className="text-3xl font-bold mb-6 text-center text-black">Detail Berita</h2>
         <div className="bg-gray-50 p-5 rounded-lg border-4 border-gray-400 shadow-sm space-y-3 text-left">
-          <div className="flex justify-center mb-4">
+          <div className="relative flex justify-center mb-4">
+            {/* Camera Icon Above the Image */}
+            <div className="absolute top-0 left-0 right-0 bottom-0 flex justify-center items-center pointer-events-none">
+              <i className="fa fa-camera text-3xl text-white bg-gray-600 p-2 rounded-full opacity-75"></i>
+            </div>
             <img
               src={fotoBerita}
               alt="Foto Berita"
