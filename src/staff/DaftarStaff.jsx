@@ -67,9 +67,7 @@ const DaftarStaff = () => {
   };
 
   const filteredStaff = staffData.filter((staff) =>
-    `${staff.nama} ${staff.alamat} ${staff.noTelepon}`
-      .toLowerCase()
-      .includes(searchQuery.toLowerCase())
+    `${staff.nama} ${staff.alamat} ${staff.noTelepon}`.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
@@ -118,10 +116,7 @@ const DaftarStaff = () => {
                     "Nama",
                     "Alamat",
                     "No. Telepon",
-                    "Awal Bekerja",
-                    "Lama Kerja",
-                    "Create Date",
-                    "Aksi",
+                    "Lama Kerja"
                   ].map((header) => (
                     <th
                       key={header}
@@ -130,6 +125,7 @@ const DaftarStaff = () => {
                       {header}
                     </th>
                   ))}
+                  <th className="px-6 py-3 border-r border-gray-400 text-center">Aksi</th>
                 </tr>
               </thead>
               <tbody>
@@ -139,27 +135,11 @@ const DaftarStaff = () => {
                       key={staff.id}
                       className="bg-white border-b border-gray-400 hover:bg-gray-100"
                     >
-                      <td className="px-6 py-4 border-r text-center">
-                        {index + 1}
-                      </td>
-                      <td className="px-6 py-4 border-r text-center">
-                        {staff.nama}
-                      </td>
-                      <td className="px-6 py-4 border-r text-center">
-                        {staff.alamat}
-                      </td>
-                      <td className="px-6 py-4 border-r text-center">
-                        {staff.noTelepon}
-                      </td>
-                      <td className="px-6 py-4 border-r text-center">
-                        {formatDateDisplay(staff.awalBekerja)}
-                      </td>
-                      <td className="px-6 py-4 border-r text-center">
-                        {staff.lamaKerja}
-                      </td>
-                      <td className="px-6 py-4 border-r text-center">
-                        {formatDateDisplay(staff.createDate)}
-                      </td>
+                      <td className="px-6 py-4 border-r text-center">{index + 1}</td>
+                      <td className="px-6 py-4 border-r text-center">{staff.nama}</td>
+                      <td className="px-6 py-4 border-r text-center">{staff.alamat}</td>
+                      <td className="px-6 py-4 border-r text-center">{staff.noTelepon}</td>
+                      <td className="px-6 py-4 border-r text-center">{staff.lamaKerja}</td>
                       <td className="px-6 py-4 flex gap-2 justify-center">
                         <button
                           onClick={() => navigate(`/detail-staff/${staff.id}`)}
@@ -184,7 +164,7 @@ const DaftarStaff = () => {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="8" className="text-center py-4 text-gray-500">
+                    <td colSpan="6" className="text-center py-4 text-gray-500">
                       Tidak ada data staff yang sesuai.
                     </td>
                   </tr>

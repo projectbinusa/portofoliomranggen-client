@@ -59,7 +59,6 @@ const DaftarBuku = () => {
 
         // Kirim notifikasi ke semua pengguna setelah buku dihapus
         sendNotification(`📚 Buku telah dihapus`, `Sebuah buku telah dihapus dari daftar.`);
-
       } catch (error) {
         Swal.fire("Gagal!", error.message, "error");
       }
@@ -76,7 +75,7 @@ const DaftarBuku = () => {
   };
 
   const filteredBuku = bukuList.filter((buku) =>
-    `${buku.judulBuku} ${buku.penerbit} ${buku.pengarang}`.toLowerCase().includes(searchQuery.toLowerCase())
+    `${buku.judulBuku} ${buku.pengarang}`.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
@@ -115,7 +114,6 @@ const DaftarBuku = () => {
                 <th className="px-6 py-3 text-center">No</th>
                 <th className="px-6 py-3 text-center">Foto</th>
                 <th className="px-6 py-3 text-center">Judul Buku</th>
-                <th className="px-6 py-3 text-center">Penerbit</th>
                 <th className="px-6 py-3 text-center">Pengarang</th>
                 <th className="px-6 py-3 text-center">Tahun</th>
                 <th className="px-6 py-3 text-center">Halaman</th>
@@ -136,7 +134,6 @@ const DaftarBuku = () => {
                     )}
                   </td>
                   <td className="px-6 py-4">{toCamelCase(buku.judulBuku)}</td>
-                  <td className="px-6 py-4">{toCamelCase(buku.penerbit)}</td>
                   <td className="px-6 py-4">{toCamelCase(buku.pengarang)}</td>
                   <td className="px-6 py-4">{buku.tahunTerbit}</td>
                   <td className="px-6 py-4">{buku.jumlahHalaman}</td>
