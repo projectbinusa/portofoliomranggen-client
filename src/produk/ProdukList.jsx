@@ -30,7 +30,6 @@ const ProductList = () => {
           id: product.id,
           nama: toCamelCase(product.nama),
           harga: product.harga || 0,
-          deskripsi: toCamelCase(product.deskripsi),
           fotoUrl: product.fotoUrl,
           kondisi: toCamelCase(product.kondisi),
         }));
@@ -114,7 +113,6 @@ const ProductList = () => {
                 <th className="px-6 py-3 text-center">No</th>
                 <th className="px-6 py-3 text-center">Foto</th>
                 <th className="px-6 py-3 text-center">Nama Produk</th>
-                <th className="px-6 py-3 text-center">Deskripsi</th>
                 <th className="px-6 py-3 text-center">Kondisi</th>
                 <th className="px-6 py-3 text-center">Harga</th>
                 <th className="px-6 py-3 text-center">Aksi</th>
@@ -131,7 +129,6 @@ const ProductList = () => {
                       )}
                     </td>
                     <td className="px-6 py-4 font-medium">{product.nama}</td>
-                    <td className="px-6 py-4">{product.deskripsi}</td>
                     <td className="px-6 py-4 text-center">{product.kondisi}</td>
                     <td className="px-6 py-4 text-center">Rp {product.harga.toLocaleString()}</td>
                     <td className="px-6 py-4 flex gap-3 justify-center">
@@ -149,7 +146,7 @@ const ProductList = () => {
                 ))
               ) : (
                 <tr>
-                  <td colSpan="7" className="px-6 py-4 text-center">Produk tidak ditemukan.</td>
+                  <td colSpan="6" className="px-6 py-4 text-center">Produk tidak ditemukan.</td>
                 </tr>
               )}
             </tbody>
