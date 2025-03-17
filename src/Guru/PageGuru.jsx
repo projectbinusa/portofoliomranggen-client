@@ -160,7 +160,7 @@ const PageGuru = () => {
                         <button
                           onClick={() => {
                             sendNotification(
-                              `Mengedit data guru \"${guru.namaGuru}\"`,
+                              `Mengedit data guru "${guru.namaGuru}"`,
                               "info"
                             );
                             navigate(`/edit-guru/${guru.id}`);
