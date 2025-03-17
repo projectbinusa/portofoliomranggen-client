@@ -45,18 +45,18 @@ const ProductList = () => {
 
   const handleEdit = (id, namaProduk) => {
     navigate(`/edit-produk/${id}`);
-    sendNotification(`Mengedit produk \"${namaProduk}\"`, "info");
+    sendNotification(`Mengedit produk "${namaProduk}"`, "info");
   };
 
   const handleDetail = (id, namaProduk) => {
     navigate(`/detail-produk/${id}`);
-    sendNotification(`Melihat detail produk \"${namaProduk}\"`, "info");
+    sendNotification(`Melihat detail produk "${namaProduk}"`, "info");
   };
 
   const handleDelete = async (id, namaProduk) => {
     Swal.fire({
       title: "Yakin ingin menghapus produk ini?",
-      text: `Produk \"${namaProduk}\" akan dihapus!`,
+      text: `Produk "${namaProduk}" akan dihapus!`,
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Hapus",
@@ -67,8 +67,8 @@ const ProductList = () => {
       if (result.isConfirmed) {
         try {
           await axios.delete(`${API_PRODUK}/delete/${id}`);
-          Swal.fire("Dihapus!", `Produk \"${namaProduk}\" telah dihapus.`, "success");
-          sendNotification(`Produk \"${namaProduk}\" telah dihapus`, "warning");
+          Swal.fire("Dihapus!", `Produk "${namaProduk}" telah dihapus.`, "success");
+          sendNotification(`Produk "${namaProduk}" telah dihapus`, "warning");
           setProducts(products.filter((product) => product.id !== id));
         } catch (error) {
           sendNotification("Gagal menghapus produk.", "error");
