@@ -4,16 +4,16 @@ import { FaPlus } from "react-icons/fa";
 import Swal from "sweetalert2";
 import axios from "axios";
 import Sidebar from "../components/Sidebar";
-import { Pencil, Trash2, Search, X, Eye } from "lucide-react";
+import { Pencil, Trash2, Search, X, Eye, FileText } from "lucide-react";
 import { useNotification } from "../context/NotificationContext";
 import Navbar from "../tampilan/Navbar";
+import { jsPDF } from "jspdf";
 
 const API_SISWA = "http://localhost:4321/api/siswa";
 
 const PageSiswa = () => {
   const navigate = useNavigate();
   const { sendNotification } = useNotification();
-  const { addNotification } = useNotification();
   const [searchTerm, setSearchTerm] = useState("");
   const [students, setStudents] = useState([]);
 
@@ -42,7 +42,7 @@ const PageSiswa = () => {
           .delete(`${API_SISWA}/delete/${id}`)
           .then(() => {
             fetchStudents();
-            addNotification("Admin telah menghapus data siswa", "info");
+            sendNotification("Admin telah menghapus data siswa", "info");
             Swal.fire("Dihapus!", "Data siswa telah dihapus.", "success");
           })
           .catch(() =>
@@ -56,11 +56,24 @@ const PageSiswa = () => {
     });
   };
 
-  const filteredStudents = students.filter((student) =>
-    Object.values(student).some((val) =>
-      String(val).toLowerCase().includes(searchTerm.toLowerCase())
-    )
-  );
+  const generatePDF = (student) => {
+    const doc = new jsPDF();
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(18);
+    doc.text("Detail Siswa", 105, 15, { align: "center" });
+
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(12);
+    doc.line(10, 20, 200, 20);
+
+    doc.text(`Nama         : ${student.nama}`, 10, 30);
+    doc.text(`Alamat       : ${student.alamat}`, 10, 40);
+    doc.text(`NISN         : ${student.nisn}`, 10, 50);
+    doc.text(`Tanggal Lahir: ${student.tanggalLahir}`, 10, 60);
+
+    doc.line(10, 70, 200, 70);
+    doc.save(`Siswa_${student.nama}.pdf`);
+  };
 
   return (
     <div className="flex h-screen">
@@ -81,7 +94,6 @@ const PageSiswa = () => {
             </button>
           </div>
 
-          {/* 🔎 Input Pencarian */}
           <div className="relative w-1/3 mb-4">
             <input
               type="text"
@@ -101,7 +113,6 @@ const PageSiswa = () => {
             )}
           </div>
 
-          {/* 📋 Tabel Siswa */}
           <div className="relative overflow-x-auto shadow-md ml-1">
             <table className="w-full text-sm text-left text-gray-700 border border-gray-400">
               <thead className="text-xs font-bold uppercase bg-gray-200 border-b border-gray-500">
@@ -124,8 +135,8 @@ const PageSiswa = () => {
                 </tr>
               </thead>
               <tbody>
-                {filteredStudents.length ? (
-                  filteredStudents.map((student, index) => (
+                {students.length ? (
+                  students.map((student, index) => (
                     <tr
                       key={student.id}
                       className="bg-white border-b border-gray-400 hover:bg-gray-100"
@@ -149,6 +160,13 @@ const PageSiswa = () => {
                             <Eye size={18} />
                           </button>
                         </Link>
+                        <button
+                          onClick={() => generatePDF(student)}
+                          className="flex items-center gap-2 bg-purple-500 text-white px-3 py-1 rounded-md hover:bg-purple-600"
+                        >
+                          <FileText size={18} />
+                        </button>
+
                         <Link to={`/edit-siswa/${student.id}`}>
                           <button className="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600">
                             <Pencil size={18} />

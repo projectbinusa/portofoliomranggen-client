@@ -4,16 +4,16 @@ import { FaPlus } from "react-icons/fa";
 import Swal from "sweetalert2";
 import axios from "axios";
 import Sidebar from "../components/Sidebar";
-import { Pencil, Trash2, Search, X, Eye } from "lucide-react";
+import { Pencil, Trash2, Search, X, Eye, FileText } from "lucide-react";
 import { useNotification } from "../context/NotificationContext";
 import Navbar from "../tampilan/Navbar";
+import { jsPDF } from "jspdf";
 
 const API_GURU = "http://localhost:4321/api/admin/guru";
 
 const PageGuru = () => {
   const navigate = useNavigate();
   const { sendNotification } = useNotification();
-  const { addNotification } = useNotification();
   const [searchTerm, setSearchTerm] = useState("");
   const [gurus, setGurus] = useState([]);
 
@@ -31,25 +31,45 @@ const PageGuru = () => {
   const handleDeleteGuru = (id) => {
     Swal.fire({
       title: "Apakah Anda yakin?",
-      text: "Data guru ini akan dihapus!",
+      text: "Data guru akan dihapus secara permanen!",
       icon: "warning",
       showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
       confirmButtonText: "Ya, hapus!",
-      cancelButtonText: "Batal",
     }).then((result) => {
       if (result.isConfirmed) {
         axios
           .delete(`${API_GURU}/delete/${id}`)
           .then(() => {
+            sendNotification("Data guru berhasil dihapus", "success");
             fetchGuru();
-            addNotification("Data guru berhasil dihapus", "warning");
-            Swal.fire("Dihapus!", "Data guru telah dihapus.", "success");
           })
-          .catch(() =>
-            Swal.fire("Gagal!", "Terjadi kesalahan saat menghapus data.", "error")
-          );
+          .catch((error) => {
+            sendNotification("Gagal menghapus data guru", "error");
+            console.error("Error deleting data:", error);
+          });
       }
     });
+  };
+
+  const generatePDF = (guru) => {
+    const doc = new jsPDF();
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(18);
+    doc.text("Detail Guru", 105, 15, { align: "center" });
+
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(12);
+    doc.line(10, 20, 200, 20);
+
+    doc.text(`Nama         : ${guru.namaGuru}`, 10, 30);
+    doc.text(`Alamat       : ${guru.alamat}`, 10, 40);
+    doc.text(`Tahun Diterima: ${guru.tahunDiterima}`, 10, 50);
+    doc.text(`Lama Kerja   : ${guru.lamaKerja}`, 10, 60);
+
+    doc.line(10, 70, 200, 70);
+    doc.save(`Guru_${guru.namaGuru}.pdf`);
   };
 
   return (
@@ -60,7 +80,7 @@ const PageGuru = () => {
         <div className="container mx-auto p-4">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-bold">Daftar Guru</h2>
-            <button 
+            <button
               onClick={() => {
                 navigate("/tambah-guru");
                 sendNotification("Menambahkan data guru baru", "success");
@@ -71,7 +91,6 @@ const PageGuru = () => {
             </button>
           </div>
 
-          {/* 🔎 Input Pencarian */}
           <div className="relative w-1/3 mb-4">
             <input
               type="text"
@@ -82,19 +101,31 @@ const PageGuru = () => {
             />
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-black-400 w-5 h-5" />
             {searchTerm && (
-              <button onClick={() => setSearchTerm("")} className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600">
+              <button
+                onClick={() => setSearchTerm("")}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+              >
                 <X className="w-5 h-5" />
               </button>
             )}
           </div>
 
-          {/* 📋 Tabel Guru */}
           <div className="relative overflow-x-auto shadow-md ml-1">
             <table className="w-full text-sm text-left text-gray-700 border border-gray-400">
               <thead className="text-xs font-bold uppercase bg-gray-200 border-b border-gray-500">
                 <tr>
-                  {["No", "Nama", "Alamat", "Tahun Diterima", "Lama Kerja", "Aksi"].map((header) => (
-                    <th key={header} className="px-6 py-3 border-r border-gray-400 text-center">
+                  {[
+                    "No",
+                    "Nama",
+                    "Alamat",
+                    "Tahun Diterima",
+                    "Lama Kerja",
+                    "Aksi",
+                  ].map((header) => (
+                    <th
+                      key={header}
+                      className="px-6 py-3 border-r border-gray-400 text-center"
+                    >
                       {header}
                     </th>
                   ))}
@@ -103,10 +134,22 @@ const PageGuru = () => {
               <tbody>
                 {gurus.length ? (
                   gurus.map((guru, index) => (
-                    <tr key={guru.id} className="bg-white border-b border-gray-400 hover:bg-gray-100">
-                      <td className="px-6 py-4 border-r text-center">{index + 1}</td>
-                      {[guru.namaGuru, guru.alamat, guru.tahunDiterima, guru.lamaKerja].map((field, i) => (
-                        <td key={i} className="px-6 py-4 border-r text-center">{field}</td>
+                    <tr
+                      key={guru.id}
+                      className="bg-white border-b border-gray-400 hover:bg-gray-100"
+                    >
+                      <td className="px-6 py-4 border-r text-center">
+                        {index + 1}
+                      </td>
+                      {[
+                        guru.namaGuru,
+                        guru.alamat,
+                        guru.tahunDiterima,
+                        guru.lamaKerja,
+                      ].map((field, i) => (
+                        <td key={i} className="px-6 py-4 border-r text-center">
+                          {field}
+                        </td>
                       ))}
                       <td className="px-6 py-4 flex gap-2 justify-center">
                         <Link to={`/detail-guru/${guru.id}`}>
@@ -116,7 +159,10 @@ const PageGuru = () => {
                         </Link>
                         <button
                           onClick={() => {
-                            sendNotification(`Mengedit data guru "${guru.namaGuru}"`, "info");
+                            sendNotification(
+                              `Mengedit data guru \"${guru.namaGuru}\"`,
+                              "info"
+                            );
                             navigate(`/edit-guru/${guru.id}`);
                           }}
                           className="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600"
@@ -128,6 +174,12 @@ const PageGuru = () => {
                           className="flex items-center gap-2 bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600"
                         >
                           <Trash2 size={18} />
+                        </button>
+                        <button
+                          onClick={() => generatePDF(guru)}
+                          className="flex items-center gap-2 bg-purple-500 text-white px-3 py-1 rounded-md hover:bg-purple-600"
+                        >
+                          <FileText size={18} />
                         </button>
                       </td>
                     </tr>
