@@ -2,11 +2,13 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { API_SAMBUTAN } from "../utils/BaseUrl";
+import { useNotification } from "../context/NotificationContext"; // 🔔 Import Notifikasi
 
 const TambahSambutan = () => {
   const [judul, setJudul] = useState("");   // Tambahkan state untuk judul
   const [deskripsi, setDeskripsi] = useState("");   // Tambahkan state untuk deskripsi
   const navigate = useNavigate();
+  const { addNotification } = useNotification(); // 🔔 Inisialisasi Notifikasi
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,6 +35,7 @@ const TambahSambutan = () => {
           icon: "success",
           confirmButtonText: "OK",
         }).then(() => {
+          addNotification(`Sambutan baru telah ditambahkan: "${judul}"`, "info"); // 🔔 Kirim Notifikasi
           navigate("/sambutan"); // Arahkan ke halaman sambutan setelah berhasil
         });
 

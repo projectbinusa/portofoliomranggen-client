@@ -13,6 +13,8 @@ const API_SISWA = "http://localhost:4321/api/siswa";
 const PageSiswa = () => {
   const navigate = useNavigate();
   const { sendNotification } = useNotification();
+  const { addNotification } = useNotification();
+ a81207b82e42332eed1dbf90f41f8ff9ef986515
   const [searchTerm, setSearchTerm] = useState("");
   const [students, setStudents] = useState([]);
 
@@ -42,6 +44,7 @@ const PageSiswa = () => {
           .then(() => {
             fetchStudents();
             sendNotification("Data siswa berhasil dihapus", "warning");
+            addNotification(`Admin telah menghapus data siswa`, "info");
             Swal.fire("Dihapus!", "Data siswa telah dihapus.", "success");
           })
           .catch(() =>

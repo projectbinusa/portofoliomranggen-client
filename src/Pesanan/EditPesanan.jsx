@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import  { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
 import Sidebar from "../components/Sidebar";
-import Swal from "sweetalert2"; // Notifikasi
+import Swal from "sweetalert2";
+import { useNotification } from "../context/NotificationContext"; // 🔔 Import Notifikasi
 
 const EditPesanan = () => {
   const { id } = useParams();
@@ -15,6 +16,7 @@ const EditPesanan = () => {
   });
 
   const navigate = useNavigate();
+  const { addNotification } = useNotification(); // 🔔 Inisialisasi Notifikasi
 
   // Mencegah scrolling pada halaman ini
   useEffect(() => {
@@ -63,7 +65,7 @@ const EditPesanan = () => {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          "Accept": "application/json",
+          Accept: "application/json",
         },
         body: JSON.stringify({
           id: parseInt(id),
@@ -75,10 +77,8 @@ const EditPesanan = () => {
       });
 
       if (response.ok) {
-        const result = await response.json();
-        console.log("Pesanan berhasil diperbarui:", result);
+        addNotification(`Admin memperbarui data persanan baru: ${formData.namaPesanan}`, "success");// 🔔 Kirim Notifikasi saat sukses
 
-        // Notifikasi sukses
         Swal.fire({
           title: "Berhasil!",
           text: "Pesanan berhasil diperbarui",
@@ -87,7 +87,8 @@ const EditPesanan = () => {
           navigate("/pesanan"); // Kembali ke halaman pesanan
         });
       } else {
-        console.error("Gagal memperbarui pesanan");
+        addNotification("Terjadi kesalahan saat memperbarui pesanan.", "error"); // 🔔 Kirim Notifikasi saat gagal
+
         Swal.fire({
           title: "Gagal!",
           text: "Terjadi kesalahan saat memperbarui pesanan",
@@ -96,7 +97,8 @@ const EditPesanan = () => {
         });
       }
     } catch (error) {
-      console.error("Terjadi kesalahan:", error);
+      addNotification("Terjadi kesalahan saat menghubungi server.", "error"); // 🔔 Kirim Notifikasi saat error
+
       Swal.fire({
         title: "Error",
         text: "Terjadi kesalahan saat menghubungi server",
@@ -166,14 +168,14 @@ const EditPesanan = () => {
             <div className="flex justify-between">
               <button
                 type="button"
-                className="submit-left bg-gray-500 text-white p-2 rounded-lg hover:bg-gray-600 border-2 border-gray-600 flex items-center gap-2"
+                className="bg-gray-500 text-white p-2 rounded-lg hover:bg-gray-600 border-2 border-gray-600 flex items-center gap-2"
                 onClick={() => navigate("/pesanan")}
               >
                 <FontAwesomeIcon icon={faArrowLeft} className="text-lg" />
               </button>
               <button
                 type="submit"
-                className="submit-button bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 border-2 border-gray-500 flex items-center gap-2"
+                className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 border-2 border-gray-500 flex items-center gap-2"
               >
                 <FontAwesomeIcon icon={faFloppyDisk} className="text-lg" />
                 Edit

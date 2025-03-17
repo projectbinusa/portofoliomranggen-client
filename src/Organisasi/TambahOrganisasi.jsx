@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import Swal from "sweetalert2";
 import { API_ORGANISASI } from "../utils/BaseUrl";
+import { useNotification } from "../context/NotificationContext"; // 🔔 Import Notifikasi
 
 const toCamelCase = (str) => {
   return str
@@ -14,6 +15,8 @@ const toCamelCase = (str) => {
 
 const TambahOrganisasi = () => {
   const navigate = useNavigate();
+  const { addNotification } = useNotification(); // 🔔 Inisialisasi Notifikasi
+
   const [organisasi, setOrganisasi] = useState({
     namaOrganisasi: "",
     lokasi: "",
@@ -30,7 +33,7 @@ const TambahOrganisasi = () => {
   };
 
   const validatePhone = (phone) => {
-    return /^\d{10,15}$/.test(phone);
+    return /^\d+$/.test(phone);
   };
 
   const handleSubmit = async (e) => {
@@ -72,6 +75,8 @@ const TambahOrganisasi = () => {
       if (!response.ok) {
         throw new Error("Gagal menambahkan organisasi. Silakan coba lagi.");
       }
+
+      addNotification("Organisasi baru berhasil ditambahkan", "success"); // 🔔 Kirim Notifikasi
 
       Swal.fire("Sukses!", "Organisasi berhasil ditambahkan.", "success").then(
         () => {

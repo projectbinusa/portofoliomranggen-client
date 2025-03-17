@@ -5,14 +5,15 @@ import axios from "axios";
 import { FaPlus } from "react-icons/fa";
 import Sidebar from "../components/Sidebar";
 import { Pencil, Trash2 } from "lucide-react";
-import { useNotification } from "../context/NotificationContext"; // ✅ Import Context
+import { useNotification } from "../context/NotificationContext";
 import Navbar from "../tampilan/Navbar";
 
 const API_USER = "http://localhost:4321/api/user";
 
 const User = () => {
   const navigate = useNavigate();
-  const { sendNotification } = useNotification(); // ✅ Ambil fungsi sendNotification
+  const { sendNotification } = useNotification();
+  const { addNotification } = useNotification();
   const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
@@ -24,36 +25,34 @@ const User = () => {
       .then((response) => {
         setUsers(response.data);
       })
-      .catch((error) => console.error("Error fetching data:", error))
+      .catch((error) => console.error("❌ Error fetching data:", error))
       .finally(() => setIsLoading(false));
   }, []);
 
-  const handleDeleteUser = async (id) => {
-    const result = await Swal.fire({
+  const handleDeleteUser = (id, username) => {
+    Swal.fire({
       title: "Apakah Anda yakin?",
-      text: "Data user ini akan dihapus!",
+      text: `User "${username}" akan dihapus!`,
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Ya, hapus!",
       cancelButtonText: "Batal",
-    });
-
-    if (result.isConfirmed) {
-      try {
-        await axios.delete(`${API_USER}/delete/${id}`);
-        setUsers(users.filter((user) => user.id !== id));
-
-        // ✅ Kirim notifikasi ke semua pengguna
-        sendNotification("Data user berhasil dihapus", "warning");
-        Swal.fire("Dihapus!", "Data user telah dihapus.", "success");
-      } catch (error) {
-        console.error("Error deleting user:", error);
-        Swal.fire("Error", "Gagal menghapus data.", "error");
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .delete(`${API_USER}/delete/${id}`)
+          .then(() => {
+            setUsers(users.filter((user) => user.id !== id));
+            addNotification(` Admin telah menghapus data User "${username}"`, "warning");
+            Swal.fire("Dihapus!", `User "${username}" telah dihapus.`, "success");
+          })
+          .catch(() =>
+            Swal.fire("Gagal!", "Terjadi kesalahan saat menghapus data.", "error")
+          );
       }
-    }
+    });
   };
 
-  // ✅ Hitung total halaman
   const totalPages = Math.ceil(users.length / usersPerPage);
   const indexOfLastUser = currentPage * usersPerPage;
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
@@ -69,14 +68,12 @@ const User = () => {
             <h2 className="text-2xl font-bold text-gray-700">Daftar User</h2>
             <button
               className="p-3 bg-green-500 text-white rounded-md hover:bg-green-600 flex items-center gap-2 transition tombol-tambah"
-              onClick={(e) => {
-                e.preventDefault();
-                console.log("Tombol tambah user diklik!"); // ✅ Debug
+              onClick={() => {
                 navigate("/tambah-user");
+                sendNotification("Menambahkan user baru", "success");
               }}
             >
               <FaPlus size={16} />
-              
             </button>
           </div>
           {isLoading ? (
@@ -118,7 +115,7 @@ const User = () => {
                           </Link>
                           <button
                             className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600"
-                            onClick={() => handleDeleteUser(user.id)}
+                            onClick={() => handleDeleteUser(user.id, user.username)}
                           >
                             <Trash2 className="w-4 h-4" />
                           </button>
@@ -137,7 +134,6 @@ const User = () => {
             </div>
           )}
 
-          {/* ✅ Pagination */}
           {users.length > usersPerPage && (
             <div className="flex justify-center items-center mt-4 space-x-2">
               <button

@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import  { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
 import Sidebar from "../components/Sidebar";
 import Swal from "sweetalert2";
+import { useNotification } from "../context/NotificationContext"; // 🔔 Import Notifikasi
 
 const TambahPesanan = () => {
   const [formData, setFormData] = useState({
@@ -14,6 +15,7 @@ const TambahPesanan = () => {
   });
 
   const navigate = useNavigate();
+  const { addNotification } = useNotification(); // 🔔 Inisialisasi Notifikasi
 
   useEffect(() => {
     document.documentElement.classList.add("overflow-hidden");
@@ -54,6 +56,8 @@ const TambahPesanan = () => {
       });
 
       if (response.ok) {
+        addNotification(`Admin telah menambahkan pesanan baru: ${formData.namaPesanan}`, "success"); // 🔔 Kirim Notifikasi saat sukses
+
         Swal.fire({
           title: "Berhasil!",
           text: "Pesanan berhasil ditambahkan",
@@ -62,6 +66,8 @@ const TambahPesanan = () => {
           navigate("/pesanan");
         });
       } else {
+        
+
         Swal.fire({
           title: "Gagal!",
           text: "Terjadi kesalahan saat menambahkan pesanan.",
@@ -69,7 +75,7 @@ const TambahPesanan = () => {
         });
       }
     } catch (error) {
-      console.error("Terjadi kesalahan:", error);
+      
       Swal.fire({
         title: "Error",
         text: "Terjadi kesalahan saat menghubungi server.",
@@ -85,11 +91,7 @@ const TambahPesanan = () => {
         <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md border-2 border-gray-600">
           <h2 className="text-xl font-bold mb-4 text-gray-700">Tambah Pesanan</h2>
           <form onSubmit={handleSubmit} className="space-y-6">
-            {[
-              "namaPesanan",
-              "jumlah",
-              "harga",
-            ].map((field, index) => (
+            {["namaPesanan", "jumlah", "harga"].map((field, index) => (
               <div key={index} className="flex flex-col items-start">
                 <label className="block text-gray-600">
                   {field.replace(/([A-Z])/g, " $1").replace(/^./, (str) => str.toUpperCase())}

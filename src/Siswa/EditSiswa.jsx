@@ -21,6 +21,7 @@ const EditSiswa = () => {
   });
 
   const userLogin = sessionStorage.getItem("username") || "Admin"; // 🔥 Ambil user login
+  // const userLogin = sessionStorage.getItem("username") || "Admin"; // 🔥 Ambil user login
 
   useEffect(() => {
     const fetchStudent = async () => {
@@ -117,6 +118,7 @@ const EditSiswa = () => {
       // 🔥 Kirim Notifikasi
       if (addNotification) {
         addNotification(`${userLogin} mengedit data siswa: ${updatedStudent.nama}`, "info");
+        addNotification(`Admin memperbarui data siswa: ${updatedStudent.nama}`, "info");
       }
 
       Swal.fire("Sukses!", "Data siswa berhasil diperbarui.", "success").then(() => {

@@ -9,7 +9,8 @@ import Navbar from "../tampilan/Navbar";
 
 const DaftarStaff = () => {
   const [staffData, setStaffData] = useState([]);
-  const { addNotification } = useNotification();
+  const { sendNotification } = useNotification(); 
+  const { addNotification } = useNotification(); 
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
 
@@ -38,7 +39,7 @@ const DaftarStaff = () => {
           .then((response) => {
             if (response.ok) {
               setStaffData(staffData.filter((staff) => staff.id !== id));
-              addNotification("Data staf berhasil dihapus", "warning");
+              addNotification("Data staf berhasil dihapus", "warning"); 
               Swal.fire("Dihapus!", "Data staf telah dihapus.", "success");
             } else {
               Swal.fire("Gagal!", "Gagal menghapus data staf.", "error");
@@ -66,9 +67,7 @@ const DaftarStaff = () => {
   };
 
   const filteredStaff = staffData.filter((staff) =>
-    `${staff.nama} ${staff.alamat} ${staff.noTelepon}`
-      .toLowerCase()
-      .includes(searchQuery.toLowerCase())
+    `${staff.nama} ${staff.alamat} ${staff.noTelepon}`.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
@@ -81,7 +80,10 @@ const DaftarStaff = () => {
             <h2 className="text-xl font-bold">Daftar Staff</h2>
             <button
               className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
-              onClick={() => navigate("/tambah-staff")}
+              onClick={() => {
+                navigate("/tambah-staff");
+                sendNotification("Form tambah staf dibuka", "info"); 
+              }}
             >
               Tambah Staff
             </button>
@@ -114,10 +116,7 @@ const DaftarStaff = () => {
                     "Nama",
                     "Alamat",
                     "No. Telepon",
-                    "Awal Bekerja",
-                    "Lama Kerja",
-                    "Create Date",
-                    "Aksi",
+                    "Lama Kerja"
                   ].map((header) => (
                     <th
                       key={header}
@@ -126,6 +125,7 @@ const DaftarStaff = () => {
                       {header}
                     </th>
                   ))}
+                  <th className="px-6 py-3 border-r border-gray-400 text-center">Aksi</th>
                 </tr>
               </thead>
               <tbody>
@@ -135,27 +135,11 @@ const DaftarStaff = () => {
                       key={staff.id}
                       className="bg-white border-b border-gray-400 hover:bg-gray-100"
                     >
-                      <td className="px-6 py-4 border-r text-center">
-                        {index + 1}
-                      </td>
-                      <td className="px-6 py-4 border-r text-center">
-                        {staff.nama}
-                      </td>
-                      <td className="px-6 py-4 border-r text-center">
-                        {staff.alamat}
-                      </td>
-                      <td className="px-6 py-4 border-r text-center">
-                        {staff.noTelepon}
-                      </td>
-                      <td className="px-6 py-4 border-r text-center">
-                        {formatDateDisplay(staff.awalBekerja)}
-                      </td>
-                      <td className="px-6 py-4 border-r text-center">
-                        {staff.lamaKerja}
-                      </td>
-                      <td className="px-6 py-4 border-r text-center">
-                        {formatDateDisplay(staff.createDate)}
-                      </td>
+                      <td className="px-6 py-4 border-r text-center">{index + 1}</td>
+                      <td className="px-6 py-4 border-r text-center">{staff.nama}</td>
+                      <td className="px-6 py-4 border-r text-center">{staff.alamat}</td>
+                      <td className="px-6 py-4 border-r text-center">{staff.noTelepon}</td>
+                      <td className="px-6 py-4 border-r text-center">{staff.lamaKerja}</td>
                       <td className="px-6 py-4 flex gap-2 justify-center">
                         <button
                           onClick={() => navigate(`/detail-staff/${staff.id}`)}
@@ -180,7 +164,7 @@ const DaftarStaff = () => {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="8" className="text-center py-4 text-gray-500">
+                    <td colSpan="6" className="text-center py-4 text-gray-500">
                       Tidak ada data staff yang sesuai.
                     </td>
                   </tr>

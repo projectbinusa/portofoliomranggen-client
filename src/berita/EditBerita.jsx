@@ -5,10 +5,12 @@ import axios from "axios";
 import { API_BERITA } from "../utils/BaseUrl";
 import UploadFoto from "../upload/UploadFoto";
 import Sidebar from "../components/Sidebar";
+import { useNotification } from "../context/NotificationContext"; // 🔔 Import notifikasi
 
 const EditBerita = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { addNotification } = useNotification(); // 🔔 Gunakan notifikasi
 
   const [berita, setBerita] = useState({
     nama: "",
@@ -45,6 +47,7 @@ const EditBerita = () => {
             tanggalTerbit: formattedTanggal,
             idAdmin: data.idAdmin || "",
           });
+
         }
       } catch (error) {
         console.error("Fetch error:", error);
@@ -79,6 +82,7 @@ const EditBerita = () => {
     try {
       await axios.put(`${API_BERITA}/editById/${id}`, berita);
       Swal.fire("Sukses!", "Data berita berhasil diperbarui.", "success").then(() => {
+        addNotification(`Berita ${berita.nama} telah diperbarui`, "success"); // 🔔 Notifikasi sukses edit berita
         navigate("/berita");
       });
     } catch (error) {
@@ -124,7 +128,9 @@ const EditBerita = () => {
             <div className="flex justify-between space-x-4 mt-6">
               <button
                 type="button"
-                onClick={() => navigate("/berita")}
+                onClick={() => {
+                  navigate("/berita");
+                }}
                 className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition"
               >
                 Batal

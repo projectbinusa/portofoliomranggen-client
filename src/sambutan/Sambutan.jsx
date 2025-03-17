@@ -4,11 +4,13 @@ import Swal from "sweetalert2";
 import { FaTrash } from "react-icons/fa"; // Import ikon Trash
 import kodeImage from "../assets/kode.jpg";
 import { API_SAMBUTAN } from "../utils/BaseUrl";
+import { useNotification } from "../context/NotificationContext"; // 🔔 Import Notifikasi
 
 const Sambutan = () => {
   const navigate = useNavigate();
-  const [sambutan, setSambutan] = useState([]); // Menggunakan array untuk menampung banyak data
+  const [sambutan, setSambutan] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { sendNotification } = useNotification(); // 🔔 Inisialisasi Notifikasi
 
   const fetchSambutan = async () => {
     try {
@@ -17,8 +19,8 @@ const Sambutan = () => {
         throw new Error("Sambutan tidak ditemukan.");
       }
       const data = await response.json();
-      console.log("Data yang diterima dari API:", data); // Debugging API
-      setSambutan(data); // Set state dengan array dari API
+      console.log("Data yang diterima dari API:", data);
+      setSambutan(data);
     } catch (error) {
       console.error("Error fetching sambutan:", error);
       Swal.fire({
@@ -34,17 +36,9 @@ const Sambutan = () => {
 
   useEffect(() => {
     fetchSambutan();
-    
-    // Opsional: polling setiap 10 detik agar data selalu terbaru
-    const interval = setInterval(() => {
-      fetchSambutan();
-    }, 10000);
+  }, []); // Tidak perlu polling, karena WebSocket menangani update
 
-    return () => clearInterval(interval); // Membersihkan interval saat komponen unmount
-  }, []);
-
-  // Fungsi untuk menghapus sambutan berdasarkan ID
-  const deleteSambutan = async (id) => {
+  const deleteSambutan = async (id, judul) => {
     Swal.fire({
       title: "Yakin ingin menghapus?",
       text: "Data yang dihapus tidak bisa dikembalikan!",
@@ -65,14 +59,16 @@ const Sambutan = () => {
             throw new Error("Gagal menghapus sambutan.");
           }
 
-          // Hapus sambutan dari state tanpa perlu reload halaman
-          setSambutan(sambutan.filter((item) => item.id !== id));
+          // Hapus dari state tanpa reload
+          setSambutan((prev) => prev.filter((item) => item.id !== id));
 
           Swal.fire({
             title: "Terhapus!",
             text: "Sambutan berhasil dihapus.",
             icon: "success",
           });
+
+          sendNotification(`Sambutan telah dihapus: "${judul}"`, "warning"); // 🔔 Kirim Notifikasi
         } catch (error) {
           console.error("Error deleting sambutan:", error);
           Swal.fire({
@@ -107,18 +103,16 @@ const Sambutan = () => {
           Selamat Datang Di Bootcamp 2025
         </h1>
         
-        {/* Menampilkan semua sambutan */}
         {sambutan.length > 0 ? (
           sambutan.map((item) => (
-            <div key={item.id} className="mb-6 flex justify-between items-center  p-4 rounded-lg">
+            <div key={item.id} className="mb-6 flex justify-between items-center p-4 rounded-lg">
               <div className="text-left">
                 <p className="text-gray-300">{item.deskripsi}</p>
               </div>
               
-              {/* Tombol Delete dengan Icon */}
               <button
                 className="text-red-500 hover:text-red-700 transition text-2xl ml-4"
-                onClick={() => deleteSambutan(item.id)}
+                onClick={() => deleteSambutan(item.id, item.judul)}
               >
                 <FaTrash />
               </button>

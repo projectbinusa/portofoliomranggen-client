@@ -1,15 +1,17 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { API_LOGIN } from "../utils/BaseUrl";
 import "font-awesome/css/font-awesome.min.css";
+import { useNotification } from "../context/NotificationContext"; // 🔔 Import Notifikasi
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+  const { addNotification } = useNotification(); // 🔔 Inisialisasi Notifikasi
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -25,11 +27,20 @@ const Login = () => {
         localStorage.setItem("adminId", response.data.data.id);
         localStorage.setItem("adminRole", response.data.data.role);
         window.dispatchEvent(new Event("authChange"));
+
+        addNotification("Login berhasil! Selamat datang kembali.", "success"); // 🔔 Kirim Notifikasi
+
         Swal.fire("Success!", "Login berhasil.", "success");
         navigate("/dashboard");
       }
     } catch (error) {
-      Swal.fire("Error", error.response?.data?.message || "Login gagal. Coba lagi.", "error");
+      addNotification("Login gagal. Periksa kembali email & password.", "error"); // 🔔 Kirim Notifikasi saat gagal
+      
+      Swal.fire(
+        "Error",
+        error.response?.data?.message || "Login gagal. Coba lagi.",
+        "error"
+      );
     }
   };
 

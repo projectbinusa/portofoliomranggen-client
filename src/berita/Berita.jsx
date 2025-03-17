@@ -11,6 +11,7 @@ import { useNotification } from "../context/NotificationContext";
 const Berita = () => {
   const [beritaList, setBeritaList] = useState([]);
   const { sendNotification } = useNotification();
+  const { addNotification } = useNotification();
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
 
@@ -55,7 +56,7 @@ const Berita = () => {
         }
 
         Swal.fire("Terhapus!", "Berita berhasil dihapus.", "success");
-        sendNotification("data berita dihapus", "warning"); // 🔔 Kirim notifikasi
+        addNotification("data berita dihapus", "warning"); // 🔔 Kirim notifikasi
         fetchBerita();
       } catch (error) {
         Swal.fire("Gagal!", error.message, "error");
@@ -88,7 +89,7 @@ const Berita = () => {
   };
 
   const filteredBerita = beritaList.filter((berita) =>
-    `${berita.nama} ${berita.penulis} ${berita.deskripsi}`.toLowerCase().includes(searchQuery.toLowerCase())
+    `${berita.nama} ${berita.penulis}`.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
@@ -127,7 +128,6 @@ const Berita = () => {
                 <th className="px-6 py-3 text-center">Foto</th>
                 <th className="px-6 py-3 text-center">Nama</th>
                 <th className="px-6 py-3 text-center">Penulis</th>
-                <th className="px-6 py-3 text-center">Deskripsi</th>
                 <th className="px-6 py-3 text-center">Tanggal Terbit</th>
                 <th className="px-6 py-3 text-center">Aksi</th>
               </tr>
@@ -147,7 +147,6 @@ const Berita = () => {
                   </td>
                   <td className="px-6 py-4">{toCamelCase(berita.nama)}</td>
                   <td className="px-6 py-4">{toCamelCase(berita.penulis)}</td>
-                  <td className="px-6 py-4">{toCamelCase(berita.deskripsi)}</td>
                   <td className="px-6 py-4 text-center">{formatDate(berita.tanggalTerbit)}</td>
                   <td className="px-6 py-4 flex justify-center gap-3">
                     <button

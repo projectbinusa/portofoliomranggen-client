@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import { API_VISIMISI } from "../utils/BaseUrl"; // Pastikan URL benar
+import { API_VISIMISI, API_NOTIFICATION } from "../utils/BaseUrl"; // ✅ Tambah API Notifikasi
+import { useNotification } from "../context/NotificationContext"; // ✅ Import Context Notifikasi
 
 const TambahVisiMisi = () => {
   const [visi, setVisi] = useState("");
   const [misi, setMisi] = useState("");
   const navigate = useNavigate();
+  const { sendNotification, isConnected } = useNotification(); // ✅ Ambil fungsi WebSocket
 
   useEffect(() => {
     document.documentElement.classList.add("overflow-hidden");
@@ -26,7 +28,7 @@ const TambahVisiMisi = () => {
       adminId: 0, // Pastikan adminId sesuai kebutuhan
     };
 
-    console.log("Data yang dikirim:", data); // Menampilkan data sebelum dikirim
+    console.log("📤 Data yang dikirim:", data); // ✅ Debugging sebelum request
 
     try {
       const response = await fetch(`${API_VISIMISI}/tambah`, {
@@ -36,29 +38,41 @@ const TambahVisiMisi = () => {
       });
 
       if (!response.ok) {
-        const errorText = await response.text(); // Ambil text jika gagal
-        console.error("Backend Error:", errorText);
+        const errorText = await response.text(); // Ambil pesan error dari backend
+        console.error("❌ Backend Error:", errorText);
         throw new Error(`Gagal menambahkan visi dan misi. Status: ${response.status}. Pesan: ${errorText}`);
       }
 
-      // Jika response sukses, coba parse sebagai JSON
       const result = await response.json();
+      console.log("✅ Visi dan Misi Ditambahkan:", result);
+
+      // ✅ Kirim Notifikasi ke WebSocket
+      if (isConnected) {
+        sendNotification("Visi dan Misi baru telah ditambahkan!", "success");
+      } else {
+        // ✅ Fallback ke API kalau WebSocket gagal
+        await fetch(`${API_NOTIFICATION}/add`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            message: "Visi dan Misi baru telah ditambahkan!",
+            type: "success",
+          }),
+        });
+      }
 
       Swal.fire({
-        title: "Visi dan Misi Ditambahkan!",
+        title: "Berhasil!",
         text: "Visi dan misi berhasil ditambahkan.",
         icon: "success",
         confirmButtonText: "OK",
       }).then(() => {
         navigate("/visi-misi");
-        // Hapus halaman dari cache atau lakukan tindakan lain setelah redirect
-        window.location.reload();
+        window.location.reload(); // Refresh halaman setelah redirect
       });
 
-      console.log("Visi dan Misi Ditambahkan:", result);
-
     } catch (error) {
-      console.error("Error:", error);
+      console.error("❌ Error:", error);
       Swal.fire({
         title: "Error",
         text: error.message,

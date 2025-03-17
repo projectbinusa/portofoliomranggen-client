@@ -4,12 +4,13 @@ import { API_STAFF } from "../utils/BaseUrl";
 import Swal from "sweetalert2";
 import Sidebar from "../components/Sidebar";
 import axios from "axios";
+import { useNotification } from "../context/NotificationContext"; // 🔔 Import Notifikasi
 
 const EditStaff = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { addNotification } = useNotification(); // 🔔 Pakai notifikasi
   const [staff, setStaff] = useState({
-    // Perhatikan di sini tidak ada field id
     nama: "",
     alamat: "",
     noTelepon: "",
@@ -27,7 +28,6 @@ const EditStaff = () => {
 
           setStaff({
             ...data,
-            // Pastikan data tanggal valid sebelum diproses
             awalBekerja:
               data.awalBekerja && !isNaN(new Date(data.awalBekerja))
                 ? new Date(data.awalBekerja).toISOString().split("T")[0]
@@ -55,11 +55,18 @@ const EditStaff = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Validasi input sebelum mengirim ke server
+    if (!staff.nama || !staff.alamat || !staff.noTelepon) {
+      Swal.fire("Peringatan", "Harap isi semua kolom!", "warning");
+      return;
+    }
+
     try {
-      // Kirim data ke server menggunakan PUT
       const response = await axios.put(`${API_STAFF}/editById/${id}`, staff);
       if (response.status === 200) {
         Swal.fire("Sukses", "Data staf berhasil diperbarui!", "success");
+        addNotification(`Admin memperbarui data staf ${staff.nama}`, "info"); // 🔔 Notifikasi update staf
         setTimeout(() => navigate("/staff"), 1000);
       }
     } catch (error) {
@@ -75,9 +82,8 @@ const EditStaff = () => {
         <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-lg border border-gray-300">
           <h2 className="text-xl font-bold mb-4 text-left">Edit Staff</h2>
           <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Hanya tampilkan field yang dibutuhkan, kecuali ID */}
             {Object.keys(staff)
-              .filter((key) => key !== "id") // Pastikan "id" tidak ikut dirender
+              .filter((key) => key !== "id")
               .map((key) => (
                 <div key={key} className="flex flex-col">
                   <label className="text-gray-700 text-sm font-medium text-left capitalize">
