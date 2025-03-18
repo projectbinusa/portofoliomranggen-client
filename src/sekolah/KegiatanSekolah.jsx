@@ -22,13 +22,11 @@ const KegiatanSekolah = () => {
         setKegiatanSekolah(response.data);
       })
       .catch((error) => {
-        console.error("There was an error fetching the data!", error);
+        console.error("Error fetching data:", error);
       });
   }, []);
 
   const handleDeleteKegiatan = (id) => {
-    const kegiatan = kegiatanSekolah.find((k) => k.id === id);
-
     Swal.fire({
       title: "Apakah Anda yakin?",
       text: "Data kegiatan ini akan dihapus!",
@@ -42,12 +40,6 @@ const KegiatanSekolah = () => {
           .delete(`${API_KEGIATAN}/delete/${id}`)
           .then(() => {
             Swal.fire("Dihapus!", "Data kegiatan telah dihapus.", "success");
-            addNotification(
-              `Admin menghapus data kegiatan sekolah: ${
-                kegiatan ? kegiatan.nama : "Tidak Diketahui"
-              }`,
-              "info"
-            );
             setKegiatanSekolah(kegiatanSekolah.filter((k) => k.id !== id));
           })
           .catch(() => {
@@ -62,19 +54,14 @@ const KegiatanSekolah = () => {
     doc.setFont("helvetica", "bold");
     doc.setFontSize(18);
     doc.text("Detail Kegiatan Sekolah", 105, 15, { align: "center" });
-
     doc.setFont("helvetica", "normal");
     doc.setFontSize(12);
-    doc.line(10, 20, 200, 20);
-
     doc.text(`Nama Kegiatan   : ${kegiatan.nama}`, 10, 30);
     doc.text(`Deskripsi      : ${kegiatan.deskripsi}`, 10, 40);
     doc.text(`Tingkat        : ${kegiatan.tingkat}`, 10, 50);
     doc.text(`Penyelenggara  : ${kegiatan.penyelenggara}`, 10, 60);
     doc.text(`Penanggung Jawab: ${kegiatan.penanggungJawab}`, 10, 70);
     doc.text(`Hasil          : ${kegiatan.hasil}`, 10, 80);
-
-    doc.line(10, 90, 200, 90);
     doc.save(`Kegiatan_${kegiatan.nama}.pdf`);
   };
 
@@ -87,22 +74,21 @@ const KegiatanSekolah = () => {
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-bold">Daftar Kegiatan Sekolah</h2>
             <button
-              className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition"
+              className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
               onClick={() => navigate("/tambah-kegiatan")}
             >
               Tambah Kegiatan
             </button>
           </div>
-
           <div className="relative w-1/3 mb-4">
             <input
               type="text"
               placeholder="Cari berdasarkan semua data..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full px-10 py-2 border border-black rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              className="w-full px-10 py-2 border border-black rounded-md focus:ring-2 focus:ring-blue-500"
             />
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-black-400 w-5 h-5" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5" />
             {searchTerm && (
               <button
                 onClick={() => setSearchTerm("")}
@@ -113,7 +99,7 @@ const KegiatanSekolah = () => {
             )}
           </div>
 
-          <div className="relative overflow-x-auto shadow-md">
+          <div className="overflow-x-auto shadow-md">
             <table className="w-full text-sm text-left text-gray-700 border border-black">
               <thead className="text-xs font-bold uppercase bg-gray-200 border-b border-gray-500">
                 <tr>
@@ -133,11 +119,21 @@ const KegiatanSekolah = () => {
                     <td>{kegiatan.tingkat}</td>
                     <td>{kegiatan.penyelenggara}</td>
                     <td>{kegiatan.penanggungJawab}</td>
-                    <td className="flex gap-2 justify-center">
-                      <button className="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600">
+                    <td className="flex gap-2">
+                      <button
+                        onClick={() =>
+                          navigate(`/detail-sekolah/${kegiatan.id}`)
+                        }
+                        className="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600"
+                      >
                         <Eye size={18} />
                       </button>
-                      <button className="bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-600">
+                      <button
+                        onClick={() =>
+                          navigate(`/edit-kegiatan/${kegiatan.id}`)
+                        }
+                        className="bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-600"
+                      >
                         <Pencil size={18} />
                       </button>
                       <button

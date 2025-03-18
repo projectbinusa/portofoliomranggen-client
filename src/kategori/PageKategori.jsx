@@ -3,9 +3,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { FaPlus } from "react-icons/fa";
 import Swal from "sweetalert2";
 import Sidebar from "../components/Sidebar";
-import { Pencil, Trash2, Search, X } from "lucide-react";
+import { Pencil, Trash2, Search, X, FileText } from "lucide-react";
 import { useNotification } from "../context/NotificationContext";
 import Navbar from "../tampilan/Navbar";
+import jsPDF from "jspdf";
 
 const API_KATEGORI = "http://localhost:4321/api/kategori";
 
@@ -55,6 +56,14 @@ const DaftarKategori = () => {
           );
       }
     });
+  };
+
+  const generateInvoice = (kategori) => {
+    const doc = new jsPDF();
+    doc.text("Invoice Kategori", 20, 20);
+    doc.text(`Kategori: ${kategori.namaKategori}`, 20, 30);
+    doc.save(`invoice_${kategori.namaKategori}.pdf`);
+    sendNotification("Invoice berhasil dibuat", "success");
   };
 
   return (
@@ -136,6 +145,12 @@ const DaftarKategori = () => {
                           className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600"
                         >
                           <Trash2 size={18} />
+                        </button>
+                        <button
+                          onClick={() => generateInvoice(kategori)}
+                          className="bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-600"
+                        >
+                          <FileText size={18} />
                         </button>
                       </td>
                     </tr>
