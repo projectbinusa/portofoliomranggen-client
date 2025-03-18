@@ -2,11 +2,12 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import Sidebar from "../components/Sidebar";
-import { Pencil, Trash2, Search, X, Eye } from "lucide-react";
+import { Pencil, Trash2, Search, X, Eye, FileText } from "lucide-react";
 import axios from "axios";
 import { API_KEGIATAN } from "../utils/BaseUrl";
 import { useNotification } from "../context/NotificationContext";
 import Navbar from "../tampilan/Navbar";
+import { jsPDF } from "jspdf";
 
 const KegiatanSekolah = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -15,7 +16,8 @@ const KegiatanSekolah = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get(`${API_KEGIATAN}/all`)
+    axios
+      .get(`${API_KEGIATAN}/all`)
       .then((response) => {
         setKegiatanSekolah(response.data);
       })
@@ -25,7 +27,7 @@ const KegiatanSekolah = () => {
   }, []);
 
   const handleDeleteKegiatan = (id) => {
-    const kegiatan = kegiatanSekolah.find((k) => k.id === id); // ✅ Ambil kegiatan berdasarkan ID
+    const kegiatan = kegiatanSekolah.find((k) => k.id === id);
 
     Swal.fire({
       title: "Apakah Anda yakin?",
@@ -36,10 +38,16 @@ const KegiatanSekolah = () => {
       cancelButtonText: "Batal",
     }).then((result) => {
       if (result.isConfirmed) {
-        axios.delete(`${API_KEGIATAN}/delete/${id}`)
+        axios
+          .delete(`${API_KEGIATAN}/delete/${id}`)
           .then(() => {
             Swal.fire("Dihapus!", "Data kegiatan telah dihapus.", "success");
-            addNotification(`Admin menghapus data kegiatan sekolah: ${kegiatan ? kegiatan.nama : "Tidak Diketahui"}`, "info"); // ✅ Gunakan nama kegiatan yang benar
+            addNotification(
+              `Admin menghapus data kegiatan sekolah: ${
+                kegiatan ? kegiatan.nama : "Tidak Diketahui"
+              }`,
+              "info"
+            );
             setKegiatanSekolah(kegiatanSekolah.filter((k) => k.id !== id));
           })
           .catch(() => {
@@ -49,16 +57,26 @@ const KegiatanSekolah = () => {
     });
   };
 
-  const filteredKegiatan = kegiatanSekolah.filter((kegiatan) => {
-    return (
-      kegiatan.nama.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      kegiatan.deskripsi.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      kegiatan.tingkat.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      kegiatan.penyelenggara.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      kegiatan.penanggungJawab.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      kegiatan.hasil.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-  });
+  const generatePDF = (kegiatan) => {
+    const doc = new jsPDF();
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(18);
+    doc.text("Detail Kegiatan Sekolah", 105, 15, { align: "center" });
+
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(12);
+    doc.line(10, 20, 200, 20);
+
+    doc.text(`Nama Kegiatan   : ${kegiatan.nama}`, 10, 30);
+    doc.text(`Deskripsi      : ${kegiatan.deskripsi}`, 10, 40);
+    doc.text(`Tingkat        : ${kegiatan.tingkat}`, 10, 50);
+    doc.text(`Penyelenggara  : ${kegiatan.penyelenggara}`, 10, 60);
+    doc.text(`Penanggung Jawab: ${kegiatan.penanggungJawab}`, 10, 70);
+    doc.text(`Hasil          : ${kegiatan.hasil}`, 10, 80);
+
+    doc.line(10, 90, 200, 90);
+    doc.save(`Kegiatan_${kegiatan.nama}.pdf`);
+  };
 
   return (
     <div className="flex h-screen">
@@ -70,10 +88,7 @@ const KegiatanSekolah = () => {
             <h2 className="text-xl font-bold">Daftar Kegiatan Sekolah</h2>
             <button
               className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition"
-              onClick={() => {
-                addNotification("Admin menambahkan data kegiatan sekolah", "info"); // ✅ Perbaiki agar tidak menampilkan undefined
-                navigate("/tambah-kegiatan");
-              }}
+              onClick={() => navigate("/tambah-kegiatan")}
             >
               Tambah Kegiatan
             </button>
@@ -88,7 +103,6 @@ const KegiatanSekolah = () => {
               className="w-full px-10 py-2 border border-black rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
             />
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-black-400 w-5 h-5" />
-
             {searchTerm && (
               <button
                 onClick={() => setSearchTerm("")}
@@ -103,56 +117,44 @@ const KegiatanSekolah = () => {
             <table className="w-full text-sm text-left text-gray-700 border border-black">
               <thead className="text-xs font-bold uppercase bg-gray-200 border-b border-gray-500">
                 <tr>
-                  <th className="px-6 py-3 border-r border-gray-800 text-center">No</th>
-                  <th className="px-6 py-3 border-r border-gray-800 text-center">Nama Kegiatan</th>
-                  <th className="px-6 py-3 border-r border-gray-800 text-center">Tingkat</th>
-                  <th className="px-6 py-3 border-r border-gray-800 text-center">Penyelenggara</th>
-                  <th className="px-6 py-3 border-r border-gray-800 text-center">Penanggung Jawab</th>
-                  <th className="px-6 py-3 text-center">Aksi</th>
+                  <th>No</th>
+                  <th>Nama Kegiatan</th>
+                  <th>Tingkat</th>
+                  <th>Penyelenggara</th>
+                  <th>Penanggung Jawab</th>
+                  <th>Aksi</th>
                 </tr>
               </thead>
               <tbody>
-                {filteredKegiatan.length > 0 ? (
-                  filteredKegiatan.map((kegiatan, index) => (
-                    <tr
-                      key={kegiatan.id}
-                      className="bg-white border-b border-gray-400 hover:bg-gray-100"
-                    >
-                      <td className="px-6 py-4 border-r border-gray-800">{index + 1}</td>
-                      <td className="px-6 py-4 font-medium border-r border-gray-400">{kegiatan.nama}</td>
-                      <td className="px-6 py-4 border-r border-gray-800">{kegiatan.tingkat}</td>
-                      <td className="px-6 py-4 border-r border-gray-800">{kegiatan.penyelenggara}</td>
-                      <td className="px-6 py-4 border-r border-gray-800">{kegiatan.penanggungJawab}</td>
-                      <td className="px-6 py-4 flex justify-center gap-3">
-                        <Link to={`/detail-sekolah/${kegiatan.id}`}>
-                          <button className="flex items-center gap-2 bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-600 transition">
-                            <Eye size={20} />
-                          </button>
-                        </Link>
-                        <Link to={`/edit-kegiatan/${kegiatan.id}`}>
-                          <button
-                            className="flex items-center gap-2 bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600 transition"
-                            onClick={() => addNotification(`Admin memperbarui data kegiatan sekolah: ${kegiatan.nama}`, "info")} // ✅ Gunakan `kegiatan.nama`
-                          >
-                            <Pencil size={20} />
-                          </button>
-                        </Link>
-                        <button
-                          onClick={() => handleDeleteKegiatan(kegiatan.id)}
-                          className="flex items-center gap-2 bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 transition"
-                        >
-                          <Trash2 size={20} />
-                        </button>
-                      </td>
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan="8" className="text-center py-4 text-gray-500">
-                      Tidak ada data kegiatan yang sesuai.
+                {kegiatanSekolah.map((kegiatan, index) => (
+                  <tr key={kegiatan.id} className="hover:bg-gray-100">
+                    <td>{index + 1}</td>
+                    <td>{kegiatan.nama}</td>
+                    <td>{kegiatan.tingkat}</td>
+                    <td>{kegiatan.penyelenggara}</td>
+                    <td>{kegiatan.penanggungJawab}</td>
+                    <td className="flex gap-2 justify-center">
+                      <button className="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600">
+                        <Eye size={18} />
+                      </button>
+                      <button className="bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-600">
+                        <Pencil size={18} />
+                      </button>
+                      <button
+                        onClick={() => generatePDF(kegiatan)}
+                        className="bg-purple-500 text-white px-3 py-1 rounded-md hover:bg-purple-600"
+                      >
+                        <FileText size={18} />
+                      </button>
+                      <button
+                        onClick={() => handleDeleteKegiatan(kegiatan.id)}
+                        className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600"
+                      >
+                        <Trash2 size={18} />
+                      </button>
                     </td>
                   </tr>
-                )}
+                ))}
               </tbody>
             </table>
           </div>
