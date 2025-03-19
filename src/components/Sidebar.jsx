@@ -79,12 +79,7 @@ export default function Sidebar() {
             text="Dashboard"
             to="/dashboard"
           />
-          <SidebarItem
-            isOpen={isOpen}
-            icon={<HiUser />}
-            text="Profil"
-            to="/page-profil"
-          />
+
           <DropdownItem
             isOpen={isOpen}
             icon={<HiClipboardList />}
