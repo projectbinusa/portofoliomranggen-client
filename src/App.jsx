@@ -81,6 +81,8 @@ import DetailBerita from "./berita/DetailBerita";
 import Navbar from "./tampilan/Navbar";
 import Kontak from "./components/Kontak";
 
+import PaymentPage from "./payment/PaymentPage";
+
 import "./App.css";
 
 function App() {
@@ -183,6 +185,8 @@ function App() {
 
             {/* Halaman 404 */}
             <Route path="*" element={<NotFoundPage />} />
+
+            <Route path="/payment" element={<PaymentPage />} />
           </Routes>
         </Router>
       </NotificationProvider>
