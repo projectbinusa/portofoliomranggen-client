@@ -13,11 +13,11 @@ const API_USER = "http://localhost:4321/api/user";
 
 const User = () => {
   const navigate = useNavigate();
-  const { sendNotification } = useNotification();
-  const { addNotification } = useNotification();
+  const { sendNotification, addNotification } = useNotification();
   const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
+  // Fetching users on component mount
   useEffect(() => {
     axios
       .get(`${API_USER}/all`)
@@ -26,10 +26,11 @@ const User = () => {
       .finally(() => setIsLoading(false));
   }, []);
 
+  // Handle user deletion
   const handleDeleteUser = (id, username) => {
     Swal.fire({
       title: "Apakah Anda yakin?",
-      text: `User \"${username}\" akan dihapus!`,
+      text: `User "${username}" akan dihapus!`,
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Ya, hapus!",
@@ -41,12 +42,12 @@ const User = () => {
           .then(() => {
             setUsers(users.filter((user) => user.id !== id));
             addNotification(
-              `Admin telah menghapus data User \"${username}\"`,
+              `Admin telah menghapus data User "${username}"`,
               "warning"
             );
             Swal.fire(
               "Dihapus!",
-              `User \"${username}\" telah dihapus.`,
+              `User "${username}" telah dihapus.`,
               "success"
             );
           })
@@ -61,6 +62,7 @@ const User = () => {
     });
   };
 
+  // Generate PDF invoice for user
   const generateInvoice = (user) => {
     const doc = new jsPDF();
     doc.setFont("helvetica", "bold");
