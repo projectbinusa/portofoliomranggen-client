@@ -4,16 +4,16 @@ import { FaPlus } from "react-icons/fa";
 import Swal from "sweetalert2";
 import axios from "axios";
 import Sidebar from "../components/Sidebar";
-import { Pencil, Trash2, Search, X, Eye } from "lucide-react";
+import { Pencil, Trash2, Search, X, Eye, FileText } from "lucide-react";
 import { useNotification } from "../context/NotificationContext";
 import Navbar from "../tampilan/Navbar";
+import { jsPDF } from "jspdf";
 
 const API_PESANAN = "http://localhost:4321/api/pesanan";
 
 const PagePesanan = () => {
   const navigate = useNavigate();
   const { sendNotification } = useNotification();
-  const { addNotification } = useNotification();
   const [searchTerm, setSearchTerm] = useState("");
   const [pesanan, setPesanan] = useState([]);
 
@@ -42,7 +42,7 @@ const PagePesanan = () => {
           .delete(`${API_PESANAN}/delete/${id}`)
           .then(() => {
             fetchPesanan();
-            addNotification("Pesanan berhasil dihapus", "warning");
+            sendNotification("Pesanan berhasil dihapus", "warning");
             Swal.fire("Dihapus!", "Pesanan telah dihapus.", "success");
           })
           .catch(() =>
@@ -56,6 +56,25 @@ const PagePesanan = () => {
     });
   };
 
+  const generateInvoice = (item) => {
+    const doc = new jsPDF();
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(18);
+    doc.text("Invoice Pesanan", 105, 15, { align: "center" });
+
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(12);
+    doc.line(10, 20, 200, 20);
+
+    doc.text(`Nama Pesanan: ${item.namaPesanan}`, 10, 30);
+    doc.text(`Jumlah: ${item.jumlah}`, 10, 40);
+    doc.text(`Harga: ${item.harga}`, 10, 50);
+    doc.text(`Kondisi: ${item.kondisi}`, 10, 60);
+
+    doc.line(10, 70, 200, 70);
+    doc.save(`Invoice_${item.namaPesanan}.pdf`);
+  };
+
   return (
     <div className="flex h-screen">
       <Sidebar />
@@ -65,10 +84,7 @@ const PagePesanan = () => {
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-bold">Daftar Pesanan</h2>
             <button
-              onClick={() => {
-                navigate("/tambah-pesanan");
-                sendNotification("Menambahkan pesanan baru", "success");
-              }}
+              onClick={() => navigate("/tambah-pesanan")}
               className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
             >
               <FaPlus size={16} />
@@ -116,7 +132,7 @@ const PagePesanan = () => {
                 </tr>
               </thead>
               <tbody>
-                {pesanan.length ? (
+                {pesanan.length > 0 ? (
                   pesanan.map((item, index) => (
                     <tr
                       key={item.id}
@@ -125,37 +141,40 @@ const PagePesanan = () => {
                       <td className="px-6 py-4 border-r text-center">
                         {index + 1}
                       </td>
-                      {[
-                        item.namaPesanan,
-                        item.jumlah,
-                        item.harga,
-                        item.kondisi,
-                      ].map((field, i) => (
-                        <td key={i} className="px-6 py-4 border-r text-center">
-                          {field}
-                        </td>
-                      ))}
+                      <td className="px-6 py-4 border-r text-center">
+                        {item.namaPesanan}
+                      </td>
+                      <td className="px-6 py-4 border-r text-center">
+                        {item.jumlah}
+                      </td>
+                      <td className="px-6 py-4 border-r text-center">
+                        {item.harga}
+                      </td>
+                      <td className="px-6 py-4 border-r text-center">
+                        {item.kondisi}
+                      </td>
                       <td className="px-6 py-4 flex gap-2 justify-center">
-                        <Link to={`/detail-pesanan/${item.id}`}>
-                          <button className="flex items-center gap-2 bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-600">
-                            <Eye size={18} />
-                          </button>
+                        <button
+                          onClick={() => generateInvoice(item)}
+                          className="bg-purple-500 text-white px-3 py-1 rounded-md hover:bg-purple-600"
+                        >
+                          <FileText size={18} />
+                        </button>
+                        <Link
+                          to={`/detail-pesanan/${item.id}`}
+                          className="bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-600"
+                        >
+                          <Eye size={18} />
                         </Link>
                         <button
-                          onClick={() => {
-                            sendNotification(
-                              `Mengedit pesanan "${item.namaPesanan}"`,
-                              "info"
-                            );
-                            navigate(`/edit-pesanan/${item.id}`);
-                          }}
+                          onClick={() => navigate(`/edit-pesanan/${item.id}`)}
                           className="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600"
                         >
                           <Pencil size={18} />
                         </button>
                         <button
                           onClick={() => handleDeletePesanan(item.id)}
-                          className="flex items-center gap-2 bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600"
+                          className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600"
                         >
                           <Trash2 size={18} />
                         </button>

@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Pencil, Trash2 } from "lucide-react";
+import { Pencil, Trash2, FileText } from "lucide-react";
 import { FaPlus, FaSearch } from "react-icons/fa";
 import Sidebar from "../components/Sidebar";
 import Swal from "sweetalert2";
 import { API_KELAS } from "../utils/BaseUrl";
 import Navbar from "../tampilan/Navbar";
-import { useNotification } from "../context/NotificationContext"; // 🔔 Import Notifikasi
+import { useNotification } from "../context/NotificationContext";
+import { jsPDF } from "jspdf";
 
 const toTitleCase = (str) => {
   if (!str) return "";
@@ -21,7 +22,7 @@ const KategoriKelas = () => {
   const [kelasData, setKelasData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
-  const { sendNotification } = useNotification(); // 🔔 Inisialisasi Notifikasi
+  const { sendNotification } = useNotification();
 
   useEffect(() => {
     fetch(`${API_KELAS}/all`)
@@ -29,10 +30,6 @@ const KategoriKelas = () => {
       .then((data) => setKelasData(data))
       .catch((error) => console.error("Error fetching kelas data:", error));
   }, []);
-
-  const handleEdit = (id) => {
-    navigate(`/edit-kategori-kelas/${id}`);
-  };
 
   const handleDelete = (id) => {
     Swal.fire({
@@ -48,17 +45,39 @@ const KategoriKelas = () => {
       if (result.isConfirmed) {
         try {
           await fetch(`${API_KELAS}/delete/${id}`, { method: "DELETE" });
-          setKelasData((prevData) => prevData.filter((kelas) => kelas.id !== id));
-          
-          sendNotification("Kategori kelas berhasil dihapus", "error"); // 🔔 Kirim Notifikasi
-          
+          setKelasData((prevData) =>
+            prevData.filter((kelas) => kelas.id !== id)
+          );
+          sendNotification("Kategori kelas berhasil dihapus", "error");
           Swal.fire("Dihapus!", "Kategori kelas telah dihapus.", "success");
         } catch (error) {
           console.error("Error deleting kelas:", error);
-          Swal.fire("Gagal!", "Terjadi kesalahan saat menghapus data.", "error");
+          Swal.fire(
+            "Gagal!",
+            "Terjadi kesalahan saat menghapus data.",
+            "error"
+          );
         }
       }
     });
+  };
+
+  const generateInvoice = (kelas) => {
+    const doc = new jsPDF();
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(18);
+    doc.text("Invoice Kategori Kelas", 105, 15, { align: "center" });
+
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(12);
+    doc.line(10, 20, 200, 20);
+
+    doc.text(`Nama Kelas: ${kelas.namaKelas}`, 10, 30);
+    doc.text(`Tanggal Dibuat: ${kelas.createdAt}`, 10, 40);
+    doc.text(`Deskripsi: ${kelas.deskripsi || "-"}`, 10, 50);
+
+    doc.line(10, 60, 200, 60);
+    doc.save(`Invoice_${kelas.namaKelas}.pdf`);
   };
 
   const filteredData = kelasData.filter((kelas) =>
@@ -81,13 +100,16 @@ const KategoriKelas = () => {
               className="w-full px-3 py-2 pl-10 pr-4 text-sm border-2 border-gray-600 rounded-md 
                focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-            <FaSearch className="absolute left-3 top-3 text-gray-500" size={14} />
+            <FaSearch
+              className="absolute left-3 top-3 text-gray-500"
+              size={14}
+            />
           </div>
-
           <button
             onClick={() => navigate("/tambah-kategori-kelas")}
             className="flex items-center gap-2 bg-green-500 text-white px-4 py-2
-             rounded-md hover:bg-green-600 transition">
+             rounded-md hover:bg-green-600 transition"
+          >
             <FaPlus size={16} />
           </button>
         </div>
@@ -111,16 +133,27 @@ const KategoriKelas = () => {
                     </td>
                     <td className="px-4 py-4 flex justify-center gap-3">
                       <button
-                        onClick={() => handleEdit(kelas.id)}
+                        onClick={() =>
+                          navigate(`/edit-kategori-kelas/${kelas.id}`)
+                        }
                         className="flex items-center gap-2 bg-blue-500 text-white px-3 py-1
-                         rounded-md hover:bg-blue-600 transition">
+                         rounded-md hover:bg-blue-600 transition"
+                      >
                         <Pencil size={18} />
                       </button>
                       <button
                         onClick={() => handleDelete(kelas.id)}
                         className="flex items-center gap-2 bg-red-500 text-white px-3 py-1
-                         rounded-md hover:bg-red-600 transition">
+                         rounded-md hover:bg-red-600 transition"
+                      >
                         <Trash2 size={18} />
+                      </button>
+                      <button
+                        onClick={() => generateInvoice(kelas)}
+                        className="flex items-center gap-2 bg-purple-500 text-white px-3 py-1
+                         rounded-md hover:bg-purple-600 transition"
+                      >
+                        <FileText size={18} />
                       </button>
                     </td>
                   </tr>

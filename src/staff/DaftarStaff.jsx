@@ -1,16 +1,17 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Pencil, Trash2, Search, Eye, X } from "lucide-react";
+import { Pencil, Trash2, Search, Eye, X, FileText } from "lucide-react";
 import Sidebar from "../components/Sidebar";
 import Swal from "sweetalert2";
 import { API_STAFF } from "../utils/BaseUrl";
 import { useNotification } from "../context/NotificationContext";
 import Navbar from "../tampilan/Navbar";
+import { jsPDF } from "jspdf";
 
 const DaftarStaff = () => {
   const [staffData, setStaffData] = useState([]);
-  const { sendNotification } = useNotification(); 
-  const { addNotification } = useNotification(); 
+  const { sendNotification } = useNotification();
+  const { addNotification } = useNotification();
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
 
@@ -39,7 +40,7 @@ const DaftarStaff = () => {
           .then((response) => {
             if (response.ok) {
               setStaffData(staffData.filter((staff) => staff.id !== id));
-              addNotification("Data staf berhasil dihapus", "warning"); 
+              addNotification("Data staf berhasil dihapus", "warning");
               Swal.fire("Dihapus!", "Data staf telah dihapus.", "success");
             } else {
               Swal.fire("Gagal!", "Gagal menghapus data staf.", "error");
@@ -57,18 +58,24 @@ const DaftarStaff = () => {
     });
   };
 
-  const formatDateDisplay = (rawDate) => {
-    if (!rawDate) return "-";
-    const dateObj = new Date(rawDate);
-    if (isNaN(dateObj.getTime())) return "-";
-    return `${String(dateObj.getDate()).padStart(2, "0")}-${String(
-      dateObj.getMonth() + 1
-    ).padStart(2, "0")}-${dateObj.getFullYear()}`;
-  };
+  const generatePDF = (staff) => {
+    const doc = new jsPDF();
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(18);
+    doc.text("Detail Staff", 105, 15, { align: "center" });
 
-  const filteredStaff = staffData.filter((staff) =>
-    `${staff.nama} ${staff.alamat} ${staff.noTelepon}`.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(12);
+    doc.line(10, 20, 200, 20);
+
+    doc.text(`Nama         : ${staff.nama}`, 10, 30);
+    doc.text(`Alamat       : ${staff.alamat}`, 10, 40);
+    doc.text(`No. Telepon  : ${staff.noTelepon}`, 10, 50);
+    doc.text(`Lama Kerja   : ${staff.lamaKerja}`, 10, 60);
+
+    doc.line(10, 70, 200, 70);
+    doc.save(`Staff_${staff.nama}.pdf`);
+  };
 
   return (
     <div className="flex h-screen">
@@ -82,7 +89,7 @@ const DaftarStaff = () => {
               className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
               onClick={() => {
                 navigate("/tambah-staff");
-                sendNotification("Form tambah staf dibuka", "info"); 
+                sendNotification("Form tambah staf dibuka", "info");
               }}
             >
               Tambah Staff
@@ -116,7 +123,8 @@ const DaftarStaff = () => {
                     "Nama",
                     "Alamat",
                     "No. Telepon",
-                    "Lama Kerja"
+                    "Lama Kerja",
+                    "Aksi",
                   ].map((header) => (
                     <th
                       key={header}
@@ -125,39 +133,54 @@ const DaftarStaff = () => {
                       {header}
                     </th>
                   ))}
-                  <th className="px-6 py-3 border-r border-gray-400 text-center">Aksi</th>
                 </tr>
               </thead>
               <tbody>
-                {filteredStaff.length ? (
-                  filteredStaff.map((staff, index) => (
+                {staffData.length ? (
+                  staffData.map((staff, index) => (
                     <tr
                       key={staff.id}
                       className="bg-white border-b border-gray-400 hover:bg-gray-100"
                     >
-                      <td className="px-6 py-4 border-r text-center">{index + 1}</td>
-                      <td className="px-6 py-4 border-r text-center">{staff.nama}</td>
-                      <td className="px-6 py-4 border-r text-center">{staff.alamat}</td>
-                      <td className="px-6 py-4 border-r text-center">{staff.noTelepon}</td>
-                      <td className="px-6 py-4 border-r text-center">{staff.lamaKerja}</td>
+                      <td className="px-6 py-4 border-r text-center">
+                        {index + 1}
+                      </td>
+                      <td className="px-6 py-4 border-r text-center">
+                        {staff.nama}
+                      </td>
+                      <td className="px-6 py-4 border-r text-center">
+                        {staff.alamat}
+                      </td>
+                      <td className="px-6 py-4 border-r text-center">
+                        {staff.noTelepon}
+                      </td>
+                      <td className="px-6 py-4 border-r text-center">
+                        {staff.lamaKerja}
+                      </td>
                       <td className="px-6 py-4 flex gap-2 justify-center">
                         <button
                           onClick={() => navigate(`/detail-staff/${staff.id}`)}
-                          className="flex items-center gap-2 bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-600"
+                          className="bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-600"
                         >
                           <Eye size={18} />
                         </button>
                         <button
                           onClick={() => handleEdit(staff.id)}
-                          className="flex items-center gap-2 bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600"
+                          className="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600"
                         >
                           <Pencil size={18} />
                         </button>
                         <button
                           onClick={() => handleDelete(staff.id)}
-                          className="flex items-center gap-2 bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600"
+                          className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600"
                         >
                           <Trash2 size={18} />
+                        </button>
+                        <button
+                          onClick={() => generatePDF(staff)}
+                          className="bg-gray-500 text-white px-3 py-1 rounded-md hover:bg-gray-600"
+                        >
+                          <FileText size={18} />
                         </button>
                       </td>
                     </tr>
