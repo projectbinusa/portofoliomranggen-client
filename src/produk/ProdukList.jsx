@@ -1,160 +1,173 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { Pencil, Trash2, Search, Eye } from "lucide-react";
-import { FaPlus } from "react-icons/fa";
+import { useState } from "react";
+import { FaSearch, FaTimes } from "react-icons/fa";
 import Sidebar from "../components/Sidebar";
-import Swal from "sweetalert2";
-import axios from "axios";
-import { API_PRODUK } from "../utils/BaseUrl";
 import Navbar from "../tampilan/Navbar";
-import { useNotification } from "../context/NotificationContext";
+import image1 from '../images/camera-removebg-preview.png';
+import image2 from '../images/mackbok-removebg-preview.png';
+import image3 from '../images/jam-removebg-preview.png';
+import image4 from '../images/phone-removebg-preview.png';
+import image5 from '../images/lady_dior-removebg-preview.png';
 
-const ProductList = () => {
-  const [products, setProducts] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const navigate = useNavigate();
-  const { sendNotification } = useNotification();
+const products = [
+  { id: 1, name: "Canon EOS 1500D", brand: "Canon", category: "Electronics", gender: "Male", price: 12.99, oldPrice: 15.99, rating: 3.5, discount: 30, image: image1 },
+  { id: 2, name: "Apple MacBook Pro", brand: "Apple", category: "Electronics", gender: "Male", price: 14.59, oldPrice: 16.99, rating: 4.5, discount: 20, image: image2 },
+  { id: 3, name: "Luxury Watch", brand: "Centrix", category: "Fashion", gender: "Male", price: 29.99, oldPrice: 36.00, rating: 4.5, discount: 20, image: image3 },
+  { id: 4, name: "Iphone 15 Pro Max", brand: "Apple", category: "Electronics", gender: "Female", price: 8.99, oldPrice: 10.55, rating: 5.0, discount: 20, image: image4 },
+  { id: 4, name: "Lady Dior Jelly Black", brand: "Dior", category: "Fashion", gender: "Female", price: 50.99, oldPrice: 70.55, rating: 5.0, discount: 40, image: image5 },
+];
 
-  const toCamelCase = (str) => {
-    return str
-      .split(" ")
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-      .join(" ");
+export default function ProductsPage() {
+  const [sortOrder, setSortOrder] = useState("low");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [selectedGender, setSelectedGender] = useState("All");
+
+  // Fungsi reset filter
+  const resetFilters = () => {
+    setSelectedCategory("All");
+    setSelectedGender("All");
+    setSearchQuery("");
+    setSortOrder("low");
   };
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await axios.get(`${API_PRODUK}/all`);
-        const mappedProducts = response.data.map((product) => ({
-          id: product.id,
-          nama: toCamelCase(product.nama),
-          harga: product.harga || 0,
-          fotoUrl: product.fotoUrl,
-          kondisi: toCamelCase(product.kondisi),
-        }));
-        setProducts(mappedProducts);
-      } catch (error) {
-        console.error("Terjadi kesalahan saat mengambil data produk:", error);
-        sendNotification("Gagal mengambil data produk.", "error");
-      }
-    };
+  // **FILTER PRODUK BERDASARKAN GENDER & CATEGORY**
+  const filteredProducts = products.filter((product) => {
+    // Filter berdasarkan Gender
+    if (selectedGender !== "All" && product.gender !== selectedGender && product.gender !== "") {
+      return false;
+    }
 
-    fetchProducts();
-  }, []);
+    // Filter berdasarkan Category
+    if (selectedCategory !== "All" && product.category !== selectedCategory) {
+      return false;
+    }
 
-  const handleEdit = (id, namaProduk) => {
-    navigate(`/edit-produk/${id}`);
-    sendNotification(`Mengedit produk \"${namaProduk}\"`, "info");
-  };
+    // Filter berdasarkan Search Query
+    if (searchQuery && !product.name.toLowerCase().includes(searchQuery.toLowerCase())) {
+      return false;
+    }
 
-  const handleDetail = (id, namaProduk) => {
-    navigate(`/detail-produk/${id}`);
-    sendNotification(`Melihat detail produk \"${namaProduk}\"`, "info");
-  };
-
-  const handleDelete = async (id, namaProduk) => {
-    Swal.fire({
-      title: "Yakin ingin menghapus produk ini?",
-      text: `Produk \"${namaProduk}\" akan dihapus!`,
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Hapus",
-      cancelButtonText: "Batal",
-      confirmButtonColor: "#d33",
-      cancelButtonColor: "#3085d6",
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        try {
-          await axios.delete(`${API_PRODUK}/delete/${id}`);
-          Swal.fire("Dihapus!", `Produk \"${namaProduk}\" telah dihapus.`, "success");
-          sendNotification(`Produk \"${namaProduk}\" telah dihapus`, "warning");
-          setProducts(products.filter((product) => product.id !== id));
-        } catch (error) {
-          sendNotification("Gagal menghapus produk.", "error");
-          Swal.fire("Gagal!", "Tidak dapat menghapus produk.", "error");
-        }
-      }
-    });
-  };
+    return true;
+  });
 
   return (
     <div className="flex min-h-screen">
-      <Sidebar />
-      <Navbar />
+      {/* Sidebar */}
+      <div className="w-[250px] relative">
+        <Sidebar />
+      </div>
 
-      <div className="flex-1 p-6 ml-48 pl-4">
-        <div className="flex justify-between items-center mb-4 mt-6">
-          <div className="relative flex-1 max-w-md">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" size={18} />
-            <input
-              type="text"
-              placeholder="Cari produk..."
-              className="w-full px-3 py-2 pl-10 pr-4 text-sm border-2 border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
+      {/* Main Content */}
+      <div className="flex-1">
+        <Navbar />
+        <div className="p-6 flex gap-6 mt-6">
+          
+          {/* Filter Sidebar */}
+          <div className="w-[220px] border p-4 rounded shadow-lg bg-white space-y-4">
+            {/* Filter Title */}
+            <h2 className="font-bold text-lg pb-2 border-b">Filter</h2>
+
+            {/* Active Filters */}
+            <div>
+              <h3 className="font-semibold text-sm">Active Filters</h3>
+              <div className="flex flex-wrap gap-2 mt-1">
+                {selectedGender !== "All" && (
+                  <span className="bg-blue-100 text-blue-700 px-2 py-1 text-xs rounded flex items-center gap-1">
+                    {selectedGender} <FaTimes className="cursor-pointer" onClick={() => setSelectedGender("All")} />
+                  </span>
+                )}
+                {selectedCategory !== "All" && (
+                  <span className="bg-blue-100 text-blue-700 px-2 py-1 text-xs rounded flex items-center gap-1">
+                    {selectedCategory} <FaTimes className="cursor-pointer" onClick={() => setSelectedCategory("All")} />
+                  </span>
+                )}
+              </div>
+              {(selectedGender !== "All" || selectedCategory !== "All") && (
+                <button onClick={resetFilters} className="text-red-500 text-xs underline mt-2">
+                  Reset All Filters
+                </button>
+              )}
+            </div>
+
+            {/* Gender Filter */}
+            <div>
+              <h3 className="font-semibold text-sm mb-2">Gender</h3>
+              {["Male", "Female", "Kids"].map(gender => (
+                <label key={gender} className="flex items-center gap-2 cursor-pointer mb-1">
+                  <input 
+                    type="radio" 
+                    name="gender"
+                    value={gender} 
+                    checked={selectedGender === gender}
+                    onChange={(e) => setSelectedGender(e.target.value)}
+                    className="w-4 h-4 accent-blue-500"
+                  /> 
+                  <span className="text-sm">{gender}</span>
+                </label>
+              ))}
+            </div>
+
+            {/* Category Filter */}
+            <div>
+              <h3 className="font-semibold text-sm mb-2">Categories</h3>
+              {["All", "Electronics", "Fashion", "Book", "Toys", "Home & Kitchen"].map(category => (
+                <label key={category} className="flex items-center gap-2 cursor-pointer mb-1">
+                  <input 
+                    type="radio" 
+                    name="category"
+                    value={category} 
+                    checked={selectedCategory === category}
+                    onChange={(e) => setSelectedCategory(e.target.value)}
+                    className="w-4 h-4 accent-blue-500"
+                  /> 
+                  <span className="text-sm">{category}</span>
+                </label>
+              ))}
+            </div>
           </div>
 
-          <button
-            onClick={() => {
-              navigate("/tambah-produk");
-              sendNotification("Menambahkan produk baru", "success");
-            }}
-            className="flex items-center gap-2 bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition">
-            <FaPlus size={16} />
-          </button>
-        </div>
+          {/* Products Section */}
+          <div className="w-3/4">
+            <div className="border p-4 rounded shadow-lg mb-4 flex gap-4 items-center bg-white">
+              <div className="flex items-center border rounded px-2 py-1 w-full">
+                <FaSearch className="text-gray-500" />
+                <input 
+                  type="text" 
+                  placeholder="Search Product" 
+                  className="ml-2 outline-none w-full text-sm"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </div>
+              <select
+                className="border p-2 rounded text-sm"
+                onChange={(e) => setSortOrder(e.target.value)}
+                value={sortOrder}
+              >
+                <option value="low">Price: Low to High</option>
+                <option value="high">Price: High to Low</option>
+              </select>
+            </div>
 
-        <div className="relative overflow-x-auto shadow-md">
-          <table className="w-full text-sm text-left text-gray-700">
-            <thead className="text-xs uppercase bg-gray-200 text-gray-700">
-              <tr>
-                <th className="px-6 py-3 text-center">No</th>
-                <th className="px-6 py-3 text-center">Foto</th>
-                <th className="px-6 py-3 text-center">Nama Produk</th>
-                <th className="px-6 py-3 text-center">Kondisi</th>
-                <th className="px-6 py-3 text-center">Harga</th>
-                <th className="px-6 py-3 text-center">Aksi</th>
-              </tr>
-            </thead>
-            <tbody className="bg-gray-100">
-              {products.length > 0 ? (
-                products.map((product, index) => (
-                  <tr key={product.id} className="hover:bg-gray-100">
-                    <td className="px-6 py-4 text-center">{index + 1}</td>
-                    <td className="px-6 py-4 text-center w-32 h-32">
-                      {product.fotoUrl && (
-                        <img src={product.fotoUrl} alt="Foto Produk" className="w-full h-full object-cover rounded-md mx-auto" />
-                      )}
-                    </td>
-                    <td className="px-6 py-4 font-medium">{product.nama}</td>
-                    <td className="px-6 py-4 text-center">{product.kondisi}</td>
-                    <td className="px-6 py-4 text-center">Rp {product.harga.toLocaleString()}</td>
-                    <td className="px-6 py-4 flex gap-3 justify-center">
-                      <button onClick={() => handleDetail(product.id, product.nama)} className="flex items-center gap-2 bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-600 transition">
-                        <Eye size={18} />
-                      </button>
-                      <button onClick={() => handleEdit(product.id, product.nama)} className="flex items-center gap-2 bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600 transition">
-                        <Pencil size={18} />
-                      </button>
-                      <button onClick={() => handleDelete(product.id, product.nama)} className="flex items-center gap-2 bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 transition">
-                        <Trash2 size={18} />
-                      </button>
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="6" className="px-6 py-4 text-center">Produk tidak ditemukan.</td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+            {/* Grid Produk */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+              {filteredProducts.map((product) => (
+                <div key={product.id} className="border p-4 rounded shadow-lg relative bg-white">
+                  <span className="absolute top-2 left-2 bg-green-200 text-green-800 px-2 py-1 text-xs rounded">
+                    {product.discount}%
+                  </span>
+                  <img src={product.image} alt={product.name} className="w-full h-48 object-contain bg-white" />
+                  <h2 className="text-lg font-bold">{product.name}</h2>
+                  <p className="text-sm text-gray-500">{product.brand}</p>
+                  <p className="text-red-500 font-bold">${product.price} <span className="text-gray-400 line-through">${product.oldPrice}</span></p>
+                  <p className="text-yellow-500">⭐ {product.rating}</p>
+                  <button className="bg-blue-500 text-white px-4 py-2 rounded mt-2 w-full">Add to Cart</button>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </div>
   );
-};
-
-export default ProductList;
+}
