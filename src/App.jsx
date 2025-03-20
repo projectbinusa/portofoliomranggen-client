@@ -181,6 +181,7 @@ function App() {
             {/* Route Navbar */}
             <Route path="/navbar" element={<Navbar />} />
 
+           
             {/* Halaman 404 */}
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
