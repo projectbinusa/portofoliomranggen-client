@@ -50,10 +50,11 @@ import TambahKegiatan from "./sekolah/TambahKegiatan";
 import EditKegiatan from "./sekolah/EditKegiatan";
 import DetailSekolah from "./sekolah/DetailSekolah";
 
+import Produk from "./produk/Produk";
 import ProdukList from "./produk/ProdukList";
 import TambahProduk from "./produk/TambahProduk";
 import EditProduk from "./produk/EditProduk";
-import DetailProduk from "./produk/DetailProduk";
+import ProductDetails from "./produk/product-details/ProductDetails";
 
 import DaftarBuku from "./buku/DaftarBuku";
 import TambahBuku from "./buku/TambahBuku";
@@ -82,6 +83,8 @@ import Navbar from "./tampilan/Navbar";
 import Kontak from "./components/Kontak";
 
 import PaymentPage from "./payment/PaymentPage";
+import ChangePasswordPage from "./change/ChangePasswordPage";
+
 
 import "./App.css";
 
@@ -147,10 +150,11 @@ function App() {
             <Route path="/detail-sekolah/:id" element={<DetailSekolah />} />
 
             {/* Routes untuk Produk */}
-            <Route path="/produk" element={<ProdukList />} />
+            <Route path="/produk" element={<Produk />} />
+            <Route path="/produk-list" element={<ProdukList />} />
             <Route path="/tambah-produk" element={<TambahProduk />} />
             <Route path="/edit-produk/:id" element={<EditProduk />} />
-            <Route path="/detail-produk/:id" element={<DetailProduk />} />
+            <Route path="/detail-produk/:id" element={<ProductDetails />} />
 
             {/* Routes untuk Buku */}
             <Route path="/buku" element={<DaftarBuku />} />
@@ -183,10 +187,13 @@ function App() {
             {/* Route Navbar */}
             <Route path="/navbar" element={<Navbar />} />
 
+           
             {/* Halaman 404 */}
             <Route path="*" element={<NotFoundPage />} />
 
             <Route path="/payment" element={<PaymentPage />} />
+            <Route path="/change-password" element={<ChangePasswordPage />} />
+
           </Routes>
         </Router>
       </NotificationProvider>

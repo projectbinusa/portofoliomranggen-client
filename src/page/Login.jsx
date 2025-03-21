@@ -14,8 +14,6 @@ import InputAdornment from "@mui/material/InputAdornment";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import AuthWrapper from "../components/AuthWrapper";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import GoogleIcon from "@mui/icons-material/Google";
@@ -60,73 +58,84 @@ const Login = () => {
     <AuthWrapper>
       <Grid container spacing={3} justifyContent="center">
         <Grid item xs={12} md={6} lg={500}>
-          <Card sx={{ padding: 4, borderRadius: 3, boxShadow: 3 }}>
-            <CardContent>
-              <Typography variant="h3" textAlign="center" gutterBottom>
-                Able <Typography component="span" color="primary" variant="h5">pro</Typography>
-              </Typography>
-              
-              <Stack spacing={2} sx={{ mb: 3 }}>
-                <Button variant="outlined" fullWidth startIcon={<FacebookIcon />} sx={{ padding: 1 }}>
-                  Sign In With Facebook
-                </Button>
-                <Button variant="outlined" fullWidth startIcon={<TwitterIcon />} sx={{ padding: 1 }}>
-                  Sign In With Twitter
-                </Button>
-                <Button variant="outlined" fullWidth startIcon={<GoogleIcon />} sx={{ padding: 1 }}>
-                  Sign In With Google
-                </Button>
-              </Stack>
+          <Typography variant="h4" textAlign="center" fontWeight="bold" color="#2D4EF5" gutterBottom>
+            Able <Typography component="span" color="#6B7280" variant="caption" sx={{ fontSize: "0.6rem" }}>pro</Typography>
+          </Typography>
+          
+          <Stack spacing={2} sx={{ mb: 3 }}>
+            <Button 
+              variant="outlined" 
+              fullWidth 
+              startIcon={<FacebookIcon sx={{ color: "#1877F2" }} />} 
+              sx={{ textTransform: "none", padding: 0.8, color: "#808080", transition: "color 0.3s", backgroundColor: "#F3F4F6", '&:hover': { color: "#2D4EF5", backgroundColor: "#E5E7EB" }, border: "none", '&:focus': { border: "1px solid #2D4EF5" } }}
+            >
+              Sign in with Facebook
+            </Button>
+            <Button 
+              variant="outlined" 
+              fullWidth 
+              startIcon={<TwitterIcon sx={{ color: "#1DA1F2" }} />} 
+              sx={{ textTransform: "none", padding: 0.8, color: "#808080", transition: "color 0.3s", backgroundColor: "#F3F4F6", '&:hover': { color: "#2D4EF5", backgroundColor: "#E5E7EB" }, border: "none", '&:focus': { border: "1px solid #2D4EF5" } }}
+            >
+              Sign in with Twitter
+            </Button>
+            <Button 
+              variant="outlined" 
+              fullWidth 
+              startIcon={<GoogleIcon sx={{ color: "#EA4335" }} />} 
+              sx={{ textTransform: "none", padding: 0.8, color: "#808080", transition: "color 0.3s", backgroundColor: "#F3F4F6", '&:hover': { color: "#2D4EF5", backgroundColor: "#E5E7EB" }, border: "none", '&:focus': { border: "1px solid #2D4EF5" } }}
+            >
+              Sign in with Google
+            </Button>
+          </Stack>
 
-              <Typography textAlign="center" sx={{ my: 3, fontWeight: "bold" }}>OR</Typography>
+          <Typography textAlign="center" sx={{ my: 3, fontWeight: "bold" }}>OR</Typography>
 
-              <Typography variant="h4" textAlign="center" gutterBottom>
-                Login
-              </Typography>
-              <form onSubmit={handleLogin}>
-                <TextField
-                  fullWidth
-                  label="Email"
-                  type="email"
-                  variant="outlined"
-                  margin="normal"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-                <TextField
-                  fullWidth
-                  label="Password"
-                  type={showPassword ? "text" : "password"}
-                  variant="outlined"
-                  margin="normal"
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
-                          {showPassword ? <VisibilityOff /> : <Visibility />}
-                        </IconButton>
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-                <Button type="submit" fullWidth variant="contained" color="primary" sx={{ mt: 3, padding: 1.5 }}>
-                  LOGIN
-                </Button>
-              </form>
-              <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mt: 3 }}>
-                <Typography variant="body2" component={Link} to="/auth/forgot-password" color="primary">
-                  Forgot Password?
-                </Typography>
-                <Typography variant="body2" component={Link} to="/register" color="primary">
-                  Don't have an account? Register
-                </Typography>
-              </Stack>
-            </CardContent>
-          </Card>
+          <Typography variant="h4" textAlign="center" gutterBottom>
+            Login
+          </Typography>
+          <Typography variant="body2" component={Link} to="/forgot-password" color="primary">
+            Forgot Password?
+          </Typography>
+          <form onSubmit={handleLogin}>
+            <TextField
+              fullWidth
+              label="Email"
+              type="email"
+              variant="outlined"
+              margin="normal"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <TextField
+              fullWidth
+              label="Password"
+              type={showPassword ? "text" : "password"}
+              variant="outlined"
+              margin="normal"
+              required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+            <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, padding: 1.5, backgroundColor: "#2D4EF5", transition: "background-color 0.3s", '&:hover': { backgroundColor: "#1E3A8A" }, '&:focus': { border: "1px solid #2D4EF5" } }}>
+              LOGIN
+            </Button>
+          </form>
+          <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mt: 3 }}>
+            <Typography variant="body2" component={Link} to="/register" color="primary">
+              Don't have an account? Register
+            </Typography>
+          </Stack>
         </Grid>
       </Grid>
     </AuthWrapper>

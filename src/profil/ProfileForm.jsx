@@ -1,6 +1,6 @@
 export default function ProfileForm({ formData, onChange }) {
     return (
-      <form className="grid grid-cols-2 gap-6">
+      <form className="grid grid-cols-2 gap-5">
         {[
           { label: "Email Address", id: "email", type: "email" },
           { label: "Date of Birth", id: "dateOfBirth", type: "date" },

@@ -18,7 +18,7 @@ export default function ProfileSidebar() {
         </li>
         <li className="flex items-center p-3 hover:bg-gray-100 rounded-lg">
           <FaLock className="mr-3" />
-          <span>Change Password</span>
+          <span onClick={() => navigate("/change-password")}>Change Password</span>
         </li>
         <li className="flex items-center p-3 hover:bg-gray-100 rounded-lg">
           <FaCog className="mr-3" />
