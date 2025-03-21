@@ -82,88 +82,105 @@ const User = () => {
 
   return (
     <div className="flex h-screen">
+      {/* Sidebar */}
       <Sidebar />
-      <Navbar />
-      <div className="flex-1 p-6 ml-40">
-        <div className="container mx-auto">
-          <div className="flex justify-between items-center mb-4 mt-6">
-            <h2 className="text-2xl font-bold text-gray-700">Daftar User</h2>
-            <button
-              className="p-3 bg-green-500 text-white rounded-md hover:bg-green-600 flex items-center gap-2 transition tombol-tambah"
-              onClick={() => {
-                navigate("/tambah-user");
-                sendNotification("Menambahkan user baru", "success");
-              }}
-            >
-              <FaPlus size={16} />
-            </button>
-          </div>
-          {isLoading ? (
-            <p className="text-center py-4">Loading data...</p>
-          ) : (
-            <div className="relative overflow-x-auto shadow-md">
-              <table className="w-full text-sm text-left text-gray-700">
-                <thead className="text-xs uppercase bg-gray-200 text-gray-700">
-                  <tr>
-                    {["No", "Username", "Email", "Aksi"].map(
-                      (header, index) => (
-                        <th key={index} className="px-6 py-3 text-center">
-                          {header}
-                        </th>
-                      )
-                    )}
-                  </tr>
-                </thead>
-                <tbody className="bg-gray-100">
-                  {users.length > 0 ? (
-                    users.map((user, index) => (
-                      <tr key={user.id} className="hover:bg-gray-100">
-                        <td className="px-6 py-3 text-center">{index + 1}</td>
-                        <td className="px-6 py-3 text-center">
-                          {user.username}
-                        </td>
-                        <td className="px-6 py-3 text-center">{user.email}</td>
-                        <td className="px-6 py-3 flex justify-center space-x-2">
-                          <Link to={`/edit-user/${user.id}`}>
-                            <button className="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600">
-                              <Pencil size={18} />
-                            </button>
-                          </Link>
-                          <button
-                            className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600"
-                            onClick={() =>
-                              handleDeleteUser(user.id, user.username)
-                            }
-                          >
-                            <Trash2 size={18} />
-                          </button>
-                          <button
-                            className="bg-purple-500 text-white px-3 py-1 rounded-md hover:bg-purple-600"
-                            onClick={() => generateInvoice(user)}
-                          >
-                            <FileText size={18} />
-                          </button>
-                        </td>
-                      </tr>
-                    ))
-                  ) : (
-                    <tr>
-                      <td
-                        colSpan="4"
-                        className="text-center py-4 text-gray-500"
-                      >
-                        Tidak ada data user yang sesuai.
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
+
+      {/* Main Content Area */}
+      <div className="flex-1 flex flex-col ml-64"> {/* Add a margin to the left to offset the sidebar */}
+        {/* Navbar */}
+        <Navbar />
+
+        {/* Content */}
+        <div className="flex-1 p-6 overflow-y-auto">
+          <div className="flex justify-between items-center mb-6 mt-5">
+            <div>
+              <nav className="text-sm text-gray-500">
+                <a className="hover:underline" href="/dashboard">
+                  Home
+                </a>{" "}
+                /{" "}
+                <a className="hover:underline" href="/user">
+                  User
+                </a>
+              </nav>
+              <h1 className="text-2xl font-bold text-gray-800 mt-1">User</h1>
             </div>
-          )}
+
+            {/* Search and Add Button */}
+            <div className="flex items-center space-x-4">
+              <input
+                className="px-4 py-2 border rounded-md text-sm"
+                placeholder="Search 100 records..."
+                type="text"
+              />
+              <button className="px-4 py-2 bg-blue-500 text-white rounded-md"  onClick={() => {
+                 navigate("/tambah-user");
+                 sendNotification("Menambahkan user baru", "success");
+               }}>
+                + Add
+              </button>
+            </div>
+          </div>
+
+          {/* Table */}
+          <div className="bg-white shadow-md rounded-lg overflow-hidden">
+            <table className="min-w-full bg-white">
+              <thead className="bg-gray-100 text-gray-600 text-sm uppercase">
+                <tr>
+                  <th className="py-3 px-4 text-left">No</th>
+                  <th className="py-3 px-4 text-left">Username</th>
+                  <th className="py-3 px-4 text-left">Email</th>
+                  <th className="py-3 px-4 text-left">Actions</th>
+                </tr>
+              </thead>
+              <tbody className="text-gray-700 text-sm">
+                {users.map((customer) => (
+                  <tr key={customer.id}>
+                    <td className="py-3 px-4">{customer.id}</td>
+                    <td className="py-3 px-4 flex items-center">
+                      {/* <img
+                        alt={`Profile picture of ${customer.username}`}
+                        className="rounded-full mr-3"
+                        src="https://placehold.co/40x40"
+                      /> */}
+                      <div>
+                        <p className="font-medium">{customer.username}</p>
+                      </div>
+                    </td>
+                    <td className="py-3 px-4 text-left">
+                     {customer.email}
+                    </td>
+                    <td className="py-3 px-4 flex space-x-2">
+                    <Link to={`/edit-user/${customer.id}`}>
+                        <button className="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600">
+                          <Pencil size={18} />
+                        </button>
+                      </Link>
+                      <button
+                        className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600"
+                        onClick={() =>
+                          handleDeleteUser(customer.id, customer.username)
+                        }
+                      >
+                        <Trash2 size={18} />
+                      </button>
+                      <button
+                        className="bg-purple-500 text-white px-3 py-1 rounded-md hover:bg-purple-600"
+                        onClick={() => generateInvoice(customer)}
+                      >
+                        <FileText size={18} />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
   );
+
 };
 
 export default User;
