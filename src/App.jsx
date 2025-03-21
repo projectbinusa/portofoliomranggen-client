@@ -53,7 +53,7 @@ import DetailSekolah from "./sekolah/DetailSekolah";
 import ProdukList from "./produk/ProdukList";
 import TambahProduk from "./produk/TambahProduk";
 import EditProduk from "./produk/EditProduk";
-import ProductDetails from "./produk/product-details/ProdukDetails";
+import ProductDetails from "./produk/product-details/ProductDetails";
 
 import DaftarBuku from "./buku/DaftarBuku";
 import TambahBuku from "./buku/TambahBuku";

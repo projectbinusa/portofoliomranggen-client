@@ -1,5 +1,6 @@
 import { sum } from 'lodash';
 import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -7,8 +8,7 @@ import Fab from '@mui/material/Fab';
 import Badge from '@mui/material/Badge';
 
 // project-imports
-import IconButton from 'components/@extended/IconButton';
-import { useGetCart } from 'api/cart';
+// import IconButton from "./components/IconButton";
 
 // assets
 import { ShoppingCart } from 'iconsax-react';
@@ -17,10 +17,16 @@ import { ShoppingCart } from 'iconsax-react';
 
 export default function FloatingCart() {
   const theme = useTheme();
-  const { cart } = useGetCart();
+  const [cart, setCart] = useState([]);
+
+  // Ambil data cart dari localStorage saat pertama kali render
+  useEffect(() => {
+    const savedCart = JSON.parse(localStorage.getItem('cart')) || [];
+    setCart(savedCart);
+  }, []);
 
   // Menghitung total quantity dari produk dalam cart
-  const totalQuantity = cart?.products?.length > 0 ? sum(cart.products.map((item) => item.quantity || 0)) : 0;
+  const totalQuantity = cart.length > 0 ? sum(cart.map((item) => item.quantity || 0)) : 0;
 
   return (
     <Fab

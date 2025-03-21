@@ -14,15 +14,14 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 
 // project-imports
-import Avatar from 'components/@extended/Avatar';
-import SimpleBar from 'components/third-party/SimpleBar';
+import Avatar from '@mui/material/Avatar';
 
 // assets
-import image1 from '../images/camera-removebg-preview.png';
-import image2 from '../images/mackbok-removebg-preview.png';
-import image3 from '../images/jam-removebg-preview.png';
-import image4 from '../images/phone-removebg-preview.png';
-import image5 from '../images/lady_dior-removebg-preview.png';
+import image1 from "../../images/camera-removebg-preview.png";
+import image2 from "../../images/mackbok-removebg-preview.png";
+import image3 from "../../images/jam-removebg-preview.png";
+import image4 from '../../images/phone-removebg-preview.png';
+import image5 from '../../images/lady_dior-removebg-preview.png';
 
 // Data produk terkait (sementara, bisa diganti dengan API jika perlu)
 const relatedProducts = [

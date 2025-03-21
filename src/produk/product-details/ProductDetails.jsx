@@ -9,15 +9,15 @@ import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
-import MainCard from 'components/MainCard';
-import FloatingCart from 'components/FloatingCart';
-import ProductFeatures from '/ProductFeatures';
-import ProductImages from '/ProductImages';
-import ProductInfo from '/ProductInfo';
-import ProductReview from '/ProductReview';
-import ProductSpecifications from '/ProductSpecifications';
-import RelatedProducts from '/RelatedProducts';
-import { resetCart, useGetCart } from '../api/cart';
+import MainCard from "../../components/MainCard";
+import FloatingCart from "../../components/FloatingCart";
+import ProductFeatures from './ProductFeatures';
+import ProductImages from './ProductImages';
+import ProductInfo from './ProductInfo';
+import ProductReview from './ProductReview';
+import ProductSpecifications from './ProductSpecifications';
+import RelatedProducts from './RelatedProducts';
+// import { resetCart, useGetCart } from '../api/cart';
 
 
 function TabPanel({ children, value, index, ...other }) {
