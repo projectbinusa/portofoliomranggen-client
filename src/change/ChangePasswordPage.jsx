@@ -1,109 +1,87 @@
-import { } from "react-router-dom";
+import React from "react";
+import Sidebar from "../components/Sidebar";
+import Navbar from "../tampilan/Navbar";
 
 export default function ChangePasswordPage() {
-  
-
   return (
-    <div className="flex h-screen bg-gray-100 p-6">
-      {/* Sidebar Profil */}
-      <div className="w-1/4 bg-white p-6 rounded-lg shadow">
-        <div className="flex flex-col items-center">
-          <img 
-            src="https://avatars.dicebear.com/api/adventurer/your-avatar.svg" 
-            alt="Profile" 
-            className="w-24 h-24 rounded-full"
-          />
-          <h2 className="text-lg font-semibold mt-2">Stebin Ben</h2>
-          <p className="text-sm text-gray-500">Full Stack Developer</p>
+    <div className="min-h-screen bg-gray-100 flex flex-col">
+      {/* Navbar */}
+      <Navbar />
 
-          {/* Sosial Media */}
-          <div className="flex gap-3 mt-3">
-            <button className="text-red-500 text-xl">🔴</button>
-            <button className="text-blue-500 text-xl">🔵</button>
-            <button className="text-black text-xl">⚫</button>
-          </div>
+      <div className="flex flex-1">
+        {/* Sidebar */}
+        <Sidebar />
 
-          {/* Statistik */}
-          <div className="mt-4 flex gap-6 text-center">
-            <div>
-              <p className="text-xl font-bold">86</p>
-              <p className="text-gray-500 text-sm">Post</p>
+        {/* Main Content */}
+        <main className="flex-1 py-10 px-8 ml-64"> {/* ml-64 biar nggak nabrak sidebar */}
+          <div className="bg-white rounded-lg shadow p-10 w-full max-w-5xl mx-auto">
+            <h2 className="text-2xl font-semibold text-center text-gray-800 mb-10">
+              Change Password
+            </h2>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {/* Form Password */}
+              <form className="space-y-6">
+                <div>
+                  <label className="block text-gray-700 mb-1">Old Password</label>
+                  <input
+                    type="password"
+                    placeholder="Enter Old Password"
+                    className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-gray-700 mb-1">New Password</label>
+                  <input
+                    type="password"
+                    placeholder="Enter New Password"
+                    className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-gray-700 mb-1">Confirm Password</label>
+                  <input
+                    type="password"
+                    placeholder="Enter Confirm Password"
+                    className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  />
+                </div>
+              </form>
+
+              {/* Password Rules */}
+              <div>
+                <h3 className="text-gray-700 font-semibold mb-4">
+                  New password must contain:
+                </h3>
+                <ul className="text-gray-600 text-sm space-y-2">
+                  <li>— At least 8 characters</li>
+                  <li>— At least 1 lower letter (a-z)</li>
+                  <li>— At least 1 uppercase letter (A-Z)</li>
+                  <li>— At least 1 number (0–9)</li>
+                  <li>— At least 1 special characters</li>
+                </ul>
+              </div>
             </div>
-            <div>
-              <p className="text-xl font-bold">40</p>
-              <p className="text-gray-500 text-sm">Project</p>
+
+            {/* Buttons */}
+            <div className="flex justify-end gap-4 mt-10">
+              <button
+                type="button"
+                className="px-5 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-100 transition"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="px-5 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
+              >
+                Save
+              </button>
             </div>
-            <div>
-              <p className="text-xl font-bold">4.5K</p>
-              <p className="text-gray-500 text-sm">Members</p>
-            </div>
           </div>
-
-          {/* Menu Navigasi */}
-          <button className="mt-6 px-4 py-2 w-full bg-blue-100 text-blue-600 rounded-md">
-            Change Password
-          </button>
-        </div>
-      </div>
-
-      {/* Konten Change Password */}
-      <div className="w-3/4 bg-white p-6 ml-6 rounded-lg shadow">
-        <h2 className="text-lg font-semibold mb-4">Change Password</h2>
-
-        {/* Form Password */}
-        <div className="space-y-4">
-          <div>
-            <label className="text-gray-700">Old Password</label>
-            <input 
-              type="password" 
-              placeholder="Enter Old Password"
-              className="w-full p-2 border rounded mt-1"
-            />
-          </div>
-
-          <div>
-            <label className="text-gray-700">New Password</label>
-            <input 
-              type="password" 
-              placeholder="Enter New Password"
-              className="w-full p-2 border rounded mt-1"
-            />
-          </div>
-
-          <div>
-            <label className="text-gray-700">Confirm Password</label>
-            <input 
-              type="password" 
-              placeholder="Enter Confirm Password"
-              className="w-full p-2 border rounded mt-1"
-            />
-          </div>
-        </div>
-
-        {/* Password Requirements */}
-        <div className="mt-6">
-          <h3 className="text-gray-700 font-semibold">New password must contain:</h3>
-          <ul className="text-gray-600 mt-2 space-y-1">
-            <li>— At least 8 characters</li>
-            <li>— At least 1 lower letter (a-z)</li>
-            <li>— At least 1 uppercase letter (A-Z)</li>
-            <li>— At least 1 number (0-9)</li>
-            <li>— At least 1 special character</li>
-          </ul>
-        </div>
-
-        {/* Tombol Aksi */}
-        <div className="flex justify-between mt-6">
-          <button 
-
-            className="border px-4 py-2 rounded-md"
-          >
-            Cancel
-          </button>
-          <button className="bg-blue-500 text-white px-4 py-2 rounded-md">
-            Save
-          </button>
-        </div>
+        </main>
       </div>
     </div>
   );
