@@ -13,33 +13,32 @@ import Typography from "@mui/material/Typography";
 import LinearProgress from "@mui/material/LinearProgress";
 
 // Komponen Project
-import MainCard from "components/MainCard";
-import ProductReview from "components/cards/e-commerce/ProductReview";
+// import MainCard from "components/MainCard";
 
 // Dummy Data Review
 const reviewsData = [
   {
     id: 1,
     productId: 1,
-    profile: { name: "John Doe", avatar: "" },
+    profile: { name: "Ratu Spanyol", avatar: "" },
     rating: 4,
-    review: "Great camera with high resolution!",
+    review: "oke, sesuai selera",
     date: "2024-03-15T10:30:00Z",
   },
   {
     id: 2,
     productId: 2,
-    profile: { name: "Alice Smith", avatar: "" },
+    profile: { name: "Mami Zahra", avatar: "" },
     rating: 5,
-    review: "Best laptop I've ever owned.",
+    review: "bagus si",
     date: "2024-03-14T08:45:00Z",
   },
   {
     id: 3,
     productId: 1,
-    profile: { name: "Michael Brown", avatar: "" },
+    profile: { name: "Enin", avatar: "" },
     rating: 3,
-    review: "Good, but expected better battery life.",
+    review: "Good, tapi nggak sesuai ekspetasi.",
     date: "2024-03-12T16:20:00Z",
   },
 ];
