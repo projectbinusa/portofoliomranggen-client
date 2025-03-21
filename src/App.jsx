@@ -50,6 +50,7 @@ import TambahKegiatan from "./sekolah/TambahKegiatan";
 import EditKegiatan from "./sekolah/EditKegiatan";
 import DetailSekolah from "./sekolah/DetailSekolah";
 
+import Produk from "./produk/Produk";
 import ProdukList from "./produk/ProdukList";
 import TambahProduk from "./produk/TambahProduk";
 import EditProduk from "./produk/EditProduk";
@@ -149,7 +150,8 @@ function App() {
             <Route path="/detail-sekolah/:id" element={<DetailSekolah />} />
 
             {/* Routes untuk Produk */}
-            <Route path="/produk" element={<ProdukList />} />
+            <Route path="/produk" element={<Produk />} />
+            <Route path="/produk-list" element={<ProdukList />} />
             <Route path="/tambah-produk" element={<TambahProduk />} />
             <Route path="/edit-produk/:id" element={<EditProduk />} />
             <Route path="/detail-produk/:id" element={<ProductDetails />} />
