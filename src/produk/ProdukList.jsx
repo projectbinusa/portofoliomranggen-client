@@ -13,7 +13,7 @@ const products = [
   { id: 2, name: "Apple MacBook Pro", brand: "Apple", category: "Electronics", gender: "Male", price: 14.59, oldPrice: 16.99, rating: 4.5, discount: 20, image: image2 },
   { id: 3, name: "Luxury Watch", brand: "Centrix", category: "Fashion", gender: "Male", price: 29.99, oldPrice: 36.00, rating: 4.5, discount: 20, image: image3 },
   { id: 4, name: "Iphone 15 Pro Max", brand: "Apple", category: "Electronics", gender: "Female", price: 8.99, oldPrice: 10.55, rating: 5.0, discount: 20, image: image4 },
-  { id: 4, name: "Lady Dior Jelly Black", brand: "Dior", category: "Fashion", gender: "Female", price: 50.99, oldPrice: 70.55, rating: 5.0, discount: 40, image: image5 },
+  { id: 5, name: "Lady Dior Jelly Black", brand: "Dior", category: "Fashion", gender: "Female", price: 50.99, oldPrice: 70.55, rating: 5.0, discount: 40, image: image5 },
 ];
 
 export default function ProductsPage() {
