@@ -53,7 +53,7 @@ import DetailSekolah from "./sekolah/DetailSekolah";
 import ProdukList from "./produk/ProdukList";
 import TambahProduk from "./produk/TambahProduk";
 import EditProduk from "./produk/EditProduk";
-import DetailProduk from "./produk/DetailProduk";
+import ProductDetails from "./produk/product-details/ProdukDetails";
 
 import DaftarBuku from "./buku/DaftarBuku";
 import TambahBuku from "./buku/TambahBuku";
@@ -82,6 +82,8 @@ import Navbar from "./tampilan/Navbar";
 import Kontak from "./components/Kontak";
 
 import PaymentPage from "./payment/PaymentPage";
+import ChangePasswordPage from "./change/ChangePasswordPage";
+
 
 import "./App.css";
 
@@ -150,7 +152,7 @@ function App() {
             <Route path="/produk" element={<ProdukList />} />
             <Route path="/tambah-produk" element={<TambahProduk />} />
             <Route path="/edit-produk/:id" element={<EditProduk />} />
-            <Route path="/detail-produk/:id" element={<DetailProduk />} />
+            <Route path="/detail-produk/:id" element={<ProductDetails />} />
 
             {/* Routes untuk Buku */}
             <Route path="/buku" element={<DaftarBuku />} />
@@ -188,6 +190,8 @@ function App() {
             <Route path="*" element={<NotFoundPage />} />
 
             <Route path="/payment" element={<PaymentPage />} />
+            <Route path="/change-password" element={<ChangePasswordPage />} />
+
           </Routes>
         </Router>
       </NotificationProvider>
