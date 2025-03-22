@@ -11,13 +11,14 @@ import Button from '@mui/material/Button';
 import Rating from '@mui/material/Rating';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+import CardMedia from '@mui/material/CardMedia';
 
 // Icons
 import { Add, Minus, ShoppingCart } from 'iconsax-react';
 
-// ==============================|| PRODUCT DETAILS - INFORMATION ||============================== //
+// ==============================|| DETAIL PRODUK - INFORMASI ||============================== //
 
-export default function ProductInfo({ product }) {
+export default function ProductInfo({ produk }) {
   const theme = useTheme();
   const navigate = useNavigate();
 
@@ -30,45 +31,73 @@ export default function ProductInfo({ product }) {
     setCart(savedCart);
   }, []);
 
-  // Fungsi untuk menambahkan ke cart
+  // Fungsi untuk menambahkan ke keranjang
   const handleAddToCart = () => {
-    const newCart = [...cart, { ...product, quantity }];
+    const newCart = [...cart, { ...produk, quantity }];
     setCart(newCart);
     localStorage.setItem('cart', JSON.stringify(newCart)); // Simpan di localStorage
-    alert('Added to Cart!'); // Bisa diganti dengan UI Snackbar kalau mau
+    alert('Ditambahkan ke Keranjang!');
   };
 
   return (
     <Stack spacing={2}>
-      {/* Rating Produk */}
-      <Stack direction="row" spacing={1} alignItems="center">
-        <Rating name="rating" value={product.rating} precision={0.1} readOnly />
-        <Typography color="text.secondary">({product.rating?.toFixed(1)})</Typography>
-      </Stack>
+      {/* Gambar Produk */}
+      <CardMedia
+        component="img"
+        image={produk.image}
+        alt={produk.name}
+        sx={{ width: '100%', maxHeight: '300px', objectFit: 'contain', borderRadius: '8px' }}
+      />
 
       {/* Nama Produk */}
-      <Typography variant="h3">{product.name}</Typography>
+      <Typography variant="h3">{produk.name}</Typography>
+
+      {/* Merek & Kategori */}
+      <Typography color="text.secondary">
+        {produk.brand} - {produk.category}
+      </Typography>
+
+      {/* Rating Produk */}
+      <Stack direction="row" spacing={1} alignItems="center">
+        <Rating name="rating" value={produk.rating} precision={0.1} readOnly />
+        <Typography color="text.secondary">({produk.rating?.toFixed(1)})</Typography>
+      </Stack>
 
       {/* Status Stok */}
       <Chip
         size="small"
-        label={product.isStock ? 'In Stock' : 'Out of Stock'}
+        label={produk.isStock ? 'Tersedia' : 'Habis'}
         sx={{
           width: 'fit-content',
           borderRadius: '4px',
-          color: product.isStock ? 'success.main' : 'error.main',
-          bgcolor: product.isStock ? 'success.lighter' : 'error.lighter'
+          color: produk.isStock ? 'success.main' : 'error.main',
+          bgcolor: produk.isStock ? 'success.lighter' : 'error.lighter'
         }}
       />
 
-      {/* Deskripsi Produk */}
-      <Typography color="text.secondary">{product.description}</Typography>
+      {/* Harga Produk */}
+      <Stack direction="row" alignItems="center" spacing={1}>
+        {produk.discount > 0 && (
+          <>
+            <Typography variant="h4" color="error">
+              Rp {produk.price.toLocaleString()}
+            </Typography>
+            <Typography variant="body1" sx={{ textDecoration: 'line-through', color: 'gray' }}>
+              Rp {produk.oldPrice.toLocaleString()}
+            </Typography>
+            <Chip label={`-${produk.discount}%`} color="error" size="small" />
+          </>
+        )}
+        {produk.discount === 0 && (
+          <Typography variant="h3">Rp {produk.price.toLocaleString()}</Typography>
+        )}
+      </Stack>
 
       {/* Input Jumlah Produk */}
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <Stack spacing={1}>
-            <Typography color="text.secondary">Quantity</Typography>
+            <Typography color="text.secondary">Jumlah</Typography>
             <Stack direction="row">
               <TextField
                 value={quantity}
@@ -98,30 +127,23 @@ export default function ProductInfo({ product }) {
           </Stack>
         </Grid>
 
-        {/* Harga Produk */}
-        <Grid item xs={12}>
-          <Stack direction="row" alignItems="center" spacing={1}>
-            <Typography variant="h3">${product.price}</Typography>
-          </Stack>
-        </Grid>
-
         {/* Tombol Checkout dan Tambah ke Keranjang */}
         <Grid item xs={12}>
           <Stack direction="row" spacing={2} sx={{ mt: 2 }}>
             <Button
-              disabled={!product.isStock}
+              disabled={!produk.isStock}
               color="primary"
               variant="contained"
               size="large"
               startIcon={<ShoppingCart />}
               onClick={() => navigate('/checkout')}
             >
-              {!product.isStock ? 'Sold Out' : 'Buy Now'}
+              {!produk.isStock ? 'Habis' : 'Beli Sekarang'}
             </Button>
 
-            {product.isStock && quantity > 0 && (
+            {produk.isStock && quantity > 0 && (
               <Button color="secondary" variant="outlined" size="large" onClick={handleAddToCart}>
-                Add to Cart
+                Tambah ke Keranjang
               </Button>
             )}
           </Stack>
@@ -131,4 +153,18 @@ export default function ProductInfo({ product }) {
   );
 }
 
-ProductInfo.propTypes = { product: PropTypes.object.isRequired };
+ProductInfo.propTypes = { 
+  produk: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+    brand: PropTypes.string.isRequired,
+    category: PropTypes.string.isRequired,
+    gender: PropTypes.string,
+    price: PropTypes.number.isRequired,
+    oldPrice: PropTypes.number,
+    rating: PropTypes.number,
+    discount: PropTypes.number,
+    image: PropTypes.string.isRequired,
+    isStock: PropTypes.bool.isRequired
+  }).isRequired
+};

@@ -40,6 +40,8 @@
     "react-toastify": "^11.0.3",
     "react-zoom-pan-pinch": "^3.7.0",
     "redux": "^5.0.1",
+    "simplebar": "^6.3.0",
+    "simplebar-react": "^3.3.0",
     "sockjs-client": "^1.6.1",
     "sweetalert2": "^11.15.10"
   },
