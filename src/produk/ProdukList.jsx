@@ -52,7 +52,7 @@ const ProductList = () => {
       </Breadcrumbs>
 
       {/* Judul Halaman */}
-      <Typography variant="h2" fontWeight="bold" sx={{ mb: 3 }}>
+      <Typography variant="h2" fontWeight="bold" sx={{ mb: 2 }}>
         Product List
       </Typography>
 
