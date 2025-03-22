@@ -26,6 +26,7 @@
     "flowbite": "^1.8.1",
     "flowbite-react": "^0.10.2",
     "font-awesome": "^4.7.0",
+    "formik": "^2.4.6",
     "framer-motion": "^12.1.0",
     "iconsax-react": "^0.0.8",
     "jspdf": "^3.0.1",
@@ -41,7 +42,8 @@
     "react-zoom-pan-pinch": "^3.7.0",
     "redux": "^5.0.1",
     "sockjs-client": "^1.6.1",
-    "sweetalert2": "^11.15.10"
+    "sweetalert2": "^11.15.10",
+    "yup": "^1.6.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",
