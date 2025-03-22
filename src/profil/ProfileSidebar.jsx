@@ -8,7 +8,7 @@ export default function ProfileSidebar() {
   return (
     <div className="w-full bg-white p-6 rounded-lg shadow-md">
       <ul className="space-y-4">
-        <li className="flex items-center p-3 bg-blue-100 text-blue-600 rounded-lg">
+        <li className="flex items-center p-3 hover:bg-gray-100 rounded-lg">
           <FaUser className="mr-3" />
           <span>Personal Information</span>
         </li>

@@ -6,6 +6,8 @@ import { NotificationProvider } from "./context/NotificationContext";
 // **Import Komponen Publik**
 import Home from "./components/Home";
 import Login from "./page/Login";
+import ForgotPassword from "./page/forgot-password";
+import CheckMail from "./page/CheckMail";
 import Register from "./page/Register";
 import Sambutan from "./sambutan/Sambutan";
 import AddSambutan from "./sambutan/AddSambutan";
@@ -99,6 +101,8 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/check-mail" element={<CheckMail />} />
             <Route path="/register" element={<Register />} />
             <Route path="/sambutan" element={<Sambutan />} />
             <Route path="/addsambutan" element={<AddSambutan />} />

@@ -7,6 +7,7 @@ import ProfileCard from "../profil/ProfileCard";
 import ProfileForm from "../profil/ProfileForm";
 import SkillsSection from "../profil/SkillsSection";
 import ProfileSidebar from "../profil/ProfileSidebar";
+import ProfileProgressCard from "../profil/ProfileProgressCard"; // import komponen progress card
 import { API_ADMIN } from "../utils/BaseUrl";
 
 export default function ProfilePage() {
@@ -72,15 +73,28 @@ export default function ProfilePage() {
   return (
     <div className="flex h-screen bg-gray-100">
       <Sidebar />
-      <div className="flex-1 flex flex-col pl-72">
+      <div className="flex-1 flex flex-col pl-52">
         <Navbar />
-        <div className="flex-1 overflow-y-auto px-10 mt-6">
-          <div className="relative max-w-7xl mx-auto">
+        <div className="flex-1 overflow-y-auto px-10 mt-4">
+
+          <div className="relative max-w-7xl mx-auto space-y-6">
+            {/* Progress Card */}
+            <ProfileProgressCard 
+              percentage={70}
+              title="Lengkapi Profil Anda"
+              subtitle="Isi semua kolom untuk mendapatkan pengalaman penuh"
+              buttonText="Edit Sekarang"
+              onButtonClick={() => {
+                document.getElementById("username")?.focus();
+              }}
+            />
+
             <UserProfileBackLeft className="absolute top-0 left-0 z-0" />
             <UserProfileBackRight className="absolute bottom-0 right-0 z-0" />
 
             {/* Card Utama */}
             <div className="relative z-10 w-full bg-white shadow-2xl p-12 rounded-3xl flex flex-col lg:flex-row gap-10">
+
               {/* Bagian Kiri */}
               <div className="lg:w-[35%] flex flex-col items-center space-y-6">
                 <ProfileCard
@@ -92,7 +106,7 @@ export default function ProfilePage() {
               </div>
 
               {/* Bagian Kanan */}
-              <div className="lg:w-[65%] w-full space-y-8">
+              <div className="lg:w-[65%] w-full space-y-100">
                 <ProfileForm formData={formData} onChange={handleChange} />
                 <SkillsSection />
                 <div>

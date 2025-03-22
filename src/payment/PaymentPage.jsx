@@ -75,10 +75,10 @@ export default function PaymentPage() {
       <Sidebar />
       <div className="flex-1 flex flex-col pl-72">
         <Navbar />
-        <div className="flex-1 overflow-y-auto px-8 py-10">
+        <div className="flex-1 overflow-y-auto px-100 py-10">
           <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-8">
             {/* Kiri: Profil */}
-            <div className="lg:w-[35%] w-full bg-white p-6 rounded-2xl shadow-lg flex flex-col items-center space-y-6">
+            <div className="lg:w-[35%] w-full bg-white p-10 rounded-2xl shadow-lg flex flex-col items-center space-y-10000">
               <ProfileCard
                 fotoProfil={fotoProfil}
                 formData={formData}
