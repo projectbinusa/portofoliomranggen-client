@@ -6,7 +6,7 @@ export default function ProfileCard({ fotoProfil, formData, onFotoChange }) {
       {/* Foto Profil */}
       <div className="relative w-28 h-28">
         <img src={fotoProfil} alt="Profile" className="w-full h-full rounded-full object-cover border-4 border-gray-300" />
-        <label htmlFor="profilePicUpload" className="absolute bottom-0 right-0 bg-white p-2 rounded-full shadow-md cursor-pointer">
+        <label htmlFor="profilePicUpload" className="absolute bottom-5 right-0 bg-white p-2 rounded-full shadow-md cursor-pointer">
           <Camera className="w-6 h-6 text-blue-500" />
         </label>
         <input type="file" id="profilePicUpload" className="hidden" onChange={onFotoChange} />
@@ -17,7 +17,7 @@ export default function ProfileCard({ fotoProfil, formData, onFotoChange }) {
       <p className="text-gray-500">{formData.designation || "Your Job Title"}</p>
 
       {/* Statistik */}
-      <div className="flex justify-between w-full mt-4 text-center">
+      <div className="flex w-full mt-4 text-left">
         {["86 Post", "40 Project", "4.5K Members"].map((item, index) => (
           <div key={index}>
             <p className="text-lg font-semibold">{item.split(" ")[0]}</p>

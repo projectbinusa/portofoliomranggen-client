@@ -86,6 +86,7 @@ import Kontak from "./components/Kontak";
 
 import PaymentPage from "./payment/PaymentPage";
 import ChangePasswordPage from "./change/ChangePasswordPage";
+import SettingsPage from "./profil/SettingsPage";
 
 
 import "./App.css";
@@ -197,6 +198,8 @@ function App() {
 
             <Route path="/payment" element={<PaymentPage />} />
             <Route path="/change-password" element={<ChangePasswordPage />} />
+            <Route path="/settings-password" element={<SettingsPage />} />
+
 
           </Routes>
         </Router>
