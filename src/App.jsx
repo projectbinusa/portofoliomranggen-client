@@ -54,7 +54,7 @@ import Produk from "./produk/Produk";
 import ProdukList from "./produk/ProdukList";
 import TambahProduk from "./produk/TambahProduk";
 import EditProduk from "./produk/EditProduk";
-import ProductDetails from "./produk/product-details/ProductDetails";
+import ProdukDetails from "./produk/product-details/ProdukDetails";
 
 import DaftarBuku from "./buku/DaftarBuku";
 import TambahBuku from "./buku/TambahBuku";
@@ -154,7 +154,7 @@ function App() {
             <Route path="/produk-list" element={<ProdukList />} />
             <Route path="/tambah-produk" element={<TambahProduk />} />
             <Route path="/edit-produk/:id" element={<EditProduk />} />
-            <Route path="/detail-produk/:id" element={<ProductDetails />} />
+            <Route path="/detail-produk/:id" element={<ProdukDetails />} />
 
             {/* Routes untuk Buku */}
             <Route path="/buku" element={<DaftarBuku />} />

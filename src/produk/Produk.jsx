@@ -1,12 +1,16 @@
-import image1 from "../images/camera-removebg-preview.png";
-import image2 from "../images/mackbok-removebg-preview.png";
-import image3 from "../images/jam-removebg-preview.png";
-import image4 from "../images/phone-removebg-preview.png";
-import image5 from "../images/lady_dior-removebg-preview.png";
-import image6 from "../images/skintific-removebg-preview.png";
-import image7 from "../images/sunscreen-removebg-preview.png";
-import image8 from "../images/diorrrrr_lip-removebg-preview.png";
-import image9 from "../images/cusion-removebg-preview.png";
+import React, { useState } from "react";
+import { FaSearch, FaTimes } from "react-icons/fa";
+import Sidebar from "../components/Sidebar";
+import Navbar from "../tampilan/Navbar";
+import image1 from '../images/camera-removebg-preview.png';
+import image2 from '../images/mackbok-removebg-preview.png';
+import image3 from '../images/jam-removebg-preview.png';
+import image4 from '../images/phone-removebg-preview.png';
+import image5 from '../images/lady_dior-removebg-preview.png';
+import image6 from '../images/skintific-removebg-preview.png';
+import image7 from '../images/sunscreen-removebg-preview.png';
+import image8 from '../images/diorrrrr_lip-removebg-preview.png';
+import image9 from '../images/cusion-removebg-preview.png';
 
 export const products = [
   {
@@ -120,10 +124,12 @@ export const products = [
 ];
 
 export default function ProductsPage() {
+  const navigate = useNavigate(); // Gunakan useNavigate
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [selectedGender, setSelectedGender] = useState("All");
-
+  
+  
   // Fungsi reset filter
   const resetFilters = () => {
     setSelectedCategory("All");
@@ -131,27 +137,18 @@ export default function ProductsPage() {
     setSearchQuery("");
   };
 
-  // **FILTER PRODUK BERDASARKAN GENDER & CATEGORY**
   const filteredProducts = products.filter((product) => {
     // Filter berdasarkan Gender
-    if (
-      selectedGender !== "All" &&
-      product.gender !== selectedGender &&
-      product.gender !== ""
-    ) {
+    if (selectedGender !== "All" && product.gender !== selectedGender && product.gender !== "") {
       return false;
     }
 
-    // Filter berdasarkan Category
     if (selectedCategory !== "All" && product.category !== selectedCategory) {
       return false;
     }
 
     // Filter berdasarkan Search Query
-    if (
-      searchQuery &&
-      !product.name.toLowerCase().includes(searchQuery.toLowerCase())
-    ) {
+    if (searchQuery && !product.name.toLowerCase().includes(searchQuery.toLowerCase())) {
       return false;
     }
 
@@ -160,15 +157,16 @@ export default function ProductsPage() {
 
   return (
     <div className="flex min-h-screen">
-      {/* Sidebar */}
-      <div className="w-[250px] relative">
-        <Sidebar />
-      </div>
+    {/* Sidebar */}
+    <div className="w-[250px] relative">
+      <Sidebar />
+    </div>
 
       {/* Main Content */}
       <div className="flex-1">
         <Navbar />
         <div className="p-6 flex gap-6 mt-6">
+          
           {/* Filter Sidebar */}
           <div className="w-[220px] border p-4 rounded shadow-lg bg-white space-y-4 h-[500px]">
             {/* Filter Title */}
@@ -274,13 +272,11 @@ export default function ProductsPage() {
               </div>
             </div>
 
+
             {/* Grid Produk */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
               {filteredProducts.map((product) => (
-                <div
-                  key={product.id}
-                  className="border p-4 rounded shadow-lg relative bg-white"
-                >
+                <div key={product.id} className="border p-4 rounded shadow-lg relative bg-white">
                   <span className="absolute top-2 left-2 bg-green-200 text-green-800 px-2 py-1 text-xs rounded">
                     {product.discount}%
                   </span>
