@@ -47,7 +47,6 @@ export default function ProdukDetail() {
   
   // Gunakan produk langsung sebagai objek
   const produkItem = produk; // Tidak perlu .find() karena produk bukan array
-
   const [value, setValue] = useState(0);
   const handleChange = (event, newValue) => {
     setValue(newValue);
