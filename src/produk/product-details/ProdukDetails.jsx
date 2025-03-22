@@ -11,23 +11,23 @@ import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 import MainCard from "../../components/MainCard";
 import FloatingCart from "../../components/FloatingCart";
-import ProductFeatures from "./ProductFeatures";
-import ProductImages from "./ProductImages";
-import ProductInfo from "./ProductInfo";
-import ProductReview from "./ProductReview";
-import ProductSpecifications from "./ProductSpecifications";
-import RelatedProducts from "./RelatedProducts";
+import ProdukFeatures from './ProdukFeatures';
+import ProdukImages from './ProdukImages';
+import ProdukInfo from './ProdukInfo';
+import ProdukReview from './ProdukReview';
+import ProdukSpecifications from './ProdukSpecifications';
+import ProdukRelated from './ProdukRelated';
 
 // Import data produk
-import { products } from "../../produk/Produk";
+import produk from '../Produk';
 
 function TabPanel({ children, value, index, ...other }) {
   return (
     <div
       role="tabpanel"
       hidden={value !== index}
-      id={`product-details-tabpanel-${index}`}
-      aria-labelledby={`product-details-tab-${index}`}
+      id={`produk-detail-tabpanel-${index}`}
+      aria-labelledby={`produk-detail-tab-${index}`}
       {...other}
     >
       {value === index && <Box>{children}</Box>}
@@ -37,34 +37,26 @@ function TabPanel({ children, value, index, ...other }) {
 
 function a11yProps(index) {
   return {
-    id: `product-details-tab-${index}`,
-    "aria-controls": `product-details-tabpanel-${index}`,
+    id: `produk-detail-tab-${index}`,
+    'aria-controls': `produk-detail-tabpanel-${index}`
   };
 }
 
-export default function ProductDetails() {
+export default function ProdukDetail() {
   const { id } = useParams();
-
-  // Cari produk berdasarkan ID dari URL
-  const product = products.find((p) => p.id === Number(id));
-
+  
+  // Gunakan produk langsung sebagai objek
+  const produkItem = produk; // Tidak perlu .find() karena produk bukan array
   const [value, setValue] = useState(0);
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  const productImages = useMemo(
-    () => (product ? <ProductImages product={product} /> : null),
-    [product]
-  );
-  const relatedProducts = useMemo(() => <RelatedProducts id={id} />, [id]);
+  const produkImages = useMemo(() => produkItem ? <ProdukImages produk={produkItem} /> : null, [produkItem]);
+  const relatedProduk = useMemo(() => <ProdukRelated id={id} />, [id]);
 
-  if (!product) {
-    return (
-      <Typography variant="h5" color="error">
-        Product not found
-      </Typography>
-    );
+  if (!produkItem) {
+    return <Typography variant="h5" color="error">Produk tidak ditemukan</Typography>;
   }
 
   return (
@@ -73,15 +65,12 @@ export default function ProductDetails() {
         <Grid item xs={12}>
           <Grid container spacing={3}>
             <Grid item xs={12} sm={8} md={5} lg={4}>
-              {productImages}
+              {produkImages}
             </Grid>
 
             <Grid item xs={12} md={7} lg={8}>
-              <MainCard
-                border={false}
-                sx={{ height: "100%", bgcolor: "secondary.lighter" }}
-              >
-                <ProductInfo product={product} />
+              <MainCard border={false} sx={{ height: '100%', bgcolor: 'secondary.lighter' }}>
+                <ProdukInfo produk={produkItem} />
               </MainCard>
             </Grid>
           </Grid>
@@ -97,49 +86,29 @@ export default function ProductDetails() {
               >
                 <Tab label="Features" {...a11yProps(0)} />
                 <Tab label="Specifications" {...a11yProps(1)} />
-                <Tab label="Overview" {...a11yProps(2)} />
+                <Tab label="Ringkasan" {...a11yProps(2)} />
                 <Tab
                   label={
                     <Stack direction="row" alignItems="center">
-                      Reviews{" "}
-                      <Chip
-                        label={String(product.rating)}
-                        size="small"
-                        sx={{ ml: 0.5 }}
-                      />
+                      Review <Chip label={String(produkItem.rating)} size="small" sx={{ ml: 0.5 }} />
                     </Stack>
                   }
                   {...a11yProps(3)}
                 />
               </Tabs>
               <Divider />
-              <TabPanel value={value} index={0}>
-                <ProductFeatures />
-              </TabPanel>
-              <TabPanel value={value} index={1}>
-                <ProductSpecifications />
-              </TabPanel>
+              <TabPanel value={value} index={0}><ProdukFeatures /></TabPanel>
+              <TabPanel value={value} index={1}><ProdukSpecifications /></TabPanel>
               <TabPanel value={value} index={2}>
-                <Typography color="text.secondary">
-                  {product.description}
-                </Typography>
+                <Typography color="text.secondary">{produkItem.description}</Typography>
               </TabPanel>
-              <TabPanel value={value} index={3}>
-                <ProductReview product={product} />
-              </TabPanel>
+              <TabPanel value={value} index={3}><ProdukReview produk={produkItem} /></TabPanel>
             </Stack>
           </MainCard>
         </Grid>
-        <Grid item xs={12} md={5} xl={4} sx={{ position: "relative" }}>
-          <MainCard
-            title="Related Products"
-            sx={{
-              height: "calc(100% - 16px)",
-              position: "absolute",
-              top: "16px",
-            }}
-          >
-            {relatedProducts}
+        <Grid item xs={12} md={5} xl={4} sx={{ position: 'relative' }}>
+          <MainCard title="Produk Related" sx={{ height: 'calc(100% - 16px)', position: 'absolute', top: '16px' }}>
+            {relatedProduk}
           </MainCard>
         </Grid>
       </Grid>
