@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { FaSearch, FaTimes } from "react-icons/fa";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../tampilan/Navbar";
@@ -276,7 +277,10 @@ export default function ProductsPage() {
             {/* Grid Produk */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
               {filteredProducts.map((product) => (
-                <div key={product.id} className="border p-4 rounded shadow-lg relative bg-white">
+                <div
+                key={product.id}
+                className="border p-4 rounded shadow-lg bg-white cursor-pointer"
+                onClick={() => navigate(`/detail-produk/${product.id}`)}>
                   <span className="absolute top-2 left-2 bg-green-200 text-green-800 px-2 py-1 text-xs rounded">
                     {product.discount}%
                   </span>
