@@ -18,7 +18,7 @@ import ProdukReview from './ProdukReview';
 import ProdukSpecifications from './ProdukSpecifications';
 import ProdukRelated from './ProdukRelated';
 
-// Import data produk dari file ProdukPage.js
+// Import data produk
 import produk from '../Produk';
 
 function TabPanel({ children, value, index, ...other }) {
@@ -44,21 +44,19 @@ function a11yProps(index) {
 
 export default function ProdukDetail() {
   const { id } = useParams();
-
-  // Cari produk berdasarkan ID dari URL
-  const produkItem = produk.find((p) => p.id === Number(id));
+  
+  // Gunakan produk langsung sebagai objek
+  const produkItem = produk; // Tidak perlu .find() karena produk bukan array
   const [value, setValue] = useState(0);
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-
   const produkImages = useMemo(() => produkItem ? <ProdukImages produk={produkItem} /> : null, [produkItem]);
-  const RelatedProduk = useMemo(() => <RelatedProduk id={id} />, [id]);
+  const relatedProduk = useMemo(() => <ProdukRelated id={id} />, [id]);
 
   if (!produkItem) {
     return <Typography variant="h5" color="error">Produk tidak ditemukan</Typography>;
-
   }
 
   return (
@@ -110,7 +108,7 @@ export default function ProdukDetail() {
         </Grid>
         <Grid item xs={12} md={5} xl={4} sx={{ position: 'relative' }}>
           <MainCard title="Produk Related" sx={{ height: 'calc(100% - 16px)', position: 'absolute', top: '16px' }}>
-            {RelatedProduk}
+            {relatedProduk}
           </MainCard>
         </Grid>
       </Grid>

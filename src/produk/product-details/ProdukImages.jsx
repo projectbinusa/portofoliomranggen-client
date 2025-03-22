@@ -8,19 +8,19 @@ import IconButton from '@mui/material/IconButton';
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
 import { FaHeart, FaSearchPlus, FaSearchMinus, FaUndo } from "react-icons/fa";
 
-// ==============================|| PRODUCT DETAILS - IMAGES ||============================== //
+// ==============================|| DETAIL PRODUK - GAMBAR ||============================== //
 
-export default function ProductImages({ product }) {
-  const [selectedImage, setSelectedImage] = useState(product?.image || '');
+export default function ProductImages({ produk }) {
+  const [selectedImage, setSelectedImage] = useState(produk.image);
   const [wishlisted, setWishlisted] = useState(false);
 
   useEffect(() => {
-    setSelectedImage(product?.image || '');
-  }, [product]);
+    setSelectedImage(produk.image);
+  }, [produk]);
 
   const addToFavourite = () => {
     setWishlisted(!wishlisted);
-    alert(wishlisted ? "Removed from favourites" : "Added to favourites");
+    alert(wishlisted ? "Dihapus dari favorit" : "Ditambahkan ke favorit");
   };
 
   return (
@@ -44,7 +44,7 @@ export default function ProductImages({ product }) {
                   <CardMedia
                     component="img"
                     image={selectedImage}
-                    alt={product.name}
+                    alt={produk.name}
                     sx={{ width: '100%', height: '300px', objectFit: 'contain' }}
                   />
                 </TransformComponent>
@@ -80,15 +80,15 @@ export default function ProductImages({ product }) {
             sx={{
               width: 60,
               height: 60,
-              border: selectedImage === product.image ? '2px solid blue' : '1px solid gray',
+              border: selectedImage === produk.image ? '2px solid blue' : '1px solid gray',
               cursor: 'pointer',
               p: 1,
               borderRadius: '5px',
               bgcolor: '#fff'
             }}
-            onClick={() => setSelectedImage(product.image)}
+            onClick={() => setSelectedImage(produk.image)}
           >
-            <CardMedia component="img" image={product.image} sx={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+            <CardMedia component="img" image={produk.image} sx={{ width: '100%', height: '100%', objectFit: 'contain' }} />
           </Box>
         </Stack>
       </Grid>
@@ -96,4 +96,7 @@ export default function ProductImages({ product }) {
   );
 }
 
-ProductImages.propTypes = { product: PropTypes.object.isRequired };
+ProductImages.propTypes = { produk: PropTypes.shape({
+  image: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired
+}).isRequired };
