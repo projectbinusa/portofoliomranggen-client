@@ -22,7 +22,7 @@ export default function ProfileSidebar() {
         </li>
         <li className="flex items-center p-3 hover:bg-gray-100 rounded-lg">
           <FaCog className="mr-3" />
-          <span>Settings</span>
+          <span onClick={() => navigate("/settings-password")}>Settings</span>
         </li>
       </ul>
     </div>

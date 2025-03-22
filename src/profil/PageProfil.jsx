@@ -72,31 +72,35 @@ export default function ProfilePage() {
   return (
     <div className="flex h-screen bg-gray-100">
       <Sidebar />
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col pl-72">
         <Navbar />
-        <div className="flex space-x-4 p-6">
-          <div className="relative flex-1 p-8">
+        <div className="flex-1 overflow-y-auto px-10 mt-6">
+          <div className="relative max-w-7xl mx-auto">
             <UserProfileBackLeft className="absolute top-0 left-0 z-0" />
             <UserProfileBackRight className="absolute bottom-0 right-0 z-0" />
 
             {/* Card Utama */}
-            <div className="relative z-10 w-full max-w-6xl shadow-lg p-8 flex gap-10 mx-auto bg-white rounded-lg">
-              {/* Sidebar Profil dan ProfileCard dijadikan satu */}
-              <div className="w-1/3 flex flex-col items-center">
-                <ProfileCard fotoProfil={fotoProfil} formData={formData} onFotoChange={handleFotoChange} />
+            <div className="relative z-10 w-full bg-white shadow-2xl p-12 rounded-3xl flex flex-col lg:flex-row gap-10">
+              {/* Bagian Kiri */}
+              <div className="lg:w-[35%] flex flex-col items-center space-y-6">
+                <ProfileCard
+                  fotoProfil={fotoProfil}
+                  formData={formData}
+                  onFotoChange={handleFotoChange}
+                />
                 <ProfileSidebar />
               </div>
 
-              {/* Formulir dan Skills */}
-              <div className="w-2/3">
+              {/* Bagian Kanan */}
+              <div className="lg:w-[65%] w-full space-y-8">
                 <ProfileForm formData={formData} onChange={handleChange} />
                 <SkillsSection />
-                <div className="mt-6">
-                  <h3 className="text-lg font-semibold">Note</h3>
+                <div>
+                  <h3 className="text-lg font-semibold mb-2">Note</h3>
                   <textarea
                     id="note"
-                    className="w-full p-3 rounded-lg border"
-                    rows="4"
+                    className="w-full p-4 rounded-lg border border-gray-300 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    rows="5"
                     value={formData.note}
                     onChange={handleChange}
                     placeholder="Tambahkan catatan..."
