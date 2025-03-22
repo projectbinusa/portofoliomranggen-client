@@ -172,7 +172,6 @@ export default function ProductsPage() {
           <div className="w-[220px] border p-4 rounded shadow-lg bg-white space-y-4 h-[500px]">
             {/* Filter Title */}
             <h2 className="font-bold text-lg pb-2 border-b">Filter</h2>
-            <h3 className="font-semibold text-sm">Sort By</h3>
 
             {/* Active Filters */}
             <div>
@@ -279,9 +278,11 @@ export default function ProductsPage() {
               {filteredProducts.map((product) => (
                 <div
                 key={product.id}
-                className="border p-4 rounded shadow-lg bg-white cursor-pointer"
+                className="relative border p-4 rounded shadow-lg bg-white cursor-pointer"
                 onClick={() => navigate(`/detail-produk/${product.id}`)}>
-                  <span className="absolute top-2 left-2 bg-green-200 text-green-800 px-2 py-1 text-xs rounded">
+
+                {/* Discount Badge */}
+                  <span className="absolute top-2 right-2 bg-green-200 text-green-800 px-2 py-1 text-xs rounded">
                     {product.discount}%
                   </span>
                   <img
