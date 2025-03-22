@@ -1,16 +1,17 @@
-import PropTypes from 'prop-types';
-import { useState, useMemo } from 'react';
-import { useParams } from 'react-router-dom';
-import Box from '@mui/material/Box';
-import Tab from '@mui/material/Tab';
-import Chip from '@mui/material/Chip';
-import Tabs from '@mui/material/Tabs';
-import Grid from '@mui/material/Grid';
-import Stack from '@mui/material/Stack';
-import Divider from '@mui/material/Divider';
-import Typography from '@mui/material/Typography';
+import PropTypes from "prop-types";
+import { useState, useMemo } from "react";
+import { useParams } from "react-router-dom";
+import Box from "@mui/material/Box";
+import Tab from "@mui/material/Tab";
+import Chip from "@mui/material/Chip";
+import Tabs from "@mui/material/Tabs";
+import Grid from "@mui/material/Grid";
+import Stack from "@mui/material/Stack";
+import Divider from "@mui/material/Divider";
+import Typography from "@mui/material/Typography";
 import MainCard from "../../components/MainCard";
 import FloatingCart from "../../components/FloatingCart";
+<<<<<<< HEAD:src/produk/product-details/ProdukDetails.jsx
 import ProdukFeatures from './ProdukFeatures';
 import ProdukImages from './ProdukImages';
 import ProdukInfo from './ProdukInfo';
@@ -20,6 +21,17 @@ import ProdukRelated from './ProdukRelated';
 
 // Import data produk dari file ProdukPage.js
 import produk from '../Produk';
+=======
+import ProductFeatures from "./ProductFeatures";
+import ProductImages from "./ProductImages";
+import ProductInfo from "./ProductInfo";
+import ProductReview from "./ProductReview";
+import ProductSpecifications from "./ProductSpecifications";
+import RelatedProducts from "./RelatedProducts";
+
+// Import data produk
+import { products } from "../../produk/Produk";
+>>>>>>> origin/main:src/produk/product-details/ProductDetails.jsx
 
 function TabPanel({ children, value, index, ...other }) {
   return (
@@ -37,27 +49,51 @@ function TabPanel({ children, value, index, ...other }) {
 
 function a11yProps(index) {
   return {
+<<<<<<< HEAD:src/produk/product-details/ProdukDetails.jsx
     id: `produk-detail-tab-${index}`,
     'aria-controls': `produk-detail-tabpanel-${index}`
+=======
+    id: `product-details-tab-${index}`,
+    "aria-controls": `product-details-tabpanel-${index}`,
+>>>>>>> origin/main:src/produk/product-details/ProductDetails.jsx
   };
 }
 
 export default function ProdukDetail() {
   const { id } = useParams();
-  
+
   // Cari produk berdasarkan ID dari URL
+<<<<<<< HEAD:src/produk/product-details/ProdukDetails.jsx
   const produkItem = produk.find((p) => p.id === Number(id));
+=======
+  const product = products.find((p) => p.id === Number(id));
+>>>>>>> origin/main:src/produk/product-details/ProductDetails.jsx
 
   const [value, setValue] = useState(0);
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
+<<<<<<< HEAD:src/produk/product-details/ProdukDetails.jsx
   const produkImages = useMemo(() => produkItem ? <ProdukImages produk={produkItem} /> : null, [produkItem]);
   const RelatedProduk = useMemo(() => <RelatedProduk id={id} />, [id]);
 
   if (!produkItem) {
     return <Typography variant="h5" color="error">Produk tidak ditemukan</Typography>;
+=======
+  const productImages = useMemo(
+    () => (product ? <ProductImages product={product} /> : null),
+    [product]
+  );
+  const relatedProducts = useMemo(() => <RelatedProducts id={id} />, [id]);
+
+  if (!product) {
+    return (
+      <Typography variant="h5" color="error">
+        Product not found
+      </Typography>
+    );
+>>>>>>> origin/main:src/produk/product-details/ProductDetails.jsx
   }
 
   return (
@@ -70,8 +106,16 @@ export default function ProdukDetail() {
             </Grid>
 
             <Grid item xs={12} md={7} lg={8}>
+<<<<<<< HEAD:src/produk/product-details/ProdukDetails.jsx
               <MainCard border={false} sx={{ height: '100%', bgcolor: 'secondary.lighter' }}>
                 <ProdukInfo produk={produkItem} />
+=======
+              <MainCard
+                border={false}
+                sx={{ height: "100%", bgcolor: "secondary.lighter" }}
+              >
+                <ProductInfo product={product} />
+>>>>>>> origin/main:src/produk/product-details/ProductDetails.jsx
               </MainCard>
             </Grid>
           </Grid>
@@ -79,20 +123,35 @@ export default function ProdukDetail() {
         <Grid item xs={12} md={7} xl={8}>
           <MainCard>
             <Stack spacing={3}>
-              <Tabs value={value} indicatorColor="primary" onChange={handleChange} variant="scrollable">
+              <Tabs
+                value={value}
+                indicatorColor="primary"
+                onChange={handleChange}
+                variant="scrollable"
+              >
                 <Tab label="Features" {...a11yProps(0)} />
                 <Tab label="Specifications" {...a11yProps(1)} />
                 <Tab label="Ringkasan" {...a11yProps(2)} />
                 <Tab
                   label={
                     <Stack direction="row" alignItems="center">
+<<<<<<< HEAD:src/produk/product-details/ProdukDetails.jsx
                       Review <Chip label={String(produkItem.rating)} size="small" sx={{ ml: 0.5 }} />
+=======
+                      Reviews{" "}
+                      <Chip
+                        label={String(product.rating)}
+                        size="small"
+                        sx={{ ml: 0.5 }}
+                      />
+>>>>>>> origin/main:src/produk/product-details/ProductDetails.jsx
                     </Stack>
                   }
                   {...a11yProps(3)}
                 />
               </Tabs>
               <Divider />
+<<<<<<< HEAD:src/produk/product-details/ProdukDetails.jsx
               <TabPanel value={value} index={0}><ProdukFeatures /></TabPanel>
               <TabPanel value={value} index={1}><ProdukSpecifications /></TabPanel>
               <TabPanel value={value} index={2}>
@@ -105,6 +164,35 @@ export default function ProdukDetail() {
         <Grid item xs={12} md={5} xl={4} sx={{ position: 'relative' }}>
           <MainCard title="Produk Related" sx={{ height: 'calc(100% - 16px)', position: 'absolute', top: '16px' }}>
             {RelatedProduk}
+=======
+              <TabPanel value={value} index={0}>
+                <ProductFeatures />
+              </TabPanel>
+              <TabPanel value={value} index={1}>
+                <ProductSpecifications />
+              </TabPanel>
+              <TabPanel value={value} index={2}>
+                <Typography color="text.secondary">
+                  {product.description}
+                </Typography>
+              </TabPanel>
+              <TabPanel value={value} index={3}>
+                <ProductReview product={product} />
+              </TabPanel>
+            </Stack>
+          </MainCard>
+        </Grid>
+        <Grid item xs={12} md={5} xl={4} sx={{ position: "relative" }}>
+          <MainCard
+            title="Related Products"
+            sx={{
+              height: "calc(100% - 16px)",
+              position: "absolute",
+              top: "16px",
+            }}
+          >
+            {relatedProducts}
+>>>>>>> origin/main:src/produk/product-details/ProductDetails.jsx
           </MainCard>
         </Grid>
       </Grid>
@@ -113,4 +201,9 @@ export default function ProdukDetail() {
   );
 }
 
-TabPanel.propTypes = { children: PropTypes.any, value: PropTypes.any, index: PropTypes.any, other: PropTypes.any };
+TabPanel.propTypes = {
+  children: PropTypes.any,
+  value: PropTypes.any,
+  index: PropTypes.any,
+  other: PropTypes.any,
+};
