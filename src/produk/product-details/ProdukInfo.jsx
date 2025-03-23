@@ -9,48 +9,37 @@ import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Rating from '@mui/material/Rating';
-import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import CardMedia from '@mui/material/CardMedia';
+import IconButton from '@mui/material/IconButton';
+import Box from '@mui/material/Box';
 
 // Icons
 import { Add, Minus, ShoppingCart } from 'iconsax-react';
 
-// ==============================|| DETAIL PRODUK - INFORMASI ||============================== //
-
 export default function ProductInfo({ produk }) {
   const theme = useTheme();
   const navigate = useNavigate();
-
   const [quantity, setQuantity] = useState(1);
   const [cart, setCart] = useState([]);
 
-  // Ambil data cart dari localStorage saat pertama kali render
   useEffect(() => {
     const savedCart = JSON.parse(localStorage.getItem('cart')) || [];
     setCart(savedCart);
   }, []);
 
-  // Fungsi untuk menambahkan ke keranjang
   const handleAddToCart = () => {
     const newCart = [...cart, { ...produk, quantity }];
     setCart(newCart);
-    localStorage.setItem('cart', JSON.stringify(newCart)); // Simpan di localStorage
+    localStorage.setItem('cart', JSON.stringify(newCart));
     alert('Ditambahkan ke Keranjang!');
   };
 
   return (
     <Stack spacing={2}>
-      {/* Gambar Produk */}
-      <CardMedia
-        component="img"
-        image={produk.image}
-        alt={produk.name}
-        sx={{ width: '100%', maxHeight: '300px', objectFit: 'contain', borderRadius: '8px' }}
-      />
-
       {/* Nama Produk */}
-      <Typography variant="h3">{produk.name}</Typography>
+      <Typography variant="h5" sx={{ fontWeight: 600 }}>
+        {produk.name}
+      </Typography>
 
       {/* Merek & Kategori */}
       <Typography color="text.secondary">
@@ -77,9 +66,9 @@ export default function ProductInfo({ produk }) {
 
       {/* Harga Produk */}
       <Stack direction="row" alignItems="center" spacing={1}>
-        {produk.discount > 0 && (
+        {produk.discount > 0 ? (
           <>
-            <Typography variant="h4" color="error">
+            <Typography variant="h5" color="error" sx={{ fontWeight: 600 }}>
               Rp {produk.price.toLocaleString()}
             </Typography>
             <Typography variant="body1" sx={{ textDecoration: 'line-through', color: 'gray' }}>
@@ -87,42 +76,67 @@ export default function ProductInfo({ produk }) {
             </Typography>
             <Chip label={`-${produk.discount}%`} color="error" size="small" />
           </>
-        )}
-        {produk.discount === 0 && (
-          <Typography variant="h3">Rp {produk.price.toLocaleString()}</Typography>
+        ) : (
+          <Typography variant="h5" sx={{ fontWeight: 600 }}>
+            Rp {produk.price.toLocaleString()}
+          </Typography>
         )}
       </Stack>
 
       {/* Input Jumlah Produk */}
       <Grid container spacing={2}>
         <Grid item xs={12}>
-          <Stack spacing={1}>
-            <Typography color="text.secondary">Jumlah</Typography>
-            <Stack direction="row">
-              <TextField
-                value={quantity}
-                onChange={(e) => setQuantity(Number(e.target.value))}
-                sx={{ width: '60px', textAlign: 'center' }}
-                type="number"
-                inputProps={{ min: 1 }}
-              />
-              <Button
-                color="secondary"
-                variant="outlined"
+          <Stack spacing={1} alignItems="flex-start">
+            <Typography color="text.secondary" sx={{ mb: 0.5 }}>
+              Jumlah
+            </Typography>
+            <Stack direction="row" alignItems="center">
+              <IconButton
+                color="primary"
+                onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                sx={{
+                  border: '1px solid',
+                  borderRadius: '8px',
+                  width: '40px',
+                  height: '40px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}
+              >
+                <Minus size="18" />
+              </IconButton>
+
+              <Box
+                sx={{
+                  width: '50px',
+                  height: '40px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  border: '1px solid',
+                  borderRadius: '8px',
+                  mx: 1
+                }}
+              >
+                <Typography variant="h6">{quantity}</Typography>
+              </Box>
+
+              <IconButton
+                color="primary"
                 onClick={() => setQuantity(quantity + 1)}
-                sx={{ borderRadius: '50%', ml: 1 }}
+                sx={{
+                  border: '1px solid',
+                  borderRadius: '8px',
+                  width: '40px',
+                  height: '40px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}
               >
-                <Add />
-              </Button>
-              <Button
-                color="secondary"
-                variant="outlined"
-                disabled={quantity <= 1}
-                onClick={() => setQuantity(quantity - 1)}
-                sx={{ borderRadius: '50%', ml: 1 }}
-              >
-                <Minus />
-              </Button>
+                <Add size="18" />
+              </IconButton>
             </Stack>
           </Stack>
         </Grid>
@@ -153,7 +167,7 @@ export default function ProductInfo({ produk }) {
   );
 }
 
-ProductInfo.propTypes = { 
+ProductInfo.propTypes = {
   produk: PropTypes.shape({
     id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,

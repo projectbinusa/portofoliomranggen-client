@@ -1,19 +1,14 @@
 import PropTypes from 'prop-types';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import CardMedia from '@mui/material/CardMedia';
 import Stack from '@mui/material/Stack';
 
-// ==============================|| DETAIL PRODUK - FITUR ||============================== //
-
 export default function ProdukFitur({ produk }) {
-  if (!produk) return <Typography>Produk tidak ditemukan</Typography>; // Cegah error jika produk undefined
+  if (!produk) return <Typography>Produk tidak ditemukan</Typography>;
 
-  // Data fitur diambil dari properti produk yang tersedia
   const fiturProduk = [
     { label: 'Merek', value: produk.brand },
     { label: 'Kategori', value: produk.category },
-    { label: 'Cocok Untuk', value: produk.gender },
     { label: 'Harga', value: `Rp ${produk.price.toLocaleString()}` },
     { label: 'Harga Sebelumnya', value: `Rp ${produk.oldPrice.toLocaleString()}` },
     { label: 'Diskon', value: `${produk.discount}%` },
@@ -21,32 +16,25 @@ export default function ProdukFitur({ produk }) {
   ];
 
   return (
-    <Stack spacing={2}>
-      {/* Gambar Produk */}
-      <CardMedia
-        component="img"
-        image={produk.image}
-        alt={produk.name}
-        sx={{ width: '100%', maxHeight: '300px', objectFit: 'contain', borderRadius: '8px' }}
-      />
-
-      {/* Nama Produk */}
-      <Typography variant="h3">{produk.name}</Typography>
-
-      {/* Fitur Produk */}
-      <Grid container spacing={2}>
-        {fiturProduk.map((feature, index) => (
-          <Grid item xs={12} sm={6} key={index}>
-            <Typography color="text.secondary">{feature.label}:</Typography>
-            <Typography>{feature.value}</Typography>
+    <Stack spacing={1}>
+      {fiturProduk.map((feature, index) => (
+        <Grid container key={index} spacing={2} alignItems="center">
+          {/* Label di kiri */}
+          <Grid item xs={4}>
+            <Typography variant="body1" fontWeight={600} color="text.secondary">
+              {feature.label} :
+            </Typography>
           </Grid>
-        ))}
-      </Grid>
+          {/* Value di tengah tapi sedikit ke kiri */}
+          <Grid item xs={8}>
+            <Typography variant="body1" sx={{ pl: 2 }}>{feature.value}</Typography>
+          </Grid>
+        </Grid>
+      ))}
     </Stack>
   );
 }
 
-// PropTypes untuk validasi props
 ProdukFitur.propTypes = {
   produk: PropTypes.shape({
     name: PropTypes.string.isRequired,

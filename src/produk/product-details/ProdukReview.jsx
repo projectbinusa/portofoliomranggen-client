@@ -13,7 +13,7 @@ import Typography from "@mui/material/Typography";
 import LinearProgress from "@mui/material/LinearProgress";
 
 // Komponen Project
-// import MainCard from "components/MainCard";
+import MainCard from "../../components/MainCard";
 
 // Dummy Data Review
 const reviewsData = [
@@ -80,74 +80,93 @@ export default function ProductReviews({ productId }) {
     : 0;
 
   return (
-    <Grid container spacing={3}>
-      {/* Statistik Review */}
-      <Grid item xs={12}>
-        <MainCard>
-          <Grid container justifyContent="space-between" alignItems="center" spacing={2.5}>
-            <Grid item>
-              <Stack spacing={1}>
-                <Stack direction="row" spacing={1} alignItems="center">
-                  <Typography variant="h2">{averageRating.toFixed(1)}</Typography>
-                  <Typography variant="h4" color="text.secondary">
-                    /5
-                  </Typography>
-                </Stack>
-                <Typography color="text.secondary">Based on {totalReviews} reviews</Typography>
-                <Rating name="read-only" value={averageRating} readOnly precision={0.1} />
+    <Grid container spacing={2} sx={{ maxWidth: 600, mx: "auto" }}>
+  {/* Statistik Review */}
+<Grid item xs={12}>
+  <MainCard sx={{ p: 3, ml: -3 }}> {/* Geser seluruh card ke kiri */}
+    <Grid container justifyContent="space-between" alignItems="center">
+      <Grid item>
+        <Stack spacing={1}>
+          {totalReviews > 0 ? (
+            <>
+              <Stack direction="row" spacing={1} alignItems="flex-end">
+                <Typography variant="h4" fontWeight={600} sx={{ textAlign: "left" }}>
+                  {averageRating.toFixed(1)}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">/5</Typography>
               </Stack>
-            </Grid>
-            <Grid item>
-              <Grid container alignItems="center" spacing={1}>
-                {[5, 4, 3, 2, 1].map((star) => {
-                  const percentage =
-                    totalReviews > 0
-                      ? (reviews.filter((r) => r.rating === star).length / totalReviews) * 100
-                      : 0;
-                  return (
-                    <Grid item xs={12} key={star}>
-                      <LinearProgressWithLabel star={star} value={percentage} />
-                    </Grid>
-                  );
-                })}
-              </Grid>
-            </Grid>
-          </Grid>
-        </MainCard>
-      </Grid>
-
-      {/* Daftar Review */}
-      <Grid item xs={12}>
-        <List>
-          {loading ? (
-            <Typography>Loading reviews...</Typography>
-          ) : reviews.length > 0 ? (
-            reviews.map((review) => (
-              <MainCard sx={{ bgcolor: "secondary.lighter", mb: 2 }} key={review.id}>
-                <ProductReview
-                  avatar={review.profile.avatar}
-                  date={format(new Date(review.date), "dd/MM/yyyy h:mm a")}
-                  name={review.profile.name}
-                  rating={review.rating}
-                  review={review.review}
-                />
-              </MainCard>
-            ))
+              <Typography variant="body2" color="text.secondary" sx={{ textAlign: "left" }}>
+                Berdasarkan {totalReviews} ulasan
+              </Typography>
+              <Rating name="read-only" value={averageRating} readOnly precision={0.1} sx={{ textAlign: "left" }} />
+            </>
           ) : (
-            <Typography>No reviews available.</Typography>
+            <Typography color="text.secondary" sx={{ textAlign: "left" }}>
+              Belum ada ulasan untuk produk ini.
+            </Typography>
           )}
-        </List>
+        </Stack>
       </Grid>
 
-      {/* Tombol "View More Comments" */}
-      {totalReviews > 3 && (
-        <Grid item xs={12}>
-          <Stack direction="row" justifyContent="center">
-            <Button variant="text">View more comments</Button>
+      {/* Progress bar hanya muncul jika ada review */}
+      {totalReviews > 0 && (
+        <Grid item sx={{ minWidth: 120, ml: -3 }}> {/* Geser progress bar ke kiri */}
+          <Stack spacing={1}>
+            {[5, 4, 3, 2, 1].map((star) => {
+              const percentage =
+                totalReviews > 0
+                  ? (reviews.filter((r) => r.rating === star).length / totalReviews) * 100
+                  : 0;
+              return percentage > 0 ? (
+                <LinearProgressWithLabel key={star} star={star} value={percentage} />
+              ) : null;
+            })}
           </Stack>
         </Grid>
       )}
     </Grid>
+  </MainCard>
+</Grid>
+
+
+  {/* Daftar Review */}
+<Grid item xs={12}>
+  <List>
+    {loading ? (
+      <Typography sx={{ textAlign: "left" }}>Loading reviews...</Typography>
+    ) : reviews.length > 0 ? (
+      reviews.map((review) => (
+        <MainCard sx={{ bgcolor: "secondary.lighter", mb: 1.5, p: 2, ml: -3 }} key={review.id}>
+          <Stack spacing={1} sx={{ textAlign: "left" }}>
+            {/* Username & Tanggal Review */}
+            <Stack>
+              <Typography variant="subtitle1" fontWeight={700}>{review.profile.name}</Typography>
+              <Typography variant="body2" color="text.secondary">
+                {format(new Date(review.date), "dd/MM/yyyy h:mm a")}
+              </Typography>
+            </Stack>
+
+            {/* Rating & Isi Review */}
+            <Rating name="read-only" value={review.rating} readOnly precision={0.1} />
+            <Typography variant="body2">{review.review}</Typography>
+          </Stack>
+        </MainCard>
+      ))
+    ) : (
+      <Typography sx={{ textAlign: "left" }}>Tidak ada ulasan.</Typography>
+    )}
+  </List>
+</Grid>
+
+  {/* Tombol "View More Comments" */}
+  {totalReviews > 3 && (
+    <Grid item xs={12}>
+      <Stack direction="row" justifyContent="flex-start">
+        <Button variant="outlined" size="small">Lihat lebih banyak</Button>
+      </Stack>
+    </Grid>
+  )}
+</Grid>
   );
 }
 

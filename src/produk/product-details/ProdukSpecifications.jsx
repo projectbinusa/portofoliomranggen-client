@@ -1,82 +1,67 @@
 import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
+import Paper from "@mui/material/Paper";
 import PropTypes from "prop-types";
 
-// ==============================|| PRODUCT DETAILS - SPECIFICATIONS ||============================== //
-
-export default function ProductSpecifications({ product }) {
+export default function SpesifikasiProduk({ produk }) {
   return (
-    <Grid container spacing={2.5}>
-      <Grid item xs={12} md={6}>
-        <Grid container spacing={2.5}>
-          <Grid item xs={12}>
-            <Typography variant="h5">Product Category</Typography>
-          </Grid>
-          <Grid item xs={12}>
-            <Divider />
-          </Grid>
-          <Grid item xs={6}>
-            <Typography color="text.secondary">Wearable Device Type:</Typography>
-          </Grid>
-          <Grid item xs={6}>
-            <Typography>{product.deviceType || "N/A"}</Typography>
-          </Grid>
-          <Grid item xs={6}>
-            <Typography color="text.secondary">Compatible Devices:</Typography>
-          </Grid>
-          <Grid item xs={6}>
-            <Typography>{product.compatibleDevices || "N/A"}</Typography>
-          </Grid>
-          <Grid item xs={6}>
-            <Typography color="text.secondary">Ideal For:</Typography>
-          </Grid>
-          <Grid item xs={6}>
-            <Typography>{product.idealFor || "N/A"}</Typography>
+    <Paper elevation={0} sx={{ p: 3, borderRadius: 2, border: "1px solid #E0E0E0" }}>
+      <Grid container spacing={3}>
+        {/* Kategori Produk */}
+        <Grid item xs={12} md={6}>
+          <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+            Kategori Produk
+          </Typography>
+          <Divider sx={{ my: 1 }} />
+          <Grid container spacing={1}>
+            <Grid item xs={7}>
+              <Typography variant="body1" fontWeight={600} color="text.secondary">
+                Kategori:
+              </Typography>
+            </Grid>
+            <Grid item xs={5}>
+              <Typography variant="body1">{produk.category || "N/A"}</Typography>
+            </Grid>
+            <Grid item xs={6}>
+              <Typography variant="body1" fontWeight={600} color="text.secondary">
+                Gender:
+              </Typography>
+            </Grid>
+            <Grid item xs={5}>
+              <Typography variant="body1">{produk.gender || "N/A"}</Typography>
+            </Grid>
           </Grid>
         </Grid>
-      </Grid>
 
-      <Grid item xs={12} md={6}>
-        <Grid container spacing={2.5}>
-          <Grid item xs={12}>
-            <Typography variant="h5">Manufacturer Details</Typography>
-          </Grid>
-          <Grid item xs={12}>
-            <Divider />
-          </Grid>
-          <Grid item xs={6}>
-            <Typography color="text.secondary">Brand:</Typography>
-          </Grid>
-          <Grid item xs={6}>
-            <Typography>{product.brand || "N/A"}</Typography>
-          </Grid>
-          <Grid item xs={6}>
-            <Typography color="text.secondary">Model Series:</Typography>
-          </Grid>
-          <Grid item xs={6}>
-            <Typography>{product.modelSeries || "N/A"}</Typography>
-          </Grid>
-          <Grid item xs={6}>
-            <Typography color="text.secondary">Model Number:</Typography>
-          </Grid>
-          <Grid item xs={6}>
-            <Typography>{product.modelNumber || "N/A"}</Typography>
+        {/* Detail Produsen */}
+        <Grid item xs={12} md={6}>
+          <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+            Detail Produsen
+          </Typography>
+          <Divider sx={{ my: 1 }} />
+          <Grid container spacing={1}>
+            <Grid item xs={6}>
+              <Typography variant="body1" fontWeight={600} color="text.secondary">
+                Merek:
+              </Typography>
+            </Grid>
+            <Grid item xs={5}>
+              <Typography variant="body1">{produk.brand || "N/A"}</Typography>
+            </Grid>
           </Grid>
         </Grid>
       </Grid>
-    </Grid>
+    </Paper>
   );
 }
 
 // Validasi Props
-ProductSpecifications.propTypes = {
-  product: PropTypes.shape({
-    deviceType: PropTypes.string,
-    compatibleDevices: PropTypes.string,
-    idealFor: PropTypes.string,
-    brand: PropTypes.string,
-    modelSeries: PropTypes.string,
-    modelNumber: PropTypes.string,
+SpesifikasiProduk.propTypes = {
+  produk: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    brand: PropTypes.string.isRequired,
+    category: PropTypes.string.isRequired,
+    gender: PropTypes.string.isRequired,
   }).isRequired,
 };
