@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaSearch, FaTimes } from "react-icons/fa";
+import { Star, StarHalf } from "lucide-react";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../tampilan/Navbar";
 import image1 from '../images/camera-removebg-preview.png';
@@ -168,8 +169,9 @@ export default function ProductsPage() {
         <Navbar />
         <div className="p-6 flex gap-6 mt-6">
           
+          
           {/* Filter Sidebar */}
-          <div className="w-[220px] border p-4 rounded shadow-lg bg-white space-y-4 h-[500px]">
+          <div className="w-[220px] border p-4 rounded shadow-lg bg-white space-y-4 h-[400px]">
             {/* Filter Title */}
             <h2 className="font-bold text-lg pb-2 border-b">Filter</h2>
 
@@ -236,8 +238,6 @@ export default function ProductsPage() {
                 "Fashion",
                 "Beauty",
                 "Book",
-                "Toys",
-                "Home & Kitchen",
               ].map((category) => (
                 <label
                   key={category}
@@ -299,10 +299,11 @@ export default function ProductsPage() {
                     </span>
                   </p>
                   <p className="text-yellow-500 flex items-center gap-1">
-                    {"⭐".repeat(Math.round(product.rating))}{" "}
-                    <span className="text-black text-sm">
-                      ({product.rating})
-                    </span>
+                    {Array.from({ length: Math.floor(product.rating) }, (_, i) => (
+                      <Star key={i} className="w-5 h-5 fill-yellow-500" />
+                    ))}
+                    {product.rating % 1 >= 0.5 && <StarHalf className="w-5 h-5 fill-yellow-500" />}
+                    <span className="text-black text-sm">({product.rating})</span>
                   </p>
                   <button className="bg-blue-500 text-white px-4 py-2 rounded mt-2 w-full">
                     Add to Cart
