@@ -11,6 +11,8 @@ import {
 } from '@mui/material';
 import MainCard from '../components/MainCard';
 import { DocumentUpload } from 'iconsax-react';
+import Sidebar from '../components/Sidebar';
+import Navbar from '../tampilan/Navbar';
 
 const statuses = [
   { value: 'in stock', label: 'In Stock' },
@@ -52,7 +54,7 @@ export default function TambahProduk() {
 
   const handleSubmit = async () => {
     const storedProducts = JSON.parse(localStorage.getItem("products")) || [];
-    
+
     let imageBase64 = "";
     if (product.image) {
       imageBase64 = await toBase64(product.image);
@@ -79,6 +81,17 @@ export default function TambahProduk() {
   };
   
   return (
+
+    <div className="flex min-h-screen">
+            {/* Sidebar */}
+            <div className="w-[250px] relative">
+              <Sidebar />
+            </div>
+        
+              {/* Main Content */}
+              <div className="flex-1">
+                <Navbar />
+                <div className="p-6 flex gap-6 mt-6"> 
     <MainCard>
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6}>
@@ -148,5 +161,8 @@ export default function TambahProduk() {
         </Grid>
       </Grid>
     </MainCard>
+        </div>
+      </div>
+    </div>
   );
 }
