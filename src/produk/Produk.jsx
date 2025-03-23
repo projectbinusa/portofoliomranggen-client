@@ -157,6 +157,11 @@ export default function ProductsPage() {
     return true;
   });
 
+  const handleAddToCart = () => {
+    navigate("/chekout"); 
+  };
+
+
   return (
     <div className="flex min-h-screen">
     {/* Sidebar */}
@@ -305,9 +310,12 @@ export default function ProductsPage() {
                     {product.rating % 1 >= 0.5 && <StarHalf className="w-5 h-5 fill-yellow-500" />}
                     <span className="text-black text-sm">({product.rating})</span>
                   </p>
-                  <button className="bg-blue-500 text-white px-4 py-2 rounded mt-2 w-full">
-                    Add to Cart
-                  </button>
+                  <button 
+                      className="bg-blue-500 text-white px-4 py-2 rounded mt-2 w-full"
+                      onClick={handleAddToCart} // Navigasi saat diklik
+                    >
+                      Add to Cart
+                   </button>
                 </div>
               ))}
             </div>
