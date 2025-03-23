@@ -20,7 +20,6 @@ export default function ProductImages({ produk }) {
 
   const addToFavourite = () => {
     setWishlisted(!wishlisted);
-    alert(wishlisted ? "Dihapus dari favorit" : "Ditambahkan ke favorit");
   };
 
   return (
@@ -31,10 +30,11 @@ export default function ProductImages({ produk }) {
           sx={{
             position: 'relative',
             textAlign: 'center',
-            border: '1px solid #ddd',
-            borderRadius: '8px',
+            borderRadius: '12px',
             overflow: 'hidden',
-            bgcolor: '#f9f9f9'
+            bgcolor: '#f5f7fa',
+            p: 2,
+            boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)'
           }}
         >
           <TransformWrapper initialScale={1}>
@@ -45,58 +45,54 @@ export default function ProductImages({ produk }) {
                     component="img"
                     image={selectedImage}
                     alt={produk.name}
-                    sx={{ width: '100%', height: '300px', objectFit: 'contain' }}
+                    sx={{ width: '100%', height: '350px', objectFit: 'contain' }}
                   />
                 </TransformComponent>
+
                 {/* Tombol Zoom */}
-                <Stack direction="row" spacing={1} sx={{ position: 'absolute', bottom: 10, right: 10 }}>
-                  <IconButton onClick={() => zoomIn()} color="primary">
+                <Stack
+                  direction="row"
+                  spacing={1}
+                  sx={{ position: 'absolute', bottom: 12, right: 12, bgcolor: 'rgba(255,255,255,0.7)', p: 0.5, borderRadius: '8px' }}
+                >
+                  <IconButton onClick={() => zoomIn()} size="small">
                     <FaSearchPlus />
                   </IconButton>
-                  <IconButton onClick={() => zoomOut()} color="primary">
+                  <IconButton onClick={() => zoomOut()} size="small">
                     <FaSearchMinus />
                   </IconButton>
-                  <IconButton onClick={() => resetTransform()} color="primary">
+                  <IconButton onClick={() => resetTransform()} size="small">
                     <FaUndo />
                   </IconButton>
                 </Stack>
               </>
             )}
           </TransformWrapper>
+
           {/* Wishlist Button */}
           <IconButton
-            sx={{ position: 'absolute', top: 12, right: 12, color: wishlisted ? 'red' : 'gray' }}
+            sx={{
+              position: 'absolute',
+              top: 10,
+              right: 10,
+              color: wishlisted ? 'red' : 'gray',
+              bgcolor: 'rgba(255,255,255,0.7)',
+              p: 0.5,
+              borderRadius: '50%'
+            }}
             onClick={addToFavourite}
           >
             <FaHeart />
           </IconButton>
         </Box>
       </Grid>
-
-      {/* Thumbnail Pilihan */}
-      <Grid item xs={12}>
-        <Stack direction="row" spacing={1} justifyContent="center">
-          <Box
-            sx={{
-              width: 60,
-              height: 60,
-              border: selectedImage === produk.image ? '2px solid blue' : '1px solid gray',
-              cursor: 'pointer',
-              p: 1,
-              borderRadius: '5px',
-              bgcolor: '#fff'
-            }}
-            onClick={() => setSelectedImage(produk.image)}
-          >
-            <CardMedia component="img" image={produk.image} sx={{ width: '100%', height: '100%', objectFit: 'contain' }} />
-          </Box>
-        </Stack>
-      </Grid>
     </Grid>
   );
 }
 
-ProductImages.propTypes = { produk: PropTypes.shape({
-  image: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired
-}).isRequired };
+ProductImages.propTypes = { 
+  produk: PropTypes.shape({
+    image: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired
+  }).isRequired 
+};

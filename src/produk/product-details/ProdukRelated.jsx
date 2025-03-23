@@ -36,7 +36,7 @@ function ItemProduk({ produk }) {
   const navigate = useNavigate();
 
   return (
-    <ListItemButton divider onClick={() => navigate(`/apps/e-commerce/product-details/${produk.id}`)}>
+    <ListItemButton divider onClick={() => navigate(`/detail-produk/${produk.id}`)}>
       <ListItemAvatar>
         <Avatar
           alt={produk.name}
