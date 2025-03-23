@@ -1,7 +1,6 @@
 import React from "react";
-import { Container, Typography, Button, Box, Stepper, Step, StepLabel, Card, CardContent, Breadcrumbs } from "@mui/material";
+import { Container, Typography, Button, Box, Stepper, Step, StepLabel, Card, CardContent, Breadcrumbs, Link } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import { Link } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../tampilan/Navbar";
 
@@ -24,7 +23,9 @@ const Checkout = () => {
       {/* Breadcrumbs */}
       <Breadcrumbs aria-label="breadcrumb" sx={{ mb: 2 }}>
         <Link underline="hover" color="inherit" href="/">Home</Link>
-        <Link underline="hover" color="inherit" href="/produk">Produk</Link>
+        <Link underline="hover" color="inherit" href="/produk">
+            Produk
+          </Link>
         <Typography color="textPrimary">Checkout</Typography>
       </Breadcrumbs>
       

@@ -158,7 +158,7 @@ export default function ProductsPage() {
   });
 
   const handleAddToCart = () => {
-    navigate("/chekout"); 
+    navigate("/checkout"); 
   };
 
 
