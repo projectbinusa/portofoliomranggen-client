@@ -173,10 +173,10 @@ export default function ProductsPage() {
       <div className="flex-1">
         <Navbar />
         <div className="p-6 flex gap-6 mt-6">
-          
-          
+
+
           {/* Filter Sidebar */}
-          <div className="w-[220px] border p-4 rounded shadow-lg bg-white space-y-4 h-[400px]">
+          <div className="w-[220px] border p-4 rounded shadow-lg bg-white space-y-4 h-[500px]">
             {/* Filter Title */}
             <h2 className="font-bold text-lg pb-2 border-b">Filter</h2>
 
