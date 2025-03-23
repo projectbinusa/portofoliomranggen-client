@@ -13,7 +13,8 @@ import {
   IconButton,
   InputAdornment,
   Checkbox,
-  FormControlLabel
+  FormControlLabel,
+  Divider
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
@@ -27,6 +28,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [keepSignedIn, setKeepSignedIn] = useState(false);
+  const [clickedButton, setClickedButton] = useState(null);
   const navigate = useNavigate();
   const { addNotification } = useNotification();
 
@@ -71,24 +73,36 @@ const Login = () => {
             Able <Typography component="span" color="#6B7280" variant="caption" sx={{ fontSize: "0.6rem" }}>pro</Typography>
           </Typography>
 
-          <Stack spacing={2} sx={{ mb: 3 }}>
-            <Button variant="outlined" fullWidth startIcon={<FacebookIcon sx={{ color: "#1877F2" }} />}>
-              Sign in with Facebook
-            </Button>
-            <Button variant="outlined" fullWidth startIcon={<TwitterIcon sx={{ color: "#1DA1F2" }} />}>
-              Sign in with Twitter
-            </Button>
-            <Button variant="outlined" fullWidth startIcon={<GoogleIcon sx={{ color: "#EA4335" }} />}>
-              Sign in with Google
-            </Button>
+          <Stack spacing={1.5} sx={{ mb: 5 }}>
+            {[
+              { label: "Sign in with Facebook", icon: <FacebookIcon sx={{ color: "#1877F2" }} />, color: "#2D4EF5" },
+              { label: "Sign in with Twitter", icon: <TwitterIcon sx={{ color: "#1DA1F2" }} />, color: "#2D4EF5" },
+              { label: "Sign in with Google", icon: <GoogleIcon sx={{ color: "#EA4335" }} />, color: "#2D4EF5" }
+            ].map((btn, index) => (
+              <Button
+                 key={index}
+                 variant="outlined"
+                 fullWidth
+                 startIcon={btn.icon}
+                 onClick={() => setClickedButton(index)}
+                 sx={{
+                 borderRadius: 2,
+                 border: clickedButton === index ? `1px solid ${btn.color}` : "0.5px solid transparent",
+                 backgroundColor: clickedButton === index ? "#E0E0E0" : "#F5F5F5",
+                 transition: "border 0.3s, background-color 0.3s, color 0.3s",
+                 textTransform: "none",
+                 color: clickedButton === index ? "#2D4EF5" : "#616161", // Warna teks abu-abu lebih menonjol
+               }}
+                >
+                {btn.label}
+             </Button>
+            ))}
           </Stack>
 
-          <Typography textAlign="center" sx={{ my: 3, fontWeight: "bold" }}>OR</Typography>
+          <Divider sx={{ my: 5 }}>OR</Divider>
 
-          <Stack direction="row" spacing={20} justifyContent="center" alignItems="center">
-            <Typography variant="h4" gutterBottom>
-              Login
-            </Typography>
+          <Stack direction="row" spacing={2} justifyContent="space-between" alignItems="center" sx={{ my: 2.5 }}>
+            <Typography variant="h5" fontWeight="bold">Login</Typography>
             <Typography variant="body2" component={Link} to="/register" color="primary">
               Don't have an account?
             </Typography>
@@ -97,13 +111,14 @@ const Login = () => {
           <form onSubmit={handleLogin}>
             <TextField
               fullWidth
-              label="Email"
+              label="Email Address"
               type="email"
               variant="outlined"
               margin="normal"
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              sx={{ borderRadius: 2 }}
             />
             <TextField
               fullWidth
@@ -118,26 +133,26 @@ const Login = () => {
                 endAdornment: (
                   <InputAdornment position="end">
                     <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                       {showPassword ? <Visibility /> : <VisibilityOff />}
                     </IconButton>
                   </InputAdornment>
                 ),
               }}
+              sx={{ borderRadius: 2 }}
             />
 
-            {/* ✅ Tambahkan Checkbox "Keep me signed in" */}
             <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mt: 1 }}>
               <FormControlLabel
                 control={<Checkbox checked={keepSignedIn} onChange={(e) => setKeepSignedIn(e.target.checked)} />}
                 label="Keep me signed in"
               />
-              <Typography variant="body2" component={Link} to="/forgot-password" color="primary">
+              <Typography variant="body2" component={Link} to="/forgot-password" color="black">
                 Forgot Password?
               </Typography>
             </Stack>
 
-            <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, padding: 1, backgroundColor: "#2D4EF5", '&:hover': { backgroundColor: "#1E3A8A" } }}>
-              LOGIN
+            <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, padding: 1.5, backgroundColor: "#2D4EF5", transition: "background-color 0.3s", '&:hover': { backgroundColor: "#1B3EC2" }, fontWeight: "bold", borderRadius: 2 }}>
+              Login
             </Button>
           </form>
         </Grid>
