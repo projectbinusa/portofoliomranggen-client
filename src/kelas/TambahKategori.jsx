@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { API_KELAS } from "../utils/BaseUrl";
 import { useNotification } from "../context/NotificationContext"; // 🔔 Import Notifikasi
+import Sidebar from "../components/Sidebar";
 
 const TambahKategoriKelas = () => {
   const [namaKelas, setNamaKelas] = useState("");
@@ -50,6 +51,8 @@ const TambahKategoriKelas = () => {
 
   return (
     <div className="flex justify-center items-center ml-5 mt-20 p-10">
+     <Sidebar />
+
       <div className="w-full max-w-lg bg-white p-6 md:p-12 rounded-md shadow-md">
         <form onSubmit={handleSubmit}>
           <div className="space-y-6">
