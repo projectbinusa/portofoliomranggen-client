@@ -67,7 +67,6 @@ import DetailBuku from "./buku/DetailBuku";
 import User from "./user/User";
 import EditUser from "./user/EditUser";
 import TambahUser from "./user/TambahUser";
-import PageProfil from "./profil/PageProfil";
 
 import PageKategori from "./kategori/PageKategori";
 import TambahKategoriA from "./kategori/TambahKategoriA";
@@ -85,9 +84,11 @@ import DetailBerita from "./berita/DetailBerita";
 import Navbar from "./tampilan/Navbar";
 import Kontak from "./components/Kontak";
 
-import PaymentPage from "./payment/PaymentPage";
-import ChangePasswordPage from "./change/ChangePasswordPage";
-import SettingsPage from "./profil/SettingsPage";
+
+import ChangePasswordPage from "./profil/profile/ChangePasswordPage";
+import SettingsPage from "./profil/profile/SettingsPage";
+import Profil from "./profil/profile/Profil";
+import Payment from "./profil/profile/Payment";
 
 
 import "./App.css";
@@ -173,8 +174,7 @@ function App() {
             <Route path="/user" element={<User />} />
             <Route path="/tambah-user" element={<TambahUser />} />
             <Route path="/edit-user/:id" element={<EditUser />} />
-            <Route path="/page-profil" element={<PageProfil />} />
-
+            
             {/* Routes untuk Kategori */}
             <Route path="/page-kategori" element={<PageKategori />} />
             <Route path="/tambah-kategori-a" element={<TambahKategoriA />} />
@@ -198,9 +198,10 @@ function App() {
             {/* Halaman 404 */}
             <Route path="*" element={<NotFoundPage />} />
 
-            <Route path="/payment" element={<PaymentPage />} />
-            <Route path="/change-password" element={<ChangePasswordPage />} />
-            <Route path="/settings-password" element={<SettingsPage />} />
+            <Route path="/payment" element={<Payment />} />
+            <Route path="/password" element={<ChangePasswordPage />} />
+            <Route path="/settings" element={<SettingsPage />} />
+            <Route path="/page-profil" element={<Profil />} />
 
 
           </Routes>
