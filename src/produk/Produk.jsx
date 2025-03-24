@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaSearch, FaTimes } from "react-icons/fa";
 import { Star, StarHalf } from "lucide-react";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
+import Swal from "sweetalert2";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../tampilan/Navbar";
 import image1 from '../images/camera-removebg-preview.png';
@@ -13,6 +15,7 @@ import image6 from '../images/skintific-removebg-preview.png';
 import image7 from '../images/sunscreen-removebg-preview.png';
 import image8 from '../images/diorrrrr_lip-removebg-preview.png';
 import image9 from '../images/cusion-removebg-preview.png';
+import image10 from '../images/facial_wash-removebg-preview.png';
 
 export const products = [
   {
@@ -113,7 +116,7 @@ export const products = [
   },
   {
     id: 9,
-    name: "Dior Forever Perfect Cushion (1N) 14gr SPF 35 PA+++",
+    name: "Dior Forever Perfect Cushion SPF 35 PA+++",
     brand: "Dior",
     category: "Beauty",
     gender: "Female",
@@ -123,13 +126,27 @@ export const products = [
     discount: 20,
     image: image9,
   },
+  {
+    id: 10,
+    name: "Facial Wash G2G Acne",
+    brand: "Glad To Glow",
+    category: "Beauty",
+    gender: "Female",
+    price: 4.59,
+    oldPrice: 7.47,
+    rating: 5.0,
+    discount: 30,
+    image: image10,
+  },
 ];
 
 export default function ProductsPage() {
-  const navigate = useNavigate(); // Gunakan useNavigate
+  const navigate = useNavigate();
+  const [favorites, setFavorites] = useState([]);  // Gunakan useNavigate
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [selectedGender, setSelectedGender] = useState("All");
+  const [sortBy, setSortBy] = useState("");
   
   
   // Fungsi reset filter
@@ -137,6 +154,33 @@ export default function ProductsPage() {
     setSelectedCategory("All");
     setSelectedGender("All");
     setSearchQuery("");
+    setSortBy("");
+  };
+
+  const toggleFavorite = (product) => {
+    const isFavorited = favorites.some((fav) => fav.id === product.id);
+    
+    if (isFavorited) {
+      // Hapus dari favorit
+      setFavorites(favorites.filter((fav) => fav.id !== product.id));
+      Swal.fire({
+        icon: "error",
+        title: "Dihapus dari Favorit",
+        text: `${product.name} telah dihapus dari daftar favorit!`,
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    } else {
+      // Tambahkan ke favorit
+      setFavorites([...favorites, product]);
+      Swal.fire({
+        icon: "success",
+        title: "Ditambahkan ke Favorit",
+        text: `${product.name} telah ditambahkan ke daftar favorit!`,
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    }
   };
 
   const filteredProducts = products.filter((product) => {
@@ -157,10 +201,16 @@ export default function ProductsPage() {
     return true;
   });
 
+  const sortedProducts = [...filteredProducts].sort((a, b) => {
+    if (sortBy === "price-low") return a.price - b.price; // Termurah - Termahal
+    if (sortBy === "price-high") return b.price - a.price; // Termahal - Termurah
+    if (sortBy === "rating-high") return b.rating - a.rating; // Rating Tertinggi - Terendah
+    return 0;
+  });
+
   const handleAddToCart = () => {
     navigate("/checkout"); 
   };
-
 
   return (
     <div className="flex min-h-screen">
@@ -265,7 +315,7 @@ export default function ProductsPage() {
           {/* Products Section */}
           <div className="w-3/4">
             <div className="border p-4 rounded shadow-lg mb-4 flex gap-4 items-center bg-white">
-              <div className="flex items-center border rounded px-2 py-1 w-full">
+              <div className="flex items-center  rounded px-2 py-1 w-full">
                 <FaSearch className="text-gray-500" />
                 <input
                   type="text"
@@ -275,16 +325,38 @@ export default function ProductsPage() {
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
               </div>
+               {/* Dropdown Sortir */}
+               <select
+                className="border px-2 py-1 rounded text-sm"
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+              >
+                <option value="">Sort By</option>
+                <option value="price-low">Harga: Termurah - Termahal</option>
+                <option value="price-high">Harga: Termahal - Termurah</option>
+                <option value="rating-high">Rating: Tertinggi - Terendah</option>
+              </select>
             </div>
 
 
             {/* Grid Produk */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-              {filteredProducts.map((product) => (
+              {sortedProducts.map((product) => (
                 <div
                 key={product.id}
-                className="relative border p-4 rounded shadow-lg bg-white cursor-pointer"
-                onClick={() => navigate(`/detail-produk/${product.id}`)}>
+                className="relative border p-4 rounded shadow-lg bg-white cursor-pointer">
+
+                   {/* Tombol Favorite */}
+                   <button 
+                    className="absolute top-2 left-2 bg-white border rounded-full p-2 shadow"
+                    onClick={() => toggleFavorite(product)}
+                  >
+                    {favorites.some((fav) => fav.id === product.id) ? (
+                      <FaHeart className="text-red-500" />
+                    ) : (
+                      <FaRegHeart className="text-gray-500" />
+                    )}
+                  </button>
 
                 {/* Discount Badge */}
                   <span className="absolute top-2 right-2 bg-green-200 text-green-800 px-2 py-1 text-xs rounded">
