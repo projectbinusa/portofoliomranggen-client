@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 import { API_KELAS } from "../utils/BaseUrl";
 import { useNotification } from "../context/NotificationContext"; // ✅ Import notifikasi
+import Sidebar from "../components/Sidebar";
 
 const EditKategori = () => {
   const { id } = useParams();
@@ -72,6 +73,8 @@ const EditKategori = () => {
 
   return (
     <div className="flex-1 p-10 ml-5 mt-20">
+      <Sidebar />
+
       <div className="max-w-lg mx-auto bg-white p-12 rounded-md shadow-md">
         <form onSubmit={handleSubmit}>
           <div className="space-y-6">
