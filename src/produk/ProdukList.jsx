@@ -78,6 +78,9 @@ const ProductList = () => {
           <Link underline="hover" color="inherit" href="/">
             Home
           </Link>
+          <Link underline="hover" color="inherit" href="/produk">
+            Produk
+          </Link>
           <Typography color="text.primary">Product List</Typography>
         </Breadcrumbs>
         <Typography variant="h4" fontWeight="bold" sx={{ textAlign: "left" }}>
