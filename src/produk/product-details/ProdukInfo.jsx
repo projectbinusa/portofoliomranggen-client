@@ -35,23 +35,38 @@ export default function ProductInfo({ produk }) {
   };
 
   return (
-    <Stack spacing={2}>
+    <Stack spacing={1}>
       {/* Nama Produk */}
       <Typography variant="h5" sx={{ fontWeight: 600 }}>
         {produk.name}
       </Typography>
-
+  
       {/* Merek & Kategori */}
       <Typography color="text.secondary">
         {produk.brand} - {produk.category}
       </Typography>
-
+  
       {/* Rating Produk */}
       <Stack direction="row" spacing={1} alignItems="center">
         <Rating name="rating" value={produk.rating} precision={0.1} readOnly />
         <Typography color="text.secondary">({produk.rating?.toFixed(1)})</Typography>
       </Stack>
-
+  
+      {/* Deskripsi Produk */}
+      <Typography
+        variant="body1"
+        sx={{
+          mt: 1,
+          textAlign: "left",
+          fontFamily: "serif",
+          fontSize: "1rem",
+          color: "text.primary"
+        }}
+      >
+        {produk.description ||
+          "Didesain dengan teknologi alien, produk ini bukan hanya sekadar barang biasa."}
+      </Typography>
+  
       {/* Status Stok */}
       <Chip
         size="small"
@@ -63,7 +78,7 @@ export default function ProductInfo({ produk }) {
           bgcolor: produk.isStock ? 'success.lighter' : 'error.lighter'
         }}
       />
-
+  
       {/* Harga Produk */}
       <Stack direction="row" alignItems="center" spacing={1}>
         {produk.discount > 0 ? (
@@ -82,6 +97,8 @@ export default function ProductInfo({ produk }) {
           </Typography>
         )}
       </Stack>
+  
+
 
       {/* Input Jumlah Produk */}
       <Grid container spacing={2}>
