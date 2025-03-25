@@ -74,7 +74,7 @@ export default function ChangePasswordPage() {
                 <TextField type="file" id="change-avatar" sx={{ display: "none" }} onChange={(e) => setSelectedImage(e.target.files?.[0])} />
 
                 <Stack spacing={0.5} alignItems="center">
-                  <Typography variant="h6" fontWeight={600}>Naja Imut Menggemaskan</Typography>
+                  <Typography variant="h6" fontWeight={600}>Orang sukses</Typography>
                   <Typography color="text.secondary">Full Stack Developer</Typography>
                 </Stack>
 

@@ -148,7 +148,7 @@ export default function TabPersonal() {
                 <TextField type="file" id="change-avatar" sx={{ display: "none" }} onChange={(e) => setSelectedImage(e.target.files?.[0])} />
 
                 <Stack spacing={0.5} alignItems="center">
-                  <Typography variant="h6" fontWeight={600}>Naja Imut Menggemaskan</Typography>
+                  <Typography variant="h6" fontWeight={600}>orang sukses</Typography>
                   <Typography color="text.secondary">Full Stack Developer</Typography>
                 </Stack>
 
@@ -208,9 +208,9 @@ export default function TabPersonal() {
               </Typography>
       <Formik
         initialValues={{
-          firstname: 'Naja Imut',
-          lastname: 'Menggemaskan',
-          email: 'najee.lucu@gmail.com',
+          firstname: 'orang',
+          lastname: 'sukses',
+          email: 'you@gmail.com',
           dob: new Date('07-11-2001'),
           countryCode: '+62',
           contact: 9652364852,
@@ -236,7 +236,7 @@ export default function TabPersonal() {
             'Reduxjs & tooltit',
             'SASS'
           ],
-          note: `Semoga kita bisa pulang dengan cepat dan selamat.`,
+          note: `Semangat terusss`,
           submit: null
         }}
         validationSchema={Yup.object().shape({
@@ -276,7 +276,7 @@ export default function TabPersonal() {
                   {touched.firstname && errors.firstname && (
                     <FormHelperText error id="personal-first-name-helper">
                       {errors.firstname}
-                    </FormHelperText>
+                    </FormHelperText>   
                   )}
                 </Grid>
                 <Grid item xs={12} sm={6}>

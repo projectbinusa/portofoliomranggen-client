@@ -55,7 +55,7 @@ export default function TabPayment() {
 
                 {/* User Info */}
                 <Stack spacing={0.5} alignItems="center">
-                  <Typography variant="h6" fontWeight={600}>Naja Imut Menggemaskan</Typography>
+                  <Typography variant="h6" fontWeight={600}>Orang sukses</Typography>
                   <Typography color="text.secondary">Full Stack Developer</Typography>
                 </Stack>
 
