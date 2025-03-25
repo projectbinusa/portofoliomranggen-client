@@ -11,7 +11,6 @@ import image6 from '../images/skintific-removebg-preview.png';
 import image7 from '../images/sunscreen-removebg-preview.png';
 import image8 from '../images/diorrrrr_lip-removebg-preview.png';
 import image9 from '../images/cusion-removebg-preview.png';
-import image10 from '../images/facial_wash-removebg-preview.png';
 
 export const products = [
   { id: 1, name: "Canon EOS 1500D", brand: "Canon", category: "Electronics", gender: "Male", price: 12.99, oldPrice: 15.99, rating: 3.5, discount: 30, image: image1 },
