@@ -159,29 +159,42 @@ export default function ProductsPage() {
 
   const toggleFavorite = (product) => {
     const isFavorited = favorites.some((fav) => fav.id === product.id);
-    
+  
     if (isFavorited) {
-      // Hapus dari favorit
       setFavorites(favorites.filter((fav) => fav.id !== product.id));
       Swal.fire({
+        toast: true,
+        position: "bottom-end",
         icon: "error",
-        title: "Dihapus dari Favorit",
-        text: `${product.name} telah dihapus dari daftar favorit!`,
+        title: "Removed from favourites",
         showConfirmButton: false,
         timer: 1500,
+        timerProgressBar: true,
+        background: "#dc3545", // Warna merah untuk dihapus
+        color: "#fff",
+        customClass: {
+          popup: "swal2-toast-custom",
+        },
       });
     } else {
-      // Tambahkan ke favorit
       setFavorites([...favorites, product]);
       Swal.fire({
+        toast: true,
+        position: "bottom-end",
         icon: "success",
-        title: "Ditambahkan ke Favorit",
-        text: `${product.name} telah ditambahkan ke daftar favorit!`,
+        title: "Added to favourites",
         showConfirmButton: false,
         timer: 1500,
+        timerProgressBar: true,
+        background: "#28a745", // Warna hijau untuk ditambahkan
+        color: "#fff",
+        customClass: {
+          popup: "swal2-toast-custom",
+        },
       });
     }
   };
+  
 
   const filteredProducts = products.filter((product) => {
     // Filter berdasarkan Gender
@@ -213,20 +226,19 @@ export default function ProductsPage() {
   };
 
   return (
-    <div className="flex min-h-screen">
-    {/* Sidebar */}
-    <div className="w-[250px] relative">
+    <div className="flex flex-col md:flex-row min-h-screen">
+    <div className="w-full md:w-[250px] relative">
       <Sidebar />
     </div>
 
       {/* Main Content */}
-      <div className="flex-1">
+       <div className="flex-1">
         <Navbar />
-        <div className="p-6 flex gap-6 mt-6">
+        <div className="p-4 md:p-6 flex flex-col md:flex-row gap-6">
 
-
-          {/* Filter Sidebar */}
-          <div className="w-[220px] border p-4 rounded shadow-lg bg-white space-y-4 h-[500px]">
+          {/* Sidebar Filter */}
+          <div className="w-full md:w-[220px] border p-4 rounded shadow-lg bg-white space-y-4 h-auto md:h-[500px]">
+          
             {/* Filter Title */}
             <h2 className="font-bold text-lg pb-2 border-b">Filter</h2>
 

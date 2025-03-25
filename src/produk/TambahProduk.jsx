@@ -100,13 +100,22 @@ export default function TambahProduk() {
                 <Navbar />
               <div className="p-6 flex gap-6 mt-6"> 
           
-            <MainCard sx={{ width: "100%", maxWidth: "1200px", padding: "24px", margin: "0 auto", marginTop: "0px" }}>
-            <Typography variant="h4" fontWeight="arial" sx={{ textAlign: "left" }}>
-                Product List
+            <MainCard sx={{ width: "100%", maxWidth: "1200px", padding: "24px", margin: "0 auto", marginTop: "0px", }}>
+            <Typography variant="h6" fontWeight="arial" sx={{ textAlign: "left" }}>
+                Tambah Produk
               </Typography>
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
-                  <MainCard>
+                <MainCard 
+                  sx={{ 
+                    width: "100%", 
+                    maxWidth: "1200px", 
+                    padding: "24px", 
+                    margin: "0 auto", 
+                    marginTop: "0px",
+                    boxShadow: "4px 4px 10px rgba(0, 0, 0, 0.1)" // Tambah shadow
+                  }}
+                >
                   <Grid container spacing={2} direction="column">
                       <Grid item>
                         <InputLabel>Product Name</InputLabel>
@@ -129,7 +138,16 @@ export default function TambahProduk() {
                 </Grid>
 
                 <Grid item xs={12} sm={6}>
-                  <MainCard>
+                <MainCard 
+                    sx={{ 
+                      width: "100%", 
+                      maxWidth: "1200px", 
+                      padding: "24px", 
+                      margin: "0 auto", 
+                      marginTop: "0px",
+                      boxShadow: "4px 4px 10px rgba(0, 0, 0, 0.1)" // Tambah shadow
+                    }}
+                  >
                     <Grid container spacing={2} direction="column">
                       <Grid item>
                         <InputLabel>Qty</InputLabel>
