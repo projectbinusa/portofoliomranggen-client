@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FaSearch, FaTimes } from "react-icons/fa";
+import { FaSearch, FaTimes, FaList } from "react-icons/fa";
 import { Star, StarHalf } from "lucide-react";
 import image1 from '../images/camera-removebg-preview.png';
 import image2 from '../images/mackbok-removebg-preview.png';
@@ -23,6 +23,20 @@ export const products = [
   { id: 8, name: "Dior Addict Lip Glow001", brand: "Dior", category: "Beauty", gender: "Female", price: 35.89, oldPrice: 45.5, rating: 5.0, discount: 10, image: image8 },
   { id: 9, name: "Dior Forever Perfect Cushion (1N) 14gr SPF 35 PA+++", brand: "Dior", category: "Beauty", gender: "Female", price: 20.99, oldPrice: 74.45, rating: 5.0, discount: 20, image: image9 },
 ];
+
+const renderStars = (rating) => {
+  const fullStars = Math.floor(rating);
+  const halfStar = rating % 1 !== 0;
+  
+  return (
+    <div className="flex">
+      {[...Array(fullStars)].map((_, index) => (
+        <Star key={index} className="text-yellow-500 fill-yellow-500" />
+      ))}
+      {halfStar && <StarHalf className="text-yellow-500 fill-yellow-500" />}
+    </div>
+  );
+};
 
 export default function ProductsPage() {
   const navigate = useNavigate();
@@ -85,6 +99,13 @@ export default function ProductsPage() {
 
   return (
     <div className="min-h-screen flex flex-col items-center p-6 bg-gray-100">
+  <button
+  onClick={() => navigate("/produk-list")}
+  className="bg-blue-500 text-white p-2 rounded shadow-lg hover:bg-blue-600 transition self-start relative top-[-5px]"
+>
+  <FaList className="text-lg" />
+</button>
+
       {/* Search & Filter Section */}
       <div className="w-full max-w-6xl flex flex-col md:flex-row gap-6">
         {/* Filter Sidebar */}
