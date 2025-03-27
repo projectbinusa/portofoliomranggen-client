@@ -6,6 +6,8 @@ import { NotificationProvider } from "./context/NotificationContext";
 // **Import Komponen Publik**
 import Home from "./components/Home";
 import Login from "./page/Login";
+import ForgotPassword from "./page/forgot-password";
+import CheckMail from "./page/CheckMail";
 import Register from "./page/Register";
 import Sambutan from "./sambutan/Sambutan";
 import AddSambutan from "./sambutan/AddSambutan";
@@ -51,10 +53,12 @@ import TambahKegiatan from "./sekolah/TambahKegiatan";
 import EditKegiatan from "./sekolah/EditKegiatan";
 import DetailSekolah from "./sekolah/DetailSekolah";
 
+import Produk from "./produk/Produk";
 import ProdukList from "./produk/ProdukList";
 import TambahProduk from "./produk/TambahProduk";
 import EditProduk from "./produk/EditProduk";
-import DetailProduk from "./produk/DetailProduk";
+import ProdukDetails from "./produk/product-details/ProdukDetails";
+import Checkout from "./produk/Checkout";
 
 import DaftarBuku from "./buku/DaftarBuku";
 import TambahBuku from "./buku/TambahBuku";
@@ -64,7 +68,6 @@ import DetailBuku from "./buku/DetailBuku";
 import User from "./user/User";
 import EditUser from "./user/EditUser";
 import TambahUser from "./user/TambahUser";
-import PageProfil from "./profil/PageProfil";
 
 import PageKategori from "./kategori/PageKategori";
 import TambahKategoriA from "./kategori/TambahKategoriA";
@@ -82,7 +85,12 @@ import DetailBerita from "./berita/DetailBerita";
 import Navbar from "./tampilan/Navbar";
 import Kontak from "./components/Kontak";
 
-import PaymentPage from "./payment/PaymentPage";
+
+import ChangePasswordPage from "./profil/profile/ChangePasswordPage";
+import SettingsPage from "./profil/profile/SettingsPage";
+import Profil from "./profil/profile/Profil";
+import Payment from "./profil/profile/Payment";
+
 
 import "./App.css";
 
@@ -96,6 +104,8 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/check-mail" element={<CheckMail />} />
             <Route path="/register" element={<Register />} />
             <Route path="/sambutan" element={<Sambutan />} />
             <Route path="/addsambutan" element={<AddSambutan />} />
@@ -148,23 +158,24 @@ function App() {
             <Route path="/detail-sekolah/:id" element={<DetailSekolah />} />
 
             {/* Routes untuk Produk */}
-            <Route path="/produk" element={<ProdukList />} />
+            <Route path="/produk" element={<Produk />} />
+            <Route path="/produk-list" element={<ProdukList />} />
             <Route path="/tambah-produk" element={<TambahProduk />} />
             <Route path="/edit-produk/:id" element={<EditProduk />} />
-            <Route path="/detail-produk/:id" element={<DetailProduk />} />
+            <Route path="/detail-produk/:id" element={<ProdukDetails />} />
+            <Route path="/checkout" element={<Checkout />} />
 
             {/* Routes untuk Buku */}
             <Route path="/buku" element={<DaftarBuku />} />
             <Route path="/tambah-buku" element={<TambahBuku />} />
             <Route path="/edit-buku/:id" element={<EditBuku />} />
-            <Route path="/detail-buku/:id" element={<DetailBuku />} />
+            <Route path="/detail-buku/:id" element={<DetailBuku />} /> 
 
             {/* Routes untuk User */}
             <Route path="/user" element={<User />} />
             <Route path="/tambah-user" element={<TambahUser />} />
             <Route path="/edit-user/:id" element={<EditUser />} />
-            <Route path="/page-profil" element={<PageProfil />} />
-
+            
             {/* Routes untuk Kategori */}
             <Route path="/page-kategori" element={<PageKategori />} />
             <Route path="/tambah-kategori-a" element={<TambahKategoriA />} />
@@ -188,10 +199,18 @@ function App() {
             {/* Halaman 404 */}
             <Route path="*" element={<NotFoundPage />} />
 
+
             {/* Halaman 404 */}
             <Route path="/under-construction" element={< UnderConstruction/>} />
 
             <Route path="/payment" element={<PaymentPage />} />
+
+            <Route path="/payment" element={<Payment />} />
+            <Route path="/password" element={<ChangePasswordPage />} />
+            <Route path="/settings" element={<SettingsPage />} />
+            <Route path="/page-profil" element={<Profil />} />
+
+
           </Routes>
         </Router>
       </NotificationProvider>

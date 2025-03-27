@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { FaUserCircle } from "react-icons/fa";
-import { Bell, X } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Bell, X, List } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
 import { useNotification } from "../context/NotificationContext";
 
 export default function ProfileNavbar() {
   const { notifications, removeNotification } = useNotification();
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <nav className="fixed top-0 left-[260px] w-[calc(100%-260px)] p-3 flex justify-between items-center bg-white text-black shadow-md z-50">
@@ -82,6 +83,13 @@ export default function ProfileNavbar() {
             </div>
           )}
         </div>
+
+        <button
+          onClick={() => navigate("/produk-list")}
+          className="flex items-center gap-2 bg-gray-500 text-white px-4 py-2 rounded shadow-md hover:bg-gray-600 transition"
+        >
+          <List className="w-5 h-5" /> 
+        </button>
       </div>
     </nav>
   );

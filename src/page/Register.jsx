@@ -1,86 +1,164 @@
+import { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
-import React, { useState } from "react";
 import Swal from "sweetalert2";
-import { useNavigate } from "react-router-dom";
 import { API_REGISTER } from "../utils/BaseUrl";
-import "font-awesome/css/font-awesome.min.css";
+import { useNotification } from "../context/NotificationContext";
+import Grid from "@mui/material/Grid";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import IconButton from "@mui/material/IconButton";
+import InputAdornment from "@mui/material/InputAdornment";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import AuthWrapper from "../components/AuthWrapper";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import { useForm } from "react-hook-form"; 
+import FacebookIcon from "@mui/icons-material/Facebook";
+import TwitterIcon from "@mui/icons-material/Twitter";
+import { FcGoogle } from "react-icons/fc"; // Ikon Google dengan warna asli
 
 const Register = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-  });
-  const [passwordVisible, setPasswordVisible] = useState(false);
+  const { register, handleSubmit, formState: { errors } } = useForm();
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+  const { addNotification } = useNotification();
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  const handlePasswordVisibility = () => {
-    setPasswordVisible(!passwordVisible);
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const onSubmit = async (data) => {
     try {
       const response = await axios.post(`${API_REGISTER}/register`, {
-        email: formData.email,
-        password: formData.password,
-        username: formData.name,
+        email: data.email,
+        password: data.password,
+        username: `${data.firstName} ${data.lastName}`,
         role: "ADMIN",
       });
 
       if (response.status === 201) {
-        Swal.fire({
-          title: "Pendaftaran Berhasil!",
-          text: "Akun Anda telah berhasil didaftarkan.",
-          icon: "success",
-          confirmButtonText: "OK",
-        });
-        setFormData({ name: "", email: "", password: "" });
+        Swal.fire("Success!", "Pendaftaran berhasil.", "success");
+        addNotification("Pendaftaran berhasil!", "success");
         navigate("/login");
       }
     } catch (error) {
-      Swal.fire({
-        title: "Pendaftaran Gagal",
-        text: error.response?.data?.message || "Terjadi kesalahan, silakan coba lagi.",
-        icon: "error",
-        confirmButtonText: "OK",
-      });
+      Swal.fire("Error", error.response?.data?.message || "Terjadi kesalahan.", "error");
+      addNotification("Pendaftaran gagal. Silakan coba lagi.", "error");
     }
   };
 
   return (
-    <div className="h-screen w-screen overflow-hidden fixed inset-0 flex items-center justify-center">
-      <div className="bg-white shadow-lg rounded-lg p-8 max-w-md w-full border-2 border-gray-600">
-        <h2 className="text-3xl font-semibold text-center text-gray-800 mb-6">REGISTER</h2>
-        <form className="space-y-6" onSubmit={handleSubmit}>
-          <div className="flex flex-col items-start relative">
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap</label>
-            <input type="text" id="name" name="name" placeholder="Masukkan nama lengkap Anda" className="w-full px-4 py-2 border-2 border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 pl-10" value={formData.name} onChange={handleChange} required />
-            <i className="fa fa-user absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 mt-3"></i>
-          </div>
-          <div className="flex flex-col items-start relative">
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-            <input type="email" id="email" name="email" placeholder="Masukkan email Anda" className="w-full px-4 py-2 border-2 border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 pl-10" value={formData.email} onChange={handleChange} required />
-            <i className="fa fa-envelope absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 mt-3"></i>
-          </div>
-          <div className="flex flex-col items-start relative">
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">Password</label>
-            <input type={passwordVisible ? "text" : "password"} id="password" name="password" placeholder="Masukkan password Anda" className="w-full px-4 py-2 border-2 border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 pl-10" value={formData.password} onChange={handleChange} required />
-            <i className="fa fa-lock absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 mt-3"></i>
-            <i onClick={handlePasswordVisibility} className={`fa ${passwordVisible ? "fa-eye" : "fa-eye-slash"} absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 cursor-pointer mt-3`}></i>
-          </div>
-          <button type="submit" className="w-full bg-teal-500 text-white py-3 rounded-lg font-semibold hover:bg-teal-400 transition duration-300">REGISTER</button>
-        </form>
-        <div className="mt-4 text-center">
-          <p className="text-sm text-gray-700">Sudah punya akun? {" "}<a href="/login" className="text-teal-500 hover:underline">Login di sini</a></p>
-        </div>
-      </div>
-    </div>
+    <AuthWrapper>
+      <Grid container spacing={3} justifyContent="center">
+        <Grid item xs={12} md={6} lg={500}>
+          <Card sx={{ padding: 4, borderRadius: 3, boxShadow: 3 }}>
+            <CardContent>
+              {/* Logo */}
+              <Typography variant="h4" textAlign="center" fontWeight="bold" color="#2D4EF5" gutterBottom>
+                Able <Typography component="span" color="#6B7280" variant="caption" sx={{ fontSize: "0.6rem" }}>pro</Typography>
+              </Typography>
+
+              {/* Button Login Social */}
+              <Stack spacing={1.5} sx={{ mb: 3 }}>
+                {[ 
+                  { label: "Sign In With Facebook", icon: <FacebookIcon sx={{ color: "#1877F2" }} /> },
+                  { label: "Sign In With Twitter", icon: <TwitterIcon sx={{ color: "#1DA1F2" }} /> },
+                  { label: "Sign In With Google", icon: <FcGoogle size={24} /> } // Menggunakan FcGoogle dari react-icons
+                ].map((btn, index) => (
+                  <Button key={index} variant="outlined" fullWidth startIcon={btn.icon} sx={{ borderRadius: 2, textTransform: "none" }}>
+                    {btn.label}
+                  </Button>
+                ))}
+              </Stack>
+
+              {/* Header */}
+              <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 3 }}>
+                <Typography variant="h4" fontWeight="bold">Sign up</Typography>
+                <Typography variant="body2" component={Link} to="/login" sx={{ color: "primary.main", textDecoration: "none", fontWeight: "bold" }}>
+                  Already have an account?
+                </Typography>
+              </Stack>
+
+              <form onSubmit={handleSubmit(onSubmit)}>
+                {/* Name Section */}
+                <Grid container spacing={2}>
+                  <Grid item xs={6}>
+                    <TextField
+                      fullWidth
+                      label="First Name"
+                      type="text"
+                      variant="outlined"
+                      {...register('firstName', { required: "First Name is required" })}
+                      error={!!errors.firstName}
+                      helperText={errors.firstName?.message}
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <TextField
+                      fullWidth
+                      label="Last Name"
+                      type="text"
+                      variant="outlined"
+                      {...register('lastName', { required: "Last Name is required" })}
+                      error={!!errors.lastName}
+                      helperText={errors.lastName?.message}
+                    />
+                  </Grid>
+                </Grid>
+
+                {/* Company */}
+                <TextField
+                  fullWidth
+                  label="Company"
+                  type="text"
+                  variant="outlined"
+                  margin="normal"
+                  {...register('company')}
+                />
+
+                {/* Email */}
+                <TextField
+                  fullWidth
+                  label="Email Address"
+                  type="email"
+                  variant="outlined"
+                  margin="normal"
+                  {...register('email', { required: "Email is required" })}
+                  error={!!errors.email}
+                  helperText={errors.email?.message}
+                />
+
+                {/* Password */}
+                <TextField
+                  fullWidth
+                  label="Password"
+                  type={showPassword ? "text" : "password"}
+                  variant="outlined"
+                  margin="normal"
+                  {...register('password', { required: "Password is required" })}
+                  error={!!errors.password}
+                  helperText={errors.password?.message}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
+                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+
+                {/* Submit Button */}
+                <Button type="submit" fullWidth variant="contained" color="primary" sx={{ mt: 3, padding: 1.5 }}>
+                  Create Account
+                </Button>
+              </form>
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
+    </AuthWrapper>
   );
 };
 
