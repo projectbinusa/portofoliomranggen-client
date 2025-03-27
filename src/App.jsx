@@ -1,9 +1,9 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { DarkModeProvider } from "./contextt/DarkModeContext"; // ✅ Perbaikan path
+import { DarkModeProvider } from "./contextt/DarkModeContext";
 import { NotificationProvider } from "./context/NotificationContext";
 
-// **Import Komponen Publik**
+// ** Import Komponen Publik **
 import Home from "./components/Home";
 import Login from "./page/Login";
 import ForgotPassword from "./page/forgot-password";
@@ -11,15 +11,15 @@ import CheckMail from "./page/CheckMail";
 import Register from "./page/Register";
 import Sambutan from "./sambutan/Sambutan";
 import AddSambutan from "./sambutan/AddSambutan";
-import VisiMisi from "./visimisi/VisiMisi"; // ✅ Pastikan konsisten dengan nama file
-import AddVisiMisi from "./visimisi/AddVisiMisi"; // ✅ Pastikan konsisten dengan nama file
+import VisiMisi from "./visimisi/VisiMisi";
+import AddVisiMisi from "./visimisi/AddVisiMisi";
 import NotFoundPage from "./page/NotFoundPage";
 import UnderConstruction from "./page/under-construction";
 
-// **Import Komponen Dashboard**
+// ** Import Komponen Dashboard **
 import Dashboard from "./tampilan/Dashboard";
 
-// **Import Komponen Lainnya**
+// ** Import Komponen Lainnya **
 import PageSiswa from "./siswa/PageSiswa";
 import TambahSiswa from "./siswa/TambahSiswa";
 import EditSiswa from "./siswa/EditSiswa";
@@ -85,20 +85,16 @@ import DetailBerita from "./berita/DetailBerita";
 import Navbar from "./tampilan/Navbar";
 import Kontak from "./components/Kontak";
 
-
 import ChangePasswordPage from "./profil/profile/ChangePasswordPage";
 import SettingsPage from "./profil/profile/SettingsPage";
 import Profil from "./profil/profile/Profil";
-import Payment from "./profil/profile/Payment";
-
+import Payment from "./profil/profile/Payment"; // ✅ Menggunakan Payment yang benar
 
 import "./App.css";
 
 function App() {
   return (
     <DarkModeProvider>
-      {" "}
-      {/* ✅ Pindahkan agar mencakup semua halaman */}
       <NotificationProvider>
         <Router>
           <Routes>
@@ -146,18 +142,7 @@ function App() {
             <Route path="/edit-staff/:id" element={<EditStaff />} />
             <Route path="/detail-staff/:id" element={<DetailStaff />} />
 
-            {/* Routes untuk Pesanan */}
-            <Route path="/pesanan" element={<PagePesanan />} />
-            <Route path="/tambah-pesanan" element={<TambahPesanan />} />
-            <Route path="/edit-pesanan/:id" element={<EditPesanan />} />
-
-            {/* Routes untuk Sekolah */}
-            <Route path="/kegiatan-sekolah" element={<KegiatanSekolah />} />
-            <Route path="/tambah-kegiatan" element={<TambahKegiatan />} />
-            <Route path="/edit-kegiatan/:id" element={<EditKegiatan />} />
-            <Route path="/detail-sekolah/:id" element={<DetailSekolah />} />
-
-            {/* Routes untuk Produk */}
+            {/* Routes lainnya */}
             <Route path="/produk" element={<Produk />} />
             <Route path="/produk-list" element={<ProdukList />} />
             <Route path="/tambah-produk" element={<TambahProduk />} />
@@ -165,52 +150,16 @@ function App() {
             <Route path="/detail-produk/:id" element={<ProdukDetails />} />
             <Route path="/checkout" element={<Checkout />} />
 
-            {/* Routes untuk Buku */}
-            <Route path="/buku" element={<DaftarBuku />} />
-            <Route path="/tambah-buku" element={<TambahBuku />} />
-            <Route path="/edit-buku/:id" element={<EditBuku />} />
-            <Route path="/detail-buku/:id" element={<DetailBuku />} /> 
-
-            {/* Routes untuk User */}
-            <Route path="/user" element={<User />} />
-            <Route path="/tambah-user" element={<TambahUser />} />
-            <Route path="/edit-user/:id" element={<EditUser />} />
-            
-            {/* Routes untuk Kategori */}
-            <Route path="/page-kategori" element={<PageKategori />} />
-            <Route path="/tambah-kategori-a" element={<TambahKategoriA />} />
-            <Route path="/edit-kategori-a/:id" element={<EditKategoriA />} />
-
-            {/* Routes untuk Donasi */}
-            <Route path="/donasi" element={<PageDonasi />} />
-            <Route path="/tambah-donasi" element={<TambahDonasi />} />
-            <Route path="/edit-donasi/:id" element={<EditDonasi />} />
-
-            {/* Routes untuk Berita */}
-            <Route path="/berita" element={<Berita />} />
-            <Route path="/tambah-berita" element={<TambahBerita />} />
-            <Route path="/edit-berita/:id" element={<EditBerita />} />
-            <Route path="/detail-berita/:id" element={<DetailBerita />} />
-
-            {/* Route Navbar */}
-            <Route path="/navbar" element={<Navbar />} />
-
-           
-            {/* Halaman 404 */}
-            <Route path="*" element={<NotFoundPage />} />
-
-
-            {/* Halaman 404 */}
-            <Route path="/under-construction" element={< UnderConstruction/>} />
-
-            <Route path="/payment" element={<PaymentPage />} />
-
+            {/* Routes untuk Profil */}
             <Route path="/payment" element={<Payment />} />
             <Route path="/password" element={<ChangePasswordPage />} />
             <Route path="/settings" element={<SettingsPage />} />
             <Route path="/page-profil" element={<Profil />} />
 
-
+            {/* Halaman Tambahan */}
+            <Route path="/navbar" element={<Navbar />} />
+            <Route path="/under-construction" element={<UnderConstruction />} />
+            <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </Router>
       </NotificationProvider>

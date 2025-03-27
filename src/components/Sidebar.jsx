@@ -91,11 +91,12 @@ export default function Sidebar() {
               { text: "Guru", to: "/guru" },
               { text: "Siswa", to: "/siswa" },
               { text: "Staf", to: "/staff" },
-              { text: "Organisasi", to: "/organisasi" },
               { text: "Kategori Kelas", to: "/kategori-kelas" },
+              { text: "Organisasi", to: "/organisasi" },
               { text: "Kegiatan Sekolah", to: "/kegiatan-sekolah" },
             ]}
           />
+
           <DropdownItem
             isOpen={isOpen}
             icon={<HiClipboardList />}
@@ -105,6 +106,7 @@ export default function Sidebar() {
             toggleDropdown={toggleDropdown}
             items={[
               { text: "Produk", to: "/produk" },
+              { text: "Produk List", to: "/produk-list" },
               { text: "Buku", to: "/buku" },
               { text: "User", to: "/user" },
               { text: "Kategori", to: "/page-kategori" },
@@ -113,6 +115,7 @@ export default function Sidebar() {
               { text: "Berita", to: "/berita" },
             ]}
           />
+
           <li>
             <button
               onClick={handleLogout}
