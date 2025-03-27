@@ -187,13 +187,14 @@ export default function ProdukDetail() {
           <Grid container spacing={2}>
             
             {/* Produk Images & Info - Berada dalam satu kolom saat di HP */}
-            <Grid item xs={12} sm={10} md={5} lg={4}>
-              <ProdukImages produk={produkItem} />
+            <Grid item xs={12} sm={10} md={5} lg={4} mt={2}>
+                <ProdukImages produk={produkItem} />
             </Grid>
 
-            <Grid item xs={12} md={6} lg={6}>
-              <ProdukInfo produk={produkItem} />
+            <Grid item xs={12} md={6} lg={6} mt={2}>
+                 <ProdukInfo produk={produkItem} />
             </Grid>
+
 
             {/* Tab Panel untuk Features, Specifications, Review */}
             <Grid item xs={12} md={7} xl={8}>

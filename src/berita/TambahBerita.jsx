@@ -11,7 +11,7 @@ const TambahBerita = () => {
     nama: "",
     penulis: "",
     deskripsi: "",
-    fotoUrl: "", // Tetap ada di state untuk menyimpan hasil upload
+    fotoUrl: "",
     tanggalTerbit: "",
     idAdmin: "",
   });
@@ -27,6 +27,7 @@ const TambahBerita = () => {
   const handleUploadSuccess = (imageUrl) => {
     setBerita({ ...berita, fotoUrl: imageUrl });
     setIsUploading(false);
+   
   };
 
   const handleSubmit = async (e) => {
@@ -70,11 +71,11 @@ const TambahBerita = () => {
           <h2 className="text-xl font-bold mb-4 text-left">Tambah Berita</h2>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {[
-                { label: "Nama", name: "nama", type: "text" },
+              {[{ label: "Nama", name: "nama", type: "text" },
                 { label: "Penulis", name: "penulis", type: "text" },
                 { label: "Deskripsi", name: "deskripsi", type: "text" },
                 { label: "Tanggal Terbit", name: "tanggalTerbit", type: "date" },
+                { label: "Foto Berita (URL)", name: "fotoUrl", type: "text" },
                 { label: "ID Admin", name: "idAdmin", type: "number" },
               ].map((field) => (
                 <div key={field.name} className="flex flex-col">
@@ -101,6 +102,7 @@ const TambahBerita = () => {
                 type="button"
                 onClick={() => {
                   navigate("/berita");
+                 
                 }}
                 className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition"
               >
