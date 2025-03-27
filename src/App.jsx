@@ -12,6 +12,7 @@ import AddSambutan from "./sambutan/AddSambutan";
 import VisiMisi from "./visimisi/VisiMisi"; // ✅ Pastikan konsisten dengan nama file
 import AddVisiMisi from "./visimisi/AddVisiMisi"; // ✅ Pastikan konsisten dengan nama file
 import NotFoundPage from "./page/NotFoundPage";
+import UnderConstruction from "./page/under-construction";
 
 // **Import Komponen Dashboard**
 import Dashboard from "./tampilan/Dashboard";
@@ -186,6 +187,9 @@ function App() {
            
             {/* Halaman 404 */}
             <Route path="*" element={<NotFoundPage />} />
+
+            {/* Halaman 404 */}
+            <Route path="/under-construction" element={< UnderConstruction/>} />
 
             <Route path="/payment" element={<PaymentPage />} />
           </Routes>
