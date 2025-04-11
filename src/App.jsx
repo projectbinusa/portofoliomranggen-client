@@ -156,6 +156,41 @@ function App() {
             <Route path="/settings" element={<SettingsPage />} />
             <Route path="/page-profil" element={<Profil />} />
 
+            <Route path="/berita" element={<Berita />} />
+            <Route path="/tambah-berita" element={<TambahBerita />} />
+            <Route path="/edit-berita/:id" element={<EditBerita />} />
+            <Route path="/detail-berita/:id" element={<DetailBerita />} />
+
+            <Route path="/donasi" element={<PageDonasi />} />
+            <Route path="/tambah-donasi" element={<TambahDonasi />} />
+            <Route path="/edit-donasi/:id" element={<EditDonasi />} />
+
+            <Route path="/user" element={<User />} />
+            <Route path="/tambah-user" element={<TambahUser />} />
+            <Route path="/edit-user/:id" element={<EditUser />} />
+
+            <Route path="/page-kategori" element={<PageKategori />} />
+            <Route path="/tambah-kategori-a" element={<TambahKategoriA />} />
+            <Route path="/edit-kategori-a/:id" element={<EditKategoriA />} />
+
+            {/* Buku */}
+            <Route path="/buku" element={<DaftarBuku />} />
+            <Route path="/tambah-buku" element={<TambahBuku />} />
+            <Route path="/edit-buku/:id" element={<EditBuku />} />
+            <Route path="/detail-buku/:id" element={<DetailBuku />} />
+
+             {/* Pesanan */}
+             <Route path="/pesanan" element={<PagePesanan />} />
+            <Route path="/tambah-pesanan" element={<TambahPesanan />} />
+            <Route path="/edit-pesanan/:id" element={<EditPesanan />} />
+
+             {/* Kegiatan Sekolah */}
+             <Route path="/kegiatan" element={<KegiatanSekolah />} />
+            <Route path="/tambah-kegiatan" element={<TambahKegiatan />} />
+            <Route path="/edit-kegiatan/:id" element={<EditKegiatan />} />
+            <Route path="/detail-kegiatan/:id" element={<DetailSekolah />} />
+
+
             {/* Halaman Tambahan */}
             <Route path="/navbar" element={<Navbar />} />
             <Route path="/under-construction" element={<UnderConstruction />} />
