@@ -6,7 +6,7 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import Alert from "@mui/material/Alert";
 
-// Konstanta untuk rute default
+// Konstan ta untuk rute default
 const APP_DEFAULT_PATH = "/";
 
 // ==============================|| NOT FOUND PAGE ||============================== //
