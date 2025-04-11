@@ -102,6 +102,7 @@ const DaftarBuku = () => {
             <thead className="text-xs uppercase bg-gray-200 text-gray-700">
               <tr>
                 <th className="px-6 py-3 text-center">No</th>
+                <th className="px-6 py-3 text-center">Foto</th>
                 <th className="px-6 py-3 text-center">Judul Buku</th>
                 <th className="px-6 py-3 text-center">Pengarang</th>
                 <th className="px-6 py-3 text-center">Tahun</th>
@@ -113,6 +114,17 @@ const DaftarBuku = () => {
               {bukuList.map((buku, index) => (
                 <tr key={buku.id} className="hover:bg-gray-100">
                   <td className="px-6 py-4 text-center">{index + 1}</td>
+                  <td className="px-6 py-4 text-center">
+                    {buku.fotoUrl ? (
+                      <img
+                        src={buku.fotoUrl}
+                        alt={buku.judulBuku}
+                        className="w-32 object-cover mx-auto rounded-md"
+                      />
+                    ) : (
+                      <span className="text-gray-400 italic">Tidak ada foto</span>
+                    )}
+                  </td>
                   <td className="px-6 py-4">{buku.judulBuku}</td>
                   <td className="px-6 py-4">{buku.pengarang}</td>
                   <td className="px-6 py-4">{buku.tahunTerbit}</td>
