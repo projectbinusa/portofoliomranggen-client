@@ -11,6 +11,7 @@ import { jsPDF } from "jspdf";
 
 const API_BERITA = "http://localhost:4321/api/berita";
 
+
 const PageBerita = () => {
   const navigate = useNavigate();
   const { sendNotification } = useNotification();
@@ -113,16 +114,12 @@ const PageBerita = () => {
             <table className="w-full text-sm text-left text-gray-700 border border-gray-400">
               <thead className="text-xs font-bold uppercase bg-gray-200 border-b border-gray-500">
                 <tr>
-                  {["No", "Judul", "Penulis", "Tanggal Terbit", "Aksi"].map(
-                    (header) => (
-                      <th
-                        key={header}
-                        className="px-6 py-3 border-r border-gray-400 text-center"
-                      >
-                        {header}
-                      </th>
-                    )
-                  )}
+                  <th className="px-6 py-3 border-r text-center">No</th>
+                  <th className="px-6 py-3 border-r text-center">Foto</th>
+                  <th className="px-6 py-3 border-r text-center">Judul</th>
+                  <th className="px-6 py-3 border-r text-center">Penulis</th>
+                  <th className="px-6 py-3 border-r text-center">Tanggal Terbit</th>
+                  <th className="px-6 py-3 text-center">Aksi</th>
                 </tr>
               </thead>
               <tbody>
@@ -136,14 +133,19 @@ const PageBerita = () => {
                         {index + 1}
                       </td>
                       <td className="px-6 py-4 border-r text-center">
-                        {item.nama}
+                        {item.fotoUrl ? (
+                          <img
+                            src={item.fotoUrl}
+                            alt={item.nama}
+                            className="w-32 h-20 object-cover mx-auto rounded-md"
+                          />
+                        ) : (
+                          <span className="text-gray-400 italic">Tidak ada foto</span>
+                        )}
                       </td>
-                      <td className="px-6 py-4 border-r text-center">
-                        {item.penulis}
-                      </td>
-                      <td className="px-6 py-4 border-r text-center">
-                        {item.tanggalTerbit}
-                      </td>
+                      <td className="px-6 py-4 border-r text-center">{item.nama}</td>
+                      <td className="px-6 py-4 border-r text-center">{item.penulis}</td>
+                      <td className="px-6 py-4 border-r text-center">{item.tanggalTerbit}</td>
                       <td className="px-6 py-4 flex gap-2 justify-center">
                         <button
                           onClick={() => generatePDF(item)}
@@ -174,7 +176,7 @@ const PageBerita = () => {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="5" className="text-center py-4 text-gray-500">
+                    <td colSpan="6" className="text-center py-4 text-gray-500">
                       Tidak ada berita yang tersedia.
                     </td>
                   </tr>
