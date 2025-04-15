@@ -10,6 +10,16 @@ import Sidebar from "../components/Sidebar";
 import Navbar from "../tampilan/Navbar";
 import { useNotification } from "../context/NotificationContext";
 
+const toTitleCase = (str) => {
+  if (!str) return "";
+  return str
+    .toLowerCase()
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+};
+
+
 const DaftarBuku = () => {
   const [bukuList, setBukuList] = useState([]);
   const { sendNotification } = useNotification();
@@ -125,8 +135,8 @@ const DaftarBuku = () => {
                       <span className="text-gray-400 italic">Tidak ada foto</span>
                     )}
                   </td>
-                  <td className="px-6 py-4">{buku.judulBuku}</td>
-                  <td className="px-6 py-4">{buku.pengarang}</td>
+                  <td className="px-6 py-4">{toTitleCase(buku.judulBuku)}</td>
+                  <td className="px-6 py-4">{toTitleCase(buku.pengarang)}</td>
                   <td className="px-6 py-4">{buku.tahunTerbit}</td>
                   <td className="px-6 py-4">{buku.jumlahHalaman}</td>
                   <td className="px-6 py-4 flex justify-center gap-3">

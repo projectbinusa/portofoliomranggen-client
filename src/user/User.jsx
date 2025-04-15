@@ -127,28 +127,23 @@ const User = () => {
             <table className="min-w-full bg-white">
               <thead className="bg-gray-100 text-gray-600 text-sm uppercase">
                 <tr>
-                  <th className="py-3 px-4 text-left">No</th>
-                  <th className="py-3 px-4 text-left">Username</th>
-                  <th className="py-3 px-4 text-left">Email</th>
-                  <th className="py-3 px-4 text-left">Actions</th>
+                  <th className="py-3 px-4 text-center">No</th>
+                  <th className="py-3 px-4 text-center">Username</th>
+                  <th className="py-3 px-4 text-center">Email</th>
+                  <th className="py-3 px-4 text-center">Password</th>
+                  <th className="py-3 px-4 text-center">Actions</th>
                 </tr>
               </thead>
               <tbody className="text-gray-700 text-sm">
                 {users.map((customer) => (
                   <tr key={customer.id}>
                     <td className="py-3 px-4">{customer.id}</td>
-                    <td className="py-3 px-4 flex items-center">
-                      {/* <img
-                        alt={`Profile picture of ${customer.username}`}
-                        className="rounded-full mr-3"
-                        src="https://placehold.co/40x40"
-                      /> */}
-                      <div>
-                        <p className="font-medium">{customer.username}</p>
-                      </div>
-                    </td>
-                    <td className="py-3 px-4 text-left">
+                        <td className="py-3 px-4 text-center">{customer.username}</td>
+                    <td className="py-3 px-4 text-center">
                      {customer.email}
+                    </td>
+                    <td className="py-3 px-4 text-center">
+                     {customer.password}
                     </td>
                     <td className="py-3 px-4 flex space-x-2">
                     <Link to={`/edit-user/${customer.id}`}>

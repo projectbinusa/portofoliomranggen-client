@@ -14,6 +14,7 @@ import image7 from '../images/sunscreen-removebg-preview.png';
 import image8 from '../images/diorrrrr_lip-removebg-preview.png';
 import image9 from '../images/cusion-removebg-preview.png';
 import image10 from '../images/facial_wash-removebg-preview.png';
+import image11 from '../images/eyeshadow-removebg-preview.png';
 
 export const products = [
   {
@@ -135,6 +136,18 @@ export const products = [
     rating: 5.0,
     discount: 30,
     image: image10,
+  },
+  {
+    id: 11,
+    name: "Eyeshadow Dior",
+    brand: "Dior",
+    category: "Beauty",
+    gender: "Female",
+    price: 5.75,
+    oldPrice: 15.25,
+    rating: 4.5,
+    discount: 40,
+    image: image11,
   },
 ];
 
@@ -294,7 +307,6 @@ export default function ProductsPage() {
                 "Electronics",
                 "Fashion",
                 "Beauty",
-                "Book",
               ].map((category) => (
                 <label
                   key={category}
