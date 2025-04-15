@@ -6,6 +6,15 @@ import { faArrowLeft, faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
 import Sidebar from "../components/Sidebar";
 import { useNotification } from "../context/NotificationContext"; // 🔔 Import Notifikasi
 
+const toTitleCase = (str) => {
+  if (!str) return "";
+  return str
+    .toLowerCase()
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+};
+
 const EditKategoriA = () => {
   const { id } = useParams();
   const [namaKategori, setNamaKategori] = useState("");
@@ -56,7 +65,7 @@ const EditKategoriA = () => {
           <input
             type="text"
             value={namaKategori}
-            onChange={(e) => setNamaKategori(e.target.value)}
+            onChange={(e) => setNamaKategori(toTitleCase(e.target.value))}
             className="w-full p-2 border-2 border-gray-700 rounded-lg mb-4 focus:ring-2 focus:ring-blue-400"
             placeholder="Masukkan kategori"
             required

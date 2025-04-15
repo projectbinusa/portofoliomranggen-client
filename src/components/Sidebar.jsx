@@ -93,7 +93,7 @@ export default function Sidebar() {
               { text: "Staf", to: "/staff" },
               { text: "Kategori Kelas", to: "/kategori-kelas" },
               { text: "Organisasi", to: "/organisasi" },
-              { text: "Kegiatan Sekolah", to: "/kegiatan-sekolah" },
+              { text: "Kegiatan Sekolah", to: "/kegiatan" },
             ]}
           />
 
