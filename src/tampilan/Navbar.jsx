@@ -83,13 +83,6 @@ export default function ProfileNavbar() {
             </div>
           )}
         </div>
-
-        <button
-          onClick={() => navigate("/produk-list")}
-          className="flex items-center gap-2 bg-gray-500 text-white px-4 py-2 rounded shadow-md hover:bg-gray-600 transition"
-        >
-          <List className="w-5 h-5" /> 
-        </button>
       </div>
     </nav>
   );
