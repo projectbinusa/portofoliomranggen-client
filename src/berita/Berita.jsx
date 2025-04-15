@@ -11,6 +11,14 @@ import { jsPDF } from "jspdf";
 
 const API_BERITA = "http://localhost:4321/api/berita";
 
+const toTitleCase = (str) => {
+  if (!str) return "";
+  return str
+    .toLowerCase()
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+};
 
 const PageBerita = () => {
   const navigate = useNavigate();
@@ -143,8 +151,8 @@ const PageBerita = () => {
                           <span className="text-gray-400 italic">Tidak ada foto</span>
                         )}
                       </td>
-                      <td className="px-6 py-4 border-r text-center">{item.nama}</td>
-                      <td className="px-6 py-4 border-r text-center">{item.penulis}</td>
+                      <td className="px-6 py-4 border-r text-center">{toTitleCase(item.nama)}</td>
+                      <td className="px-6 py-4 border-r text-center">{toTitleCase(item.penulis)}</td>
                       <td className="px-6 py-4 border-r text-center">{item.tanggalTerbit}</td>
                       <td className="px-6 py-4 flex gap-2 justify-center">
                         <button

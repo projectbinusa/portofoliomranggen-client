@@ -22,10 +22,24 @@ const DaftarKategori = () => {
 
   const fetchKategori = () => {
     fetch(`${API_KATEGORI}/all`)
-      .then((response) => response.json())
-      .then((data) => setKategoriData(data))
-      .catch((error) => console.error("Error fetching data:", error));
+      .then(async (response) => {
+        if (response.status === 204) {
+          setKategoriData([]); // kosongin data
+          return;
+        }
+  
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+  
+        const data = await response.json();
+        setKategoriData(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
   };
+  
 
   const handleDelete = (id) => {
     Swal.fire({

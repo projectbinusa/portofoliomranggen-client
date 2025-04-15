@@ -5,6 +5,15 @@ import { API_KELAS } from "../utils/BaseUrl";
 import { useNotification } from "../context/NotificationContext"; // ✅ Import notifikasi
 import Sidebar from "../components/Sidebar";
 
+const toTitleCase = (str) => {
+  if (!str) return "";
+  return str
+    .toLowerCase()
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+};
+
 const EditKategori = () => {
   const { id } = useParams();
   const [namaKelas, setNamaKelas] = useState("");
@@ -104,7 +113,7 @@ const EditKategori = () => {
                 id="namaKelas"
                 name="namaKelas"
                 value={namaKelas}
-                onChange={(e) => setNamaKelas(e.target.value)}
+                onChange={(e) => setNamaKelas(toTitleCase(e.target.value))}
                 className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md
                  shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
                 placeholder="Masukkan nama kelas"
