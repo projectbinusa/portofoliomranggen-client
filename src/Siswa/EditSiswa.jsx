@@ -131,47 +131,48 @@ const EditSiswa = () => {
 
   return (
     <div className="flex h-screen overflow-hidden">
-      <Sidebar />
-      <div className="flex-1 flex items-center justify-center p-4">
-        <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-lg border border-gray-300">
-          <h2 className="text-xl font-bold mb-4 text-left">Edit Siswa</h2>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            {Object.keys(student).map((key) => (
-              <div key={key} className="flex flex-col">
-                <label className="text-gray-700 text-sm font-medium text-left capitalize">
-                  {key.replace(/([A-Z])/g, " $1").trim()}
-                </label>
-                <input
-                  type={key === "tanggalLahir" ? "date" : "text"}
-                  name={key}
-                  value={student[key] || ""}
-                  onChange={handleChange}
-                  placeholder={`Masukkan ${key.replace(/([A-Z])/g, " $1").trim()}`}
-                  className="p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-            ))}
-            <div className="flex justify-between space-x-4 mt-6">
-              <button
-                type="button"
-                onClick={() => navigate("/siswa")}
-                className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition"
-                disabled={loading}
-              >
-                Batal
-              </button>
-              <button
-                type="submit"
-                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
-                disabled={loading}
-              >
-                {loading ? "Menyimpan..." : "Simpan"}
-              </button>
+    <Sidebar />
+    <div className="flex-1 flex items-center justify-center p-4">
+      <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-md border border-gray-300">
+        <h2 className="text-xl font-bold mb-4 text-left">Edit Siswa</h2>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {Object.keys(student).map((key) => (
+            <div key={key} className="flex flex-col">
+              <label className="text-gray-700 text-sm font-medium text-left capitalize">
+                {key.replace(/([A-Z])/g, " $1").trim()}
+              </label>
+              <input
+                type={key === "tanggalLahir" ? "date" : "text"}
+                name={key}
+                value={student[key] || ""}
+                onChange={handleChange}
+                placeholder={`Masukkan ${key.replace(/([A-Z])/g, " $1").trim()}`}
+                className="p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
             </div>
-          </form>
-        </div>
+          ))}
+          <div className="flex justify-between space-x-4 mt-6">
+            <button
+              type="button"
+              onClick={() => navigate("/siswa")}
+              className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition"
+              disabled={loading}
+            >
+              Batal
+            </button>
+            <button
+              type="submit"
+              className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
+              disabled={loading}
+            >
+              {loading ? "Menyimpan..." : "Simpan"}
+            </button>
+          </div>
+        </form>
       </div>
     </div>
+  </div>
+  
   );
 };
 
