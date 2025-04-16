@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft, faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
 import Sidebar from "../components/Sidebar";
 import { useNotification } from "../context/NotificationContext"; // 🔔 Import Notifikasi
 
@@ -11,69 +9,101 @@ const TambahKategoriA = () => {
   const navigate = useNavigate();
   const { addNotification } = useNotification(); // 🔔 Inisialisasi Notifikasi
 
-  const toCamelCase = (str) => str.toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase());
+  const toCamelCase = (str) =>
+    str.toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase());
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (!namaKategori.trim()) {
       Swal.fire("Error", "Nama kategori tidak boleh kosong!", "error");
       return;
     }
+
     const formattedKategori = toCamelCase(namaKategori);
 
-    fetch("http://localhost:4321/api/kategori/tambah", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id: 0, namaKategori: formattedKategori }),
-    })
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
-        } else {
-          return Promise.reject("Gagal menambahkan kategori");
-        }
-      })
-      .then(() => {
-        addNotification("Kategori baru ditambahkan", "success"); // 🔔 Kirim Notifikasi
-        Swal.fire("Sukses", "Kategori berhasil ditambahkan", "success").then(() => navigate("/page-kategori"));
-      })
-      .catch(() => {
-        Swal.fire("Error", "Terjadi kesalahan saat menambahkan kategori", "error");
+    try {
+      const response = await fetch("http://localhost:4321/api/kategori/tambah", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: 0, namaKategori: formattedKategori }),
       });
+
+      if (response.ok) {
+        const result = await response.json();
+
+        addNotification(
+          `Kategori "${result.namaKategori}" berhasil ditambahkan`,
+          "success"
+        ); // 🔔 Kirim Notifikasi
+
+        Swal.fire({
+          title: "Kategori Ditambahkan!",
+          text: `Kategori "${result.namaKategori}" berhasil ditambahkan.`,
+          icon: "success",
+          confirmButtonText: "OK",
+        }).then(() => navigate("/page-kategori"));
+
+        console.log("Kategori Ditambahkan:", result);
+      } else {
+        throw new Error("Gagal menambahkan kategori.");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      Swal.fire({
+        title: "Error",
+        text: "Terjadi kesalahan saat menambahkan kategori.",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    }
   };
 
   return (
-    <div className="flex items-center justify-center h-screen overflow-hidden fixed inset-0">
+    <div className="flex h-screen overflow-hidden">
+      {/* Sidebar */}
       <Sidebar />
-      <div className="bg-white p-6 shadow-md rounded-lg w-1/2 border-2 border-gray-700">
-        <form onSubmit={handleSubmit} className="overflow-hidden">
-          <div className="flex flex-col items-start mb-4">
-            <label className="block text-gray-600">NAMA KATEGORI</label>
-            <input
-              type="text"
-              value={namaKategori}
-              onChange={(e) => setNamaKategori(e.target.value)}
-              className="w-full p-2 border-2 border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-              placeholder="Masukkan kategori"
-              required
-            />
+
+      {/* Form Container */}
+      <div className="flex flex-1 items-center justify-center">
+        <div className="bg-white p-8 rounded-lg shadow-lg max-w-lg w-full border border-gray-300">
+          <div className="flex items-center justify-between mb-4">
+            <h1 className="text-xl font-semibold text-center w-full">
+              Tambah Kategori
+            </h1>
           </div>
-          <div className="flex justify-between">
-            <button
-              type="button"
-              className="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 border-2 border-gray-700 flex items-center gap-2"
-              onClick={() => navigate("/page-kategori")}
-            >
-              <FontAwesomeIcon icon={faArrowLeft} className="text-lg" />
-            </button>
+
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div>
+              <label
+                htmlFor="namaKategori"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Nama Kategori
+              </label>
+              <input
+                type="text"
+                id="namaKategori"
+                name="namaKategori"
+                value={namaKategori}
+                onChange={(e) => setNamaKategori(e.target.value)}
+                className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md
+                 shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                placeholder="Masukkan nama kategori"
+                required
+              />
+            </div>
+
             <button
               type="submit"
-              className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 border-2 border-gray-700 flex items-center gap-2"
+              className="w-full py-3 px-4 border border-transparent rounded-md shadow-sm 
+              text-sm font-medium text-white bg-green-600 hover:bg-green-700 
+              focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
             >
-              <FontAwesomeIcon icon={faFloppyDisk} className="text-lg" />
+              Simpan Kategori
             </button>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
     </div>
   );
