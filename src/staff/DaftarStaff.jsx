@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Pencil, Trash2, Search, Eye, X, FileText } from "lucide-react";
 import Sidebar from "../components/Sidebar";
 import Swal from "sweetalert2";
+import { FaPlus } from "react-icons/fa";
 import { API_STAFF } from "../utils/BaseUrl";
 import { useNotification } from "../context/NotificationContext";
 import Navbar from "../tampilan/Navbar";
@@ -92,7 +93,7 @@ const DaftarStaff = () => {
                 sendNotification("Form tambah staf dibuka", "info");
               }}
             >
-              Tambah Staff
+            <FaPlus size={16} />
             </button>
           </div>
           <div className="relative w-1/3 mb-4">
