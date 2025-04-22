@@ -9,6 +9,7 @@ import {
 } from '@mui/material';
 import { Add, Edit, Delete, Visibility } from '@mui/icons-material';
 import Sidebar from "../components/Sidebar";
+import Swal from 'sweetalert2';
 import Navbar from "../tampilan/Navbar";
 
 
@@ -26,11 +27,31 @@ const ProductList = () => {
   }, []);
 
   const handleDelete = (id) => {
-    const updatedProducts = products.filter(product => product.id !== id);
-    setProducts(updatedProducts);
-    localStorage.setItem("products", JSON.stringify(updatedProducts));
+    Swal.fire({
+      title: 'Apakah anda yakin?',
+      text: "data produk ini di hapus!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const updatedProducts = products.filter(product => product.id !== id);
+        setProducts(updatedProducts);
+        localStorage.setItem("products", JSON.stringify(updatedProducts));
+  
+        Swal.fire({
+          title: 'Deleted!',
+          text: 'Product has been deleted.',
+          icon: 'success',
+          timer: 1500,
+          showConfirmButton: false,
+        });
+      }
+    });
   };
-
+  
   // Filter produk berdasarkan pencarian
   const filteredProducts = products.filter(product =>
     product.name.toLowerCase().includes(search.toLowerCase())
@@ -132,38 +153,41 @@ const ProductList = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-          {paginatedProducts.map((product) => (
-              <TableRow key={product.id}>
-                <TableCell>{product.id}</TableCell>
-                <TableCell>
-                <Avatar 
-                    src={product.image} 
-                    sx={{ width: 50, height: 50, marginRight: 2 }} 
-                  />
-                  {product.name}
-                </TableCell>
-                <TableCell>{product.category}</TableCell>
-                <TableCell>${product.price.toFixed(2)}</TableCell>
-                <TableCell>
-                  <Chip label={product.status} color={product.status === 'In Stock' ? 'success' : 'error'} />
-                </TableCell>
-                <TableCell>
-                <IconButton 
-                    color="primary" 
-                    onClick={() =>  navigate(`/detail-produk/${product.id}`)}
-                  >
-                    <Visibility />
-                  </IconButton>
-                  <IconButton color="warning">
-                    <Edit />
-                  </IconButton>
-                  <IconButton color="error" onClick={() => handleDelete(product.id)}>
-                    <Delete />
-                  </IconButton>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
+  {paginatedProducts.map((product, index) => (
+    <TableRow key={product.id}>
+      <TableCell>{page * rowsPerPage + index + 1}</TableCell>
+      <TableCell>
+        <Box display="flex" alignItems="center">
+          <Avatar 
+            src={product.imageUrl}  
+            sx={{ width: 50, height: 50, marginRight: 2 }} 
+          />
+          <Typography>{product.name}</Typography>
+        </Box>
+      </TableCell>
+      <TableCell>{product.category}</TableCell>
+      <TableCell>${product.price.toFixed(2)}</TableCell>
+      <TableCell>
+        <Chip label={product.status} color={product.status === 'In Stock' ? 'success' : 'error'} />
+      </TableCell>
+      <TableCell>
+        <IconButton 
+          color="primary" 
+          onClick={() =>  navigate(`/detail-produk/${product.id}`)}
+        >
+          <Visibility />
+        </IconButton>
+        <IconButton color="warning">
+          <Edit />
+        </IconButton>
+        <IconButton color="error" onClick={() => handleDelete(product.id)}>
+          <Delete />
+        </IconButton>
+      </TableCell>
+    </TableRow>
+  ))}
+</TableBody>
+
         </Table>
       </TableContainer>
       <TablePagination

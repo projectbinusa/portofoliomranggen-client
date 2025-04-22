@@ -117,7 +117,7 @@ const User = () => {
                  navigate("/tambah-user");
                  sendNotification("Menambahkan user baru", "success");
                }}>
-                + Add
+                + 
               </button>
             </div>
           </div>
