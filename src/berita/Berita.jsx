@@ -1,185 +1,201 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaPlus } from "react-icons/fa";
-import { Pencil, Trash2, Search, Eye } from "lucide-react";
 import Swal from "sweetalert2";
-import { API_BERITA } from "../utils/BaseUrl";
+import axios from "axios";
 import Sidebar from "../components/Sidebar";
-import Navbar from "../tampilan/Navbar";
+import { Pencil, Trash2, Search, X, Eye, FileText } from "lucide-react";
 import { useNotification } from "../context/NotificationContext";
+import Navbar from "../tampilan/Navbar";
+import { jsPDF } from "jspdf";
 
-const Berita = () => {
-  const [beritaList, setBeritaList] = useState([]);
-  const { sendNotification } = useNotification();
-  const { addNotification } = useNotification();
-  const [searchQuery, setSearchQuery] = useState("");
+const API_BERITA = "http://localhost:4321/api/berita";
+
+const toTitleCase = (str) => {
+  if (!str) return "";
+  return str
+    .toLowerCase()
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+};
+
+const PageBerita = () => {
   const navigate = useNavigate();
+  const { sendNotification } = useNotification();
+  const [searchTerm, setSearchTerm] = useState("");
+  const [beritaList, setBeritaList] = useState([]);
 
   useEffect(() => {
     fetchBerita();
   }, []);
 
-  const fetchBerita = async () => {
-    try {
-      const response = await fetch(`${API_BERITA}/all`);
-      if (!response.ok) {
-        throw new Error("Gagal mengambil data berita");
-      }
-      const data = await response.json();
-      setBeritaList(data);
-    } catch (error) {
-      Swal.fire({
-        title: "Error!",
-        text: error.message,
-        icon: "error",
-        confirmButtonText: "Ok",
-      });
-    }
+  const fetchBerita = () => {
+    axios
+      .get(`${API_BERITA}/all`)
+      .then((response) => setBeritaList(response.data))
+      .catch((error) => console.error("Error fetching data:", error));
   };
 
-  const handleDelete = async (id) => {
-    const result = await Swal.fire({
-      title: "Hapus Berita?",
-      text: "Apakah Anda yakin ingin menghapus berita ini?",
+  const handleDeleteBerita = (id) => {
+    Swal.fire({
+      title: "Apakah Anda yakin?",
+      text: "Berita ini akan dihapus!",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonText: "Hapus",
+      confirmButtonText: "Ya, hapus!",
       cancelButtonText: "Batal",
-    });
-
-    if (result.isConfirmed) {
-      try {
-        const response = await fetch(`${API_BERITA}/delete/${id}`, { method: "DELETE" });
-
-        if (!response.ok) {
-          throw new Error("Gagal menghapus berita");
-        }
-
-        Swal.fire("Terhapus!", "Berita berhasil dihapus.", "success");
-        addNotification("data berita dihapus", "warning"); // 🔔 Kirim notifikasi
-        fetchBerita();
-      } catch (error) {
-        Swal.fire("Gagal!", error.message, "error");
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .delete(`${API_BERITA}/delete/${id}`)
+          .then(() => {
+            fetchBerita();
+            sendNotification("Berita berhasil dihapus", "warning");
+            Swal.fire("Dihapus!", "Berita telah dihapus.", "success");
+          })
+          .catch(() =>
+            Swal.fire(
+              "Gagal!",
+              "Terjadi kesalahan saat menghapus data.",
+              "error"
+            )
+          );
       }
-    }
+    });
   };
 
-  const toCamelCase = (text) => {
-    if (!text) return "";
-    return text
-      .toLowerCase()
-      .split(" ")
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(" ");
-  };
+  const generatePDF = (berita) => {
+    const doc = new jsPDF();
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(18);
+    doc.text("Detail Berita", 105, 15, { align: "center" });
 
-  const formatDate = (dateString) => {
-    if (!dateString) return "-";
-    try {
-      const dateObj = new Date(dateString);
-      return new Intl.DateTimeFormat("id-ID", {
-        day: "2-digit",
-        month: "long",
-        year: "numeric",
-      }).format(dateObj);
-    } catch (error) {
-      console.error("Error formatting date:", error);
-      return "-";
-    }
-  };
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(12);
+    doc.line(10, 20, 200, 20);
 
-  const filteredBerita = beritaList.filter((berita) =>
-    `${berita.nama} ${berita.penulis}`.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+    doc.text(`Judul Berita: ${berita.nama}`, 10, 30);
+    doc.text(`Penulis: ${berita.penulis}`, 10, 40);
+    doc.text(`Tanggal Terbit: ${berita.tanggalTerbit}`, 10, 50);
+
+    doc.line(10, 60, 200, 60);
+    doc.save(`Berita_${berita.nama}.pdf`);
+  };
 
   return (
-    <div className="flex">
+    <div className="flex h-screen">
       <Sidebar />
       <Navbar />
-      <div className="flex-1 p-6 ml-48 pl-4">
-        <div className="flex justify-between items-center mb-4 mt-6">
-          <div className="relative w-1/3">
-            <Search className="absolute ml-3 text-gray-500 top-3 left-3" size={20} />
+      <div className="flex-1 p-6 ml-40">
+        <div className="container mx-auto p-4">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-xl font-bold">Daftar Berita</h2>
+            <button
+              onClick={() => navigate("/tambah-berita")}
+              className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
+            >
+              <FaPlus size={16} />
+            </button>
+          </div>
+
+          <div className="relative w-1/3 mb-4">
             <input
               type="text"
               placeholder="Cari berita..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-12 pr-4 py-2 w-full text-sm border-2 border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full px-10 py-2 border border-black rounded-md focus:ring-1 focus:ring-gray-400"
             />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-black-400 w-5 h-5" />
+            {searchTerm && (
+              <button
+                onClick={() => setSearchTerm("")}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            )}
           </div>
 
-          <button
-            onClick={() => {
-              sendNotification("Menambah berita baru", "info"); // 🔔 Kirim notifikasi
-              navigate("/tambah-berita");
-            }}
-            className="flex items-center gap-2 bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition"
-          >
-            <FaPlus size={16} />
-          </button>
-        </div>
-
-        <div className="relative overflow-x-auto shadow-md">
-          <table className="w-full text-sm text-left text-gray-700">
-            <thead className="text-xs uppercase bg-gray-200 text-gray-700">
-              <tr>
-                <th className="px-6 py-3 text-center">No</th>
-                <th className="px-6 py-3 text-center">Foto</th>
-                <th className="px-6 py-3 text-center">Nama</th>
-                <th className="px-6 py-3 text-center">Penulis</th>
-                <th className="px-6 py-3 text-center">Tanggal Terbit</th>
-                <th className="px-6 py-3 text-center">Aksi</th>
-              </tr>
-            </thead>
-            <tbody className="bg-gray-100">
-              {filteredBerita.map((berita, index) => (
-                <tr key={berita.id} className="hover:bg-gray-100">
-                  <td className="px-6 py-4 text-center">{index + 1}</td>
-                  <td className="px-6 py-4 text-center w-32 h-32">
-                    {berita.fotoUrl && (
-                      <img
-                        src={berita.fotoUrl}
-                        alt="Foto Berita"
-                        className="w-full h-full object-cover rounded-md mx-auto"
-                      />
-                    )}
-                  </td>
-                  <td className="px-6 py-4">{toCamelCase(berita.nama)}</td>
-                  <td className="px-6 py-4">{toCamelCase(berita.penulis)}</td>
-                  <td className="px-6 py-4 text-center">{formatDate(berita.tanggalTerbit)}</td>
-                  <td className="px-6 py-4 flex justify-center gap-3">
-                    <button
-                      onClick={() => navigate(`/detail-berita/${berita.id}`)}
-                      className="bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-600"
+          <div className="relative overflow-x-auto shadow-md ml-1">
+            <table className="w-full text-sm text-left text-gray-700 border border-gray-400">
+              <thead className="text-xs font-bold uppercase bg-gray-200 border-b border-gray-500">
+                <tr>
+                  {["No", "Judul", "Penulis", "Tanggal Terbit", "Foto", "Aksi"].map((header) => (
+                    <th
+                      key={header}
+                      className="px-6 py-3 border-r border-gray-400 text-center"
                     >
-                      <Eye size={18} />
-                    </button>
-                    <button
-                      onClick={() => {
-                        sendNotification("Mengedit data berita", "info"); // 🔔 Kirim notifikasi
-                        navigate(`/edit-berita/${berita.id}`);
-                      }}
-                      className="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600"
-                    >
-                      <Pencil size={18} />
-                    </button>
-                    
-                    <button
-                      onClick={() => handleDelete(berita.id)}
-                      className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600"
-                    >
-                      <Trash2 size={18} />
-                    </button>
-                  </td>
+                      {header}
+                    </th>
+                  ))}
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {beritaList.length ? (
+                  beritaList.map((item, index) => (
+                    <tr
+                      key={item.id}
+                      className="bg-white border-b border-gray-400 hover:bg-gray-100"
+                    >
+                      <td className="px-6 py-4 border-r text-center">{index + 1}</td>
+                      <td className="px-6 py-4 border-r text-center">{toTitleCase(item.nama)}</td>
+                      <td className="px-6 py-4 border-r text-center">{toTitleCase(item.penulis)}</td>
+                      <td className="px-6 py-4 border-r text-center">{item.tanggalTerbit}</td>
+                      <td className="px-6 py-4 border-r text-center">
+                        {item.fotoUrl ? (
+                          <img
+                            src={item.fotoUrl}
+                            alt={item.nama}
+                            className="w-32 h-20 object-cover mx-auto rounded-md"
+                          />
+                        ) : (
+                          <span className="text-gray-400 italic">Tidak ada foto</span>
+                        )}
+                      </td>
+                      <td className="px-6 py-4 flex gap-2 justify-center">
+                        <button
+                          onClick={() => generatePDF(item)}
+                          className="bg-purple-500 text-white px-3 py-1 rounded-md hover:bg-purple-600"
+                        >
+                          <FileText size={18} />
+                        </button>
+                        <Link
+                          to={`/detail-berita/${item.id}`}
+                          className="bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-600"
+                        >
+                          <Eye size={18} />
+                        </Link>
+                        <button
+                          onClick={() => navigate(`/edit-berita/${item.id}`)}
+                          className="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600"
+                        >
+                          <Pencil size={18} />
+                        </button>
+                        <button
+                          onClick={() => handleDeleteBerita(item.id)}
+                          className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600"
+                        >
+                          <Trash2 size={18} />
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="6" className="text-center py-4 text-gray-500">
+                      Tidak ada berita yang tersedia.
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
   );
 };
 
-export default Berita;
+export default PageBerita;

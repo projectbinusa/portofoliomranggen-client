@@ -13,7 +13,7 @@ const API_PESANAN = "http://localhost:4321/api/pesanan";
 
 const PagePesanan = () => {
   const navigate = useNavigate();
-  const { sendNotification } = useNotification();
+  const { addNotification } = useNotification();
   const [searchTerm, setSearchTerm] = useState("");
   const [pesanan, setPesanan] = useState([]);
 
@@ -42,7 +42,7 @@ const PagePesanan = () => {
           .delete(`${API_PESANAN}/delete/${id}`)
           .then(() => {
             fetchPesanan();
-            sendNotification("Pesanan berhasil dihapus", "warning");
+            addNotification("Pesanan berhasil dihapus", "warning");
             Swal.fire("Dihapus!", "Pesanan telah dihapus.", "success");
           })
           .catch(() =>

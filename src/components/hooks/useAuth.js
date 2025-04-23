@@ -1,17 +1,26 @@
-import { useContext } from 'react';
+import { useNavigate } from "react-router-dom";
 
-// auth provider
-// import AuthContext from 'contexts/JWTContext';
-// import AuthContext from 'contexts/FirebaseContext';
-// import AuthContext from 'contexts/AWSCognitoContext';
-// import AuthContext from 'contexts/Auth0Context';
+export const useAuth = () => {
+  const navigate = useNavigate();
 
-// ==============================|| HOOKS - AUTH ||============================== //
+  const resetPassword = async (email) => {
+    try {
+      // Panggil API reset password (sesuaikan dengan backend)
+      const response = await fetch("http://localhost:4321/api/reset-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
 
-export default function useAuth() {
-  const context = useContext(AuthContext);
+      if (!response.ok) throw new Error("Failed to send reset email");
 
-  if (!context) throw new Error('context must be use inside provider');
+      // Berhasil, arahkan ke halaman CheckMail
+      navigate("/check-mail");
+    } catch (error) {
+      console.error("Error:", error);
+      throw error;
+    }
+  };
 
-  return context;
-}
+  return { resetPassword };
+};

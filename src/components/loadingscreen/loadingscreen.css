@@ -1,0 +1,52 @@
+/* LoadingScreen.css */
+.loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #6c2dc7; /* warna ungu dari gambar contoh */
+  color: white;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.dots-loader {
+  display: flex;
+  gap: 1.2rem;
+}
+
+.dot {
+  width: 20px;
+  height: 20px;
+  background: white;
+  border-radius: 50%;
+  animation: bounce 1s infinite;
+}
+
+.dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+.loading-text {
+  margin-top: 20px;
+  font-size: 1.5rem;
+  font-family: "Courier New", Courier, monospace;
+  letter-spacing: 3px;
+  color: white;
+}

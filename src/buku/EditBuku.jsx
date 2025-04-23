@@ -4,13 +4,38 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import Sidebar from "../components/Sidebar";
 import { API_BUKU } from "../utils/BaseUrl";
-import UploadFoto from "../upload/UploadFoto";
-import { useNotification } from "../context/NotificationContext"; // ✅ Import notifikasi
+import { useNotification } from "../context/NotificationContext";
+
+const uploadToS3 = async (file) => {
+  const formData = new FormData();
+  formData.append("file", file);
+
+  try {
+    const response = await fetch("https://s3.lynk2.co/api/s3/Edit", {
+      method: "POST",
+      body: formData,
+    });
+
+    if (!response.ok) {
+      throw new Error("Gagal mengupload gambar ke S3");
+    }
+
+    const data = await response.json();
+    if (data.data && data.data.url_file) {
+      return data.data.url_file;
+    } else {
+      throw new Error("URL gambar tidak tersedia dalam respons S3");
+    }
+  } catch (error) {
+    console.error("Error upload ke S3:", error);
+    throw error;
+  }
+};
 
 const EditBuku = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { addNotification } = useNotification(); // ✅ Tambahkan sendNotification
+  const { addNotification } = useNotification();
 
   const [buku, setBuku] = useState({
     judulBuku: "",
@@ -22,7 +47,8 @@ const EditBuku = () => {
     fotoUrl: "",
   });
 
-  const [isUploading, setIsUploading] = useState(false); // Status upload foto
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [isUploading, setIsUploading] = useState(false);
 
   useEffect(() => {
     const fetchBuku = async () => {
@@ -40,33 +66,14 @@ const EditBuku = () => {
     setBuku({ ...buku, [e.target.name]: e.target.value });
   };
 
-  const handleUploadSuccess = (imageUrl) => {
-    setBuku({ ...buku, fotoUrl: imageUrl });
-    setIsUploading(false);
+  const handleFileChange = (e) => {
+    setSelectedFile(e.target.files[0]);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (isUploading) {
-      Swal.fire({
-        title: "Gagal!",
-        text: "Silakan tunggu hingga foto selesai di-upload.",
-        icon: "error",
-        confirmButtonText: "Ok",
-      });
-      return;
-    }
-
-    if (
-      !buku.judulBuku ||
-      !buku.penerbit ||
-      !buku.pengarang ||
-      !buku.tahunTerbit ||
-      !buku.jumlahHalaman ||
-      !buku.idAdmin ||
-      !buku.fotoUrl
-    ) {
+    if (!buku.judulBuku || !buku.penerbit || !buku.pengarang || !buku.tahunTerbit || !buku.jumlahHalaman || !buku.idAdmin) {
       Swal.fire({
         title: "Gagal!",
         text: "Semua field harus diisi.",
@@ -77,9 +84,27 @@ const EditBuku = () => {
     }
 
     try {
-      await axios.put(`${API_BUKU}/editByid/${id}`, buku);
+      let imageUrl = buku.fotoUrl;
 
-      addNotification("Data buku berhasil diperbarui", "success"); // ✅ Kirim notifikasi sukses
+      if (selectedFile) {
+        setIsUploading(true);
+        Swal.fire({
+          title: "Mengupload gambar...",
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
+
+        imageUrl = await uploadToS3(selectedFile);
+
+        Swal.close();
+        setIsUploading(false);
+      }
+
+      await axios.put(`${API_BUKU}/editById/${id}`, { ...buku, fotoUrl: imageUrl });
+
+      addNotification("Data buku berhasil diperbarui", "success");
 
       Swal.fire({
         title: "Sukses!",
@@ -90,6 +115,7 @@ const EditBuku = () => {
         navigate("/buku");
       });
     } catch (error) {
+      setIsUploading(false);
       Swal.fire({
         title: "Gagal!",
         text: "Terjadi kesalahan saat memperbarui data buku.",
@@ -114,7 +140,6 @@ const EditBuku = () => {
                 { label: "Tahun Terbit", name: "tahunTerbit", type: "number" },
                 { label: "Jumlah Halaman", name: "jumlahHalaman", type: "number" },
                 { label: "ID Admin", name: "idAdmin", type: "number" },
-                { label: "Foto Buku (URL)", name: "fotoUrl", type: "text" },
               ].map((field) => (
                 <div key={field.name} className="flex flex-col">
                   <label className="text-gray-700 text-sm font-medium text-left capitalize">
@@ -132,13 +157,12 @@ const EditBuku = () => {
               ))}
             </div>
 
-            {/* Komponen Upload Foto */}
-            <div className="flex flex-col">
-              <label className="text-gray-700 text-sm font-medium text-left">Upload Foto</label>
-              <UploadFoto
-                onUploadSuccess={handleUploadSuccess}
-                setIsUploading={setIsUploading}
-              />
+            <div className="flex flex-col mt-4">
+              <label className="text-gray-700 text-sm font-medium text-left">Upload Gambar</label>
+              <input type="file" accept="image/*" onChange={handleFileChange} className="p-2 border" />
+              {buku.fotoUrl && (
+                <img src={buku.fotoUrl} alt="Preview" className="mt-2 w-32 h-32 object-cover border" />
+              )}
             </div>
 
             <div className="flex justify-between space-x-4 mt-6">
@@ -152,8 +176,9 @@ const EditBuku = () => {
               <button
                 type="submit"
                 className="px-4 py-2 bg-green-600 text-white hover:bg-green-700 transition"
+                disabled={isUploading}
               >
-                Simpan
+                {isUploading ? "Mengupload..." : "Simpan"}
               </button>
             </div>
           </form>

@@ -12,6 +12,7 @@ import { jsPDF } from "jspdf";
 
 const PageOrganisasi = () => {
   const navigate = useNavigate();
+  const { addNotification } = useNotification();
   const { sendNotification } = useNotification();
   const [searchTerm, setSearchTerm] = useState("");
   const [organisasiList, setOrganisasiList] = useState([]);
@@ -37,7 +38,7 @@ const PageOrganisasi = () => {
           .delete(`${API_ORGANISASI}/delete/${id}`)
           .then(() => {
             setOrganisasiList(organisasiList.filter((org) => org.id !== id));
-            sendNotification(
+            addNotification(
               `Organisasi "${namaOrganisasi}" berhasil dihapus`,
               "warning"
             );
@@ -86,7 +87,7 @@ const PageOrganisasi = () => {
           <h2 className="text-xl font-bold">Daftar Organisasi</h2>
           <Link to="/tambah-organisasi">
             <button className="flex items-center gap-2 bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600">
-              <FaPlus size={18} /> Tambah Organisasi
+              <FaPlus size={18} />
             </button>
           </Link>
         </div>

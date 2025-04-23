@@ -1,158 +1,207 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { Pencil, Trash2, Search, Eye } from "lucide-react";
-import { FaPlus } from "react-icons/fa";
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { 
+  Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, 
+  Button, Avatar, Chip, IconButton, TextField, MenuItem, Select, InputLabel, FormControl, 
+  Typography,
+  Breadcrumbs,Link,
+  TablePagination, Box
+} from '@mui/material';
+import { Add, Edit, Delete, Visibility } from '@mui/icons-material';
 import Sidebar from "../components/Sidebar";
-import Swal from "sweetalert2";
-import axios from "axios";
-import { API_PRODUK } from "../utils/BaseUrl";
+import Swal from 'sweetalert2';
 import Navbar from "../tampilan/Navbar";
-import { useNotification } from "../context/NotificationContext";
+
 
 const ProductList = () => {
-  const [products, setProducts] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
-  const { sendNotification } = useNotification();
-
-  const toCamelCase = (str) => {
-    return str
-      .split(" ")
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-      .join(" ");
-  };
+  const [search, setSearch] = useState('');
+  const [sortBy, setSortBy] = useState('');
+  const [products, setProducts] = useState([]);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await axios.get(`${API_PRODUK}/all`);
-        const mappedProducts = response.data.map((product) => ({
-          id: product.id,
-          nama: toCamelCase(product.nama),
-          harga: product.harga || 0,
-          fotoUrl: product.fotoUrl,
-          kondisi: toCamelCase(product.kondisi),
-        }));
-        setProducts(mappedProducts);
-      } catch (error) {
-        console.error("Terjadi kesalahan saat mengambil data produk:", error);
-        sendNotification("Gagal mengambil data produk.", "error");
-      }
-    };
-
-    fetchProducts();
+    const storedProducts = JSON.parse(localStorage.getItem("products")) || [];
+    setProducts([...storedProducts]);
   }, []);
 
-  const handleEdit = (id, namaProduk) => {
-    navigate(`/edit-produk/${id}`);
-    sendNotification(`Mengedit produk \"${namaProduk}\"`, "info");
-  };
-
-  const handleDetail = (id, namaProduk) => {
-    navigate(`/detail-produk/${id}`);
-    sendNotification(`Melihat detail produk \"${namaProduk}\"`, "info");
-  };
-
-  const handleDelete = async (id, namaProduk) => {
+  const handleDelete = (id) => {
     Swal.fire({
-      title: "Yakin ingin menghapus produk ini?",
-      text: `Produk \"${namaProduk}\" akan dihapus!`,
-      icon: "warning",
+      title: 'Apakah anda yakin?',
+      text: "data produk ini di hapus!",
+      icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: "Hapus",
-      cancelButtonText: "Batal",
-      confirmButtonColor: "#d33",
-      cancelButtonColor: "#3085d6",
-    }).then(async (result) => {
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+    }).then((result) => {
       if (result.isConfirmed) {
-        try {
-          await axios.delete(`${API_PRODUK}/delete/${id}`);
-          Swal.fire("Dihapus!", `Produk \"${namaProduk}\" telah dihapus.`, "success");
-          sendNotification(`Produk \"${namaProduk}\" telah dihapus`, "warning");
-          setProducts(products.filter((product) => product.id !== id));
-        } catch (error) {
-          sendNotification("Gagal menghapus produk.", "error");
-          Swal.fire("Gagal!", "Tidak dapat menghapus produk.", "error");
-        }
+        const updatedProducts = products.filter(product => product.id !== id);
+        setProducts(updatedProducts);
+        localStorage.setItem("products", JSON.stringify(updatedProducts));
+  
+        Swal.fire({
+          title: 'Deleted!',
+          text: 'Product has been deleted.',
+          icon: 'success',
+          timer: 1500,
+          showConfirmButton: false,
+        });
       }
     });
+  };
+  
+  // Filter produk berdasarkan pencarian
+  const filteredProducts = products.filter(product =>
+    product.name.toLowerCase().includes(search.toLowerCase())
+  );
+
+  // Mengurutkan produk
+  const sortedProducts = [...filteredProducts].sort((a, b) => {
+    if (sortBy === "name") return a.name.localeCompare(b.name);
+    if (sortBy === "price") return a.price - b.price;
+    return 0;
+  });
+
+  
+
+  const paginatedProducts = sortedProducts.slice(
+    page * rowsPerPage,
+    page * rowsPerPage + rowsPerPage
+  );
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
   };
 
   return (
     <div className="flex min-h-screen">
-      <Sidebar />
-      <Navbar />
-
-      <div className="flex-1 p-6 ml-48 pl-4">
-        <div className="flex justify-between items-center mb-4 mt-6">
-          <div className="relative flex-1 max-w-md">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" size={18} />
-            <input
-              type="text"
-              placeholder="Cari produk..."
-              className="w-full px-3 py-2 pl-10 pr-4 text-sm border-2 border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </div>
-
-          <button
-            onClick={() => {
-              navigate("/tambah-produk");
-              sendNotification("Menambahkan produk baru", "success");
-            }}
-            className="flex items-center gap-2 bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition">
-            <FaPlus size={16} />
-          </button>
+        {/* Sidebar */}
+        <div className="w-[250px] relative">
+          <Sidebar />
         </div>
+    
+          {/* Main Content */}
+          <div className="flex-1">
+            <Navbar />
+            <div className="p-6 flex gap-6 mt-6"> 
 
-        <div className="relative overflow-x-auto shadow-md">
-          <table className="w-full text-sm text-left text-gray-700">
-            <thead className="text-xs uppercase bg-gray-200 text-gray-700">
-              <tr>
-                <th className="px-6 py-3 text-center">No</th>
-                <th className="px-6 py-3 text-center">Foto</th>
-                <th className="px-6 py-3 text-center">Nama Produk</th>
-                <th className="px-6 py-3 text-center">Kondisi</th>
-                <th className="px-6 py-3 text-center">Harga</th>
-                <th className="px-6 py-3 text-center">Aksi</th>
-              </tr>
-            </thead>
-            <tbody className="bg-gray-100">
-              {products.length > 0 ? (
-                products.map((product, index) => (
-                  <tr key={product.id} className="hover:bg-gray-100">
-                    <td className="px-6 py-4 text-center">{index + 1}</td>
-                    <td className="px-6 py-4 text-center w-32 h-32">
-                      {product.fotoUrl && (
-                        <img src={product.fotoUrl} alt="Foto Produk" className="w-full h-full object-cover rounded-md mx-auto" />
-                      )}
-                    </td>
-                    <td className="px-6 py-4 font-medium">{product.nama}</td>
-                    <td className="px-6 py-4 text-center">{product.kondisi}</td>
-                    <td className="px-6 py-4 text-center">Rp {product.harga.toLocaleString()}</td>
-                    <td className="px-6 py-4 flex gap-3 justify-center">
-                      <button onClick={() => handleDetail(product.id, product.nama)} className="flex items-center gap-2 bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-600 transition">
-                        <Eye size={18} />
-                      </button>
-                      <button onClick={() => handleEdit(product.id, product.nama)} className="flex items-center gap-2 bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600 transition">
-                        <Pencil size={18} />
-                      </button>
-                      <button onClick={() => handleDelete(product.id, product.nama)} className="flex items-center gap-2 bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 transition">
-                        <Trash2 size={18} />
-                      </button>
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="6" className="px-6 py-4 text-center">Produk tidak ditemukan.</td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
+     <Paper sx={{ padding: 4,width: "100%", overflowX: "auto" }}>
+      {/* Breadcrumbs dan Title */}
+      <Box sx={{ marginBottom: 2 }}>
+        <Breadcrumbs aria-label="breadcrumb" sx={{ mb: 1 }}>
+          <Link underline="hover" color="inherit" href="/">
+            Home
+          </Link>
+          <Link underline="hover" color="inherit" href="/produk">
+            Produk
+          </Link>
+          <Typography color="text.primary">Product List</Typography>
+        </Breadcrumbs>
+        <Typography variant="h4" fontWeight="bold" sx={{ textAlign: "left" }}>
+          Product List
+        </Typography>
+      </Box>
+
+      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
+        {/* Input Pencarian */}
+        <TextField
+          label="Search products..."
+          variant="outlined"
+          size="small"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+
+        {/* Dropdown Pengurutan */}
+        <FormControl size="small" sx={{ minWidth: 200, ml: 8 }}>
+          <InputLabel>Sort by</InputLabel>
+          <Select
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value)}
+            label="Sort by"
+          >
+            <MenuItem value="">None</MenuItem>
+            <MenuItem value="name">Product Name</MenuItem>
+            <MenuItem value="price">Price</MenuItem>
+          </Select>
+        </FormControl>
+
+        {/* Tombol Tambah Produk */}
+        <Button variant="contained" startIcon={<Add />} onClick={() => navigate('/tambah-produk')}>
+          Add Product
+        </Button>
       </div>
+
+      {/* Tabel Produk */}
+      <TableContainer>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>#</TableCell>
+              <TableCell>Product Detail</TableCell>
+              <TableCell>Categories</TableCell>
+              <TableCell>Price</TableCell>
+              <TableCell>Status</TableCell>
+              <TableCell>Actions</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+  {paginatedProducts.map((product, index) => (
+    <TableRow key={product.id}>
+      <TableCell>{page * rowsPerPage + index + 1}</TableCell>
+      <TableCell>
+        <Box display="flex" alignItems="center">
+          <Avatar 
+            src={product.imageUrl}  
+            sx={{ width: 50, height: 50, marginRight: 2 }} 
+          />
+          <Typography>{product.name}</Typography>
+        </Box>
+      </TableCell>
+      <TableCell>{product.category}</TableCell>
+      <TableCell>${product.price.toFixed(2)}</TableCell>
+      <TableCell>
+        <Chip label={product.status} color={product.status === 'In Stock' ? 'success' : 'error'} />
+      </TableCell>
+      <TableCell>
+        <IconButton 
+          color="primary" 
+          onClick={() =>  navigate(`/detail-produk/${product.id}`)}
+        >
+          <Visibility />
+        </IconButton>
+        <IconButton color="warning">
+          <Edit />
+        </IconButton>
+        <IconButton color="error" onClick={() => handleDelete(product.id)}>
+          <Delete />
+        </IconButton>
+      </TableCell>
+    </TableRow>
+  ))}
+</TableBody>
+
+        </Table>
+      </TableContainer>
+      <TablePagination
+        rowsPerPageOptions={[5, 10, 15]}
+        component="div"
+        count={sortedProducts.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
+    </Paper>
+      </div>
+     </div>
     </div>
   );
 };
