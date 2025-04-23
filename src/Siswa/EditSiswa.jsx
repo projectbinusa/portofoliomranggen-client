@@ -20,6 +20,7 @@ const EditSiswa = () => {
     tanggalLahir: "",
   });
 
+  const userLogin = sessionStorage.getItem("username") || "Admin"; // 🔥 Ambil user login
   // const userLogin = sessionStorage.getItem("username") || "Admin"; // 🔥 Ambil user login
 
   useEffect(() => {
@@ -116,6 +117,7 @@ const EditSiswa = () => {
 
       // 🔥 Kirim Notifikasi
       if (addNotification) {
+        addNotification(`${userLogin} mengedit data siswa: ${updatedStudent.nama}`, "info");
         addNotification(`Admin memperbarui data siswa: ${updatedStudent.nama}`, "info");
       }
 

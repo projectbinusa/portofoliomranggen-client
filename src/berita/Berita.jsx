@@ -122,24 +122,27 @@ const PageBerita = () => {
             <table className="w-full text-sm text-left text-gray-700 border border-gray-400">
               <thead className="text-xs font-bold uppercase bg-gray-200 border-b border-gray-500">
                 <tr>
-                  <th className="px-6 py-3 border-r text-center">No</th>
-                  <th className="px-6 py-3 border-r text-center">Foto</th>
-                  <th className="px-6 py-3 border-r text-center">Judul</th>
-                  <th className="px-6 py-3 border-r text-center">Penulis</th>
-                  <th className="px-6 py-3 border-r text-center">Tanggal Terbit</th>
-                  <th className="px-6 py-3 text-center">Aksi</th>
+                  {["No", "Judul", "Penulis", "Tanggal Terbit", "Foto", "Aksi"].map((header) => (
+                    <th
+                      key={header}
+                      className="px-6 py-3 border-r border-gray-400 text-center"
+                    >
+                      {header}
+                    </th>
+                  ))}
                 </tr>
               </thead>
               <tbody>
-                {beritaList.length > 0 ? (
+                {beritaList.length ? (
                   beritaList.map((item, index) => (
                     <tr
                       key={item.id}
                       className="bg-white border-b border-gray-400 hover:bg-gray-100"
                     >
-                      <td className="px-6 py-4 border-r text-center">
-                        {index + 1}
-                      </td>
+                      <td className="px-6 py-4 border-r text-center">{index + 1}</td>
+                      <td className="px-6 py-4 border-r text-center">{toTitleCase(item.nama)}</td>
+                      <td className="px-6 py-4 border-r text-center">{toTitleCase(item.penulis)}</td>
+                      <td className="px-6 py-4 border-r text-center">{item.tanggalTerbit}</td>
                       <td className="px-6 py-4 border-r text-center">
                         {item.fotoUrl ? (
                           <img
@@ -151,9 +154,6 @@ const PageBerita = () => {
                           <span className="text-gray-400 italic">Tidak ada foto</span>
                         )}
                       </td>
-                      <td className="px-6 py-4 border-r text-center">{toTitleCase(item.nama)}</td>
-                      <td className="px-6 py-4 border-r text-center">{toTitleCase(item.penulis)}</td>
-                      <td className="px-6 py-4 border-r text-center">{item.tanggalTerbit}</td>
                       <td className="px-6 py-4 flex gap-2 justify-center">
                         <button
                           onClick={() => generatePDF(item)}

@@ -108,65 +108,93 @@ const DaftarBuku = () => {
         </div>
 
         <div className="relative overflow-x-auto shadow-md">
-          <table className="w-full text-sm text-left text-gray-700">
-            <thead className="text-xs uppercase bg-gray-200 text-gray-700">
+          <table className="w-full text-sm text-left text-gray-700 border border-gray-400">
+            <thead className="text-xs font-bold uppercase bg-gray-200 border-b border-gray-500">
               <tr>
-                <th className="px-6 py-3 text-center">No</th>
-                <th className="px-6 py-3 text-center">Foto</th>
-                <th className="px-6 py-3 text-center">Judul Buku</th>
-                <th className="px-6 py-3 text-center">Pengarang</th>
-                <th className="px-6 py-3 text-center">Tahun</th>
-                <th className="px-6 py-3 text-center">Halaman</th>
-                <th className="px-6 py-3 text-center">Aksi</th>
+                {[
+                  "No",
+                  "Foto",
+                  "Judul Buku",
+                  "Pengarang",
+                  "Tahun",
+                  "Halaman",
+                  "Aksi",
+                ].map((header) => (
+                  <th
+                    key={header}
+                    className="px-6 py-3 border-r border-gray-400 text-center"
+                  >
+                    {header}
+                  </th>
+                ))}
               </tr>
             </thead>
             <tbody>
-              {bukuList.map((buku, index) => (
-                <tr key={buku.id} className="hover:bg-gray-100">
-                  <td className="px-6 py-4 text-center">{index + 1}</td>
-                  <td className="px-6 py-4 text-center">
-                    {buku.fotoUrl ? (
-                      <img
-                        src={buku.fotoUrl}
-                        alt={buku.judulBuku}
-                        className="w-32 object-cover mx-auto rounded-md"
-                      />
-                    ) : (
-                      <span className="text-gray-400 italic">Tidak ada foto</span>
-                    )}
-                  </td>
-                  <td className="px-6 py-4">{toTitleCase(buku.judulBuku)}</td>
-                  <td className="px-6 py-4">{toTitleCase(buku.pengarang)}</td>
-                  <td className="px-6 py-4">{buku.tahunTerbit}</td>
-                  <td className="px-6 py-4">{buku.jumlahHalaman}</td>
-                  <td className="px-6 py-4 flex justify-center gap-3">
-                    <button
-                      onClick={() => navigate(`/detail-buku/${buku.id}`)}
-                      className="bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-600"
-                    >
-                      <Eye size={18} />
-                    </button>
-                    <button
-                      onClick={() => navigate(`/edit-buku/${buku.id}`)}
-                      className="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600"
-                    >
-                      <Pencil size={18} />
-                    </button>
-                    <button
-                      onClick={() => handleDelete(buku.id)}
-                      className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600"
-                    >
-                      <Trash2 size={18} />
-                    </button>
-                    <button
-                      onClick={() => generateInvoice(buku)}
-                      className="bg-purple-500 text-white px-3 py-1 rounded-md hover:bg-purple-600"
-                    >
-                      <FileText size={18} />
-                    </button>
+              {bukuList.length > 0 ? (
+                bukuList.map((buku, index) => (
+                  <tr
+                    key={buku.id}
+                    className="bg-white border-b border-gray-400 hover:bg-gray-100"
+                  >
+                    <td className="px-6 py-4 border-r text-center">{index + 1}</td>
+                    <td className="px-6 py-4 border-r text-center">
+                      {buku.fotoUrl ? (
+                        <img
+                          src={buku.fotoUrl}
+                          alt={buku.judulBuku}
+                          className="w-44 h-20 object-cover mx-auto rounded-md"
+                        />
+                      ) : (
+                        <span className="text-gray-400 italic">Tidak ada foto</span>
+                      )}
+                    </td>
+                    <td className="px-6 py-4 border-r text-center">
+                      {toTitleCase(buku.judulBuku)}
+                    </td>
+                    <td className="px-6 py-4 border-r text-center">
+                      {toTitleCase(buku.pengarang)}
+                    </td>
+                    <td className="px-6 py-4 border-r text-center">
+                      {buku.tahunTerbit}
+                    </td>
+                    <td className="px-6 py-4 border-r text-center">
+                      {buku.jumlahHalaman}
+                    </td>
+                    <td className="px-6 py-4 flex gap-2 justify-center">
+                      <button
+                        onClick={() => navigate(`/detail-buku/${buku.id}`)}
+                        className="bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-600"
+                      >
+                        <Eye size={18} />
+                      </button>
+                      <button
+                        onClick={() => navigate(`/edit-buku/${buku.id}`)}
+                        className="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600"
+                      >
+                        <Pencil size={18} />
+                      </button>
+                      <button
+                        onClick={() => handleDelete(buku.id)}
+                        className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600"
+                      >
+                        <Trash2 size={18} />
+                      </button>
+                      <button
+                        onClick={() => generateInvoice(buku)}
+                        className="bg-purple-500 text-white px-3 py-1 rounded-md hover:bg-purple-600"
+                      >
+                        <FileText size={18} />
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="7" className="text-center py-4 text-gray-500">
+                    Tidak ada buku yang tersedia.
                   </td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
         </div>

@@ -14,6 +14,7 @@ const API_SISWA = "http://localhost:4321/api/siswa";
 const PageSiswa = () => {
   const navigate = useNavigate();
   const { sendNotification } = useNotification();
+  const { addNotification } = useNotification();
   const [searchTerm, setSearchTerm] = useState("");
   const [students, setStudents] = useState([]);
 
@@ -42,6 +43,8 @@ const PageSiswa = () => {
           .delete(`${API_SISWA}/delete/${id}`)
           .then(() => {
             fetchStudents();
+            sendNotification("Data siswa berhasil dihapus", "warning");
+            addNotification(`Admin telah menghapus data siswa`, "info");
             sendNotification("Admin telah menghapus data siswa", "info");
             Swal.fire("Dihapus!", "Data siswa telah dihapus.", "success");
           })
